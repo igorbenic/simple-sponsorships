@@ -16,12 +16,66 @@ class DB_Sponsorships extends DB {
 	 *
 	 * @var string
 	 */
-	private $table = 'ss_sponsorships';
+	protected $table = 'ss_sponsorships';
 
 	/**
 	 * @var string
 	 */
-	private $meta_table = 'ss_sponsorshipmeta';
+	protected $meta_table = 'ss_sponsorshipmeta';
+
+	/**
+	 * Get the level meta data.
+	 *
+	 * @param      $id
+	 * @param      $key
+	 * @param bool $single
+	 *
+	 * @return mixed
+	 */
+	public function get_meta( $id, $key, $single = true ) {
+		return \get_metadata( 'sssponshorship', $id, $key, $single );
+	}
+
+	/**
+	 * Add Meta
+	 *
+	 * @param $id
+	 * @param $key
+	 * @param $value
+	 *
+	 * @return false|int
+	 */
+	public function add_meta( $id, $key, $value ) {
+		return \add_metadata( 'sssponshorship', $id, $key, $value );
+	}
+
+	/**
+	 * Update Meta.
+	 *
+	 * @param        $id
+	 * @param        $key
+	 * @param string $value
+	 * @param string $prev_value
+	 *
+	 * @return bool|int
+	 */
+	public function update_meta( $id, $key, $value = '', $prev_value = '' ) {
+		return \update_metadata( 'sssponshorship', $id, $key, $value, $prev_value );
+	}
+
+	/**
+	 * Delete Meta.
+	 *
+	 * @param        $id
+	 * @param        $key
+	 * @param string $value
+	 * @param bool   $delete_all
+	 *
+	 * @return bool
+	 */
+	public function delete_meta( $id, $key, $value = '', $delete_all = false ) {
+		return \delete_metadata( 'sssponshorship', $id, $key, $value, $delete_all );
+	}
 
 	/**
 	 * Installing the DB.
@@ -33,17 +87,16 @@ class DB_Sponsorships extends DB {
 		$schema = "CREATE TABLE {$table_name} (
 		ID bigint(20) NOT NULL AUTO_INCREMENT,
 		type varchar(36) NOT NULL,
+		status varchar(24) NOT NULL,
 		amount tinytext NOT NULL,
 		subtotal tinytext NOT NULL,
 		currency tinytext NOT NULL,
 		gateway tinytext NOT NULL,
 		transaction_id varchar(64) NOT NULL,
 		level bigint(20) NOT NULL,
-		sponsor bingint(20) NOT NULL,
+		sponsor bigint(20) NOT NULL,
 		date datetime NOT NULL,
-		PRIMARY KEY ID (ID),
-		KEY name (name),
-		KEY status (status)
+		PRIMARY KEY ID (ID)
 		) CHARACTER SET utf8 COLLATE utf8_general_ci;";
 
 		$meta_table_name = $this->get_meta_table_name();
@@ -53,7 +106,7 @@ class DB_Sponsorships extends DB {
 		meta_key varchar(255) DEFAULT NULL,
 		meta_value longtext,
 		PRIMARY KEY meta_id (meta_id),
-		KEY sssponshorship_id (level_id),
+		KEY sssponshorship_id (sssponshorship_id),
 		KEY meta_key (meta_key)
 		) CHARACTER SET utf8 COLLATE utf8_general_ci;";
 

@@ -37,6 +37,8 @@ class Plugin {
 		$this->define();
 		$this->includes();
 		$this->hooks();
+
+		register_activation_hook( __FILE__, array( '\Simple_Sponsorships\Installer', 'activate' ) );
 	}
 
 	/**
@@ -63,11 +65,16 @@ class Plugin {
 		include_once 'includes/abstract/class-db.php';
 
 		include_once 'includes/class-content-types.php';
+		include_once 'includes/class-installer.php';
 
 		// DB
 		include_once 'includes/class-dbs.php';
 		include_once 'includes/db/class-db-levels.php';
 		include_once 'includes/db/class-db-sponsorships.php';
+
+		if ( is_admin() ) {
+			include_once 'includes/admin/class-admin.php';
+		}
 	}
 
 	/**

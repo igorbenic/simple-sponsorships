@@ -16,14 +16,14 @@ abstract class DB {
 	 *
 	 * @var string
 	 */
-	private $table = '';
+	protected $table = '';
 
 	/**
 	 * Meta Table
 	 *
 	 * @var string
 	 */
-	private $meta_table = '';
+	protected $meta_table = '';
 
 	/**
 	 * Get table name

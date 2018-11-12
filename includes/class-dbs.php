@@ -32,6 +32,17 @@ class Databases {
 	 * Install databases
 	 */
 	public function install() {
+		global $wpdb;
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
+		$db_levels = new DB_Levels();
+		$level_schema = $db_levels->get_schema();
+
+		@dbDelta( $level_schema );
+
+		$db_sponsorships = new DB_Sponsorships();
+		$sponsorship_schema = $db_sponsorships->get_schema();
+
+		@dbDelta( $sponsorship_schema );
 	}
 }
