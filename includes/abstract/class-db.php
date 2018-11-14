@@ -25,6 +25,8 @@ abstract class DB {
 	 */
 	protected $meta_table = '';
 
+	/***** Getters *****/
+
 	/**
 	 * Get table name
 	 * @return mixed
@@ -70,6 +72,71 @@ abstract class DB {
 		$results = $wpdb->get_row( $sql, ARRAY_A );
 
 		return $results ? $results : array();
+	}
+
+	/***** DB Setters (Insert, Update) *****/
+
+
+	/**
+	 * Insert a record.
+	 *
+	 * @param      $data
+	 * @param null $format
+	 *
+	 * @return bool|int
+	 */
+	public function insert( $data, $format = null ) {
+		global $wpdb;
+
+		$ret = $wpdb->insert( $this->table, $data, $format );
+
+		return $ret ? $wpdb->insert_id : false;
+	}
+
+	/**
+	 * Update a Row by ID.
+	 *
+	 * @param      $id
+	 * @param      $data
+	 * @param null $format
+	 *
+	 * @return bool
+	 */
+	public function update( $id, $data, $format = null ) {
+		global $wpdb;
+
+		$ret = $wpdb->update( $this->table, $data, array( 'ID' => $id ), $format, array( '%d') );
+
+		return $ret ? true : false;
+	}
+
+	/***** DB Removers *****/
+
+	/**
+	 * Delete records.
+	 *
+	 * @param      $where
+	 * @param null $format
+	 *
+	 * @return bool
+	 */
+	public function delete( $where, $format = null ) {
+		global $wpdb;
+
+		$ret = $wpdb->delete( $this->table, $where, $format );
+
+		return $ret ? true : false;
+	}
+
+	/**
+	 * Delete by ID.
+	 *
+	 * @param $id
+	 *
+	 * @return bool
+	 */
+	public function delete_by_id( $id ) {
+		return $this->delete( array( 'ID' => $id ), array( '%d' ) );
 	}
 
 	/**

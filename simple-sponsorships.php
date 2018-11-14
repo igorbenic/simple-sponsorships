@@ -26,9 +26,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Plugin {
 
 	/**
+	 * @var
+	 */
+	private static $instance;
+
+	/**
 	 * @var string
 	 */
 	public $version = '0.1.0';
+
+	/**
+	 * Settings
+	 *
+	 * @var array
+	 */
+	private $settings = null;
 
 	/**
 	 * Plugin constructor.
@@ -37,8 +49,37 @@ class Plugin {
 		$this->define();
 		$this->includes();
 		$this->hooks();
+	}
 
-		register_activation_hook( __FILE__, array( '\Simple_Sponsorships\Installer', 'activate' ) );
+	/**
+	 * Get settings for Simple Sponsorships.
+	 *
+	 * @return array
+	 */
+	public function get_settings() {
+		if ( null === $this->settings ) {
+			$this->settings = get_option( 'ss_settings', array() );
+		}
+
+		return $this->settings;
+	}
+
+	/**
+	 * Returns the main plugin instance.
+	 *
+	 * @return Plugin
+	 */
+	public static function instance() {
+		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Plugin ) ) {
+			self::$instance = new Plugin();
+			self::$instance->define();
+			self::$instance->includes();
+			self::$instance->hooks();
+
+			register_activation_hook( __FILE__, array( '\Simple_Sponsorships\Installer', 'activate' ) );
+		}
+
+		return self::$instance;
 	}
 
 	/**
@@ -63,6 +104,8 @@ class Plugin {
 	 */
 	public function includes() {
 		include_once 'includes/abstract/class-db.php';
+
+		include_once 'includes/functions-core.php';
 
 		include_once 'includes/class-content-types.php';
 		include_once 'includes/class-installer.php';
@@ -93,4 +136,13 @@ class Plugin {
 	}
 }
 
-new Plugin();
+/**
+ * Getting the instance.
+ *
+ * @return Plugin
+ */
+function get_main() {
+	return Plugin::instance();
+}
+
+get_main();

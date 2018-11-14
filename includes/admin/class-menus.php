@@ -33,7 +33,7 @@ class Menus {
 
 		add_submenu_page(
 			'edit.php?post_type=sponsors',
-			__( 'Settings', 'simple-sponsorships' ),
+			__( 'Simple Sponsorships Settings', 'simple-sponsorships' ),
 			__( 'Settings', 'simple-sponsorships' ),
 			'manage_options',
 			'ss-settings',
@@ -43,7 +43,6 @@ class Menus {
 	public function view() {
 		?>
 		<div class="wrap">
-			<h2><?php echo get_admin_page_title(); ?></h2>
 			<?php do_action( 'ss_admin_page_' . str_replace( '-', '_', $_REQUEST['page'] ) );?>
 		</div>
 		<?php

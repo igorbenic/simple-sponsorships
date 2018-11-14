@@ -23,9 +23,12 @@ class Databases {
 
 		$db_levels = new DB_Levels();
 		$wpdb->sslevelmeta = $db_levels->get_meta_table_name();
+		$wpdb->sslevels = $db_levels->get_table_name();
 
 		$db_sponsorships = new DB_Sponsorships();
 		$wpdb->sssponsorshipmeta = $db_sponsorships->get_meta_table_name();
+		$wpdb->sssponsorships    = $db_sponsorships->get_table_name();
+
 	}
 
 	/**

@@ -25,6 +25,8 @@ class Admin {
 	 */
 	public function includes() {
 		include_once 'class-menus.php';
+		include_once 'class-settings.php';
+		include_once 'class-levels.php';
 	}
 
 	/**

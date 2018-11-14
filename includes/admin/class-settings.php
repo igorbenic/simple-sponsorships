@@ -1,0 +1,587 @@
+<?php
+/**
+ * Settings for Simple Sponsorships.
+ */
+
+namespace Simple_Sponsorships\Admin;
+
+/**
+ * Class Settings
+ *
+ * @package Simple_Sponsorships\Admin
+ */
+class Settings {
+
+	/**
+	 * Settings constructor.
+	 */
+	public function __construct() {
+		add_action( 'ss_admin_page_ss_settings', array( $this, 'page' ) );
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
+	}
+
+	/**
+	 * Page View.
+	 */
+	public function page() {
+		$settings_tabs = $this->get_settings_tabs();
+		$settings_tabs = empty($settings_tabs) ? array() : $settings_tabs;
+		$active_tab    = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'general';
+		$active_tab    = array_key_exists( $active_tab, $settings_tabs ) ? $active_tab : 'general';
+		$sections      = $this->get_settings_tab_sections( $active_tab );
+		$key           = 'main';
+
+		if ( ! empty( $sections ) ) {
+			$key = key( $sections );
+		}
+
+		$registered_sections = $this->get_settings_tab_sections( $active_tab );
+		$section             = isset( $_GET['section'] ) && ! empty( $registered_sections ) && array_key_exists( $_GET['section'], $registered_sections ) ? sanitize_text_field( $_GET['section'] ) : $key;
+
+		// Unset 'main' if it's empty and default to the first non-empty if it's the chosen section
+		$all_settings = $this->get_settings();
+
+		// Let's verify we have a 'main' section to show
+		$has_main_settings = true;
+		if ( empty( $all_settings[ $active_tab ]['main'] ) ) {
+			$has_main_settings = false;
+		}
+
+		// Check for old non-sectioned settings (see #4211 and #5171)
+		if ( ! $has_main_settings ) {
+			foreach( $all_settings[ $active_tab ] as $sid => $stitle ) {
+				if ( is_string( $sid ) && ! empty( $sections) && array_key_exists( $sid, $sections ) ) {
+					continue;
+				} else {
+					$has_main_settings = true;
+					break;
+				}
+			}
+		}
+
+		$override = false;
+		if ( false === $has_main_settings ) {
+			unset( $sections['main'] );
+
+			if ( 'main' === $section ) {
+				foreach ( $sections as $section_key => $section_title ) {
+					if ( ! empty( $all_settings[ $active_tab ][ $section_key ] ) ) {
+						$section  = $section_key;
+						$override = true;
+						break;
+					}
+				}
+			}
+		}
+		include_once 'views/settings.php';
+	}
+
+	/**
+	 * Get Settings
+	 */
+	public function get_settings() {
+		$settings = array(
+			'general' => array(
+				'main' => array(
+					'manual_approve' => array(
+						'id'   => 'manual_approve',
+						'name' => __( 'Approve', 'simple-sponsorships' ),
+						'desc' => __( 'Approve Sponsorships Manually', 'simple-sponsorships' ),
+						'type' => 'checkbox',
+						'tooltip_title' => __( 'Page Settings', 'simple-sponsorships' ),
+						'tooltip_desc'  => __( 'Configure Pages where Sponsors can see their settings.','simple-sponsorships' ),
+					),
+					'page_settings' => array(
+						'id'   => 'page_settings',
+						'name' => '<h3>' . __( 'Pages', 'simple-sponsorships' ) . '</h3>',
+						'desc' => '',
+						'type' => 'header',
+						'tooltip_title' => __( 'Page Settings', 'simple-sponsorships' ),
+						'tooltip_desc'  => __( 'Configure Pages where Sponsors can see their settings.','simple-sponsorships' ),
+					),
+				)
+			)
+		);
+
+		return apply_filters( 'ss_get_settings', $settings );
+	}
+
+	/**
+	 * Get Settings Sections
+	 *
+	 * Copied from Easy Digital Downloads (https://easydigitaldownloads.com)
+	 */
+	public function get_settings_sections() {
+		$sections = array(
+			'general' => array(
+				'main' => __( 'General', 'simple-sponsorships' ),
+			)
+		);
+
+		return apply_filters( 'ss_get_settings_sections', $sections );
+	}
+
+	/**
+	 * Get tabs.
+	 *
+	 * Copied from Easy Digital Downloads (https://easydigitaldownloads.com)
+	 *
+	 * @return array
+	 */
+	public function get_settings_tabs() {
+
+		$tabs             = array();
+		$tabs['general']  = __( 'General', 'easy-digital-downloads' );
+		$tabs['gateways'] = __( 'Payment Gateways', 'easy-digital-downloads' );
+		$tabs['emails']   = __( 'Emails', 'easy-digital-downloads' );
+		$tabs['styles']   = __( 'Styles', 'easy-digital-downloads' );
+		$tabs['taxes']    = __( 'Taxes', 'easy-digital-downloads' );
+		$tabs['privacy']  = __( 'Privacy', 'easy-digital-downloads' );
+		$tabs['misc']     = __( 'Misc', 'easy-digital-downloads' );
+
+		return apply_filters( 'ss_settings_tabs', $tabs );
+	}
+
+	/**
+	 * Retrieve settings tabs
+	 *
+	 * Copied from Easy Digital Downloads (https://easydigitaldownloads.com)
+	 *
+	 * @return array $section
+	 */
+	function get_settings_tab_sections( $tab = false ) {
+
+		$tabs     = array();
+		$sections = $this->get_settings_sections();
+
+		if( $tab && ! empty( $sections[ $tab ] ) ) {
+			$tabs = $sections[ $tab ];
+		} else if ( $tab ) {
+			$tabs = array();
+		}
+
+		return $tabs;
+	}
+
+	/**
+	 * Register Settings using WP Settings API.
+	 *
+	 * Copied from Easy Digital Downloads (https://easydigitaldownloads.com)
+	 */
+	public function register_settings() {
+		if ( false == get_option( 'ss_settings' ) ) {
+			add_option( 'ss_settings', array() );
+		}
+
+		foreach ( $this->get_settings() as $tab => $sections ) {
+			foreach ( $sections as $section => $settings) {
+
+				// Check for backwards compatibility
+				$section_tabs = $this->get_settings_tab_sections( $tab );
+				if ( ! is_array( $section_tabs ) || ! array_key_exists( $section, $section_tabs ) ) {
+					$section = 'main';
+					$settings = $sections;
+				}
+
+				add_settings_section(
+					'ss_settings_' . $tab . '_' . $section,
+					__return_null(),
+					'__return_false',
+					'ss_settings_' . $tab . '_' . $section
+				);
+
+				foreach ( $settings as $option ) {
+					// For backwards compatibility
+					if ( empty( $option['id'] ) ) {
+						continue;
+					}
+
+					$args = wp_parse_args( $option, array(
+						'section'       => $section,
+						'id'            => null,
+						'desc'          => '',
+						'name'          => '',
+						'size'          => null,
+						'options'       => '',
+						'std'           => '',
+						'min'           => null,
+						'max'           => null,
+						'step'          => null,
+						'chosen'        => null,
+						'multiple'      => null,
+						'placeholder'   => null,
+						'allow_blank'   => true,
+						'readonly'      => false,
+						'faux'          => false,
+						'tooltip_title' => false,
+						'tooltip_desc'  => false,
+						'field_class'   => '',
+					) );
+
+					add_settings_field(
+						'ss_settings[' . $args['id'] . ']',
+						$args['name'],
+						array( $this, 'settings_field' ),
+						'ss_settings_' . $tab . '_' . $section,
+						'ss_settings_' . $tab . '_' . $section,
+						$args
+					);
+				}
+			}
+
+		}
+
+		// Creates our settings in the options table
+		register_setting( 'ss_settings', 'ss_settings', array( $this, 'sanitize_settings' ) );
+	}
+
+	/**
+	 * Flattens the set of registered settings and their type so we can easily sanitize all the settings
+	 * in a much cleaner set of logic in edd_settings_sanitize
+	 *
+	 * Copied from Easy Digital Downloads (https://easydigitaldownloads.com)
+	 *
+	 * @param $filtered_tab bool|string     A tab to filter setting types by.
+	 * @param $filtered_section bool|string A section to filter setting types by.
+	 * @return array Key is the setting ID, value is the type of setting it is registered as
+	 */
+	public function get_registered_settings_types( $filtered_tab = false, $filtered_section = false ) {
+		$settings      = $this->get_settings();
+		$setting_types = array();
+		foreach ( $settings as $tab_id => $tab ) {
+
+			if ( false !== $filtered_tab && $filtered_tab !== $tab_id ) {
+				continue;
+			}
+
+			foreach ( $tab as $section_id => $section_or_setting ) {
+
+				// See if we have a setting registered at the tab level for backwards compatibility
+				if ( false !== $filtered_section && is_array( $section_or_setting ) && array_key_exists( 'type', $section_or_setting ) ) {
+					$setting_types[ $section_or_setting['id'] ] = $section_or_setting['type'];
+					continue;
+				}
+
+				if ( false !== $filtered_section && $filtered_section !== $section_id ) {
+					continue;
+				}
+
+				foreach ( $section_or_setting as $section => $section_settings ) {
+
+					if ( ! empty( $section_settings['type'] ) ) {
+						$setting_types[ $section_settings['id'] ] = $section_settings['type'];
+					}
+
+				}
+
+			}
+
+		}
+
+		return $setting_types;
+	}
+
+
+	/**
+	 * Sanitizing settings.
+	 *
+	 * Copied from Easy Digital Downloads (https://easydigitaldownloads.com)
+	 *
+	 * @param array $input
+	 *
+	 * @return array
+	 */
+	public function sanitize_settings( $input = array() ) {
+		$ss_options = get_option( 'ss_settings', array() );
+
+		$doing_section = false;
+		if ( ! empty( $_POST['_wp_http_referer'] ) ) {
+			$doing_section = true;
+		}
+
+		$setting_types = $this->get_registered_settings_types();
+		$input         = $input ? $input : array();
+
+		if ( $doing_section ) {
+
+			parse_str( $_POST['_wp_http_referer'], $referrer ); // Pull out the tab and section
+			$tab      = isset( $referrer['tab'] ) ? $referrer['tab'] : 'general';
+			$section  = isset( $referrer['section'] ) ? $referrer['section'] : 'main';
+
+			$setting_types = $this->get_registered_settings_types( $tab, $section );
+
+			// Run a general sanitization for the tab for special fields (like taxes)
+			$input = apply_filters( 'ss_settings_' . $tab . '_sanitize', $input );
+
+			// Run a general sanitization for the section so custom tabs with sub-sections can save special data
+			$input = apply_filters( 'ss_settings_' . $tab . '-' . $section . '_sanitize', $input );
+
+		}
+
+		// Merge our new settings with the existing
+		$output = array_merge( $ss_options, $input );
+
+		foreach ( $setting_types as $key => $type ) {
+
+			if ( empty( $type ) ) {
+				continue;
+			}
+
+			// Some setting types are not actually settings, just keep moving along here
+			$non_setting_types = apply_filters( 'ss_non_setting_types', array(
+				'header', 'descriptive_text', 'hook',
+			) );
+
+			if ( in_array( $type, $non_setting_types ) ) {
+				continue;
+			}
+
+			if ( array_key_exists( $key, $output ) ) {
+				$output[ $key ] = apply_filters( 'ss_settings_sanitize_' . $type, $output[ $key ], $key );
+				$output[ $key ] = apply_filters( 'ss_settings_sanitize', $output[ $key ], $key );
+			}
+
+			if ( $doing_section ) {
+				switch( $type ) {
+					case 'checkbox':
+					case 'gateways':
+					case 'multicheck':
+					case 'payment_icons':
+						if ( array_key_exists( $key, $input ) && $output[ $key ] === '-1' ) {
+							unset( $output[ $key ] );
+						}
+						break;
+					case 'text':
+						if ( array_key_exists( $key, $input ) && empty( $input[ $key ] ) ) {
+							unset( $output[ $key ] );
+						}
+						break;
+					default:
+						if ( array_key_exists( $key, $input ) && empty( $input[ $key ] ) || ( array_key_exists( $key, $output ) && ! array_key_exists( $key, $input ) ) ) {
+							unset( $output[ $key ] );
+						}
+						break;
+				}
+			} else {
+				if ( empty( $input[ $key ] ) ) {
+					unset( $output[ $key ] );
+				}
+			}
+
+		}
+
+		if ( $doing_section ) {
+			add_settings_error( 'ss-notices', '', __( 'Settings updated.', 'simple-sponsorships' ), 'updated' );
+		}
+
+		return $output;
+		}
+
+	/**
+	 * Settings Field.
+	 *
+	 * @param array $args
+	 */
+	public function settings_field( $args ) {
+		$args['value'] = ss_get_option( $args['id'] );
+
+		$class = $this->sanitize_html_class( $args['field_class'] );
+
+		$id = 'ss_settings[' . $this->sanitize_key( $args['id'] ) . ']';
+
+		$name = 'name="' . $id . '"';
+
+		$label = '<label for="' . $id . '"> '  . wp_kses_post( $args['desc'] ) . '</label>';
+
+		switch( $args['type'] ) {
+			case 'text':
+			case 'email':
+			case 'password':
+				$type = $args['type'];
+				if ( $args['value'] ) {
+					$value = $args['value'];
+				} elseif( ! empty( $args['allow_blank'] ) && empty( $args['value'] ) ) {
+					$value = '';
+				} else {
+					$value = isset( $args['std'] ) ? $args['std'] : '';
+				}
+
+				if ( isset( $args['faux'] ) && true === $args['faux'] ) {
+					$args['readonly'] = true;
+					$value = isset( $args['std'] ) ? $args['std'] : '';
+					$name  = '';
+				}
+
+				$disabled = ! empty( $args['disabled'] ) ? ' disabled="disabled"' : '';
+				$readonly = $args['readonly'] === true ? ' readonly="readonly"' : '';
+				$size     = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
+				$html     = '<input type="' . $type . '" class="' . $class . ' ' . sanitize_html_class( $size ) . '-text" id="' . $id . '" ' . $name . ' value="' . esc_attr( stripslashes( $value ) ) . '"' . $readonly . $disabled . ' placeholder="' . esc_attr( $args['placeholder'] ) . '"/>';
+				$html    .= $label;
+
+				echo apply_filters( 'ss_after_setting_output', $html, $args );
+				break;
+			case 'number':
+
+				if ( $args['value'] ) {
+					$value = $args['value'];
+				} else {
+					$value = isset( $args['std'] ) ? $args['std'] : '';
+				}
+
+				if ( isset( $args['faux'] ) && true === $args['faux'] ) {
+					$args['readonly'] = true;
+					$value = isset( $args['std'] ) ? $args['std'] : '';
+					$name  = '';
+				}
+
+				$max  = isset( $args['max'] ) ? $args['max'] : 999999;
+				$min  = isset( $args['min'] ) ? $args['min'] : 0;
+				$step = isset( $args['step'] ) ? $args['step'] : 1;
+
+				$size = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
+				$html = '<input type="number" step="' . esc_attr( $step ) . '" max="' . esc_attr( $max ) . '" min="' . esc_attr( $min ) . '" class="' . $class . ' ' . sanitize_html_class( $size ) . '-text" id="' . $id . '" ' . $name . ' value="' . esc_attr( stripslashes( $value ) ) . '"/>';
+				$html .= $label;
+
+				echo apply_filters( 'ss_after_setting_output', $html, $args );
+			break;
+			case 'textarea':
+
+				if ( $args['value'] ) {
+					$value = $args['value'];
+				} else {
+					$value = isset( $args['std'] ) ? $args['std'] : '';
+				}
+
+				$class = edd_sanitize_html_class( $args['field_class'] );
+
+				$html = '<textarea class="' . $class . ' large-text" cols="50" rows="5" id="' . $id . '" ' . $name . '>' . esc_textarea( stripslashes( $value ) ) . '</textarea>';
+				$html .= $label;
+
+				echo apply_filters( 'ss_after_setting_output', $html, $args );
+			break;
+			case 'select':
+
+				if ( $args['value'] ) {
+					$value = $args['value'];
+				} else {
+
+					// Properly set default fallback if the Select Field allows Multiple values
+					if ( empty( $args['multiple'] ) ) {
+						$value = isset( $args['std'] ) ? $args['std'] : '';
+					} else {
+						$value = ! empty( $args['std'] ) ? $args['std'] : array();
+					}
+
+				}
+
+				if ( isset( $args['placeholder'] ) ) {
+					$placeholder = $args['placeholder'];
+				} else {
+					$placeholder = '';
+				}
+
+				if ( isset( $args['chosen'] ) ) {
+					$class .= ' edd-select-chosen';
+				}
+
+				$nonce = isset( $args['data']['nonce'] )
+					? ' data-nonce="' . sanitize_text_field( $args['data']['nonce'] ) . '" '
+					: '';
+
+				// If the Select Field allows Multiple values, save as an Array
+				$name_attr = 'ss_settings[' . esc_attr( $args['id'] ) . ']';
+				$name_attr = ( $args['multiple'] ) ? $name_attr . '[]' : $name_attr;
+
+				$html = '<select ' . $nonce . ' id="' . $id . '" name="' . $name_attr . '" class="' . $class . '" data-placeholder="' . esc_html( $placeholder ) . '" ' . ( ( $args['multiple'] ) ? 'multiple="true"' : '' ) . '>';
+
+				foreach ( $args['options'] as $option => $name ) {
+
+					if ( ! $args['multiple'] ) {
+						$selected = selected( $option, $value, false );
+						$html .= '<option value="' . esc_attr( $option ) . '" ' . $selected . '>' . esc_html( $name ) . '</option>';
+					} else {
+						// Do an in_array() check to output selected attribute for Multiple
+						$html .= '<option value="' . esc_attr( $option ) . '" ' . ( ( in_array( $option, $value ) ) ? 'selected="true"' : '' ) . '>' . esc_html( $name ) . '</option>';
+					}
+
+				}
+
+				$html .= '</select>';
+				$html .= $label;
+
+				echo apply_filters( 'ss_after_setting_output', $html, $args );
+			break;
+			case 'multicheck':
+
+				$html = '';
+				if ( ! empty( $args['options'] ) ) {
+					$html .= '<input type="hidden" ' . $name . ' value="-1" />';
+					foreach( $args['options'] as $key => $option ):
+						if( isset( $args['value'][ $key ] ) ) { $enabled = $option; } else { $enabled = NULL; }
+						$html .= '<input name="' . $id . '[' . $this->sanitize_key( $key ) . ']" id="' . $id . '[' . $this->sanitize_key( $key ) . ']" class="' . $class . '" type="checkbox" value="' . esc_attr( $option ) . '" ' . checked($option, $enabled, false) . '/>&nbsp;';
+						$html .= '<label for="' . $id . '[' . $this->sanitize_key( $key ) . ']">' . wp_kses_post( $option ) . '</label><br/>';
+					endforeach;
+					$html .= '<p class="description">' . $args['desc'] . '</p>';
+				}
+
+				echo apply_filters( 'ss_after_setting_output', $html, $args );
+				break;
+			case 'checkbox':
+
+				if ( isset( $args['faux'] ) && true === $args['faux'] ) {
+					$name = '';
+				}
+
+				$checked  = ! empty( $args['value'] ) ? checked( 1, $args['value'], false ) : '';
+				$html     = '<input type="hidden"' . $name . ' value="-1" />';
+				$html    .= '<input type="checkbox" id="' . $id . '"' . $name . ' value="1" ' . $checked . ' class="' . $class . '"/>';
+				$html    .= '<label for="' . $id . '"> '  . wp_kses_post( $args['desc'] ) . '</label>';
+
+				echo apply_filters( 'ss_after_setting_output', $html, $args );
+				break;
+			default:
+				do_action( 'ss_settings_field_' . $args['type'], $args, $this );
+				break;
+		}
+	}
+
+	/**
+	 * Sanitize HTML Class Names
+	 *
+	 * Copied from Easy Digital Downloads
+	 *
+	 * @param  string|array $class HTML Class Name(s)
+	 * @return string $class
+	 */
+	function sanitize_html_class( $class = '' ) {
+
+		if ( is_string( $class ) ) {
+			$class = sanitize_html_class( $class );
+		} else if ( is_array( $class ) ) {
+			$class = array_values( array_map( 'sanitize_html_class', $class ) );
+			$class = implode( ' ', array_unique( $class ) );
+		}
+
+		return $class;
+
+	}
+
+	/**
+	 * Sanitizes a string key for Settings
+	 *
+	 * Copied from Easy Digital Downloads
+	 *
+	 * Keys are used as internal identifiers. Alphanumeric characters, dashes, underscores, stops, colons and slashes are allowed
+	 *
+	 * @param  string $key String key
+	 * @return string Sanitized key
+	 */
+	function sanitize_key( $key ) {
+		$raw_key = $key;
+		$key = preg_replace( '/[^a-zA-Z0-9_\-\.\:\/]/', '', $key );
+
+		return apply_filters( 'ss_sanitize_key', $key, $raw_key );
+	}
+}
+
+new Settings();
