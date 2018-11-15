@@ -387,7 +387,44 @@ class Settings {
 
 		$class = $this->sanitize_html_class( $args['field_class'] );
 
-		$id = 'ss_settings[' . $this->sanitize_key( $args['id'] ) . ']';
+		$args['id'] = 'ss_settings[' . self::sanitize_key( $args['id'] ) . ']';
+
+		self::render_field( $args );
+	}
+
+	/**
+	 * Render a settings field.
+	 *
+	 * @param array $args
+	 */
+	public static function render_field( $args ) {
+
+		$args = wp_parse_args( $args, array(
+			'section'       => '',
+			'id'            => null,
+			'desc'          => '',
+			'name'          => '',
+			'size'          => null,
+			'options'       => '',
+			'std'           => '',
+			'min'           => null,
+			'max'           => null,
+			'step'          => null,
+			'chosen'        => null,
+			'multiple'      => null,
+			'placeholder'   => null,
+			'allow_blank'   => true,
+			'readonly'      => false,
+			'faux'          => false,
+			'tooltip_title' => false,
+			'tooltip_desc'  => false,
+			'field_class'   => '',
+			'title'         => '',
+		) );
+
+		$class = self::sanitize_html_class( $args['field_class'] );
+
+		$id = $args['id'];
 
 		$name = 'name="' . $id . '"';
 
@@ -415,7 +452,7 @@ class Settings {
 				$disabled = ! empty( $args['disabled'] ) ? ' disabled="disabled"' : '';
 				$readonly = $args['readonly'] === true ? ' readonly="readonly"' : '';
 				$size     = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
-				$html     = '<input type="' . $type . '" class="' . $class . ' ' . sanitize_html_class( $size ) . '-text" id="' . $id . '" ' . $name . ' value="' . esc_attr( stripslashes( $value ) ) . '"' . $readonly . $disabled . ' placeholder="' . esc_attr( $args['placeholder'] ) . '"/>';
+				$html     = '<input type="' . $type . '" class="' . $class . ' ' . self::sanitize_html_class( $size ) . '-text" id="' . $id . '" ' . $name . ' value="' . esc_attr( stripslashes( $value ) ) . '"' . $readonly . $disabled . ' placeholder="' . esc_attr( $args['placeholder'] ) . '"/>';
 				$html    .= $label;
 
 				echo apply_filters( 'ss_after_setting_output', $html, $args );
@@ -443,7 +480,7 @@ class Settings {
 				$html .= $label;
 
 				echo apply_filters( 'ss_after_setting_output', $html, $args );
-			break;
+				break;
 			case 'textarea':
 
 				if ( $args['value'] ) {
@@ -452,13 +489,11 @@ class Settings {
 					$value = isset( $args['std'] ) ? $args['std'] : '';
 				}
 
-				$class = edd_sanitize_html_class( $args['field_class'] );
-
 				$html = '<textarea class="' . $class . ' large-text" cols="50" rows="5" id="' . $id . '" ' . $name . '>' . esc_textarea( stripslashes( $value ) ) . '</textarea>';
 				$html .= $label;
 
 				echo apply_filters( 'ss_after_setting_output', $html, $args );
-			break;
+				break;
 			case 'select':
 
 				if ( $args['value'] ) {
@@ -489,7 +524,7 @@ class Settings {
 					: '';
 
 				// If the Select Field allows Multiple values, save as an Array
-				$name_attr = 'ss_settings[' . esc_attr( $args['id'] ) . ']';
+				$name_attr = $id;
 				$name_attr = ( $args['multiple'] ) ? $name_attr . '[]' : $name_attr;
 
 				$html = '<select ' . $nonce . ' id="' . $id . '" name="' . $name_attr . '" class="' . $class . '" data-placeholder="' . esc_html( $placeholder ) . '" ' . ( ( $args['multiple'] ) ? 'multiple="true"' : '' ) . '>';
@@ -510,7 +545,7 @@ class Settings {
 				$html .= $label;
 
 				echo apply_filters( 'ss_after_setting_output', $html, $args );
-			break;
+				break;
 			case 'multicheck':
 
 				$html = '';
@@ -518,8 +553,8 @@ class Settings {
 					$html .= '<input type="hidden" ' . $name . ' value="-1" />';
 					foreach( $args['options'] as $key => $option ):
 						if( isset( $args['value'][ $key ] ) ) { $enabled = $option; } else { $enabled = NULL; }
-						$html .= '<input name="' . $id . '[' . $this->sanitize_key( $key ) . ']" id="' . $id . '[' . $this->sanitize_key( $key ) . ']" class="' . $class . '" type="checkbox" value="' . esc_attr( $option ) . '" ' . checked($option, $enabled, false) . '/>&nbsp;';
-						$html .= '<label for="' . $id . '[' . $this->sanitize_key( $key ) . ']">' . wp_kses_post( $option ) . '</label><br/>';
+						$html .= '<input name="' . $id . '[' . self::sanitize_key( $key ) . ']" id="' . $id . '[' . self::sanitize_key( $key ) . ']" class="' . $class . '" type="checkbox" value="' . esc_attr( $option ) . '" ' . checked($option, $enabled, false) . '/>&nbsp;';
+						$html .= '<label for="' . $id . '[' . self::sanitize_key( $key ) . ']">' . wp_kses_post( $option ) . '</label><br/>';
 					endforeach;
 					$html .= '<p class="description">' . $args['desc'] . '</p>';
 				}
@@ -540,7 +575,7 @@ class Settings {
 				echo apply_filters( 'ss_after_setting_output', $html, $args );
 				break;
 			default:
-				do_action( 'ss_settings_field_' . $args['type'], $args, $this );
+				do_action( 'ss_settings_field_' . $args['type'], $args );
 				break;
 		}
 	}
@@ -553,7 +588,7 @@ class Settings {
 	 * @param  string|array $class HTML Class Name(s)
 	 * @return string $class
 	 */
-	function sanitize_html_class( $class = '' ) {
+	public static function sanitize_html_class( $class = '' ) {
 
 		if ( is_string( $class ) ) {
 			$class = sanitize_html_class( $class );
@@ -576,7 +611,7 @@ class Settings {
 	 * @param  string $key String key
 	 * @return string Sanitized key
 	 */
-	function sanitize_key( $key ) {
+	public static function sanitize_key( $key ) {
 		$raw_key = $key;
 		$key = preg_replace( '/[^a-zA-Z0-9_\-\.\:\/]/', '', $key );
 

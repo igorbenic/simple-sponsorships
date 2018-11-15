@@ -52,7 +52,7 @@ abstract class DB {
 	public function get_all() {
 		global $wpdb;
 
-		$results = $wpdb->get_results( "SELECT * FROM $this->table", ARRAY_A );
+		$results = $wpdb->get_results( "SELECT * FROM " . $this->get_table_name(), ARRAY_A );
 
 		return $results ? $results : array();
 	}
@@ -67,7 +67,7 @@ abstract class DB {
 	public function get_by_id( $id = 0 ) {
 		global $wpdb;
 
-		$sql = $wpdb->prepare( "SELECT * FROM $this->table WHERE ID=%d", $id );
+		$sql = $wpdb->prepare( "SELECT * FROM " . $this->get_table_name() . " WHERE ID=%d", $id );
 
 		$results = $wpdb->get_row( $sql, ARRAY_A );
 
@@ -88,7 +88,7 @@ abstract class DB {
 	public function insert( $data, $format = null ) {
 		global $wpdb;
 
-		$ret = $wpdb->insert( $this->table, $data, $format );
+		$ret = $wpdb->insert( $this->get_table_name(), $data, $format );
 
 		return $ret ? $wpdb->insert_id : false;
 	}
@@ -105,7 +105,7 @@ abstract class DB {
 	public function update( $id, $data, $format = null ) {
 		global $wpdb;
 
-		$ret = $wpdb->update( $this->table, $data, array( 'ID' => $id ), $format, array( '%d') );
+		$ret = $wpdb->update( $this->get_table_name(), $data, array( 'ID' => $id ), $format, array( '%d') );
 
 		return $ret ? true : false;
 	}
@@ -123,7 +123,7 @@ abstract class DB {
 	public function delete( $where, $format = null ) {
 		global $wpdb;
 
-		$ret = $wpdb->delete( $this->table, $where, $format );
+		$ret = $wpdb->delete( $this->get_table_name(), $where, $format );
 
 		return $ret ? true : false;
 	}
