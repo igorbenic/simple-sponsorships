@@ -9,19 +9,19 @@
 namespace Simple_Sponsorships\DB;
 
 
-class DB_Levels extends DB {
+class DB_Packages extends DB {
 
 	/**
 	 * Table Name.
 	 *
 	 * @var string
 	 */
-	protected $table = 'ss_levels';
+	protected $table = 'ss_packages';
 
 	/**
 	 * @var string
 	 */
-	protected $meta_table = 'ss_levelmeta';
+	protected $meta_table = 'ss_packagemeta';
 
 	/**
 	 * Get the level meta data.
@@ -33,7 +33,7 @@ class DB_Levels extends DB {
 	 * @return mixed
 	 */
 	public function get_meta( $id, $key, $single = true ) {
-		return \get_metadata( 'sslevel', $id, $key, $single );
+		return \get_metadata( 'sspackage', $id, $key, $single );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class DB_Levels extends DB {
 	 * @return false|int
 	 */
 	public function add_meta( $id, $key, $value ) {
-		return \add_metadata( 'sslevel', $id, $key, $value );
+		return \add_metadata( 'sspackage', $id, $key, $value );
 	}
 
 	/**
@@ -60,7 +60,7 @@ class DB_Levels extends DB {
 	 * @return bool|int
 	 */
 	public function update_meta( $id, $key, $value = '', $prev_value = '' ) {
-		return \update_metadata( 'sslevel', $id, $key, $value, $prev_value );
+		return \update_metadata( 'sspackage', $id, $key, $value, $prev_value );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class DB_Levels extends DB {
 	 * @return bool
 	 */
 	public function delete_meta( $id, $key, $value = '', $delete_all = false ) {
-		return \delete_metadata( 'sslevel', $id, $key, $value, $delete_all );
+		return \delete_metadata( 'sspackage', $id, $key, $value, $delete_all );
 	}
 
 	/**

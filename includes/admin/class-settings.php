@@ -100,7 +100,17 @@ class Settings {
 						'tooltip_desc'  => __( 'Configure Pages where Sponsors can see their settings.','simple-sponsorships' ),
 					),
 				)
-			)
+			),
+			'gateways' => array(
+				'main' => array(
+					'currency' => array(
+						'id'      => 'currency',
+						'name'    => __( 'Currency', 'simple-sponsorships' ),
+						'type'    => 'select',
+						'options' => ss_get_currencies()
+					)
+				)
+			),
 		);
 
 		return apply_filters( 'ss_get_settings', $settings );
@@ -114,6 +124,9 @@ class Settings {
 	public function get_settings_sections() {
 		$sections = array(
 			'general' => array(
+				'main' => __( 'General', 'simple-sponsorships' ),
+			),
+			'gateways' => array(
 				'main' => __( 'General', 'simple-sponsorships' ),
 			)
 		);
@@ -133,11 +146,11 @@ class Settings {
 		$tabs             = array();
 		$tabs['general']  = __( 'General', 'easy-digital-downloads' );
 		$tabs['gateways'] = __( 'Payment Gateways', 'easy-digital-downloads' );
-		$tabs['emails']   = __( 'Emails', 'easy-digital-downloads' );
-		$tabs['styles']   = __( 'Styles', 'easy-digital-downloads' );
-		$tabs['taxes']    = __( 'Taxes', 'easy-digital-downloads' );
-		$tabs['privacy']  = __( 'Privacy', 'easy-digital-downloads' );
-		$tabs['misc']     = __( 'Misc', 'easy-digital-downloads' );
+		//$tabs['emails']   = __( 'Emails', 'easy-digital-downloads' );
+		//$tabs['styles']   = __( 'Styles', 'easy-digital-downloads' );
+		//$tabs['taxes']    = __( 'Taxes', 'easy-digital-downloads' );
+		//$tabs['privacy']  = __( 'Privacy', 'easy-digital-downloads' );
+		//$tabs['misc']     = __( 'Misc', 'easy-digital-downloads' );
 
 		return apply_filters( 'ss_settings_tabs', $tabs );
 	}
@@ -573,6 +586,9 @@ class Settings {
 				$html    .= '<label for="' . $id . '"> '  . wp_kses_post( $args['desc'] ) . '</label>';
 
 				echo apply_filters( 'ss_after_setting_output', $html, $args );
+				break;
+			case 'heading':
+				echo isset( $args['desc'] ) ? '<h2>' . $args['desc'] . '</h2>' : '';
 				break;
 			default:
 				do_action( 'ss_settings_field_' . $args['type'], $args );

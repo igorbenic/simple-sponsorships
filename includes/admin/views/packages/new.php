@@ -5,9 +5,9 @@
 
 use Simple_Sponsorships\Admin\Settings;
 ?>
-<h1><?php esc_html_e( 'New Level', 'simple-sponsorships' ); ?>
-	<a href="<?php echo admin_url( 'edit.php?post_type=sponsors&page=ss-levels' ); ?>" class="add-new-h2">
-		<?php esc_html_e( 'Back to Levels', 'simple-sponsorships' ); ?>
+<h1><?php esc_html_e( 'New Package', 'simple-sponsorships' ); ?>
+	<a href="<?php echo admin_url( 'edit.php?post_type=sponsors&page=ss-packages' ); ?>" class="add-new-h2">
+		<?php esc_html_e( 'Back to Packages', 'simple-sponsorships' ); ?>
 	</a>
 </h1>
 <?php
@@ -25,14 +25,14 @@ if ( $errors ) {
 }
 ?>
 <form id="ss-add-level" action="" method="POST">
-	<?php do_action( 'ss_add_level_form_top' ); ?>
+	<?php do_action( 'ss_add_package_form_top' ); ?>
     <table class="form-table">
         <tbody>
             <?php
             if ( $fields ) {
 	            foreach ( $fields as $field_slug => $field_args ) {
-		            $field_args['id'] = 'ss_levels[' . Settings::sanitize_key( $field_args['id'] ) . ']';
-	                do_action( 'ss_add_level_before_field_' . $field_slug, $fields );
+		            $field_args['id'] = 'ss_packages[' . Settings::sanitize_key( $field_args['id'] ) . ']';
+	                do_action( 'ss_add_package_before_field_' . $field_slug, $fields );
                     ?>
                     <tr>
                         <?php
@@ -49,16 +49,16 @@ if ( $errors ) {
                         </td>
                     </tr>
                     <?php
-		            do_action( 'ss_add_level_after_field_' . $field_slug, $fields );
+		            do_action( 'ss_add_package_after_field_' . $field_slug, $fields );
 	            }
             }
             ?>
         </tbody>
     </table>
-	<?php do_action( 'ss_add_level_form_bottom' ); ?>
+	<?php do_action( 'ss_add_package_form_bottom' ); ?>
     <p class="submit">
-        <input type="hidden" name="ss-action" value="add_level"/>
-        <input type="hidden" name="ss-redirect" value="<?php echo esc_url( admin_url( 'edit.php?post_type=sponsors&page=ss-levels' ) ); ?>"/>
-        <input type="submit" value="<?php esc_attr_e( 'Add Level', 'simple-sponsorships' ); ?>" class="button-primary"/>
+        <input type="hidden" name="ss-action" value="add_package"/>
+        <input type="hidden" name="ss-redirect" value="<?php echo esc_url( admin_url( 'edit.php?post_type=sponsors&page=ss-packages' ) ); ?>"/>
+        <input type="submit" value="<?php esc_attr_e( 'Add Package', 'simple-sponsorships' ); ?>" class="button-primary"/>
     </p>
 </form>

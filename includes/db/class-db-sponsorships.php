@@ -86,14 +86,12 @@ class DB_Sponsorships extends DB {
 		$table_name = $this->get_table_name();
 		$schema = "CREATE TABLE {$table_name} (
 		ID bigint(20) NOT NULL AUTO_INCREMENT,
-		type varchar(36) NOT NULL,
 		status varchar(24) NOT NULL,
 		amount tinytext NOT NULL,
-		subtotal tinytext NOT NULL,
 		currency tinytext NOT NULL,
 		gateway tinytext NOT NULL,
 		transaction_id varchar(64) NOT NULL,
-		level bigint(20) NOT NULL,
+		package bigint(20) NOT NULL,
 		sponsor bigint(20) NOT NULL,
 		date datetime NOT NULL,
 		PRIMARY KEY ID (ID)

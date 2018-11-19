@@ -25,10 +25,10 @@ class Menus {
 
 		add_submenu_page(
 			'edit.php?post_type=sponsors',
-			__( 'Levels', 'simple-sponsorships' ),
-			__( 'Levels', 'simple-sponsorships' ),
+			__( 'Packages', 'simple-sponsorships' ),
+			__( 'Packages', 'simple-sponsorships' ),
 			'manage_options',
-			'ss-levels',
+			'ss-packages',
 			array( $this, 'view' ) );
 
 		add_submenu_page(

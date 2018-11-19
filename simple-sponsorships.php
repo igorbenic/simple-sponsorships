@@ -104,15 +104,18 @@ class Plugin {
 	 */
 	public function includes() {
 		include_once 'includes/abstract/class-db.php';
+		include_once 'includes/abstract/class-custom-data.php';
 
 		include_once 'includes/functions-core.php';
+		include_once 'includes/functions-sponsorship.php';
 
 		include_once 'includes/class-content-types.php';
 		include_once 'includes/class-installer.php';
+		include_once 'includes/class-package.php';
 
 		// DB
 		include_once 'includes/class-dbs.php';
-		include_once 'includes/db/class-db-levels.php';
+		include_once 'includes/db/class-db-packages.php';
 		include_once 'includes/db/class-db-sponsorships.php';
 
 		if ( is_admin() ) {

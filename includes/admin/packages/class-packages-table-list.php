@@ -8,13 +8,13 @@
 
 namespace Simple_Sponsorships\Admin;
 
-use Simple_Sponsorships\DB\DB_Levels;
+use Simple_Sponsorships\DB\DB_Packages;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-class Levels_Table_List extends \WP_List_Table {
+class Packages_Table_List extends \WP_List_Table {
 
 	/**
 	 * Settings
@@ -27,8 +27,8 @@ class Levels_Table_List extends \WP_List_Table {
 	public function __construct() {
 
 		parent::__construct( array(
-			'singular' => __( 'Level', 'simple-sponsorships' ), //singular name of the listed records
-			'plural'   => __( 'Levels', 'simple-sponsorships' ), //plural name of the listed records
+			'singular' => __( 'Package', 'simple-sponsorships' ), //singular name of the listed records
+			'plural'   => __( 'Packages', 'simple-sponsorships' ), //plural name of the listed records
 			'ajax'     => false //should this table support ajax?
 		));
 
@@ -54,11 +54,11 @@ class Levels_Table_List extends \WP_List_Table {
 	 *
 	 * @return mixed
 	 */
-	public static function get_levels( $per_page = 5, $page_number = 1 ) {
+	public static function get_packages( $per_page = 5, $page_number = 1 ) {
 
 		global $wpdb;
 
-		$sql = 'SELECT * FROM ' . $wpdb->sslevels . ' WHERE 1=1';
+		$sql = 'SELECT * FROM ' . $wpdb->sspackages . ' WHERE 1=1';
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
@@ -79,8 +79,8 @@ class Levels_Table_List extends \WP_List_Table {
 	 *
 	 * @param int $id Level ID
 	 */
-	public static function delete_level( $id ) {
-		$db = new DB_Levels();
+	public static function delete_package( $id ) {
+		$db = new DB_Packages();
 
 		$db->delete_by_id( $id );
 	}
@@ -93,7 +93,7 @@ class Levels_Table_List extends \WP_List_Table {
 	public static function record_count() {
 		global $wpdb;
 
-		$sql = 'SELECT COUNT(*) FROM ' . $wpdb->sslevels;
+		$sql = 'SELECT COUNT(*) FROM ' . $wpdb->sspackages;
 
 		return $wpdb->get_var( $sql );
 	}
@@ -102,7 +102,7 @@ class Levels_Table_List extends \WP_List_Table {
 	 * Text to display when there is no level found.
 	 */
 	public function no_items() {
-		_e( 'No levels.', 'simple-sponsorships' );
+		_e( 'No packages.', 'simple-sponsorships' );
 	}
 
 	/**
@@ -115,6 +115,38 @@ class Levels_Table_List extends \WP_List_Table {
 	 */
 	public function column_default( $item, $column_name ) {
 		return $item[ $column_name ];
+	}
+
+	/**
+	 * Render a column when no column specific method exists.
+	 *
+	 * @param array $item
+	 * @param string $column_name
+	 *
+	 * @return mixed
+	 */
+	public function column_title( $item ) {
+		$html = $item['title'];
+
+		$actions = apply_filters( 'ss_packages_column_title_actions', array(
+			'edit' => '<a href="' . admin_url( 'edit.php?post_type=sponsors&page=ss-packages&ss-action=edit-package&id=' . $item['ID'] ) . '">' . __( 'Edit', 'simple-sponsorships' ) . '</a>',
+		));
+
+		if ( $actions ) {
+			$html .= '<div class="ss-table-actions">' . implode( ' | ', $actions ) . '</div>';
+		}
+		return $html;
+	}
+
+	/**
+	 * Column amount
+	 * @param $item
+	 *
+	 * @return string
+	 */
+	public function column_price( $item ) {
+		$currency = ss_currency_symbol();
+		return $currency . $item['price'];
 	}
 
 	/**
@@ -195,7 +227,7 @@ class Levels_Table_List extends \WP_List_Table {
 		] );
 
 
-		$this->items = self::get_levels( $per_page, $current_page );
+		$this->items = self::get_packages( $per_page, $current_page );
 
 	}
 
@@ -211,7 +243,7 @@ class Levels_Table_List extends \WP_List_Table {
 				die( 'Go get a life script kiddies' );
 			}
 			else {
-				self::delete_level( absint( $_GET['user'] ) );
+				self::delete_package( absint( $_GET['user'] ) );
 
 
 			}
@@ -227,7 +259,7 @@ class Levels_Table_List extends \WP_List_Table {
 
 			// loop over the array of record IDs and delete them
 			foreach ( $delete_ids as $id ) {
-				self::delete_level( $id );
+				self::delete_package( $id );
 
 			}
 		}
