@@ -158,7 +158,7 @@ class Packages_Table_List extends \WP_List_Table {
 	 */
 	function column_cb( $item ) {
 		return sprintf(
-			'<input type="checkbox" name="bulk-delete[]" value="%s" />', $item['id']
+			'<input type="checkbox" name="bulk-delete[]" value="%s" />', $item['ID']
 		);
 	}
 

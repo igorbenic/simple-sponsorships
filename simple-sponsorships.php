@@ -112,6 +112,9 @@ class Plugin {
 		include_once 'includes/class-content-types.php';
 		include_once 'includes/class-installer.php';
 		include_once 'includes/class-package.php';
+		include_once 'includes/class-sponsorship.php';
+		include_once 'includes/class-templates.php';
+		include_once 'includes/class-shortcodes.php';
 
 		// DB
 		include_once 'includes/class-dbs.php';
@@ -132,6 +135,7 @@ class Plugin {
 
 	public function run() {
 		new Content_Types();
+		new Shortcodes();
 
 		// Registering the Databases to wpdb.
 		$dbs = new Databases();

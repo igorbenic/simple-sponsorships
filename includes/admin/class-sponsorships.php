@@ -108,19 +108,46 @@ class Sponsorships {
 			return;
 		}
 
-		$posted_data = isset( $_POST['ss_packages'] ) ? $_POST['ss_packages'] : array();
-		$title       = isset( $posted_data['title'] ) ? sanitize_text_field( $posted_data['title'] ) : '';
-		$description = isset( $posted_data['description'] ) ? sanitize_text_field( $posted_data['description'] ) : '';
-		$type        = isset( $posted_data['type'] ) ? sanitize_text_field( $posted_data['type'] ) : 'normal';
-		$price       = isset( $posted_data['price'] ) ? floatval( $posted_data['price'] ) : 0;
-		$id          = isset( $posted_data['id'] ) ? absint( $posted_data['id'] ) : 0;
+		$posted_data    = isset( $_POST['ss_sponsorships'] ) ? $_POST['ss_sponsorships'] : array();
+		$status         = isset( $posted_data['status'] ) ? sanitize_text_field( $posted_data['status'] ) : '';
+		$amount         = isset( $posted_data['amount'] ) ? floatval( $posted_data['amount'] ) : 0;
+		$package        = isset( $posted_data['package'] ) ? absint( $posted_data['package'] ) : 0;
+		$sponsor        = isset( $posted_data['sponsor'] ) ? $posted_data['sponsor'] : false;
+		$gateway        = isset( $posted_data['gateway'] ) ? $posted_data['gateway'] : 'manual';
+		$transaction_id = isset( $posted_data['transaction_id'] ) ? sanitize_text_field( $posted_data['transaction_id'] ) : '';
+		$id             = isset( $posted_data['id'] ) ? absint( $posted_data['id'] ) : 0;
 
-		if ( ! $title ) {
-			$this->errors->add( 'no-name', __( 'Package Name is required.', 'simple-sponsorships' ) );
+		if ( ! $status ) {
+			$this->errors->add( 'no-status', __( 'No Status is required.', 'simple-sponsorships' ) );
 		}
 
 		if ( ! $id ) {
-			$this->errors->add( 'no-id', __( 'This package does not exist.', 'simple-sponsorships' ) );
+			$this->errors->add( 'no-id', __( 'This Sponsorship does not exist.', 'simple-sponsorships' ) );
+		}
+
+		if ( $this->errors->get_error_messages() ) {
+			return;
+		}
+
+		if ( 'new' === $sponsor ) {
+			$sponsor_name = isset( $posted_data['sponsor_name'] ) ? sanitize_text_field( $posted_data['sponsor_name'] ) : '';
+
+			if ( ! $sponsor_name ) {
+				$this->errors->add( 'no-sponsor', __( 'Select a Sponsor or insert the name to add a new one.', 'simple-sponsorships' ) );
+				return;
+			}
+
+			$sponsor_id = wp_insert_post( array(
+				'post_status' => 'publish',
+				'post_type'   => 'sponsors',
+				'post_title'  => $sponsor_name
+			) );
+
+			if ( is_wp_error( $sponsor_id ) ) {
+				$this->errors->add( $sponsor_id->get_error_code(), $sponsor_id->get_error_message() );
+			}
+
+			$sponsor = $sponsor_id;
 		}
 
 		if ( $this->errors->get_error_messages() ) {
@@ -129,16 +156,18 @@ class Sponsorships {
 
 		$db = new DB_Sponsorships();
 		$db_data = array(
-			'title' => $title,
-			'description' => $description,
-			'type' => $type,
-			'price' => $price
+			'status'         => $status,
+			'amount'         => $amount,
+			'gateway'        => $gateway,
+			'transaction_id' => $transaction_id,
+			'package'        => $package,
+			'sponsor'        => $sponsor,
 		);
 
 		$ret = $db->update( $id, $db_data, array( '%s', '%s', '%s', '%d' ) );
 
 		if ( $ret ) {
-			do_action( 'ss_package_updated', $id, $posted_data );
+			do_action( 'ss_sponsorship_updated', $id, $posted_data );
 		}
 	}
 
@@ -149,11 +178,11 @@ class Sponsorships {
 		$action = isset( $_GET['ss-action'] ) ? $_GET['ss-action'] : 'list';
 
 		switch( $action ) {
-			case 'edit-package':
-				$errors = $this->errors->get_error_messages();
-				$fields = $this->get_fields();
-				$package = isset( $_GET['id'] ) ? ss_get_package( absint( $_GET['id'] ) ) : ss_get_package(0 );
-				include_once 'views/packages/edit.php';
+			case 'edit-sponsorship':
+				$errors      = $this->errors->get_error_messages();
+				$fields      = $this->get_fields();
+				$sponsorship = isset( $_GET['id'] ) ? ss_get_sponsorship( absint( $_GET['id'] ) ) : ss_get_sponsorship(0 );
+				include_once 'views/sponsorships/edit.php';
 				break;
 			case 'new-sponsorship':
 				$errors = $this->errors->get_error_messages();
