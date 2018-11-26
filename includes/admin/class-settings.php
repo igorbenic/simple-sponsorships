@@ -433,6 +433,7 @@ class Settings {
 			'tooltip_desc'  => false,
 			'field_class'   => '',
 			'title'         => '',
+			'required'      => false,
 		) );
 
 		$class = self::sanitize_html_class( $args['field_class'] );
@@ -447,6 +448,7 @@ class Settings {
 			case 'text':
 			case 'email':
 			case 'password':
+			case 'url':
 				$type = $args['type'];
 				if ( $args['value'] ) {
 					$value = $args['value'];

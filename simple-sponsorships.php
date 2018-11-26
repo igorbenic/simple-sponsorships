@@ -108,6 +108,7 @@ class Plugin {
 
 		include_once 'includes/functions-core.php';
 		include_once 'includes/functions-sponsorship.php';
+		include_once 'includes/functions-forms.php';
 
 		include_once 'includes/class-content-types.php';
 		include_once 'includes/class-installer.php';
@@ -115,6 +116,7 @@ class Plugin {
 		include_once 'includes/class-sponsorship.php';
 		include_once 'includes/class-templates.php';
 		include_once 'includes/class-shortcodes.php';
+		include_once 'includes/class-form-sponsors.php';
 
 		// DB
 		include_once 'includes/class-dbs.php';
