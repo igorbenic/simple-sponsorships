@@ -21,7 +21,6 @@ class Sponsorship extends Custom_Data {
 	 */
 	protected $table_columns = array(
 		'id'             => 'ID',
-		'type'           => 'type',
 		'status'         => 'status',
 		'amount'         => 'amount',
 		'subtotal'       => 'subtotal',

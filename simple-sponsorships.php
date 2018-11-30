@@ -43,6 +43,13 @@ class Plugin {
 	private $settings = null;
 
 	/**
+	 * Session
+	 *
+	 * @var null
+	 */
+	public $session = null;
+
+	/**
 	 * Plugin constructor.
 	 */
 	public function __construct() {
@@ -109,7 +116,9 @@ class Plugin {
 		include_once 'includes/functions-core.php';
 		include_once 'includes/functions-sponsorship.php';
 		include_once 'includes/functions-forms.php';
+		include_once 'includes/functions-session.php';
 
+		include_once 'includes/class-session.php';
 		include_once 'includes/class-content-types.php';
 		include_once 'includes/class-installer.php';
 		include_once 'includes/class-package.php';
@@ -126,6 +135,8 @@ class Plugin {
 		if ( is_admin() ) {
 			include_once 'includes/admin/class-admin.php';
 		}
+
+		$this->session = new Session();
 	}
 
 	/**
@@ -133,11 +144,29 @@ class Plugin {
 	 */
 	public function hooks() {
 		add_action( 'plugins_loaded', array( $this, 'run' ) );
+		add_action( 'init', array( $this, 'process_actions' ) );
+	}
+
+	/**
+	 * Processing Actions on POST or GET requests in Public
+	 */
+	public function process_actions() {
+		// We have an admin one.
+		if ( is_admin() ) { return; }
+
+		if ( isset( $_POST['ss-action'] ) ) {
+			do_action( 'ss_' . $_POST['ss-action'], $_POST );
+		}
+
+		if ( isset( $_GET['ss-action'] ) ) {
+			do_action( 'ss_' . $_GET['ss-action'], $_GET );
+		}
 	}
 
 	public function run() {
 		new Content_Types();
 		new Shortcodes();
+		new Form_Sponsors();
 
 		// Registering the Databases to wpdb.
 		$dbs = new Databases();
