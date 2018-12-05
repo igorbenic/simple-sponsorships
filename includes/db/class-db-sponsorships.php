@@ -33,7 +33,7 @@ class DB_Sponsorships extends DB {
 	 * @return mixed
 	 */
 	public function get_meta( $id, $key, $single = true ) {
-		return \get_metadata( 'sssponshorship', $id, $key, $single );
+		return \get_metadata( 'sssponsorship', $id, $key, $single );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class DB_Sponsorships extends DB {
 	 * @return false|int
 	 */
 	public function add_meta( $id, $key, $value ) {
-		return \add_metadata( 'sssponshorship', $id, $key, $value );
+		return \add_metadata( 'sssponsorship', $id, $key, $value );
 	}
 
 	/**
@@ -60,7 +60,7 @@ class DB_Sponsorships extends DB {
 	 * @return bool|int
 	 */
 	public function update_meta( $id, $key, $value = '', $prev_value = '' ) {
-		return \update_metadata( 'sssponshorship', $id, $key, $value, $prev_value );
+		return \update_metadata( 'sssponsorship', $id, $key, $value, $prev_value );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class DB_Sponsorships extends DB {
 	 * @return bool
 	 */
 	public function delete_meta( $id, $key, $value = '', $delete_all = false ) {
-		return \delete_metadata( 'sssponshorship', $id, $key, $value, $delete_all );
+		return \delete_metadata( 'sssponsorship', $id, $key, $value, $delete_all );
 	}
 
 	/**
@@ -94,13 +94,14 @@ class DB_Sponsorships extends DB {
 		package bigint(20) NOT NULL,
 		sponsor bigint(20) NOT NULL,
 		date datetime NOT NULL,
+		ss_key  varchar(36) NOT NULL,
 		PRIMARY KEY ID (ID)
 		) CHARACTER SET utf8 COLLATE utf8_general_ci;";
 
 		$meta_table_name = $this->get_meta_table_name();
 		$schema .= "CREATE TABLE {$meta_table_name} (
 		meta_id bigint(20) NOT NULL AUTO_INCREMENT,
-		sssponshorship_id bigint(20) NOT NULL DEFAULT '0',
+		sssponsorship_id bigint(20) NOT NULL DEFAULT '0',
 		meta_key varchar(255) DEFAULT NULL,
 		meta_value longtext,
 		PRIMARY KEY meta_id (meta_id),

@@ -13,6 +13,13 @@ namespace Simple_Sponsorships\Admin;
 class Settings {
 
 	/**
+	 * WP Pages. Used to cache the data.
+	 *
+	 * @var null
+	 */
+	protected $pages = null;
+
+	/**
 	 * Settings constructor.
 	 */
 	public function __construct() {
@@ -99,6 +106,24 @@ class Settings {
 						'tooltip_title' => __( 'Page Settings', 'simple-sponsorships' ),
 						'tooltip_desc'  => __( 'Configure Pages where Sponsors can see their settings.','simple-sponsorships' ),
 					),
+					'sponsor_page' => array(
+						'id'          => 'sponsor_page',
+						'name'        => __( 'Sponsor Page', 'simple-sponsorships' ),
+						'desc'        => __( 'This is the page that will show the sponsor form. The [sponsor_form] shortcode should be on this page.', 'simple-sponsorships' ),
+						'type'        => 'select',
+						'options'     => $this->get_pages(),
+						'chosen'      => true,
+						'placeholder' => __( 'Select a page', 'simple-sponsorships' ),
+					),
+					'sponsorship_page' => array(
+						'id'          => 'sponsorship_page',
+						'name'        => __( 'Sponsorship Page', 'simple-sponsorships' ),
+						'desc'        => __( 'This is the page that will show the sponsorship details. The [ss_sponsorship_details] shortcode should be on this page.', 'simple-sponsorships' ),
+						'type'        => 'select',
+						'options'     => $this->get_pages(),
+						'chosen'      => true,
+						'placeholder' => __( 'Select a page', 'simple-sponsorships' ),
+					),
 				)
 			),
 			'gateways' => array(
@@ -114,6 +139,33 @@ class Settings {
 		);
 
 		return apply_filters( 'ss_get_settings', $settings );
+	}
+
+	/**
+	 * Return an array with pages
+	 *
+	 * @return array
+	 */
+	public function get_pages() {
+
+		if ( ! isset( $_GET['page'] ) || 'ss-settings' !== $_GET['page'] ) {
+			return array( '' => '' );
+		}
+
+		if ( null === $this->pages ) {
+			$pages_options = array();
+			$pages         = get_pages();
+			if ( $pages ) {
+				foreach ( $pages as $page ) {
+					$pages_options[ $page->ID ] = $page->post_title;
+				}
+			}
+			$this->pages = $pages_options;
+		}
+
+
+
+		return $this->pages;
 	}
 
 	/**
@@ -543,6 +595,10 @@ class Settings {
 				$name_attr = ( $args['multiple'] ) ? $name_attr . '[]' : $name_attr;
 
 				$html = '<select ' . $nonce . ' id="' . $id . '" name="' . $name_attr . '" class="' . $class . '" data-placeholder="' . esc_html( $placeholder ) . '" ' . ( ( $args['multiple'] ) ? 'multiple="true"' : '' ) . '>';
+
+				if ( $placeholder ) {
+					$html .= '<option value="">' . esc_html( $placeholder ) . '</option>';
+				}
 
 				foreach ( $args['options'] as $option => $name ) {
 

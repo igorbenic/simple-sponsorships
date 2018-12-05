@@ -112,6 +112,7 @@ class Plugin {
 	public function includes() {
 		include_once 'includes/abstract/class-db.php';
 		include_once 'includes/abstract/class-custom-data.php';
+		include_once 'includes/abstract/class-email.php';
 
 		include_once 'includes/functions-core.php';
 		include_once 'includes/functions-sponsorship.php';
@@ -123,14 +124,18 @@ class Plugin {
 		include_once 'includes/class-installer.php';
 		include_once 'includes/class-package.php';
 		include_once 'includes/class-sponsorship.php';
+		include_once 'includes/class-sponsor.php';
 		include_once 'includes/class-templates.php';
 		include_once 'includes/class-shortcodes.php';
 		include_once 'includes/class-form-sponsors.php';
+
+		include_once 'includes/emails/class-email-new-sponsorship.php';
 
 		// DB
 		include_once 'includes/class-dbs.php';
 		include_once 'includes/db/class-db-packages.php';
 		include_once 'includes/db/class-db-sponsorships.php';
+		include_once 'includes/db/class-db-sponsors.php';
 
 		if ( is_admin() ) {
 			include_once 'includes/admin/class-admin.php';
@@ -145,6 +150,9 @@ class Plugin {
 	public function hooks() {
 		add_action( 'plugins_loaded', array( $this, 'run' ) );
 		add_action( 'init', array( $this, 'process_actions' ) );
+
+		add_action( 'ss_sponsorship_details', 'ss_sponsorship_details' );
+		add_action( 'ss_sponsorship_sponsor', 'ss_sponsorship_sponsor' );
 	}
 
 	/**

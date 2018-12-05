@@ -74,6 +74,24 @@ abstract class DB {
 		return $results ? $results : array();
 	}
 
+	/**
+	 * Get results by a column.
+	 *
+	 * @param $column
+	 * @param $value
+	 *
+	 * @return array|null|object
+	 */
+	public function get_by_column( $column, $value ) {
+		global $wpdb;
+
+		$sql = $wpdb->prepare( "SELECT * FROM " . $this->get_table_name() . " WHERE $column=%s", $value );
+
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+
+		return $results ? $results : array();
+	}
+
 	/***** DB Setters (Insert, Update) *****/
 
 

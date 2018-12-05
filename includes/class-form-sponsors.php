@@ -93,9 +93,7 @@ class Form_Sponsors {
 		$this->validate_fields( $posted_data );
 
 		if ( 0 !== count( $this->errors->get_error_messages( ) ) ) {
-			/**
-			 * @todo add errors to session.
-			 */
+			ss_add_notices( $this->errors->get_error_messages( ), 'error' );
 			return;
 		}
 
@@ -120,21 +118,36 @@ class Form_Sponsors {
 		$sponsorship_id = ss_create_sponsorship( $args );
 		$db             = new DB_Sponsorships();
 
-		$meta_data = $this->unset_sponsorship_columns( $posted_data );
-
-		foreach ( $meta_data as $key => $value ) {
-			$db->add_meta( $sponsorship_id, '_' . $key, $value );
-		}
-
 		if ( $sponsorship_id ) {
+
+			$meta_data = $this->unset_sponsorship_columns( $posted_data );
+
+			foreach ( $meta_data as $key => $value ) {
+				$db->add_meta( $sponsorship_id, '_' . $key, $value );
+			}
+
+			do_action( 'ss_sponsor_form_sponsorship_created', $sponsorship_id );
+
+			$sponsorship_page = ss_get_option( 'sponsorship_page', 0 );
+
+			if ( $sponsorship_page ) {
+				$sponsorship = new Sponsorship( $sponsorship_id );
+				$redirect = get_permalink( $sponsorship_page );
+				$redirect = add_query_arg( 'sponsorship-key', $sponsorship->get_data( 'ss_key' ), $redirect );
+				wp_safe_redirect( $redirect );
+				exit;
+			}
+
 			/**
 			 * @todo Send an email.
 			 */
+		} else {
+			ss_add_notice( __( 'Sponsorship could not be created. Try contacting the site owner through email.', 'simple-sponsorships' ), 'error' );
 		}
 	}
 
 	/**
-	 * Remove data saved in table columns as we don't need them in meta.
+	 * Remove data saved in table columns and some others as we don't need them in meta.
 	 *
 	 * @param $data
 	 *
@@ -142,7 +155,7 @@ class Form_Sponsors {
 	 */
 	public function unset_sponsorship_columns( $data ) {
 
-		$table_columns = array(
+		$non_meta = apply_filters( 'ss_sponsor_form_non_meta', array(
 			'status',
 			'amount',
 			'subtotal',
@@ -152,9 +165,12 @@ class Form_Sponsors {
 			'package',
 			'sponsor',
 			'date',
-		);
+			'key',
+			'ss_key',
+			'sponsor_terms',
+		));
 
-		foreach ( $table_columns as $column ) {
+		foreach ( $non_meta as $column ) {
 			if ( isset( $data[ $column ] ) ) {
 				unset( $data[ $column ] );
 			}
@@ -182,7 +198,8 @@ class Form_Sponsors {
 			if ( $validate && is_callable( $validate ) ) {
 				$is_valid = call_user_func( $validate, $data[ $key ] );
 				if ( ! $is_valid ) {
-					$this->errors->add( 'validation', sprintf( __( '%s is not valid.', 'woocommerce' ), '<strong>' . esc_html( $field_label ) . '</strong>' ) );
+					$validation_message = isset( $field['not_valid_message'] ) ? $field['not_valid_message'] : __( '%s is not valid.', 'simple-sponsorship' );
+					$this->errors->add( 'validation', sprintf( $validation_message, '<strong>' . esc_html( $field_label ) . '</strong>' ) );
 					continue;
 				}
 			}
@@ -211,7 +228,7 @@ class Form_Sponsors {
 			}
 		}
 		$fields = array(
-			'name' => array(
+			'sponsor_name' => array(
 				'title'    => __( 'Your Name', 'simple-sponsorships' ),
 				'type'     => 'text',
 				'required' => true,
@@ -232,12 +249,14 @@ class Form_Sponsors {
 				'required' => false,
 			),
 			'package' => array(
-				'title'    => __( 'Sponsorship', 'simple-sponsorships' ),
-				'required' => true,
-				'type'     => 'select',
-				'options'  => $package_options
+				'title'             => __( 'Sponsorship', 'simple-sponsorships' ),
+				'required'          => true,
+				'type'              => 'select',
+				'options'           => $package_options,
+				'validate'          => array( __CLASS__, 'is_valid_package' ),
+				'not_valid_message' => __( 'Please select a %s', 'simple-sponsorship' ),
 			),
-			'terms' => array(
+			'sponsor_terms' => array(
 				'title'    => __( 'Terms and Conditions', 'simple-sponsorships' ),
 				'required' => true,
 				'type'     => 'checkbox',
@@ -246,6 +265,19 @@ class Form_Sponsors {
 		);
 
 		return apply_filters( 'ss_form_sponsors_fields', $fields );
+	}
+
+	/**
+	 * Check if the package is a valid one.
+	 *
+	 * @param $package
+	 */
+	public static function is_valid_package( $package ) {
+		if ( absint( $package ) > 0 ) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

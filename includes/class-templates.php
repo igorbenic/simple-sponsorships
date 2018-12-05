@@ -129,7 +129,7 @@ class Templates {
 	 * @uses load_template()
 	 * @uses get_template_part()
 	 */
-	public static function get_template_part( $slug, $name = null, $load = true ) {
+	public static function get_template_part( $slug, $name = null, $args = array(), $load = false ) {
 		// Execute code for this part
 		do_action( 'get_template_part_' . $slug, $slug, $name );
 
@@ -147,7 +147,11 @@ class Templates {
 		// Allow template parts to be filtered
 		$templates = apply_filters( 'ss_get_template_part', $templates, $slug, $name );
 
+		$template = self::locate_template( $templates, $load, false );
+		if ( $template ) {
+			include $template;
+		}
 		// Return the part that is found
-		return self::locate_template( $templates, $load, false );
+		return $template;
 	}
 }

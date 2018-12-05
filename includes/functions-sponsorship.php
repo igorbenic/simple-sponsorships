@@ -138,6 +138,7 @@ function ss_create_sponsorship( $args = array() ) {
 		'currency'       => ss_get_currency(),
 		'transaction_id' => '',
 		'date'           => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
+		'ss_key'         => uniqid( '_ss', true ),
 	);
 
 	$args = wp_parse_args( $args, $default );
@@ -149,4 +150,30 @@ function ss_create_sponsorship( $args = array() ) {
 	}
 
 	return $ret;
+}
+
+/**
+ * Displaying Sponsorship Details.
+ *
+ * @param integer|\Simple_Sponsorships\Sponsorship $sponsorship
+ */
+function ss_sponsorship_details( $sponsorship ) {
+	if ( is_integer( $sponsorship ) ) {
+		$sponsorship = new \Simple_Sponsorships\Sponsorship( $sponsorship );
+	}
+
+	\Simple_Sponsorships\Templates::get_template_part( 'sponsorship/details', '', array( 'sponsorship' => $sponsorship ) );
+}
+
+/**
+ * Displaying Sponsorship Sponsor Information.
+ *
+ * @param integer|\Simple_Sponsorships\Sponsorship $sponsorship
+ */
+function ss_sponsorship_sponsor( $sponsorship ) {
+	if ( is_integer( $sponsorship ) ) {
+		$sponsorship = new \Simple_Sponsorships\Sponsorship( $sponsorship );
+	}
+
+	\Simple_Sponsorships\Templates::get_template_part( 'sponsorship/sponsor', '', array( 'sponsorship' => $sponsorship ) );
 }

@@ -2,7 +2,10 @@
 
 use Simple_Sponsorships\Form_Sponsors;
 
+ss_print_notices();
+
 do_action( 'ss_before_sponsor_form' );
+
 ?>
 <form class="ss-sponsor-form" method="POST" action="">
     <?php

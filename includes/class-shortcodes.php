@@ -26,6 +26,7 @@ class Shortcodes {
 	 */
 	public function register() {
 		add_shortcode( 'ss_sponsor_form', array( $this, 'sponsor_form' ) );
+		add_shortcode( 'ss_sponsorship_details', array( $this, 'sponsorship_details' ) );
 	}
 
 	/**
@@ -33,5 +34,12 @@ class Shortcodes {
 	 */
 	public function sponsor_form( $args = array() ) {
 		Templates::get_template_part( 'sponsor-form' );
+	}
+
+	/**
+	 * Sponsor Form.
+	 */
+	public function sponsorship_details( $args = array() ) {
+		Templates::get_template_part( 'sponsorship', 'details' );
 	}
 }

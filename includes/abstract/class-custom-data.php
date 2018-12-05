@@ -73,6 +73,18 @@ abstract class Custom_Data {
 	}
 
 	/**
+	 * Set the ID and return it.
+	 *
+	 * @param $id
+	 *
+	 * @return int
+	 */
+	public function set_id( $id ) {
+		$this->id = absint( $id );
+		return $this->id;
+	}
+
+	/**
 	 * Get the DB Object.
 	 */
 	public function get_db_object() {
@@ -86,12 +98,17 @@ abstract class Custom_Data {
 	 */
 	public function get_data( $key ) {
 		if ( ! isset( $this->data[ $key ] ) ) {
-			if ( $this->is_table_column( $key ) ) {
-				$this->populate_table_data();
+			// If we have no ID, we can't get DB data.
+			if ( $this->id ) {
+				if ( $this->is_table_column( $key ) ) {
+					$this->populate_table_data();
+				} else {
+					$db    = $this->get_db_object();
+					$value = $db->get_meta( $this->id, $key, true );
+					$this->set_data( $key, $value );
+				}
 			} else {
-				$db = $this->get_db_object();
-				$value = $db->get_meta( $this->id, $key, true );
-				$this->set_data( $key, $value );
+				return '';
 			}
 		}
 

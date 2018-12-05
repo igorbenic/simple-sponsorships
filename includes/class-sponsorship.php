@@ -30,6 +30,8 @@ class Sponsorship extends Custom_Data {
 		'package'        => 'package',
 		'sponsor'        => 'sponsor',
 		'date'           => 'date',
+		'key'            => 'ss_key',
+		'ss_key'         => 'ss_key',
 	);
 
 
@@ -42,5 +44,50 @@ class Sponsorship extends Custom_Data {
 		}
 
 		return $this->db;
+	}
+
+	/**
+	 * Get the Sponsor Data
+	 */
+	public function get_sponsor_data() {
+		$sponsor_id = $this->get_data( 'sponsor' );
+		$sponsor    = new Sponsor( 0 );
+		// This might be just a request so we don't have a sponsor yet.
+		if ( ! $sponsor_id ) {
+			$db = $this->get_db_object();
+			$sponsor_from_meta = apply_filters( 'ss_sponsorship_get_data_non_sponsor', array(
+				'title' => $db->get_meta( $this->get_id(), '_sponsor_name', true ),
+			), $this );
+			// Let's use the data stored in meta.
+			foreach ( $sponsor_from_meta as $key => $value ) {
+				$sponsor->set_data( $key, $value );
+			}
+
+		} else {
+			$sponsor->set_id( $sponsor_id );
+		}
+
+		return $sponsor;
+	}
+
+	/**
+	 * Return if the Sponsorship has a status.
+	 */
+	public function is_status( $status = '' ) {
+		return apply_filters( 'ss_sponsorship_is_' . $status, $status === $this->get_data( 'status' ), $this );
+	}
+
+	/**
+	 * Return if the Sponsorship is pending payment.
+	 */
+	public function is_pending() {
+		return $this->is_status( 'pending' );
+	}
+
+	/**
+	 * Return if the Sponsorship is pending payment.
+	 */
+	public function is_request() {
+		return $this->is_status( 'request' );
 	}
 }

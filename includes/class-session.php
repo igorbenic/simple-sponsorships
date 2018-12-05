@@ -137,21 +137,21 @@ class Session {
 	/**
 	 * Retrieve a session variable
 	 *
-	 * @since 1.5
 	 * @param string $key Session key
+	 * @param mixed  $default A default value ot be return if no data is found.
 	 * @return mixed Session variable
 	 */
-	public function get( $key ) {
+	public function get( $key, $default = false ) {
 
 		$key    = sanitize_key( $key );
-		$return = false;
+		$return = $default;
 
 		if ( isset( $this->session[ $key ] ) && ! empty( $this->session[ $key ] ) ) {
 
 			preg_match( '/[oO]\s*:\s*\d+\s*:\s*"\s*(?!(?i)(stdClass))/', $this->session[ $key ], $matches );
 			if ( ! empty( $matches ) ) {
 				$this->set( $key, null );
-				return false;
+				return $default;
 			}
 
 			if ( is_numeric( $this->session[ $key ] ) ) {
