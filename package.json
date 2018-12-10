@@ -1,12 +1,56 @@
-
 {
   "name": "simple-sponsorships",
+  "title": "Simple Sponsorships",
   "version": "0.1.0",
-  "main": "Gruntfile.js",
-  "author": "YOUR NAME HERE",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm install && npm run watch",
+    "dev": "cross-env webpack",
+    "production": "cross-env NODE_ENV=production webpack",
+    "build": "npm run production",
+    "watch": "cross-env webpack --watch",
+    "lint": "npm run lint:js & npm run lint:scss",
+    "lint:js": "eslint assets/src/**/*.js blocks/**/*.js",
+    "lint:scss": "stylelint assets/src/**/*.scss"
+  },
+  "dependencies": {
+    "npm": "^5.7.1",
+    "query-string": "^5.1.1",
+    "script-loader": "^0.7.2"
+  },
   "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-wp-i18n": "~0.5.0",
-    "grunt-wp-readme-to-markdown": "~1.0.0"
+    "autoprefixer": "^7.2.6",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.6",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "browser-sync": "^2.24.6",
+    "browser-sync-webpack-plugin": "^1.2.0",
+    "clean-webpack-plugin": "^0.1.19",
+    "copy-webpack-plugin": "^4.5.2",
+    "cross-env": "3.2.4",
+    "css-loader": "^0.28.11",
+    "cssnano": "^3.10.0",
+    "eslint": "^4.19.1",
+    "eslint-config-wordpress": "^2.0.0",
+    "eslint-plugin-react": "^7.10.0",
+    "expose-loader": "latest",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^1.1.11",
+    "imagemin-webpack-plugin": "^1.6.1",
+    "node-sass": "^4.9.1",
+    "postcss-loader": "^2.1.6",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^0.18.2",
+    "stylelint-config-wordpress": "^12.0.0",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.12.0",
+    "webpack-rtl-plugin": "^1.7.0",
+    "wp-pot": "latest"
   }
 }

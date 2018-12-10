@@ -113,11 +113,13 @@ class Plugin {
 		include_once 'includes/abstract/class-db.php';
 		include_once 'includes/abstract/class-custom-data.php';
 		include_once 'includes/abstract/class-email.php';
+		include_once 'includes/abstract/class-payment-gateway.php';
 
 		include_once 'includes/functions-core.php';
 		include_once 'includes/functions-sponsorship.php';
 		include_once 'includes/functions-forms.php';
 		include_once 'includes/functions-session.php';
+		include_once 'includes/functions-emails.php';
 
 		include_once 'includes/class-session.php';
 		include_once 'includes/class-content-types.php';
@@ -128,8 +130,12 @@ class Plugin {
 		include_once 'includes/class-templates.php';
 		include_once 'includes/class-shortcodes.php';
 		include_once 'includes/class-form-sponsors.php';
+		include_once 'includes/class-emails.php';
+		include_once 'includes/class-payment-gateways.php';
+		include_once 'includes/gateways/class-paypal.php';
 
 		include_once 'includes/emails/class-email-new-sponsorship.php';
+		include_once 'includes/emails/class-email-pending-sponsorship.php';
 
 		// DB
 		include_once 'includes/class-dbs.php';
@@ -153,6 +159,8 @@ class Plugin {
 
 		add_action( 'ss_sponsorship_details', 'ss_sponsorship_details' );
 		add_action( 'ss_sponsorship_sponsor', 'ss_sponsorship_sponsor' );
+		add_action( 'ss_sponsor_form_sponsorship_created', 'ss_email_on_new_sponsorhip' );
+		add_action( 'ss_sponsorship_status_updated', 'ss_email_on_pending_sponsorship', 20, 3 );
 	}
 
 	/**
@@ -171,10 +179,23 @@ class Plugin {
 		}
 	}
 
+	/**
+	 * Get gateways class.
+	 *
+	 * @return Payment_Gateways
+	 */
+	public function payment_gateways() {
+		return Payment_Gateways::instance();
+	}
+
+	/**
+	 * Run the plugin
+	 */
 	public function run() {
 		new Content_Types();
 		new Shortcodes();
 		new Form_Sponsors();
+		new Emails();
 
 		// Registering the Databases to wpdb.
 		$dbs = new Databases();

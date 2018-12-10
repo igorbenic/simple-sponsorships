@@ -4,6 +4,7 @@
  */
 
 namespace Simple_Sponsorships\Admin;
+use Simple_Sponsorships\DB\DB_Sponsors;
 use Simple_Sponsorships\DB\DB_Sponsorships;
 
 /**
@@ -28,7 +29,31 @@ class Sponsorships {
 		add_action( 'ss_new-sponsorship', array( $this, 'new_sponsorship' ) );
 		add_action( 'ss_edit-sponsorship', array( $this, 'edit_sponsorship' ) );
 
+		add_action( 'ss_sponsorship_sponsor_created', array( $this, 'save_meta_to_sponsor' ), 20, 2 );
 		$this->errors = new \WP_Error();
+	}
+
+	/**
+	 * Saving Meta to Sponsor
+	 *
+	 * @param integer $sponsor_id
+	 * @param array $posted_data
+	 */
+	public function save_meta_to_sponsor( $sponsor_id, $posted_data ) {
+
+		$db = new DB_Sponsors();
+
+		if ( isset( $posted_data['_email'] ) ) {
+			$db->add_meta( $sponsor_id, '_email', $posted_data['_email'] );
+		}
+
+		if ( isset( $posted_data['_company'] ) ) {
+			$db->add_meta( $sponsor_id, '_company', $posted_data['_company'] );
+		}
+
+		if ( isset( $posted_data['_website'] ) ) {
+			$db->add_meta( $sponsor_id, '_website', $posted_data['_website'] );
+		}
 	}
 
 	/**
@@ -70,6 +95,7 @@ class Sponsorships {
 			}
 
 			$sponsor = $sponsor_id;
+			do_action( 'ss_sponsorship_sponsor_created', $sponsor_id, $posted_data );
 		}
 
 		if ( $this->errors->get_error_messages() ) {
@@ -130,7 +156,7 @@ class Sponsorships {
 		}
 
 		if ( 'new' === $sponsor ) {
-			$sponsor_name = isset( $posted_data['sponsor_name'] ) ? sanitize_text_field( $posted_data['sponsor_name'] ) : '';
+			$sponsor_name = isset( $posted_data['_sponsor_name'] ) ? sanitize_text_field( $posted_data['_sponsor_name'] ) : '';
 
 			if ( ! $sponsor_name ) {
 				$this->errors->add( 'no-sponsor', __( 'Select a Sponsor or insert the name to add a new one.', 'simple-sponsorships' ) );
@@ -148,6 +174,7 @@ class Sponsorships {
 			}
 
 			$sponsor = $sponsor_id;
+			do_action( 'ss_sponsorship_sponsor_created', $sponsor_id, $posted_data );
 		}
 
 		if ( $this->errors->get_error_messages() ) {
@@ -246,8 +273,8 @@ class Sponsorships {
 			),
 			'sponsor_heading' => array(
 				'id'      => 'sponsor_heading',
-				'type'    => 'heading',
-				'title'   => __( 'Sponsor', 'simple-sponsorships' ),
+				'type'    => 'section_start',
+				'title'   => __( 'Sponsor Information', 'simple-sponsorships' ),
 			),
 			'sponsor' => array(
 				'id'      => 'sponsor',
@@ -255,10 +282,33 @@ class Sponsorships {
 				'title'   => __( 'Sponsor', 'simple-sponsorships' ),
 				'options' => $sponsors
 			),
-			'sponsor_name' => array(
-				'id'      => 'sponsor_name',
+			'_sponsor_name' => array(
+				'id'      => '_sponsor_name',
 				'type'    => 'text',
-				'title'   => __( 'First Name', 'simple-sponsorships' ),
+				'title'   => __( 'Sponsor Name', 'simple-sponsorships' ),
+				'field_class'   => 'hide-if-sponsor',
+			),
+			'_email' => array(
+				'id'      => '_email',
+				'type'    => 'email',
+				'title'   => __( 'Email', 'simple-sponsorships' ),
+				'field_class'   => 'hide-if-sponsor',
+			),
+			'_website' => array(
+				'id'      => '_website',
+				'type'    => 'url',
+				'title'   => __( 'Website', 'simple-sponsorships' ),
+				'field_class'   => 'hide-if-sponsor',
+			),
+			'_company' => array(
+				'id'      => '_company',
+				'type'    => 'text',
+				'title'   => __( 'Company', 'simple-sponsorships' ),
+				'field_class'   => 'hide-if-sponsor',
+			),
+			'sponsor_footer' => array(
+				'id'      => 'sponsor_heading',
+				'type'    => 'section_end',
 			),
 			'payment_heading' => array(
 				'id'      => 'payment_heading',

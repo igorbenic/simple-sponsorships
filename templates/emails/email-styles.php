@@ -53,7 +53,7 @@ if ( ! function_exists( 'ss_hex_darker' ) ) {
 	 * @return string
 	 */
 	function ss_hex_darker( $color, $factor = 30 ) {
-		$base  = wc_rgb_from_hex( $color );
+		$base  = ss_rgb_from_hex( $color );
 		$color = '#';
 
 		foreach ( $base as $k => $v ) {
@@ -181,22 +181,7 @@ $text_lighter_20 = ss_hex_lighter( $text, 20 );
 
 	#body_content table td th {
 	padding: 12px;
-	}
-
-	#body_content td ul.wc-item-meta {
-	font-size: small;
-	margin: 1em 0 0;
-	padding: 0;
-	list-style: none;
-	}
-
-	#body_content td ul.wc-item-meta li {
-	margin: 0.5em 0 0;
-	padding: 0;
-	}
-
-	#body_content td ul.wc-item-meta li p {
-	margin: 0;
+    text-align: left;
 	}
 
 	#body_content p {

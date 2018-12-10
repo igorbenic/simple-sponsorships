@@ -1,40 +1,45 @@
 <?php
 
 $sponsorship = $args['sponsorship'];
+$sponsor     = $sponsorship->get_sponsor_data();
+$email       = $sponsor->get_data( '_email' );
+$website     = $sponsor->get_data( '_website' );
 
 ?>
 <h3><?php esc_html_e( 'Sponsor', 'simple-sponsorships' ); ?></h3>
 <table class="ss-sponsorship-details">
 	<tr>
 		<th>
-			<?php esc_html_e( 'Amount', 'simple-sponsorships' ); ?>
+			<?php esc_html_e( 'Name', 'simple-sponsorships' ); ?>
 		</th>
 		<td>
-			<?php echo ss_currency_symbol() . $sponsorship->get_data( 'amount' ); ?>
+			<?php echo $sponsor->get_data( 'name' ); ?>
 		</td>
 	</tr>
+    <?php
+    if ( $website ) {
+
+	    ?>
+        <tr>
+            <th>
+			    <?php esc_html_e( 'Website', 'simple-sponsorships' ); ?>
+            </th>
+            <td>
+			    <?php echo sprintf( '<a href="%s" target="blank">%s</a>', $website, $website ); ?>
+            </td>
+        </tr>
+	    <?php
+    }
+
+    if ( $email ) {
+    ?>
 	<tr>
 		<th>
-			<?php esc_html_e( 'Sponsorship', 'simple-sponsorships' ); ?>
+			<?php esc_html_e( 'Email', 'simple-sponsorships' ); ?>
 		</th>
 		<td>
-			<?php
-			$package = $sponsorship->get_data( 'package' );
-			if ( $package ) {
-				$package = ss_get_package( $package );
-				echo $package->get_data( 'title' );
-			} else {
-				echo __( 'No Package selected.', 'simple-sponsorships' );
-			}
-			?>
+			<?php echo $email; ?>
 		</td>
 	</tr>
-	<tr>
-		<th>
-			<?php esc_html_e( 'Date', 'simple-sponsorships' ); ?>
-		</th>
-		<td>
-			<?php echo date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $sponsorship->get_data( 'date' ) ) ); ?>
-		</td>
-	</tr>
+    <?php } ?>
 </table>

@@ -38,6 +38,7 @@ class Admin {
 		$menus = new Menus();
 		add_action( 'admin_menu', array( $menus, 'register' ) );
 		add_action( 'admin_init', array( $this, 'process_actions' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 	}
 
 	/**
@@ -50,6 +51,43 @@ class Admin {
 
 		if ( isset( $_GET['ss-action'] ) ) {
 			do_action( 'ss_' . $_GET['ss-action'], $_GET );
+		}
+	}
+
+	/**
+	 * Enqueue the Scripts and Styles on the Admin side.
+	 *
+	 * @param string $hook
+	 */
+	public function enqueue( $hook ) {
+		global $post;
+
+		$admin_pages = array(
+			'sponsors_page_ss-sponsorships',
+			'sponsors_page_ss-packages',
+			'sponsors_page_ss-settings'
+		);
+
+		$enqueue = false;
+
+		if ( in_array( $hook, $admin_pages, true ) ) {
+			$enqueue = true;
+		}
+
+		if ( ! $enqueue ) {
+			if ( ( 'edit.php' === $hook || 'post-new.php' === $hook ) && isset( $_GET['post_type'] ) && 'sponsors' === $_GET['post_type'] ) {
+				$enqueue = true;
+			}
+
+			if ( 'post.php' === $hook && $post && 'sponsors' === get_post_type( $post ) ) {
+				$enqueue = true;
+			}
+		}
+
+		if ( $enqueue ) {
+			wp_enqueue_script( 'ss-admin-js', SS_PLUGIN_URL . '/assets/dist/js/admin.js', array( 'jquery' ), SS_VERSION, true );
+
+			wp_enqueue_style( 'ss-admin-css', SS_PLUGIN_URL . '/assets/dist/css/admin.css', array(), SS_VERSION );
 		}
 	}
 }

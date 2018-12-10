@@ -12,6 +12,13 @@ namespace Simple_Sponsorships\DB;
 class DB_Packages extends DB {
 
 	/**
+	 * DB Type.
+	 *
+	 * @var string
+	 */
+	protected $type = 'package';
+
+	/**
 	 * Table Name.
 	 *
 	 * @var string

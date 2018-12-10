@@ -21,7 +21,7 @@ class Sponsor extends Custom_Data {
 	 */
 	protected $table_columns = array(
 		'id'           => 'ID',
-		'title'        => 'post_title',
+		'name'         => 'post_title',
 		'post_content' => 'post_content',
 		'post_type'    => 'post_type',
 	);

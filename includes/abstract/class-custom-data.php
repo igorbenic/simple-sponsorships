@@ -4,6 +4,7 @@
  */
 
 namespace Simple_Sponsorships;
+use Simple_Sponsorships\DB\DB;
 
 /**
  * Class Custom_Data
@@ -61,6 +62,12 @@ abstract class Custom_Data {
 		$db   = $this->get_db_object();
 		$data = $db->get_by_id( $this->id );
 		foreach ( $data as $column => $value ) {
+			foreach ( $this->table_columns as $key => $table_column ) {
+				if ( $column === $table_column ) {
+					$column = $key;
+					break;
+				}
+			}
 			$this->set_data( strtolower( $column ), $value );
 		}
 	}
@@ -86,6 +93,8 @@ abstract class Custom_Data {
 
 	/**
 	 * Get the DB Object.
+	 *
+	 * @return DB
 	 */
 	public function get_db_object() {
 		throw new \Exception( __( 'This must be defined in each class.', 'simple-sponsorships' ) );

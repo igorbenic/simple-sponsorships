@@ -48,6 +48,8 @@ class Sponsorship extends Custom_Data {
 
 	/**
 	 * Get the Sponsor Data
+	 *
+	 * @return \Simple_Sponsorships\Sponsor
 	 */
 	public function get_sponsor_data() {
 		$sponsor_id = $this->get_data( 'sponsor' );
@@ -56,18 +58,37 @@ class Sponsorship extends Custom_Data {
 		if ( ! $sponsor_id ) {
 			$db = $this->get_db_object();
 			$sponsor_from_meta = apply_filters( 'ss_sponsorship_get_data_non_sponsor', array(
-				'title' => $db->get_meta( $this->get_id(), '_sponsor_name', true ),
+				'name' => $db->get_meta( $this->get_id(), '_sponsor_name', true ),
+				'_email' => $db->get_meta( $this->get_id(), '_email', true ),
+				'_website' => $db->get_meta( $this->get_id(), '_website', true ),
+				'_company' => $db->get_meta( $this->get_id(), '_company', true ),
 			), $this );
 			// Let's use the data stored in meta.
 			foreach ( $sponsor_from_meta as $key => $value ) {
 				$sponsor->set_data( $key, $value );
 			}
-
 		} else {
 			$sponsor->set_id( $sponsor_id );
 		}
 
 		return $sponsor;
+	}
+
+	/**
+	 * Get the view link
+	 *
+	 * @return false|string
+	 */
+	public function get_view_link() {
+		$sponsorship_page = ss_get_option( 'sponsorship_page', 0 );
+
+		if ( $sponsorship_page ) {
+			$view_link = get_permalink( $sponsorship_page );
+			$view_link = add_query_arg( 'sponsorship-key', $this->get_data( 'ss_key' ), $view_link );
+			return $view_link;
+		}
+
+		return '';
 	}
 
 	/**

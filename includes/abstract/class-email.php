@@ -60,8 +60,9 @@ abstract class Email {
 	 */
 	public function get_content() {
 		$this->sending = true;
-
-		return $this->get_content_html();;
+		ob_start();
+		$this->get_content_html();
+		return ob_get_clean();
 	}
 
 	/**
@@ -84,7 +85,7 @@ abstract class Email {
 	public function style_inline( $content ) {
 		if ( in_array( $this->get_content_type(), array( 'text/html', 'multipart/alternative' ), true ) ) {
 			ob_start();
-			Templates::get_template_part( 'emails/email-styles.php' );
+			Templates::get_template_part( 'emails/email-styles', '', '', true );
 			$css = apply_filters( 'ss_email_styles', ob_get_clean() );
 			$content = '<style type="text/css">' . $css . '</style>' . $content;
 		}
@@ -106,7 +107,7 @@ abstract class Email {
 		add_filter( 'wp_mail_content_type', array( $this, 'get_content_type' ) );
 
 		$message = apply_filters( 'ss_mail_content', $this->style_inline( $message ) );
-		$return  = wp_mail( $to, $subject, $message, $headers, $attachments );
+		$return  = \wp_mail( $to, $subject, $message, $headers, $attachments );
 
 		remove_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );
 		remove_filter( 'wp_mail_from_name', array( $this, 'get_from_name' ) );
@@ -156,7 +157,7 @@ abstract class Email {
 	 * @return string
 	 */
 	public function get_from_name() {
-		$from_name = apply_filters( 'ss_email_from_name', get_option( 'admin_email' ), $this );
+		$from_name = apply_filters( 'ss_email_from_name', get_option( 'site_title' ), $this );
 		return wp_specialchars_decode( esc_html( $from_name ), ENT_QUOTES );
 	}
 
@@ -166,7 +167,7 @@ abstract class Email {
 	 * @return string
 	 */
 	public function get_from_address() {
-		$from_address = apply_filters( 'ss_email_from_address', get_option( 'site_title' ), $this );
+		$from_address = apply_filters( 'ss_email_from_address', get_option( 'admin_email' ), $this );
 		return sanitize_email( $from_address );
 	}
 }

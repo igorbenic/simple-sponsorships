@@ -12,6 +12,13 @@ namespace Simple_Sponsorships\DB;
 class DB_Sponsorships extends DB {
 
 	/**
+	 * DB Type.
+	 *
+	 * @var string
+	 */
+	protected $type = 'sponsorship';
+
+	/**
 	 * Table Name.
 	 *
 	 * @var string

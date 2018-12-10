@@ -34,20 +34,40 @@ if ( $errors ) {
 				$field_args['id'] = 'ss_sponsorships[' . Settings::sanitize_key( $field_args['id'] ) . ']';
 				do_action( 'ss_add_sponsorship_before_field_' . $field_slug, $fields );
 				?>
-				<tr>
+                <tr id="<?php echo $field_args['id'] . '_row' ?>">
 					<?php
-					if ( $field_args['title'] ) {
+					if ( 'section_start' === $field_args['type'] ) {
+					?>
+                    <td class="ss-section" colspan="2">
+						<?php
+						if ( $field_args['title'] ) {
+							echo '<h2>' . $field_args['title'] . '</h2>';
+						}
 						?>
-						<th scope="row" valign="top">
-							<label for="<?php echo esc_attr( $field_args['id'] ); ?>">
-								<?php echo esc_html( $field_args['title'] ); ?>
-							</label>
-						</th>
-					<?php } ?>
-					<td <?php if ( ! $field_args['title'] ) { echo 'colspan="2"'; } ?>>
-						<?php ss_render_settings_field( $field_args ); ?>
-					</td>
-				</tr>
+                        <table>
+							<?php }
+
+							if ( 'section_end' !== $field_args['type'] && 'section_start' !== $field_args['type'] ) {
+
+								if ( $field_args['title'] ) {
+									?>
+                                    <th scope="row" valign="top">
+                                        <label for="<?php echo esc_attr( $field_args['id'] ); ?>">
+											<?php echo esc_html( $field_args['title'] ); ?>
+                                        </label>
+                                    </th>
+								<?php } ?>
+                                <td <?php if ( ! $field_args['title'] ) { echo 'colspan="2"'; } ?>>
+									<?php ss_render_settings_field( $field_args ); ?>
+                                </td>
+							<?php }
+
+							if ( 'section_end' === $field_args['type'] ) {
+							?>
+                        </table>
+                    </td>
+				<?php } ?>
+                </tr>
 				<?php
 				do_action( 'ss_add_sponsorship_after_field_' . $field_slug, $fields );
 			}

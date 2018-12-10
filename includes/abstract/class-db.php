@@ -12,6 +12,13 @@ namespace Simple_Sponsorships\DB;
 abstract class DB {
 
 	/**
+	 * DB Type.
+	 *
+	 * @var string
+	 */
+	protected $type = '';
+
+	/**
 	 * Table name
 	 *
 	 * @var string
@@ -26,6 +33,15 @@ abstract class DB {
 	protected $meta_table = '';
 
 	/***** Getters *****/
+
+	/**
+	 * Return the type of this DB.
+	 *
+	 * @return string
+	 */
+	public function get_type() {
+		return $this->type;
+	}
 
 	/**
 	 * Get table name
@@ -123,7 +139,16 @@ abstract class DB {
 	public function update( $id, $data, $format = null ) {
 		global $wpdb;
 
+		$old = $this->get_by_id( $id );
 		$ret = $wpdb->update( $this->get_table_name(), $data, array( 'ID' => $id ), $format, array( '%d') );
+
+		if ( $ret ) {
+			foreach ( $data as $column => $value ) {
+				if ( $value !== $old[ $column ] ) {
+					do_action( 'ss_' . $this->get_type() . '_' . $column . '_updated', $value, $old[ $column ], $id );
+				}
+			}
+		}
 
 		return $ret ? true : false;
 	}

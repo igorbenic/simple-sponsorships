@@ -126,7 +126,7 @@ class Settings {
 					),
 				)
 			),
-			'gateways' => array(
+			'gateways' => apply_filters( 'ss_settings_gateways', array(
 				'main' => array(
 					'currency' => array(
 						'id'      => 'currency',
@@ -135,7 +135,7 @@ class Settings {
 						'options' => ss_get_currencies()
 					)
 				)
-			),
+			) ),
 		);
 
 		return apply_filters( 'ss_get_settings', $settings );
@@ -237,6 +237,8 @@ class Settings {
 		if ( false == get_option( 'ss_settings' ) ) {
 			add_option( 'ss_settings', array() );
 		}
+
+		SS()->payment_gateways();
 
 		foreach ( $this->get_settings() as $tab => $sections ) {
 			foreach ( $sections as $section => $settings) {
