@@ -8,6 +8,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Processing the Sponsor Form.
+ */
+function ss_process_sponsor_form() {
+	$form = new \Simple_Sponsorships\Form_Sponsors();
+	$form->process();
+}
+
+/**
+ * Show payment form if needed.
+ *
+ * @param \Simple_Sponsorships\Sponsorship $sponsorship Sponsorship Object.
+ */
+function ss_show_payment_form_for_sponsorship( $sponsorship ) {
+	if ( ! $sponsorship->is_pending() ) {
+		return;
+	}
+
+	\Simple_Sponsorships\Templates::get_template_part( 'payment-form', null, array( 'sponsorship' => $sponsorship ) );
+}
+
+/**
  * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
  * Non-scalar values are ignored.
  *
@@ -48,6 +69,7 @@ function ss_form_render_field( $args, $wrap_field = true ) {
 		'size'          => null,
 		'options'       => '',
 		'std'           => '',
+		'value'         => '',
 		'min'           => null,
 		'max'           => null,
 		'step'          => null,

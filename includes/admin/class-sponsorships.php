@@ -252,6 +252,12 @@ class Sponsorships {
 				$sponsors[ $_sponsor->ID ] = $_sponsor->post_title;
 			}
 		}
+
+		$available_gateways = SS()->payment_gateways()->get_available_payment_gateways();
+		$gateways           = array();
+		foreach ( $available_gateways as $gateway_id => $gateway ) {
+			$gateways[ $gateway_id ] = $gateway->get_method_title();
+		}
 		$fields = array(
 			'status' => array(
 				'id'      => 'status',
@@ -312,8 +318,14 @@ class Sponsorships {
 			),
 			'payment_heading' => array(
 				'id'      => 'payment_heading',
-				'type'    => 'heading',
+				'type'    => 'seaction_start',
 				'title'   => __( 'Payment', 'simple-sponsorships' ),
+			),
+			'payment' => array(
+				'id'      => 'payment',
+				'type'    => 'select',
+				'title'   => __( 'Gateway', 'simple-sponsorships' ),
+				'options' => $gateways
 			),
 			'transaction_id' => array(
 				'id'          => 'transaction_id',
@@ -321,6 +333,10 @@ class Sponsorships {
 				'placeholder' => __( 'Transaction ID', 'simple-sponsorships' ),
 				'title'       => __( 'Transaction ID', 'simple-sponsorships' ),
 				'desc'        => __( 'The transaction ID, if any', 'simple-sponsorships' ),
+			),
+			'payment_footer' => array(
+				'id'      => 'sponsor_heading',
+				'type'    => 'section_end',
 			),
 		);
 

@@ -110,17 +110,21 @@ class Plugin {
 	 * Including files.
 	 */
 	public function includes() {
+		// Abstracts.
 		include_once 'includes/abstract/class-db.php';
 		include_once 'includes/abstract/class-custom-data.php';
 		include_once 'includes/abstract/class-email.php';
 		include_once 'includes/abstract/class-payment-gateway.php';
+		include_once 'includes/abstract/class-form.php';
 
+		// Functions.
 		include_once 'includes/functions-core.php';
 		include_once 'includes/functions-sponsorship.php';
 		include_once 'includes/functions-forms.php';
 		include_once 'includes/functions-session.php';
 		include_once 'includes/functions-emails.php';
 
+		// Classes.
 		include_once 'includes/class-session.php';
 		include_once 'includes/class-content-types.php';
 		include_once 'includes/class-installer.php';
@@ -129,15 +133,21 @@ class Plugin {
 		include_once 'includes/class-sponsor.php';
 		include_once 'includes/class-templates.php';
 		include_once 'includes/class-shortcodes.php';
-		include_once 'includes/class-form-sponsors.php';
 		include_once 'includes/class-emails.php';
 		include_once 'includes/class-payment-gateways.php';
+
+		// Gateways.
 		include_once 'includes/gateways/class-paypal.php';
 
+		// Forms.
+		include_once 'includes/forms/class-form-sponsors.php';
+		include_once 'includes/forms/class-form-payment.php';
+
+		// Emails.
 		include_once 'includes/emails/class-email-new-sponsorship.php';
 		include_once 'includes/emails/class-email-pending-sponsorship.php';
 
-		// DB
+		// DB.
 		include_once 'includes/class-dbs.php';
 		include_once 'includes/db/class-db-packages.php';
 		include_once 'includes/db/class-db-sponsorships.php';
@@ -161,6 +171,8 @@ class Plugin {
 		add_action( 'ss_sponsorship_sponsor', 'ss_sponsorship_sponsor' );
 		add_action( 'ss_sponsor_form_sponsorship_created', 'ss_email_on_new_sponsorhip' );
 		add_action( 'ss_sponsorship_status_updated', 'ss_email_on_pending_sponsorship', 20, 3 );
+		add_action( 'ss_sponsor_form', 'ss_process_sponsor_form' );
+		add_action( 'ss_sponsorship_form', 'ss_show_payment_form_for_sponsorship' );
 	}
 
 	/**
@@ -194,7 +206,6 @@ class Plugin {
 	public function run() {
 		new Content_Types();
 		new Shortcodes();
-		new Form_Sponsors();
 		new Emails();
 
 		// Registering the Databases to wpdb.

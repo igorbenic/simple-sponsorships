@@ -17,7 +17,18 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 
 class Sponsorships_Table_List extends \WP_List_Table {
 
+	/**
+	 * Date Format
+	 * @var null|string
+	 */
 	protected $date_format = null;
+
+	/**
+	 * Sponsorship Page-
+	 *
+	 * @var string|string
+	 */
+	protected $sponsorship_page = null;
 
 	/**
 	 * Settings
@@ -38,12 +49,30 @@ class Sponsorships_Table_List extends \WP_List_Table {
 		$this->_column_headers = $this->get_columns();
 	}
 
+	/**
+	 * Get the Date Format.
+	 *
+	 * @return null|string
+	 */
 	public function get_date_format() {
 		if ( null === $this->date_format ) {
 			$this->date_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 		}
 
 		return $this->date_format;
+	}
+
+	/**
+	 * Get the Sponsorship Page
+	 *
+	 * @return null|string
+	 */
+	public function get_sponsorship_page() {
+		if ( null === $this->sponsorship_page ) {
+			$this->sponsorship_page = get_permalink( ss_get_option( 'sponsorship_page', 0 ) );
+		}
+
+		return $this->sponsorship_page;
 	}
 
 	/**
@@ -153,6 +182,13 @@ class Sponsorships_Table_List extends \WP_List_Table {
 		$actions = apply_filters( 'ss_sponsorships_column_title_actions', array(
 			'edit' => '<a href="' . admin_url( 'edit.php?post_type=sponsors&page=ss-sponsorships&ss-action=edit-sponsorship&id=' . $item['ID'] ) . '">' . __( 'Edit', 'simple-sponsorships' ) . '</a>',
 		));
+
+		$sponsorship_page = $this->get_sponsorship_page();
+
+		if ( $sponsorship_page ) {
+			$actions['view'] = '<a href="' . add_query_arg( 'sponsorship-key', $item['ss_key'], $sponsorship_page ) . '">' . __( 'View', 'simple-sponsorships' ) . '</a>';
+
+		}
 
 		if ( $actions ) {
 			$html .= '<div class="ss-table-actions">' . implode( ' | ', $actions ) . '</div>';

@@ -62,13 +62,19 @@ abstract class Custom_Data {
 		$db   = $this->get_db_object();
 		$data = $db->get_by_id( $this->id );
 		foreach ( $data as $column => $value ) {
+			$additional_keys = array();
 			foreach ( $this->table_columns as $key => $table_column ) {
 				if ( $column === $table_column ) {
-					$column = $key;
+					$additional_keys[] = $key;
 					break;
 				}
 			}
 			$this->set_data( strtolower( $column ), $value );
+			if ( $additional_keys ) {
+				foreach ( $additional_keys as $new_column ) {
+					$this->set_data( strtolower( $new_column ), $value );
+				}
+			}
 		}
 	}
 

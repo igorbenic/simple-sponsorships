@@ -41,7 +41,7 @@ abstract class Payment_Gateway {
 	 *
 	 * @var string
 	 */
-	public $enabled = 'yes';
+	public $enabled = '1';
 
 	/**
 	 * Payment method title for the frontend.
@@ -131,7 +131,7 @@ abstract class Payment_Gateway {
 	/**
 	 * @var array
 	 */
-	public $settings = array();
+	public $settings = null;
 
 	/**
 	 * Payment_Gateway constructor.
@@ -200,10 +200,16 @@ abstract class Payment_Gateway {
 	/**
 	 * Init settings for gateways.
 	 *
-	 * @todo Get all the settings for this payment gateway by using the get_fields().
 	 */
 	public function get_settings() {
 		//parent::init_settings();
+		if ( null === $this->settings ) {
+			$fields = $this->get_fields();
+			$this->settings['enabled'] = ss_get_option( $this->id . '_enabled', '0' );
+			foreach ( $fields as $id => $field ) {
+				$this->settings[ $field['id'] ] = ss_get_option( $field['id'], '' );
+			}
+		}
 		$this->enabled  = ! empty( $this->settings['enabled'] ) && '1' === $this->settings['enabled'] ? true : false;
 	}
 
@@ -247,6 +253,18 @@ abstract class Payment_Gateway {
 	 */
 	public function has_fields() {
 		return (bool) $this->has_fields;
+	}
+
+	/**
+	 * Check if the gateway is available for use.
+	 *
+	 * @return bool
+	 */
+	public function is_available() {
+		$this->get_settings();
+		$is_available = $this->enabled;
+
+		return $is_available;
 	}
 
 	/**

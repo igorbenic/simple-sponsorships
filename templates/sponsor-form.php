@@ -4,6 +4,8 @@ use Simple_Sponsorships\Form_Sponsors;
 
 ss_print_notices();
 
+$form = new Form_Sponsors();
+
 do_action( 'ss_before_sponsor_form' );
 
 ?>
@@ -12,7 +14,7 @@ do_action( 'ss_before_sponsor_form' );
     do_action( 'ss_before_sponsor_form_fields' );
 
     wp_nonce_field( 'ss_sponsor_form', 'ss_nonce' );
-    foreach ( Form_Sponsors::get_fields() as $slug => $field ) {
+    foreach ( $form->get_fields() as $slug => $field ) {
         $field['id'] = isset( $field['id'] ) ?  $field['id'] : $slug;
 
         ss_form_render_field( $field );
