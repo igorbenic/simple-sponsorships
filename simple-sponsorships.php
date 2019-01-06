@@ -135,6 +135,7 @@ class Plugin {
 		include_once 'includes/class-shortcodes.php';
 		include_once 'includes/class-emails.php';
 		include_once 'includes/class-payment-gateways.php';
+		include_once 'includes/class-countries.php';
 
 		// Gateways.
 		include_once 'includes/gateways/class-paypal.php';
@@ -172,6 +173,7 @@ class Plugin {
 		add_action( 'ss_sponsor_form_sponsorship_created', 'ss_email_on_new_sponsorhip' );
 		add_action( 'ss_sponsorship_status_updated', 'ss_email_on_pending_sponsorship', 20, 3 );
 		add_action( 'ss_sponsor_form', 'ss_process_sponsor_form' );
+		add_action( 'ss_payment_form', 'ss_process_payment_form' );
 		add_action( 'ss_sponsorship_form', 'ss_show_payment_form_for_sponsorship' );
 	}
 
@@ -183,11 +185,11 @@ class Plugin {
 		if ( is_admin() ) { return; }
 
 		if ( isset( $_POST['ss-action'] ) ) {
-			do_action( 'ss_' . $_POST['ss-action'], $_POST );
+			do_action( 'ss_' . strtolower( $_POST['ss-action'] ), $_POST );
 		}
 
 		if ( isset( $_GET['ss-action'] ) ) {
-			do_action( 'ss_' . $_GET['ss-action'], $_GET );
+			do_action( 'ss_' . strtolower( $_GET['ss-action'] ), $_GET );
 		}
 	}
 

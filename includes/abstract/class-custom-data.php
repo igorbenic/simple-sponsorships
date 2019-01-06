@@ -141,6 +141,30 @@ abstract class Custom_Data {
 	}
 
 	/**
+	 * Adding Data to the Custom Data object.
+	 *
+	 * @param $key
+	 * @param $value
+	 */
+	public function add_data( $key, $value ) {
+		$db = $this->get_db_object();
+		$db->add_meta( $this->get_id(), $key, $value );
+		$this->set_data( $key, $value );
+	}
+
+	/**
+	 * This will update the data for the Custom Data object.
+	 *
+	 * @param $key
+	 * @param $value
+	 */
+	public function update_data( $key, $value ) {
+		$db = $this->get_db_object();
+		$db->update_meta( $this->get_id(), $key, $value );
+		$this->set_data( $key, $value );
+	}
+
+	/**
 	 * Check if the provided key is a table column or meta data.
 	 *
 	 * @param $key

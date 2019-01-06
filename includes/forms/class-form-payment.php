@@ -24,19 +24,57 @@ class Form_Payment extends Form {
 	 * Process the Form.
 	 */
 	public function process() {
+		// Validate Form Field Data.
 		$data = $this->process_data();
 
-		if ( $data ) {
-			die( 'Do Something' );
-			//$this->process_payment( $data );
+		$sponsorship_id = isset( $_POST['ss_sponsorship_id'] ) ? absint( $_POST['ss_sponsorship_id'] ) : 0;
+
+		if ( ! $sponsorship_id ) {
+			ss_add_notice( __( 'No Sponsorship', 'simple-sponsorships' ), 'error' );
 		}
+
+		$gateway = $this->validate_gateway();
+
+		if ( $data && empty( ss_get_notices( 'error' ) ) ) {
+			$sponsorship = ss_get_sponsorship( $sponsorship_id );
+			foreach ( $data as $meta_key => $meta_value ) {
+				$sponsorship->update_data( $meta_key, $meta_value );
+			}
+
+			$response = $gateway->process_payment( $sponsorship );
+
+			if ( 'success' === $response['result'] ) {
+				if ( $response['redirect'] ) {
+					wp_redirect( $response['redirect'] );
+					exit;
+				}
+			}
+		}
+	}
+
+	/**
+	 * We will validate the Gateway.
+	 *
+	 * @return \Simple_Sponsorships\Gateways\Payment_Gateway|false Boolean if no gateway selected. Otherwise the Gateway object.
+	 */
+	public function validate_gateway() {
+		$gateways  = SS()->payment_gateways();
+		$available = $gateways->get_available_payment_gateways();
+		$method    = isset( $_POST['payment_method'] ) ? $_POST['payment_method'] : false;
+		if ( ! $method || ! isset( $available[ $method ] ) ) {
+			ss_add_notice(  __( 'Select an available Payment Method', 'simple-sponsorships' ), 'error' );
+			return false;
+		}
+
+		return $available[ $method ];
 	}
 
 	/**
 	 * Return the fields for Form Sponsors.
 	 */
 	public function get_fields() {
-		$packages = ss_get_packages();
+		$countries = new Countries();
+		$packages  = ss_get_packages();
 		$package_options = array();
 		if ( $packages ) {
 			$package_options[0] = __( 'Select a Package', 'simple-sponsorships' );
@@ -82,7 +120,8 @@ class Form_Payment extends Form {
 			),
 			'billing_country' => array(
 				'title'    => __( 'Country', 'simple-sponsorships' ),
-				'type'     => 'text',
+				'type'     => 'select',
+				'options'  => $countries->get_countries(),
 				'required' => true,
 			),
 			'billing_state' => array(

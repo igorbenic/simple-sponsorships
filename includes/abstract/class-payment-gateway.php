@@ -172,7 +172,9 @@ abstract class Payment_Gateway {
 	}
 
 	/**
+	 * Field configuration for Payment Gateway.
 	 *
+	 * @return array
 	 */
 	public function get_fields() {
 		$fields = array();
@@ -207,7 +209,9 @@ abstract class Payment_Gateway {
 			$fields = $this->get_fields();
 			$this->settings['enabled'] = ss_get_option( $this->id . '_enabled', '0' );
 			foreach ( $fields as $id => $field ) {
-				$this->settings[ $field['id'] ] = ss_get_option( $field['id'], '' );
+				$default = isset( $field['default'] ) ? $field['default'] : '';
+				$field_id = isset( $field['id'] ) ? $field['id'] : $id;
+				$this->settings[ $field_id ] = ss_get_option( $field_id, $default );
 			}
 		}
 		$this->enabled  = ! empty( $this->settings['enabled'] ) && '1' === $this->settings['enabled'] ? true : false;
@@ -317,10 +321,10 @@ abstract class Payment_Gateway {
 	 *            'redirect' => $this->get_return_url( $sponsorship )
 	 *        );
 	 *
-	 * @param int $sponsorship_id Sponsorship ID.
+	 * @param \Simple_Sponsorships\Sponsorship $sponsorship Sponsorship Object.
 	 * @return array
 	 */
-	public function process_payment( $sponsorship_id ) {
+	public function process_payment( $sponsorship ) {
 		return array();
 	}
 

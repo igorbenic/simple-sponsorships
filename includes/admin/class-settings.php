@@ -283,6 +283,7 @@ class Settings {
 						'tooltip_title' => false,
 						'tooltip_desc'  => false,
 						'field_class'   => '',
+						'default'       => '',
 					) );
 
 					add_settings_field(
@@ -450,7 +451,7 @@ class Settings {
 	 * @param array $args
 	 */
 	public function settings_field( $args ) {
-		$args['value'] = ss_get_option( $args['id'] );
+		$args['value'] = ss_get_option( $args['id'], $args['default'] );
 
 		$class = $this->sanitize_html_class( $args['field_class'] );
 

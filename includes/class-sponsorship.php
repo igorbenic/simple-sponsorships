@@ -101,8 +101,8 @@ class Sponsorship extends Custom_Data {
 	/**
 	 * Return if the Sponsorship is pending payment.
 	 */
-	public function is_pending() {
-		return $this->is_status( 'pending' );
+	public function is_approved() {
+		return $this->is_status( 'approved' );
 	}
 
 	/**

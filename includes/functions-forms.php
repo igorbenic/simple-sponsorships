@@ -16,12 +16,20 @@ function ss_process_sponsor_form() {
 }
 
 /**
+ * Processing the Sponsor Form.
+ */
+function ss_process_payment_form() {
+	$form = new \Simple_Sponsorships\Form_Payment();
+	$form->process();
+}
+
+/**
  * Show payment form if needed.
  *
  * @param \Simple_Sponsorships\Sponsorship $sponsorship Sponsorship Object.
  */
 function ss_show_payment_form_for_sponsorship( $sponsorship ) {
-	if ( ! $sponsorship->is_pending() ) {
+	if ( ! $sponsorship->is_approved() ) {
 		return;
 	}
 
@@ -288,4 +296,56 @@ function ss_form_render_field( $args, $wrap_field = true ) {
 			do_action( 'ss_form_field_' . $args['type'], $args );
 			break;
 	}
+}
+
+/**
+ * Format the postcode according to the country and length of the postcode.
+ *
+ * Copied from WooCommerce
+ *
+ * @param string $postcode Unformatted postcode.
+ * @param string $country  Base country.
+ * @return string
+ */
+function ss_format_postcode( $postcode, $country ) {
+	$postcode = ss_normalize_postcode( $postcode );
+
+	switch ( $country ) {
+		case 'CA':
+		case 'GB':
+			$postcode = trim( substr_replace( $postcode, ' ', -3, 0 ) );
+			break;
+		case 'IE':
+			$postcode = trim( substr_replace( $postcode, ' ', 3, 0 ) );
+			break;
+		case 'BR':
+		case 'PL':
+			$postcode = substr_replace( $postcode, '-', -3, 0 );
+			break;
+		case 'JP':
+			$postcode = substr_replace( $postcode, '-', 3, 0 );
+			break;
+		case 'PT':
+			$postcode = substr_replace( $postcode, '-', 4, 0 );
+			break;
+		case 'US':
+			$postcode = rtrim( substr_replace( $postcode, '-', 5, 0 ), '-' );
+			break;
+	}
+
+	return apply_filters( 'ss_format_postcode', $postcode, $country );
+}
+
+/**
+ * Normalize postcodes.
+ *
+ * Remove spaces and convert characters to uppercase.
+ *
+ * Copied from WooCommerce
+ *
+ * @param string $postcode Postcode.
+ * @return string
+ */
+function ss_normalize_postcode( $postcode ) {
+	return preg_replace( '/[\s\-]/', '', trim( strtoupper( $postcode ) ) );
 }

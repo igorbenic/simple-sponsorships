@@ -48,7 +48,7 @@ class Email_New_Sponsorship extends Email {
 	 * @return string
 	 */
 	public function get_content_html() {
-		 include Templates::get_template_part(
+		 Templates::get_template_part(
 			'emails/new-sponsorship',
 			'',
 			$this->data

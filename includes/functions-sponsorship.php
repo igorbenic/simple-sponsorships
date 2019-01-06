@@ -114,9 +114,9 @@ function ss_get_sponsorship( $id ) {
  */
 function ss_get_sponsorship_statuses() {
 	return apply_filters( 'ss_sponsorship_statuses', array(
-		'request'   => __( 'Request', 'simple-sponsorships' ),
-		'pending'   => __( 'Pending', 'simple-sponsorships' ),
-		'completed' => __( 'Completed', 'simple-sponsorships' ),
+		'request'  => __( 'Request', 'simple-sponsorships' ),
+		'approved' => __( 'Approved', 'simple-sponsorships' ),
+		'paid'     => __( 'Paid', 'simple-sponsorships' ),
 	));
 }
 

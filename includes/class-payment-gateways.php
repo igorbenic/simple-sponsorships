@@ -25,7 +25,7 @@ class Payment_Gateways {
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var WC_Payment_Gateways
+	 * @var Payment_Gateways
 	 * @since 2.1.0
 	 */
 	protected static $_instance = null;
