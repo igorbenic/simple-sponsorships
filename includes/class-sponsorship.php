@@ -99,6 +99,17 @@ class Sponsorship extends Custom_Data {
 	}
 
 	/**
+	 * Set the Sponsorship Status.
+	 *
+	 * @param $status
+	 */
+	public function set_status( $status ) {
+		if ( in_array( $status, array_keys( ss_get_sponsorship_statuses() ), true ) ) {
+			$this->update_data( 'status', $status );
+		}
+	}
+
+	/**
 	 * Return if the Sponsorship is pending payment.
 	 */
 	public function is_approved() {

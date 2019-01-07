@@ -123,6 +123,7 @@ class Plugin {
 		include_once 'includes/functions-forms.php';
 		include_once 'includes/functions-session.php';
 		include_once 'includes/functions-emails.php';
+		include_once 'includes/functions-gateways.php';
 
 		// Classes.
 		include_once 'includes/class-session.php';

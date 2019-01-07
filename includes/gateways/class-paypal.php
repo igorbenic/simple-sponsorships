@@ -4,6 +4,7 @@
  */
 
 namespace Simple_Sponsorships\Gateways;
+use Simple_Sponsorships\DB\DB_Sponsorships;
 
 /**
  * Class PayPal
@@ -53,13 +54,19 @@ class PayPal extends Payment_Gateway {
 				),
 			),
 			'paypal_invoice_prefix' => array(
-				'id'          => 'paypal_invoice_prefix',
-				'name'       => __( 'Invoice prefix', 'simple-sponsorships' ),
-				'type'        => 'text',
-				'description' => __( 'Please enter a prefix for your invoice numbers. If you use your PayPal account for multiple stores ensure this prefix is unique as PayPal will not allow orders with the same invoice number.', 'simple-sponsorships' ),
-				'default'     => 'SS-',
-				'desc_tip'    => true,
+				'id'        => 'paypal_invoice_prefix',
+				'name'      => __( 'Invoice prefix', 'simple-sponsorships' ),
+				'type'      => 'text',
+				'desc'      => __( 'Please enter a prefix for your invoice numbers. If you use your PayPal account for multiple stores ensure this prefix is unique as PayPal will not allow orders with the same invoice number.', 'simple-sponsorships' ),
+				'default'   => 'SS-',
+				'desc_tip'  => true,
 			),
+			'paypal_identity_token' => array(
+				'id'   => 'paypal_identity_token',
+				'name' => __( 'Identity Token', 'simple-sponsorships' ),
+				'type' => 'text',
+				'desc' => __( 'Enter your PayPal Identity Token to enable Payment Data Transfer (PDT).', 'simple-sponsorships' )
+			)
 		);
 	}
 
@@ -138,11 +145,14 @@ class PayPal extends Payment_Gateway {
 				'currency_code' => ss_get_currency(),
 				'charset'       => 'utf-8',
 				'rm'            => 2,
+				'no_shipping'   => '1',
+				'shipping'      => '0',
 				'upload'        => 1,
-				'return'        => esc_url_raw( add_query_arg( 'utm_nooverride', '1', $this->get_return_url( $sponsorship ) ) ),
-				'cancel_return' => esc_url_raw( $this->get_return_url( $sponsorship ) ),
+				'return'        => esc_url_raw( add_query_arg( 'payment_confirmation', 'paypal', $this->get_return_url( $sponsorship ) ) ),
+				'cancel_return' => esc_url_raw( add_query_arg( 'canceled', '1', $this->get_return_url( $sponsorship ) ) ),
 				//'image_url'     => esc_url_raw( $this->gateway->get_option( 'image_url' ) ),
 				'bn'            => 'SimpleSponsorships_BuyNow',
+				'cbt'           => get_bloginfo( 'name' ),
 				'invoice'       => $this->limit_length( $this->settings[ 'paypal_invoice_prefix' ] . $sponsorship->get_id(), 127 ),
 				'custom'        => wp_json_encode(
 					array(
@@ -179,7 +189,10 @@ class PayPal extends Payment_Gateway {
 			$scheme = 'http';
 		}
 
-		$notify_url = add_query_arg( 'ss-action', 'SS_PayPal', trailingslashit( home_url( '', $scheme ) ) );
+		$notify_url = add_query_arg( array(
+				'ss-listener' => 'paypal',
+			),
+			trailingslashit( home_url( '', $scheme ) ));
 
 		return esc_url_raw( $notify_url );
 	}
@@ -252,5 +265,300 @@ class PayPal extends Payment_Gateway {
 		);
 
 		return $this->fix_request_length( $sponsorship, $paypal_args );
+	}
+
+	/**
+	 * Processing the IPN
+	 */
+	public function process_webhooks() {
+		if ( ! empty( $_POST ) && $this->validate_ipn() ) { // WPCS: CSRF ok.
+			$posted = wp_unslash( $_POST ); // WPCS: CSRF ok, input var ok.
+			$this->valid_response( $posted );
+			exit;
+		}
+	}
+
+	/**
+	 * Process PDT.
+	 */
+	public function process_pdt() {
+		$token   = $this->settings['paypal_identity_token'];
+
+		if ( ! $token ) {
+			return;
+		}
+
+		$sponsorship = $this->get_paypal_sponsorship( ss_clean( wp_unslash( $_REQUEST['cm'] ) ) );
+
+		if ( ! $sponsorship ) {
+			return;
+		}
+
+		if ( $sponsorship->is_status( 'paid' ) ) {
+			return;
+		}
+
+		$status      = ss_clean( strtolower( wp_unslash( $_REQUEST['st'] ) ) ); // WPCS: input var ok, CSRF ok, sanitization ok.
+		$amount      = ss_clean( wp_unslash( $_REQUEST['amt'] ) ); // WPCS: input var ok, CSRF ok, sanitization ok.
+		$transaction = ss_clean( wp_unslash( $_REQUEST['tx'] ) ); // WPCS: input var ok, CSRF ok, sanitization ok.
+
+		$transaction_result = $this->validate_transaction( $transaction );
+
+		if ( $transaction_result ) {
+			$sponsorship->update_data( '_paypal_status', $status );
+			$sponsorship->update_data( 'transaction_id', $transaction );
+
+			if ( 'completed' === $status ) {
+				if ( number_format( $sponsorship->get_data( 'amount' ), 2, '.', '' ) !== number_format( $amount, 2, '.', '' ) ) {
+					$sponsorship->set_status( 'approved' );
+				} else {
+					$sponsorship->set_status( 'paid' );
+
+					// Log paypal transaction fee and payment type.
+					if ( ! empty( $transaction_result['mc_fee'] ) ) {
+						$sponsorship->update_data( '_paypal_transaction_fee', $transaction_result['mc_fee'] );
+					}
+					if ( ! empty( $transaction_result['payment_type'] ) ) {
+						$sponsorship->update_data( '_payment_type', $transaction_result['payment_type'] );
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Validate a PDT transaction to ensure its authentic.
+	 *
+	 * @param  string $transaction TX ID.
+	 * @return bool|array False or result array if successful and valid.
+	 */
+	protected function validate_transaction( $transaction ) {
+		$pdt = array(
+			'body'        => array(
+				'cmd' => '_notify-synch',
+				'tx'  => $transaction,
+				'at'  => $this->settings['paypal_identity_token'],
+			),
+			'timeout'     => 60,
+			'httpversion' => '1.1',
+			'user-agent'  => 'SimpleSponsorships/' . SS()->version,
+		);
+
+		// Post back to get a response.
+		$response = wp_safe_remote_post( $this->testmode ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr', $pdt );
+
+		if ( is_wp_error( $response ) || strpos( $response['body'], 'SUCCESS' ) !== 0 ) {
+			return false;
+		}
+
+		// Parse transaction result data.
+		$transaction_result  = array_map( 'ss_clean', array_map( 'urldecode', explode( "\n", $response['body'] ) ) );
+		$transaction_results = array();
+
+		foreach ( $transaction_result as $line ) {
+			$line                            = explode( '=', $line );
+			$transaction_results[ $line[0] ] = isset( $line[1] ) ? $line[1] : '';
+		}
+
+		if ( ! empty( $transaction_results['charset'] ) && function_exists( 'iconv' ) ) {
+			foreach ( $transaction_results as $key => $value ) {
+				$transaction_results[ $key ] = iconv( $transaction_results['charset'], 'utf-8', $value );
+			}
+		}
+
+		return $transaction_results;
+	}
+
+	/**
+	 * Check PayPal IPN validity.
+	 *
+	 * @return boolean
+	 */
+	public function validate_ipn() {
+
+		// Get received values from post data.
+		$validate_ipn        = wp_unslash( $_POST ); // WPCS: CSRF ok, input var ok.
+		$validate_ipn['cmd'] = '_notify-validate';
+
+		// Send back post vars to paypal.
+		$params = array(
+			'body'        => $validate_ipn,
+			'timeout'     => 60,
+			'httpversion' => '1.1',
+			'compress'    => false,
+			'decompress'  => false,
+			'user-agent'  => 'SimpleSponsorships/' . SS()->version,
+		);
+
+		// Post back to get a response.
+		$response = wp_safe_remote_post( $this->testmode ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr', $params );
+
+		// Check to see if the request was valid.
+		if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && strstr( $response['body'], 'VERIFIED' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * There was a valid response.
+	 *
+	 * @param  array $posted Post data after wp_unslash.
+	 */
+	public function valid_response( $posted ) {
+		$sponsorship = ! empty( $posted['custom'] ) ? $this->get_paypal_sponsorship( $posted['custom'] ) : false;
+
+		if ( $sponsorship ) {
+
+			// Lowercase returned variables.
+			$posted['payment_status'] = strtolower( $posted['payment_status'] );
+
+			if ( method_exists( $this, 'payment_status_' . $posted['payment_status'] ) ) {
+				call_user_func( array( $this, 'payment_status_' . $posted['payment_status'] ), $sponsorship, $posted );
+			}
+		}
+	}
+
+	/**
+	 * Check payment amount from IPN matches the order.
+	 *
+	 * @param \Simple_Sponsorships\Sponsorship $sponsorship  Order object.
+	 * @param int      $amount Amount to validate.
+	 */
+	protected function validate_amount( $sponsorship, $amount ) {
+		if ( number_format( $sponsorship->get_data( 'amount' ), 2, '.', '' ) !== number_format( $amount, 2, '.', '' ) ) {
+			exit;
+		}
+	}
+
+	/**
+	 * Save important data from the IPN to the order.
+	 *
+	 * @param \Simple_Sponsorships\Sponsorship $sponsorship  Order object.
+	 * @param array    $posted Posted data.
+	 */
+	protected function save_paypal_meta_data( $sponsorship, $posted ) {
+		if ( ! empty( $posted['payment_type'] ) ) {
+			$sponsorship->update_data( '_payment_type', ss_clean( $posted['payment_type'] ) );
+		}
+		if ( ! empty( $posted['txn_id'] ) ) {
+			$sponsorship->update_data( '_transaction_id', ss_clean( $posted['txn_id'] ) );
+		}
+		if ( ! empty( $posted['payment_status'] ) ) {
+			$sponsorship->update_data( '_paypal_status', ss_clean( $posted['payment_status'] ) );
+		}
+	}
+
+	/**
+	 * Handle a completed payment.
+	 *
+	 * @param \Simple_Sponsorships\Sponsorship $sponsorship  Order object.
+	 * @param array    $posted Posted data.
+	 */
+	protected function payment_status_completed( $sponsorship, $posted ) {
+		// Already Paid.
+		if ( $sponsorship->is_status( 'paid' ) ) {
+			exit;
+		}
+
+		//$this->validate_transaction_type( $posted['txn_type'] );
+		//$this->validate_currency( $order, $posted['mc_currency'] );
+		$this->validate_amount( $sponsorship, $posted['mc_gross'] );
+		//$this->validate_receiver_email( $order, $posted['receiver_email'] );
+		$this->save_paypal_meta_data( $sponsorship, $posted );
+
+		if ( 'completed' === $posted['payment_status'] ) {
+
+			$sponsorship->set_status( 'paid' );
+
+
+			if ( ! empty( $posted['mc_fee'] ) ) {
+				// Log paypal transaction fee.
+				$sponsorship->update_data( '_paypal_transaction_fee', ss_clean( $posted['mc_fee'] ) );
+			}
+		}
+	}
+
+	/**
+	 * Handle a pending payment.
+	 *
+	 * @param \Simple_Sponsorships\Sponsorship $sponsorship  Order object.
+	 * @param array    $posted Posted data.
+	 */
+	protected function payment_status_pending( $sponsorship, $posted ) {
+		$this->payment_status_completed( $sponsorship, $posted );
+	}
+
+	/**
+	 * Handle a failed payment.
+	 *
+	 * @param \Simple_Sponsorships\Sponsorship $sponsorship  Order object.
+	 * @param array    $posted Posted data.
+	 */
+	protected function payment_status_failed( $sponsorship, $posted ) {
+		/* translators: %s: payment status. */
+		// For now, we do nothing on fail.
+	}
+
+	/**
+	 * Handle a denied payment.
+	 *
+	 * @param \Simple_Sponsorships\Sponsorship $sponsorship  Order object.
+	 * @param array    $posted Posted data.
+	 */
+	protected function payment_status_denied( $sponsorship, $posted ) {
+		$this->payment_status_failed( $sponsorship, $posted );
+	}
+
+	/**
+	 * Handle an expired payment.
+	 *
+	 * @param \Simple_Sponsorships\Sponsorship $sponsorship  Order object.
+	 * @param array    $posted Posted data.
+	 */
+	protected function payment_status_expired( $sponsorship, $posted ) {
+		$this->payment_status_failed( $sponsorship, $posted );
+	}
+
+	/**
+	 * Handle a voided payment.
+	 *
+	 * @param \Simple_Sponsorships\Sponsorship $sponsorship  Order object.
+	 * @param array    $posted Posted data.
+	 */
+	protected function payment_status_voided( $sponsorship, $posted ) {
+		$this->payment_status_failed( $sponsorship, $posted );
+	}
+
+	/**
+	 * Get the order from the PayPal 'Custom' variable.
+	 *
+	 * @param  string $raw_custom JSON Data passed back by PayPal.
+	 * @return bool|\Simple_Sponsorships\Sponsorship object
+	 */
+	protected function get_paypal_sponsorship( $raw_custom ) {
+		// We have the data in the correct format, so get the order.
+		$custom = json_decode( $raw_custom );
+		if ( $custom && is_object( $custom ) ) {
+			$sponsorship_id  = $custom->sponsorship_id;
+			$sponsorship_key = $custom->sponsorship_key;
+		} else {
+			return false;
+		}
+
+		$sponsorship = ss_get_sponsorship( $sponsorship_id );
+
+		if ( ! $sponsorship ) {
+			$db  = new DB_Sponsorships();
+			$rows = $db->get_by_column( 'ss_key', $sponsorship_key );
+			$sponsorship    = ss_get_sponsorship( $rows[0]['ID'] );
+		}
+
+		if ( ! $sponsorship || $sponsorship->get_data( 'ss_key' ) !== $sponsorship_key ) {
+			return false;
+		}
+
+		return $sponsorship;
 	}
 }

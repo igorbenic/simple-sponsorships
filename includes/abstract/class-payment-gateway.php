@@ -389,4 +389,9 @@ abstract class Payment_Gateway {
 	public function can_refund_sponsorship( $sponsorship ) {
 		return $sponsorship && $this->supports( 'refunds' );
 	}
+
+	/**
+	 * Each gateway has it's own way to process webhooks.
+	 */
+	public function process_webhooks() {}
 }

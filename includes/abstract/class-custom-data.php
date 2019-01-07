@@ -148,7 +148,13 @@ abstract class Custom_Data {
 	 */
 	public function add_data( $key, $value ) {
 		$db = $this->get_db_object();
-		$db->add_meta( $this->get_id(), $key, $value );
+		if ( $this->is_table_column( $key ) ) {
+			$data = array();
+			$data[ $key ] = $value;
+			$db->update( $this->get_id(), $data );
+		} else {
+			$db->add_meta( $this->get_id(), $key, $value );
+		}
 		$this->set_data( $key, $value );
 	}
 
@@ -160,7 +166,13 @@ abstract class Custom_Data {
 	 */
 	public function update_data( $key, $value ) {
 		$db = $this->get_db_object();
-		$db->update_meta( $this->get_id(), $key, $value );
+		if ( $this->is_table_column( $key ) ) {
+			$data = array();
+			$data[ $key ] = $value;
+			$db->update( $this->get_id(), $data );
+		} else {
+			$db->update_meta( $this->get_id(), $key, $value );
+		}
 		$this->set_data( $key, $value );
 	}
 
