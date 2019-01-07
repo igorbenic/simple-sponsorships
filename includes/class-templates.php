@@ -8,6 +8,10 @@
 
 namespace Simple_Sponsorships;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	return;
+}
+
 /**
  * Class Templates
  *

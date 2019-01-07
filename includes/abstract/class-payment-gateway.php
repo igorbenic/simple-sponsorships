@@ -394,4 +394,13 @@ abstract class Payment_Gateway {
 	 * Each gateway has it's own way to process webhooks.
 	 */
 	public function process_webhooks() {}
+
+	/**
+	 * Complete the payment.
+	 *
+	 * @param \Simple_Sponsorships\Sponsorship $sponsorship Object.
+	 */
+	public function complete( $sponsorship ) {
+		$sponsorship->activate();
+	}
 }

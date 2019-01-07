@@ -112,7 +112,7 @@ class DB_Sponsorships extends DB {
 		meta_key varchar(255) DEFAULT NULL,
 		meta_value longtext,
 		PRIMARY KEY meta_id (meta_id),
-		KEY sssponshorship_id (sssponshorship_id),
+		KEY sssponsorship_id (sssponsorship_id),
 		KEY meta_key (meta_key)
 		) CHARACTER SET utf8 COLLATE utf8_general_ci;";
 

@@ -43,7 +43,7 @@ class Packages {
 		$posted_data = isset( $_POST['ss_packages'] ) ? $_POST['ss_packages'] : array();
 		$title       = isset( $posted_data['title'] ) ? sanitize_text_field( $posted_data['title'] ) : '';
 		$description = isset( $posted_data['description'] ) ? sanitize_text_field( $posted_data['description'] ) : '';
-		$type        = isset( $posted_data['type'] ) ? sanitize_text_field( $posted_data['type'] ) : 'normal';
+		$quantity    = isset( $posted_data['quantity'] ) ? absint( $posted_data['quantity'] ) : 1;
 		$price       = isset( $posted_data['price'] ) ? floatval( $posted_data['price'] ) : 0;
 
 		if ( ! $title ) {
@@ -56,10 +56,10 @@ class Packages {
 
 		$db = new DB_Packages();
 		$db_data = array(
-			'title' => $title,
+			'title'       => $title,
 			'description' => $description,
-			'type' => $type,
-			'price' => $price
+			'quantity'    => $quantity,
+			'price'       => $price
 		);
 
 		$level_id = $db->insert( $db_data, array( '%s', '%s', '%s', '%d' ) );
@@ -84,7 +84,7 @@ class Packages {
 		$posted_data = isset( $_POST['ss_packages'] ) ? $_POST['ss_packages'] : array();
 		$title       = isset( $posted_data['title'] ) ? sanitize_text_field( $posted_data['title'] ) : '';
 		$description = isset( $posted_data['description'] ) ? sanitize_text_field( $posted_data['description'] ) : '';
-		$type        = isset( $posted_data['type'] ) ? sanitize_text_field( $posted_data['type'] ) : 'normal';
+		$quantity    = isset( $posted_data['quantity'] ) ? absint( $posted_data['quantity'] ) : 1;
 		$price       = isset( $posted_data['price'] ) ? floatval( $posted_data['price'] ) : 0;
 		$id          = isset( $posted_data['id'] ) ? absint( $posted_data['id'] ) : 0;
 
@@ -102,10 +102,10 @@ class Packages {
 
 		$db = new DB_Packages();
 		$db_data = array(
-			'title' => $title,
+			'title'       => $title,
 			'description' => $description,
-			'type' => $type,
-			'price' => $price
+			'quantity'    => $quantity,
+			'price'       => $price
 		);
 
 		$ret = $db->update( $id, $db_data, array( '%s', '%s', '%s', '%d' ) );
@@ -171,12 +171,13 @@ class Packages {
 				'title' => __( 'Price', 'simple-sponsorships' ),
 				'field_class' => 'widefat',
 			),
-			'type' => array(
-				'id' => 'type',
-				'type' => 'select',
-				'title' => __( 'Type', 'simple-sponsorships' ),
+			'quantity' => array(
+				'id' => 'quantity',
+				'type' => 'number',
+				'title' => __( 'Quantity', 'simple-sponsorships' ),
 				'field_class' => 'widefat',
-				'options' => self::get_types()
+				'default' => '1',
+				'desc' => __( 'How many content will this package allow to subscribe to. For example, a 12 episode package, would have 12 here.', 'simple-sponsorships' ),
 			)
 		);
 

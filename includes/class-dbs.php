@@ -46,5 +46,7 @@ class Databases {
 		$sponsorship_schema = $db_sponsorships->get_schema();
 
 		@dbDelta( $sponsorship_schema );
+
+		$bla = '';
 	}
 }

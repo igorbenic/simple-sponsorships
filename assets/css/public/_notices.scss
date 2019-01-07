@@ -1,0 +1,24 @@
+.ss-notice {
+  padding: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  background: $yellow;
+  border-radius: 3px;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 1em;
+
+  p:last-child {
+    margin: 0;
+  }
+
+  &.ss-notice-error {
+    background: $red;
+    color: $white;
+  }
+
+  &.ss-notice-success {
+    background: $green;
+    color: $white;
+  }
+}

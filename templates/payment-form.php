@@ -42,6 +42,7 @@ do_action( 'ss_before_sponsor_form' );
 				current( $available_gateways )->set_current();
 			}
 		    ?>
+            <h3><?php esc_html_e( 'Payment Methods', 'simple-sponsorships' ); ?></h3>
             <ul class="ss-payment-gateways">
             <?php
 		    foreach ( $available_gateways as $gateway ) {

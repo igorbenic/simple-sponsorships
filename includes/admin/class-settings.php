@@ -90,6 +90,7 @@ class Settings {
 		$settings = array(
 			'general' => array(
 				'main' => array(
+					/* For now, let's leave manual approval always on.
 					'manual_approve' => array(
 						'id'   => 'manual_approve',
 						'name' => __( 'Approve', 'simple-sponsorships' ),
@@ -97,7 +98,7 @@ class Settings {
 						'type' => 'checkbox',
 						'tooltip_title' => __( 'Page Settings', 'simple-sponsorships' ),
 						'tooltip_desc'  => __( 'Configure Pages where Sponsors can see their settings.','simple-sponsorships' ),
-					),
+					),*/
 					'page_settings' => array(
 						'id'   => 'page_settings',
 						'name' => '<h3>' . __( 'Pages', 'simple-sponsorships' ) . '</h3>',

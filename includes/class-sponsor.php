@@ -24,6 +24,8 @@ class Sponsor extends Custom_Data {
 		'name'         => 'post_title',
 		'post_content' => 'post_content',
 		'post_type'    => 'post_type',
+		'post_status'  => 'post_status',
+		'status'       => 'post_status'
 	);
 
 
@@ -36,5 +38,35 @@ class Sponsor extends Custom_Data {
 		}
 
 		return $this->db;
+	}
+
+	/**
+	 * Is the Sponsor active?
+	 * It should check for any active sponsorships if we don't have any status.
+	 */
+	public function is_active() {
+		$status = $this->get_data( 'post_status' );
+		return $status === 'ss-active';
+	}
+
+	/**
+	 * Add Sponsored Quantity.
+	 *
+	 * @param int $qty Quantity
+	 */
+	public function add_sponsored_quantity( $qty ) {
+		$sponsored = $this->get_data( '_sponsored_quantity', 1 );
+		$sponsored = $sponsored + $qty;
+		$this->update_data( '_sponsored_quantity', $sponsored );
+	}
+
+	/**
+	 * Maybe Activate the Sponsor
+	 */
+	public function maybe_activate() {
+		$status = $this->get_data( 'post_status' );
+		if ( 'ss-active' !== $status ) {
+			$this->update_data( 'post_status', 'ss-active' );
+		}
 	}
 }

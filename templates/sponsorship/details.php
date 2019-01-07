@@ -18,6 +18,16 @@ if ( $sponsorship->is_request() ) {
 }
 ?>
 <table class="ss-sponsorship-details">
+    <tr>
+        <th>
+			<?php esc_html_e( 'Status', 'simple-sponsorships' ); ?>
+        </th>
+        <td>
+			<?php
+			ss_the_sponsorship_status( $sponsorship->get_data( 'status' ) );
+            ?>
+        </td>
+    </tr>
 	<tr>
 		<th>
 			<?php esc_html_e( 'Amount', 'simple-sponsorships' ); ?>

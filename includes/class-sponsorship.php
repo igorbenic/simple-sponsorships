@@ -75,6 +75,17 @@ class Sponsorship extends Custom_Data {
 	}
 
 	/**
+	 * Get the package for this sponsorship.
+	 *
+	 * @return \Simple_Sponsorships\Package Package object.
+	 */
+	public function get_package() {
+		$package_id = $this->get_data( 'package' );
+		$package    = new Package( $package_id );
+		return $package;
+	}
+
+	/**
 	 * Get the view link
 	 *
 	 * @return false|string
@@ -107,6 +118,20 @@ class Sponsorship extends Custom_Data {
 		if ( in_array( $status, array_keys( ss_get_sponsorship_statuses() ), true ) ) {
 			$this->update_data( 'status', $status );
 		}
+	}
+
+	/**
+	 * Activating the Sponsorship.
+	 */
+	public function activate() {
+		// Setting it to Paid.
+		$this->set_status( 'paid' );
+		ss_add_notice( sprintf( __( 'Sponsorship #%d was successfully paid', 'simple-sponsorship' ), $this->get_id() ), 'success' );
+
+		$sponsor = $this->get_sponsor_data();
+		$sponsor->add_sponsored_quantity( $this->get_package()->get_data( 'quantity', 1 ) );
+		$sponsor->maybe_activate();
+		do_action( 'ss_sponsorship_activated', $this );
 	}
 
 	/**

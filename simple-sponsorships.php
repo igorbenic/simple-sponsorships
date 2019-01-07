@@ -148,6 +148,8 @@ class Plugin {
 		// Emails.
 		include_once 'includes/emails/class-email-new-sponsorship.php';
 		include_once 'includes/emails/class-email-pending-sponsorship.php';
+		include_once 'includes/emails/class-email-activated-sponsorship.php';
+		include_once 'includes/emails/class-email-customer-invoice.php';
 
 		// DB.
 		include_once 'includes/class-dbs.php';
@@ -168,14 +170,27 @@ class Plugin {
 	public function hooks() {
 		add_action( 'plugins_loaded', array( $this, 'run' ) );
 		add_action( 'init', array( $this, 'process_actions' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 
 		add_action( 'ss_sponsorship_details', 'ss_sponsorship_details' );
 		add_action( 'ss_sponsorship_sponsor', 'ss_sponsorship_sponsor' );
+		add_action( 'ss_sponsorship_customer_details', 'ss_sponsorship_customer_details' );
 		add_action( 'ss_sponsor_form_sponsorship_created', 'ss_email_on_new_sponsorhip' );
-		add_action( 'ss_sponsorship_status_updated', 'ss_email_on_pending_sponsorship', 20, 3 );
+		add_action( 'ss_sponsorship_activated', 'ss_email_on_activated_sponsorship' );
+		add_action( 'ss_sponsorship_activated', 'ss_email_invoice_on_activated_sponsorship' );
+		add_action( 'ss_sponsorship_status_updated', 'ss_email_on_approved_sponsorship', 20, 3 );
 		add_action( 'ss_sponsor_form', 'ss_process_sponsor_form' );
 		add_action( 'ss_payment_form', 'ss_process_payment_form' );
 		add_action( 'ss_sponsorship_form', 'ss_show_payment_form_for_sponsorship' );
+	}
+
+	/**
+	 * Enqueueing Scripts and Styles.
+	 */
+	public function enqueue() {
+
+		wp_enqueue_style( 'ss-style', SS_PLUGIN_URL . '/assets/dist/css/public.css', array(), $this->version );
+		wp_enqueue_script( 'ss-script', SS_PLUGIN_URL . '/assets/dist/js/public.js', array( 'jquery' ), $this->version, true );
 	}
 
 	/**

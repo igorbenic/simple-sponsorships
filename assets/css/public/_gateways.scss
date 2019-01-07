@@ -1,0 +1,30 @@
+.ss-payment-gateways {
+  padding: 0;
+  margin: 0 0 1em 0;
+  list-style-type: none;
+
+  li {
+    display: block;
+    background: $white;
+    border: 1px solid darken( $white, 20 );
+    padding: 10px 10px 10px 30px;
+    position: relative;
+    height: 50px;
+    line-height: 30px;
+
+    input {
+      position: absolute;
+      left: 10px;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+
+    label {
+      display: block;
+      margin: 0;
+      width: 100%;
+      cursor: pointer;
+    }
+  }
+}

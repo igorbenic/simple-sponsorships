@@ -9,6 +9,9 @@ use Simple_Sponsorships\Admin\Settings;
 	<a href="<?php echo admin_url( 'edit.php?post_type=sponsors&page=ss-sponsorships' ); ?>" class="add-new-h2">
 		<?php esc_html_e( 'Back to Sponsorships', 'simple-sponsorships' ); ?>
 	</a>
+    <a href="<?php echo $sponsorship->get_view_link(); ?>" class="add-new-h2">
+		<?php esc_html_e( 'View', 'simple-sponsorships' ); ?>
+    </a>
 </h1>
 <?php
 if ( $errors ) {

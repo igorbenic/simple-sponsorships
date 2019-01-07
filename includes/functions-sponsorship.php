@@ -3,6 +3,10 @@
  * Globally available functions for Sponsorships and similar.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	return;
+}
+
 /**
  * Get Currencies
  *
@@ -121,6 +125,17 @@ function ss_get_sponsorship_statuses() {
 }
 
 /**
+ * It will echo the status text.
+ *
+ * @return array
+ */
+function ss_the_sponsorship_status( $status ) {
+	$statuses = ss_get_sponsorship_statuses();
+
+	echo isset( $statuses[ $status ] ) ? $statuses[ $status ] : __( 'Unknown Status', 'simple-sponsorships' );
+}
+
+/**
  * Create a Sponsorship
  *
  * @param array $args
@@ -176,4 +191,17 @@ function ss_sponsorship_sponsor( $sponsorship ) {
 	}
 
 	\Simple_Sponsorships\Templates::get_template_part( 'sponsorship/sponsor', '', array( 'sponsorship' => $sponsorship ) );
+}
+
+/**
+ * Displaying Sponsorship Details.
+ *
+ * @param integer|\Simple_Sponsorships\Sponsorship $sponsorship
+ */
+function ss_sponsorship_customer_details( $sponsorship ) {
+	if ( is_integer( $sponsorship ) ) {
+		$sponsorship = new \Simple_Sponsorships\Sponsorship( $sponsorship );
+	}
+
+	\Simple_Sponsorships\Templates::get_template_part( 'sponsorship/customer-details', '', array( 'sponsorship' => $sponsorship ) );
 }

@@ -3,6 +3,10 @@
  * Functions for gateways. Globally available.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	return;
+}
+
 add_action( 'init', 'ss_process_gateways' );
 
 /**

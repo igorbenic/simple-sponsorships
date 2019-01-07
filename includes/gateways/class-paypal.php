@@ -312,7 +312,7 @@ class PayPal extends Payment_Gateway {
 				if ( number_format( $sponsorship->get_data( 'amount' ), 2, '.', '' ) !== number_format( $amount, 2, '.', '' ) ) {
 					$sponsorship->set_status( 'approved' );
 				} else {
-					$sponsorship->set_status( 'paid' );
+					$this->complete( $sponsorship );
 
 					// Log paypal transaction fee and payment type.
 					if ( ! empty( $transaction_result['mc_fee'] ) ) {

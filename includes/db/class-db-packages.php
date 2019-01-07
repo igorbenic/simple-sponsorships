@@ -95,8 +95,8 @@ class DB_Packages extends DB {
 		ID bigint(20) NOT NULL AUTO_INCREMENT,
 		title varchar(200) NOT NULL,
 		description longtext NOT NULL,
-		type varchar(36) NOT NULL,
 		price tinytext NOT NULL,
+		quantity int(3) NOT NULL,
 		PRIMARY KEY ID (ID)
 		) CHARACTER SET utf8 COLLATE utf8_general_ci;";
 

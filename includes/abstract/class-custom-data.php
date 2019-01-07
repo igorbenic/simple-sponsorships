@@ -111,7 +111,7 @@ abstract class Custom_Data {
 	 *
 	 * @param string|array $key Key or array of keys for data.
 	 */
-	public function get_data( $key ) {
+	public function get_data( $key, $default = '' ) {
 		if ( ! isset( $this->data[ $key ] ) ) {
 			// If we have no ID, we can't get DB data.
 			if ( $this->id ) {
@@ -122,12 +122,10 @@ abstract class Custom_Data {
 					$value = $db->get_meta( $this->id, $key, true );
 					$this->set_data( $key, $value );
 				}
-			} else {
-				return '';
 			}
 		}
 
-		return $this->data[ $key ];
+		return isset( $this->data[ $key ] ) ? $this->data[ $key ] : $default;
 	}
 
 	/**

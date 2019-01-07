@@ -24,7 +24,7 @@ class Package extends Custom_Data {
 		'id'          => 'ID',
 		'title'       => 'title',
 		'description' => 'description',
-		'type'        => 'type',
+		'quantity'    => 'quantity',
 		'price'       => 'price'
 	);
 
@@ -37,6 +37,13 @@ class Package extends Custom_Data {
 		}
 
 		return $this->db;
+	}
+
+	/**
+	 * @return mixed|void
+	 */
+	public function is_available() {
+		return apply_filters( 'ss_package_is_available', true, $this );
 	}
 
 }

@@ -146,6 +146,7 @@ abstract class DB {
 			foreach ( $data as $column => $value ) {
 				if ( $value !== $old[ $column ] ) {
 					do_action( 'ss_' . $this->get_type() . '_' . $column . '_updated', $value, $old[ $column ], $id );
+					do_action( 'ss_' . $this->get_type() . '_' . $column . '_' . $value, $id );
 				}
 			}
 		}
