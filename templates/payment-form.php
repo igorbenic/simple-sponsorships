@@ -9,6 +9,10 @@ if ( ! $sponsorship ) {
 	return;
 }
 
+if ( ! ss_payments_enabled() ) {
+    return;
+}
+
 $gateways           = SS()->payment_gateways();
 $available_gateways = $gateways->get_available_payment_gateways();
 

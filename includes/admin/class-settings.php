@@ -99,6 +99,15 @@ class Settings {
 						'tooltip_title' => __( 'Page Settings', 'simple-sponsorships' ),
 						'tooltip_desc'  => __( 'Configure Pages where Sponsors can see their settings.','simple-sponsorships' ),
 					),*/
+					'content_types' => array(
+						'id'          => 'content_types',
+						'name'        => __( 'Content Types', 'simple-sponsorships' ),
+						'desc'        => __( 'Choose what content type can be sponsored. This will enable a box on each content to add sponsors.', 'simple-sponsorships' ),
+						'type'        => 'multicheck',
+						'options'     => $this->get_post_types(),
+						'placeholder' => __( 'Select a Type', 'simple-sponsorships' ),
+						'default'     => array( 'post', 'page' ),
+					),
 					'page_settings' => array(
 						'id'   => 'page_settings',
 						'name' => '<h3>' . __( 'Pages', 'simple-sponsorships' ) . '</h3>',
@@ -129,6 +138,13 @@ class Settings {
 			),
 			'gateways' => apply_filters( 'ss_settings_gateways', array(
 				'main' => array(
+					'enable_payments' => array(
+						'id'      => 'enable_payments',
+						'name'    => __( 'Enable Payments', 'simple-sponsorships' ),
+						'type'    => 'checkbox',
+						'value' => '1',
+
+					),
 					'currency' => array(
 						'id'      => 'currency',
 						'name'    => __( 'Currency', 'simple-sponsorships' ),
@@ -167,6 +183,22 @@ class Settings {
 
 
 		return $this->pages;
+	}
+
+	/**
+	 * Return an array with pages
+	 *
+	 * @return array
+	 */
+	public function get_post_types() {
+
+		$post_types  = get_post_types( '', 'objects' );
+		$_post_types = array();
+
+		foreach ( $post_types as $type ) {
+			$_post_types[ $type->name ] = $type->label;
+		}
+		return $_post_types;
 	}
 
 	/**
@@ -628,7 +660,7 @@ class Settings {
 					$html .= '<input type="hidden" ' . $name . ' value="-1" />';
 					foreach( $args['options'] as $key => $option ):
 						if( isset( $args['value'][ $key ] ) ) { $enabled = $option; } else { $enabled = NULL; }
-						$html .= '<input name="' . $id . '[' . self::sanitize_key( $key ) . ']" id="' . $id . '[' . self::sanitize_key( $key ) . ']" class="' . $class . '" type="checkbox" value="' . esc_attr( $option ) . '" ' . checked($option, $enabled, false) . '/>&nbsp;';
+						$html .= '<input name="' . $id . '[' . self::sanitize_key( $key ) . ']" id="' . $id . '[' . self::sanitize_key( $key ) . ']" class="' . $class . '" type="checkbox" value="' . esc_attr( $option ) . '" ' . checked( $option, $enabled, false) . '/>&nbsp;';
 						$html .= '<label for="' . $id . '[' . self::sanitize_key( $key ) . ']">' . wp_kses_post( $option ) . '</label><br/>';
 					endforeach;
 					$html .= '<p class="description">' . $args['desc'] . '</p>';

@@ -117,4 +117,5 @@ class Content_Types {
 			register_post_status( $status, $values );
 		}
 	}
+
 }

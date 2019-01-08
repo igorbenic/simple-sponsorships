@@ -53,18 +53,3 @@ function ss_get_packages() {
 	$db = new \Simple_Sponsorships\DB\DB_Packages();
 	return $db->get_all();
 }
-
-/**
- * Get all Sponsors.
- *
- * @return array
- */
-function ss_get_sponsors() {
-	$args = apply_filters( 'ss_get_sponsors_args', array(
-		'post_type'      => 'sponsors',
-		'post_status'    => array( 'publish' ),
-		'posts_per_page' => -1
-	));
-
-	return get_posts( $args );
-}

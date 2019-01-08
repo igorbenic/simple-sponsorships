@@ -28,6 +28,7 @@ class Admin {
 		include_once 'class-settings.php';
 		include_once 'class-packages.php';
 		include_once 'class-sponsorships.php';
+		include_once 'class-sponsors.php';
 		include_once 'functions-settings.php';
 	}
 
@@ -65,7 +66,8 @@ class Admin {
 		$admin_pages = array(
 			'sponsors_page_ss-sponsorships',
 			'sponsors_page_ss-packages',
-			'sponsors_page_ss-settings'
+			'sponsors_page_ss-settings',
+			'widgets.php',
 		);
 
 		$enqueue = false;
@@ -86,6 +88,12 @@ class Admin {
 
 		if ( $enqueue ) {
 			wp_enqueue_script( 'ss-admin-js', SS_PLUGIN_URL . '/assets/dist/js/admin.js', array( 'jquery' ), SS_VERSION, true );
+			wp_localize_script( 'ss-admin-js', 'ss_admin', array(
+				'statuses' => array(
+					'ss-active'   => __( 'Active', 'simple-sponsorships' ),
+					'ss-inactive' => __( 'Inactive', 'simple-sponsorships' ),
+				)
+			));
 
 			wp_enqueue_style( 'ss-admin-css', SS_PLUGIN_URL . '/assets/dist/css/admin.css', array(), SS_VERSION );
 		}

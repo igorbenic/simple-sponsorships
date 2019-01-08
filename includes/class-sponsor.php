@@ -20,6 +20,7 @@ class Sponsor extends Custom_Data {
 	 * @var array
 	 */
 	protected $table_columns = array(
+		'ID'           => 'ID',
 		'id'           => 'ID',
 		'name'         => 'post_title',
 		'post_content' => 'post_content',
@@ -27,6 +28,47 @@ class Sponsor extends Custom_Data {
 		'post_status'  => 'post_status',
 		'status'       => 'post_status'
 	);
+
+	/**
+	 * Populate data from a Post object.
+	 *
+	 * @param \WP_Post $post Post object.
+	 */
+	public function populate_from_post( $post ) {
+		$object = (array) $post;
+		$this->set_id( $object['ID'] );
+		foreach ( $object as $column => $value ) {
+			$this->set_data( $column, $value );
+			$additional_keys = array();
+			foreach ( $this->table_columns as $key => $table_column ) {
+				if ( $column === $table_column && $key !== $column ) {
+					$additional_keys[] = $key;
+				}
+			}
+			foreach ( $additional_keys as $key ) {
+				$this->set_data( $key, $value );
+			}
+		}
+	}
+
+	/**
+	 * Return the link to the Sponsor.
+	 *
+	 * @return false|string
+	 */
+	public function get_link() {
+		if ( ! $this->get_id() ) {
+			return '';
+		}
+
+		$link = $this->get_data( 'website', '' );
+
+		if ( ! $link ) {
+			$link = get_permalink( $this->get_id() );
+		}
+
+		return $link;
+	}
 
 
 	/**

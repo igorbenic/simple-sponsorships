@@ -7,6 +7,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
+/**
+ * Return if payments are enabled.
+ *
+ * @return bool
+ */
+function ss_payments_enabled() {
+	return '1' === ss_get_option( 'enable_payments', '1' );
+}
+
 add_action( 'init', 'ss_process_gateways' );
 
 /**

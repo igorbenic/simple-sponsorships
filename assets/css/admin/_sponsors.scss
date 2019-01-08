@@ -1,0 +1,13 @@
+.ss-form-field {
+
+  label {
+    font-weight: 600;
+  }
+
+  input {
+    &:not([type=checkbox]):not([type=radio]) {
+      display: block;
+      width: 100%;
+    }
+  }
+}

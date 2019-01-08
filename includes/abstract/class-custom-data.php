@@ -139,6 +139,17 @@ abstract class Custom_Data {
 	}
 
 	/**
+	 * Set the data.
+	 *
+	 * @param string $key
+	 */
+	public function remove_data( $key ) {
+		if ( isset( $this->data[ $key ] ) ) {
+			unset( $this->data[ $key ] );
+		}
+	}
+
+	/**
 	 * Adding Data to the Custom Data object.
 	 *
 	 * @param $key
@@ -172,6 +183,24 @@ abstract class Custom_Data {
 			$db->update_meta( $this->get_id(), $key, $value );
 		}
 		$this->set_data( $key, $value );
+	}
+
+	/**
+	 * This will update the data for the Custom Data object.
+	 *
+	 * @param $key
+	 * @param $value
+	 */
+	public function delete_data( $key, $value = '' ) {
+		$db = $this->get_db_object();
+		if ( $this->is_table_column( $key ) ) {
+			$data = array();
+			$data[ $key ] = $value;
+			$db->update( $this->get_id(),'' );
+		} else {
+			$db->delete_meta( $this->get_id(), $key, $value );
+		}
+		$this->remove_data( $key, $value );
 	}
 
 	/**

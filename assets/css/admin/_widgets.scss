@@ -1,0 +1,20 @@
+div[id*="_ss_widget_"] {
+  h3 {
+    &:before {
+      display: inline-block;
+      width: 13px;
+      height: 13px;
+      font-size: 13px;
+      line-height: 1;
+      font-family: dashicons;
+      text-decoration: inherit;
+      font-weight: 400;
+      font-style: normal;
+      vertical-align: top;
+      text-align: center;
+      margin-right: 5px;
+      content: "\f313";
+      //color: $purple;
+    }
+  }
+}

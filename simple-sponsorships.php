@@ -14,6 +14,8 @@
 
 namespace Simple_Sponsorships;
 
+use Simple_Sponsorships\Widgets\Widgets;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
@@ -124,6 +126,7 @@ class Plugin {
 		include_once 'includes/functions-session.php';
 		include_once 'includes/functions-emails.php';
 		include_once 'includes/functions-gateways.php';
+		include_once 'includes/functions-sponsors.php';
 
 		// Classes.
 		include_once 'includes/class-session.php';
@@ -137,6 +140,7 @@ class Plugin {
 		include_once 'includes/class-emails.php';
 		include_once 'includes/class-payment-gateways.php';
 		include_once 'includes/class-countries.php';
+		include_once 'includes/class-widgets.php';
 
 		// Gateways.
 		include_once 'includes/gateways/class-paypal.php';
@@ -225,6 +229,7 @@ class Plugin {
 		new Content_Types();
 		new Shortcodes();
 		new Emails();
+		new Widgets();
 
 		// Registering the Databases to wpdb.
 		$dbs = new Databases();
