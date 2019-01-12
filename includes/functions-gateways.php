@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool
  */
 function ss_payments_enabled() {
-	return '1' === ss_get_option( 'enable_payments', '1' );
+	return '1' === ss_get_option( 'enable_payments', '0' );
 }
 
 add_action( 'init', 'ss_process_gateways' );

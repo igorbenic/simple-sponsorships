@@ -1,0 +1,1757 @@
+# Copyright (C) 2019 simple-sponsorships
+# This file is distributed under the same license as the simple-sponsorships package.
+msgid ""
+msgstr ""
+"Project-Id-Version: simple-sponsorships\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/class-content-types.php:50
+msgctxt "Post Type General Name"
+msgid "Sponsors"
+msgstr ""
+
+#: includes/class-content-types.php:51
+msgctxt "Post Type Singular Name"
+msgid "Sponsor"
+msgstr ""
+
+#: includes/class-content-types.php:52, includes/admin/class-menus.php:20, includes/admin/class-menus.php:21, includes/admin/sponsorships/class-sponsorships-table-list.php:45
+msgid "Sponsorships"
+msgstr ""
+
+#: includes/class-content-types.php:53, includes/class-content-types.php:79, includes/admin/class-sponsorships.php:288, includes/admin/sponsorships/class-sponsorships-table-list.php:294, templates/sponsorship/sponsor.php:9
+msgid "Sponsor"
+msgstr ""
+
+#: includes/class-content-types.php:54
+msgid "Item Archives"
+msgstr ""
+
+#: includes/class-content-types.php:55
+msgid "Item Attributes"
+msgstr ""
+
+#: includes/class-content-types.php:56
+msgid "Parent Item:"
+msgstr ""
+
+#: includes/class-content-types.php:57, includes/class-content-types.php:80, includes/widgets/class-widget-sponsors.php:68
+msgid "Sponsors"
+msgstr ""
+
+#: includes/class-content-types.php:58
+msgid "Add New Sponsor"
+msgstr ""
+
+#: includes/class-content-types.php:59
+msgid "Add Sponsor"
+msgstr ""
+
+#: includes/class-content-types.php:60
+msgid "New Sponsor"
+msgstr ""
+
+#: includes/class-content-types.php:61
+msgid "Edit Sponsor"
+msgstr ""
+
+#: includes/class-content-types.php:62
+msgid "Update Sponsor"
+msgstr ""
+
+#: includes/class-content-types.php:63
+msgid "View Sponsor"
+msgstr ""
+
+#: includes/class-content-types.php:64
+msgid "View Sponsors"
+msgstr ""
+
+#: includes/class-content-types.php:65
+msgid "Search Sponsor"
+msgstr ""
+
+#: includes/class-content-types.php:66
+msgid "Not found"
+msgstr ""
+
+#: includes/class-content-types.php:67
+msgid "Not found in Trash"
+msgstr ""
+
+#: includes/class-content-types.php:68
+msgid "Logo"
+msgstr ""
+
+#: includes/class-content-types.php:69
+msgid "Set logo"
+msgstr ""
+
+#: includes/class-content-types.php:70
+msgid "Remove logo"
+msgstr ""
+
+#: includes/class-content-types.php:71
+msgid "Use as logo"
+msgstr ""
+
+#: includes/class-content-types.php:72
+msgid "Insert into item"
+msgstr ""
+
+#: includes/class-content-types.php:73
+msgid "Uploaded to this Sponsor"
+msgstr ""
+
+#: includes/class-content-types.php:74
+msgid "Sponsors list"
+msgstr ""
+
+#: includes/class-content-types.php:75
+msgid "Sponsors list navigation"
+msgstr ""
+
+#: includes/class-content-types.php:76
+msgid "Filter Sponsors list"
+msgstr ""
+
+#: includes/class-countries.php:30
+msgid "Afghanistan"
+msgstr ""
+
+#: includes/class-countries.php:31
+msgid "&#197;land Islands"
+msgstr ""
+
+#: includes/class-countries.php:32
+msgid "Albania"
+msgstr ""
+
+#: includes/class-countries.php:33
+msgid "Algeria"
+msgstr ""
+
+#: includes/class-countries.php:34
+msgid "American Samoa"
+msgstr ""
+
+#: includes/class-countries.php:35
+msgid "Andorra"
+msgstr ""
+
+#: includes/class-countries.php:36
+msgid "Angola"
+msgstr ""
+
+#: includes/class-countries.php:37
+msgid "Anguilla"
+msgstr ""
+
+#: includes/class-countries.php:38
+msgid "Antarctica"
+msgstr ""
+
+#: includes/class-countries.php:39
+msgid "Antigua and Barbuda"
+msgstr ""
+
+#: includes/class-countries.php:40
+msgid "Argentina"
+msgstr ""
+
+#: includes/class-countries.php:41
+msgid "Armenia"
+msgstr ""
+
+#: includes/class-countries.php:42
+msgid "Aruba"
+msgstr ""
+
+#: includes/class-countries.php:43
+msgid "Australia"
+msgstr ""
+
+#: includes/class-countries.php:44
+msgid "Austria"
+msgstr ""
+
+#: includes/class-countries.php:45
+msgid "Azerbaijan"
+msgstr ""
+
+#: includes/class-countries.php:46
+msgid "Bahamas"
+msgstr ""
+
+#: includes/class-countries.php:47
+msgid "Bahrain"
+msgstr ""
+
+#: includes/class-countries.php:48
+msgid "Bangladesh"
+msgstr ""
+
+#: includes/class-countries.php:49
+msgid "Barbados"
+msgstr ""
+
+#: includes/class-countries.php:50
+msgid "Belarus"
+msgstr ""
+
+#: includes/class-countries.php:51
+msgid "Belgium"
+msgstr ""
+
+#: includes/class-countries.php:52
+msgid "Belau"
+msgstr ""
+
+#: includes/class-countries.php:53
+msgid "Belize"
+msgstr ""
+
+#: includes/class-countries.php:54
+msgid "Benin"
+msgstr ""
+
+#: includes/class-countries.php:55
+msgid "Bermuda"
+msgstr ""
+
+#: includes/class-countries.php:56
+msgid "Bhutan"
+msgstr ""
+
+#: includes/class-countries.php:57
+msgid "Bolivia"
+msgstr ""
+
+#: includes/class-countries.php:58
+msgid "Bonaire, Saint Eustatius and Saba"
+msgstr ""
+
+#: includes/class-countries.php:59
+msgid "Bosnia and Herzegovina"
+msgstr ""
+
+#: includes/class-countries.php:60
+msgid "Botswana"
+msgstr ""
+
+#: includes/class-countries.php:61
+msgid "Bouvet Island"
+msgstr ""
+
+#: includes/class-countries.php:62
+msgid "Brazil"
+msgstr ""
+
+#: includes/class-countries.php:63
+msgid "British Indian Ocean Territory"
+msgstr ""
+
+#: includes/class-countries.php:64
+msgid "British Virgin Islands"
+msgstr ""
+
+#: includes/class-countries.php:65
+msgid "Brunei"
+msgstr ""
+
+#: includes/class-countries.php:66
+msgid "Bulgaria"
+msgstr ""
+
+#: includes/class-countries.php:67
+msgid "Burkina Faso"
+msgstr ""
+
+#: includes/class-countries.php:68
+msgid "Burundi"
+msgstr ""
+
+#: includes/class-countries.php:69
+msgid "Cambodia"
+msgstr ""
+
+#: includes/class-countries.php:70
+msgid "Cameroon"
+msgstr ""
+
+#: includes/class-countries.php:71
+msgid "Canada"
+msgstr ""
+
+#: includes/class-countries.php:72
+msgid "Cape Verde"
+msgstr ""
+
+#: includes/class-countries.php:73
+msgid "Cayman Islands"
+msgstr ""
+
+#: includes/class-countries.php:74
+msgid "Central African Republic"
+msgstr ""
+
+#: includes/class-countries.php:75
+msgid "Chad"
+msgstr ""
+
+#: includes/class-countries.php:76
+msgid "Chile"
+msgstr ""
+
+#: includes/class-countries.php:77
+msgid "China"
+msgstr ""
+
+#: includes/class-countries.php:78
+msgid "Christmas Island"
+msgstr ""
+
+#: includes/class-countries.php:79
+msgid "Cocos (Keeling) Islands"
+msgstr ""
+
+#: includes/class-countries.php:80
+msgid "Colombia"
+msgstr ""
+
+#: includes/class-countries.php:81
+msgid "Comoros"
+msgstr ""
+
+#: includes/class-countries.php:82
+msgid "Congo (Brazzaville)"
+msgstr ""
+
+#: includes/class-countries.php:83
+msgid "Congo (Kinshasa)"
+msgstr ""
+
+#: includes/class-countries.php:84
+msgid "Cook Islands"
+msgstr ""
+
+#: includes/class-countries.php:85
+msgid "Costa Rica"
+msgstr ""
+
+#: includes/class-countries.php:86
+msgid "Croatia"
+msgstr ""
+
+#: includes/class-countries.php:87
+msgid "Cuba"
+msgstr ""
+
+#: includes/class-countries.php:88
+msgid "Cura&ccedil;ao"
+msgstr ""
+
+#: includes/class-countries.php:89
+msgid "Cyprus"
+msgstr ""
+
+#: includes/class-countries.php:90
+msgid "Czech Republic"
+msgstr ""
+
+#: includes/class-countries.php:91
+msgid "Denmark"
+msgstr ""
+
+#: includes/class-countries.php:92
+msgid "Djibouti"
+msgstr ""
+
+#: includes/class-countries.php:93
+msgid "Dominica"
+msgstr ""
+
+#: includes/class-countries.php:94
+msgid "Dominican Republic"
+msgstr ""
+
+#: includes/class-countries.php:95
+msgid "Ecuador"
+msgstr ""
+
+#: includes/class-countries.php:96
+msgid "Egypt"
+msgstr ""
+
+#: includes/class-countries.php:97
+msgid "El Salvador"
+msgstr ""
+
+#: includes/class-countries.php:98
+msgid "Equatorial Guinea"
+msgstr ""
+
+#: includes/class-countries.php:99
+msgid "Eritrea"
+msgstr ""
+
+#: includes/class-countries.php:100
+msgid "Estonia"
+msgstr ""
+
+#: includes/class-countries.php:101
+msgid "Ethiopia"
+msgstr ""
+
+#: includes/class-countries.php:102
+msgid "Falkland Islands"
+msgstr ""
+
+#: includes/class-countries.php:103
+msgid "Faroe Islands"
+msgstr ""
+
+#: includes/class-countries.php:104
+msgid "Fiji"
+msgstr ""
+
+#: includes/class-countries.php:105
+msgid "Finland"
+msgstr ""
+
+#: includes/class-countries.php:106
+msgid "France"
+msgstr ""
+
+#: includes/class-countries.php:107
+msgid "French Guiana"
+msgstr ""
+
+#: includes/class-countries.php:108
+msgid "French Polynesia"
+msgstr ""
+
+#: includes/class-countries.php:109
+msgid "French Southern Territories"
+msgstr ""
+
+#: includes/class-countries.php:110
+msgid "Gabon"
+msgstr ""
+
+#: includes/class-countries.php:111
+msgid "Gambia"
+msgstr ""
+
+#: includes/class-countries.php:112
+msgid "Georgia"
+msgstr ""
+
+#: includes/class-countries.php:113
+msgid "Germany"
+msgstr ""
+
+#: includes/class-countries.php:114
+msgid "Ghana"
+msgstr ""
+
+#: includes/class-countries.php:115
+msgid "Gibraltar"
+msgstr ""
+
+#: includes/class-countries.php:116
+msgid "Greece"
+msgstr ""
+
+#: includes/class-countries.php:117
+msgid "Greenland"
+msgstr ""
+
+#: includes/class-countries.php:118
+msgid "Grenada"
+msgstr ""
+
+#: includes/class-countries.php:119
+msgid "Guadeloupe"
+msgstr ""
+
+#: includes/class-countries.php:120
+msgid "Guam"
+msgstr ""
+
+#: includes/class-countries.php:121
+msgid "Guatemala"
+msgstr ""
+
+#: includes/class-countries.php:122
+msgid "Guernsey"
+msgstr ""
+
+#: includes/class-countries.php:123
+msgid "Guinea"
+msgstr ""
+
+#: includes/class-countries.php:124
+msgid "Guinea-Bissau"
+msgstr ""
+
+#: includes/class-countries.php:125
+msgid "Guyana"
+msgstr ""
+
+#: includes/class-countries.php:126
+msgid "Haiti"
+msgstr ""
+
+#: includes/class-countries.php:127
+msgid "Heard Island and McDonald Islands"
+msgstr ""
+
+#: includes/class-countries.php:128
+msgid "Honduras"
+msgstr ""
+
+#: includes/class-countries.php:129
+msgid "Hong Kong"
+msgstr ""
+
+#: includes/class-countries.php:130
+msgid "Hungary"
+msgstr ""
+
+#: includes/class-countries.php:131
+msgid "Iceland"
+msgstr ""
+
+#: includes/class-countries.php:132
+msgid "India"
+msgstr ""
+
+#: includes/class-countries.php:133
+msgid "Indonesia"
+msgstr ""
+
+#: includes/class-countries.php:134
+msgid "Iran"
+msgstr ""
+
+#: includes/class-countries.php:135
+msgid "Iraq"
+msgstr ""
+
+#: includes/class-countries.php:136
+msgid "Ireland"
+msgstr ""
+
+#: includes/class-countries.php:137
+msgid "Isle of Man"
+msgstr ""
+
+#: includes/class-countries.php:138
+msgid "Israel"
+msgstr ""
+
+#: includes/class-countries.php:139
+msgid "Italy"
+msgstr ""
+
+#: includes/class-countries.php:140
+msgid "Ivory Coast"
+msgstr ""
+
+#: includes/class-countries.php:141
+msgid "Jamaica"
+msgstr ""
+
+#: includes/class-countries.php:142
+msgid "Japan"
+msgstr ""
+
+#: includes/class-countries.php:143
+msgid "Jersey"
+msgstr ""
+
+#: includes/class-countries.php:144
+msgid "Jordan"
+msgstr ""
+
+#: includes/class-countries.php:145
+msgid "Kazakhstan"
+msgstr ""
+
+#: includes/class-countries.php:146
+msgid "Kenya"
+msgstr ""
+
+#: includes/class-countries.php:147
+msgid "Kiribati"
+msgstr ""
+
+#: includes/class-countries.php:148
+msgid "Kuwait"
+msgstr ""
+
+#: includes/class-countries.php:149
+msgid "Kyrgyzstan"
+msgstr ""
+
+#: includes/class-countries.php:150
+msgid "Laos"
+msgstr ""
+
+#: includes/class-countries.php:151
+msgid "Latvia"
+msgstr ""
+
+#: includes/class-countries.php:152
+msgid "Lebanon"
+msgstr ""
+
+#: includes/class-countries.php:153
+msgid "Lesotho"
+msgstr ""
+
+#: includes/class-countries.php:154
+msgid "Liberia"
+msgstr ""
+
+#: includes/class-countries.php:155
+msgid "Libya"
+msgstr ""
+
+#: includes/class-countries.php:156
+msgid "Liechtenstein"
+msgstr ""
+
+#: includes/class-countries.php:157
+msgid "Lithuania"
+msgstr ""
+
+#: includes/class-countries.php:158
+msgid "Luxembourg"
+msgstr ""
+
+#: includes/class-countries.php:159
+msgid "Macao S.A.R., China"
+msgstr ""
+
+#: includes/class-countries.php:160
+msgid "Macedonia"
+msgstr ""
+
+#: includes/class-countries.php:161
+msgid "Madagascar"
+msgstr ""
+
+#: includes/class-countries.php:162
+msgid "Malawi"
+msgstr ""
+
+#: includes/class-countries.php:163
+msgid "Malaysia"
+msgstr ""
+
+#: includes/class-countries.php:164
+msgid "Maldives"
+msgstr ""
+
+#: includes/class-countries.php:165
+msgid "Mali"
+msgstr ""
+
+#: includes/class-countries.php:166
+msgid "Malta"
+msgstr ""
+
+#: includes/class-countries.php:167
+msgid "Marshall Islands"
+msgstr ""
+
+#: includes/class-countries.php:168
+msgid "Martinique"
+msgstr ""
+
+#: includes/class-countries.php:169
+msgid "Mauritania"
+msgstr ""
+
+#: includes/class-countries.php:170
+msgid "Mauritius"
+msgstr ""
+
+#: includes/class-countries.php:171
+msgid "Mayotte"
+msgstr ""
+
+#: includes/class-countries.php:172
+msgid "Mexico"
+msgstr ""
+
+#: includes/class-countries.php:173
+msgid "Micronesia"
+msgstr ""
+
+#: includes/class-countries.php:174
+msgid "Moldova"
+msgstr ""
+
+#: includes/class-countries.php:175
+msgid "Monaco"
+msgstr ""
+
+#: includes/class-countries.php:176
+msgid "Mongolia"
+msgstr ""
+
+#: includes/class-countries.php:177
+msgid "Montenegro"
+msgstr ""
+
+#: includes/class-countries.php:178
+msgid "Montserrat"
+msgstr ""
+
+#: includes/class-countries.php:179
+msgid "Morocco"
+msgstr ""
+
+#: includes/class-countries.php:180
+msgid "Mozambique"
+msgstr ""
+
+#: includes/class-countries.php:181
+msgid "Myanmar"
+msgstr ""
+
+#: includes/class-countries.php:182
+msgid "Namibia"
+msgstr ""
+
+#: includes/class-countries.php:183
+msgid "Nauru"
+msgstr ""
+
+#: includes/class-countries.php:184
+msgid "Nepal"
+msgstr ""
+
+#: includes/class-countries.php:185
+msgid "Netherlands"
+msgstr ""
+
+#: includes/class-countries.php:186
+msgid "New Caledonia"
+msgstr ""
+
+#: includes/class-countries.php:187
+msgid "New Zealand"
+msgstr ""
+
+#: includes/class-countries.php:188
+msgid "Nicaragua"
+msgstr ""
+
+#: includes/class-countries.php:189
+msgid "Niger"
+msgstr ""
+
+#: includes/class-countries.php:190
+msgid "Nigeria"
+msgstr ""
+
+#: includes/class-countries.php:191
+msgid "Niue"
+msgstr ""
+
+#: includes/class-countries.php:192
+msgid "Norfolk Island"
+msgstr ""
+
+#: includes/class-countries.php:193
+msgid "Northern Mariana Islands"
+msgstr ""
+
+#: includes/class-countries.php:194
+msgid "North Korea"
+msgstr ""
+
+#: includes/class-countries.php:195
+msgid "Norway"
+msgstr ""
+
+#: includes/class-countries.php:196
+msgid "Oman"
+msgstr ""
+
+#: includes/class-countries.php:197
+msgid "Pakistan"
+msgstr ""
+
+#: includes/class-countries.php:198
+msgid "Palestinian Territory"
+msgstr ""
+
+#: includes/class-countries.php:199
+msgid "Panama"
+msgstr ""
+
+#: includes/class-countries.php:200
+msgid "Papua New Guinea"
+msgstr ""
+
+#: includes/class-countries.php:201
+msgid "Paraguay"
+msgstr ""
+
+#: includes/class-countries.php:202
+msgid "Peru"
+msgstr ""
+
+#: includes/class-countries.php:203
+msgid "Philippines"
+msgstr ""
+
+#: includes/class-countries.php:204
+msgid "Pitcairn"
+msgstr ""
+
+#: includes/class-countries.php:205
+msgid "Poland"
+msgstr ""
+
+#: includes/class-countries.php:206
+msgid "Portugal"
+msgstr ""
+
+#: includes/class-countries.php:207
+msgid "Puerto Rico"
+msgstr ""
+
+#: includes/class-countries.php:208
+msgid "Qatar"
+msgstr ""
+
+#: includes/class-countries.php:209
+msgid "Reunion"
+msgstr ""
+
+#: includes/class-countries.php:210
+msgid "Romania"
+msgstr ""
+
+#: includes/class-countries.php:211
+msgid "Russia"
+msgstr ""
+
+#: includes/class-countries.php:212
+msgid "Rwanda"
+msgstr ""
+
+#: includes/class-countries.php:213
+msgid "Saint Barth&eacute;lemy"
+msgstr ""
+
+#: includes/class-countries.php:214
+msgid "Saint Helena"
+msgstr ""
+
+#: includes/class-countries.php:215
+msgid "Saint Kitts and Nevis"
+msgstr ""
+
+#: includes/class-countries.php:216
+msgid "Saint Lucia"
+msgstr ""
+
+#: includes/class-countries.php:217
+msgid "Saint Martin (French part)"
+msgstr ""
+
+#: includes/class-countries.php:218
+msgid "Saint Martin (Dutch part)"
+msgstr ""
+
+#: includes/class-countries.php:219
+msgid "Saint Pierre and Miquelon"
+msgstr ""
+
+#: includes/class-countries.php:220
+msgid "Saint Vincent and the Grenadines"
+msgstr ""
+
+#: includes/class-countries.php:221
+msgid "San Marino"
+msgstr ""
+
+#: includes/class-countries.php:222
+msgid "S&atilde;o Tom&eacute; and Pr&iacute;ncipe"
+msgstr ""
+
+#: includes/class-countries.php:223
+msgid "Saudi Arabia"
+msgstr ""
+
+#: includes/class-countries.php:224
+msgid "Senegal"
+msgstr ""
+
+#: includes/class-countries.php:225
+msgid "Serbia"
+msgstr ""
+
+#: includes/class-countries.php:226
+msgid "Seychelles"
+msgstr ""
+
+#: includes/class-countries.php:227
+msgid "Sierra Leone"
+msgstr ""
+
+#: includes/class-countries.php:228
+msgid "Singapore"
+msgstr ""
+
+#: includes/class-countries.php:229
+msgid "Slovakia"
+msgstr ""
+
+#: includes/class-countries.php:230
+msgid "Slovenia"
+msgstr ""
+
+#: includes/class-countries.php:231
+msgid "Solomon Islands"
+msgstr ""
+
+#: includes/class-countries.php:232
+msgid "Somalia"
+msgstr ""
+
+#: includes/class-countries.php:233
+msgid "South Africa"
+msgstr ""
+
+#: includes/class-countries.php:234
+msgid "South Georgia/Sandwich Islands"
+msgstr ""
+
+#: includes/class-countries.php:235
+msgid "South Korea"
+msgstr ""
+
+#: includes/class-countries.php:236
+msgid "South Sudan"
+msgstr ""
+
+#: includes/class-countries.php:237
+msgid "Spain"
+msgstr ""
+
+#: includes/class-countries.php:238
+msgid "Sri Lanka"
+msgstr ""
+
+#: includes/class-countries.php:239
+msgid "Sudan"
+msgstr ""
+
+#: includes/class-countries.php:240
+msgid "Suriname"
+msgstr ""
+
+#: includes/class-countries.php:241
+msgid "Svalbard and Jan Mayen"
+msgstr ""
+
+#: includes/class-countries.php:242
+msgid "Swaziland"
+msgstr ""
+
+#: includes/class-countries.php:243
+msgid "Sweden"
+msgstr ""
+
+#: includes/class-countries.php:244
+msgid "Switzerland"
+msgstr ""
+
+#: includes/class-countries.php:245
+msgid "Syria"
+msgstr ""
+
+#: includes/class-countries.php:246
+msgid "Taiwan"
+msgstr ""
+
+#: includes/class-countries.php:247
+msgid "Tajikistan"
+msgstr ""
+
+#: includes/class-countries.php:248
+msgid "Tanzania"
+msgstr ""
+
+#: includes/class-countries.php:249
+msgid "Thailand"
+msgstr ""
+
+#: includes/class-countries.php:250
+msgid "Timor-Leste"
+msgstr ""
+
+#: includes/class-countries.php:251
+msgid "Togo"
+msgstr ""
+
+#: includes/class-countries.php:252
+msgid "Tokelau"
+msgstr ""
+
+#: includes/class-countries.php:253
+msgid "Tonga"
+msgstr ""
+
+#: includes/class-countries.php:254
+msgid "Trinidad and Tobago"
+msgstr ""
+
+#: includes/class-countries.php:255
+msgid "Tunisia"
+msgstr ""
+
+#: includes/class-countries.php:256
+msgid "Turkey"
+msgstr ""
+
+#: includes/class-countries.php:257
+msgid "Turkmenistan"
+msgstr ""
+
+#: includes/class-countries.php:258
+msgid "Turks and Caicos Islands"
+msgstr ""
+
+#: includes/class-countries.php:259
+msgid "Tuvalu"
+msgstr ""
+
+#: includes/class-countries.php:260
+msgid "Uganda"
+msgstr ""
+
+#: includes/class-countries.php:261
+msgid "Ukraine"
+msgstr ""
+
+#: includes/class-countries.php:262
+msgid "United Arab Emirates"
+msgstr ""
+
+#: includes/class-countries.php:263
+msgid "United Kingdom (UK)"
+msgstr ""
+
+#: includes/class-countries.php:264
+msgid "United States (US)"
+msgstr ""
+
+#: includes/class-countries.php:265
+msgid "United States (US) Minor Outlying Islands"
+msgstr ""
+
+#: includes/class-countries.php:266
+msgid "United States (US) Virgin Islands"
+msgstr ""
+
+#: includes/class-countries.php:267
+msgid "Uruguay"
+msgstr ""
+
+#: includes/class-countries.php:268
+msgid "Uzbekistan"
+msgstr ""
+
+#: includes/class-countries.php:269
+msgid "Vanuatu"
+msgstr ""
+
+#: includes/class-countries.php:270
+msgid "Vatican"
+msgstr ""
+
+#: includes/class-countries.php:271
+msgid "Venezuela"
+msgstr ""
+
+#: includes/class-countries.php:272
+msgid "Vietnam"
+msgstr ""
+
+#: includes/class-countries.php:273
+msgid "Wallis and Futuna"
+msgstr ""
+
+#: includes/class-countries.php:274
+msgid "Western Sahara"
+msgstr ""
+
+#: includes/class-countries.php:275
+msgid "Samoa"
+msgstr ""
+
+#: includes/class-countries.php:276
+msgid "Yemen"
+msgstr ""
+
+#: includes/class-countries.php:277
+msgid "Zambia"
+msgstr ""
+
+#: includes/class-countries.php:278
+msgid "Zimbabwe"
+msgstr ""
+
+#: includes/class-payment-gateways.php:53
+msgid "Cloning is forbidden."
+msgstr ""
+
+#: includes/class-payment-gateways.php:62
+msgid "Unserializing instances of this class is forbidden."
+msgstr ""
+
+#: includes/functions-sponsorship.php:19
+msgid "US Dollars (&#36;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:20
+msgid "Euros (&euro;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:21
+msgid "Pound Sterling (&pound;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:22
+msgid "Australian Dollars (&#36;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:23
+msgid "Brazilian Real (R&#36;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:24
+msgid "Canadian Dollars (&#36;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:25
+msgid "Czech Koruna"
+msgstr ""
+
+#: includes/functions-sponsorship.php:26
+msgid "Danish Krone"
+msgstr ""
+
+#: includes/functions-sponsorship.php:27
+msgid "Hong Kong Dollar (&#36;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:28
+msgid "Hungarian Forint"
+msgstr ""
+
+#: includes/functions-sponsorship.php:29
+msgid "Israeli Shekel (&#8362;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:30
+msgid "Japanese Yen (&yen;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:31
+msgid "Malaysian Ringgits"
+msgstr ""
+
+#: includes/functions-sponsorship.php:32
+msgid "Mexican Peso (&#36;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:33
+msgid "New Zealand Dollar (&#36;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:34
+msgid "Norwegian Krone"
+msgstr ""
+
+#: includes/functions-sponsorship.php:35
+msgid "Philippine Pesos"
+msgstr ""
+
+#: includes/functions-sponsorship.php:36
+msgid "Polish Zloty"
+msgstr ""
+
+#: includes/functions-sponsorship.php:37
+msgid "Singapore Dollar (&#36;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:38
+msgid "Swedish Krona"
+msgstr ""
+
+#: includes/functions-sponsorship.php:39
+msgid "Swiss Franc"
+msgstr ""
+
+#: includes/functions-sponsorship.php:40
+msgid "Taiwan New Dollars"
+msgstr ""
+
+#: includes/functions-sponsorship.php:41
+msgid "Thai Baht (&#3647;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:42
+msgid "Indian Rupee (&#8377;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:43
+msgid "Turkish Lira (&#8378;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:44
+msgid "Iranian Rial (&#65020;)"
+msgstr ""
+
+#: includes/functions-sponsorship.php:45
+msgid "Russian Rubles"
+msgstr ""
+
+#: includes/functions-sponsorship.php:46
+msgid "Angolan Kwanza"
+msgstr ""
+
+#: includes/functions-sponsorship.php:121
+msgid "Request"
+msgstr ""
+
+#: includes/functions-sponsorship.php:122
+msgid "Approved"
+msgstr ""
+
+#: includes/functions-sponsorship.php:123
+msgid "Paid"
+msgstr ""
+
+#: includes/functions-sponsorship.php:135, includes/admin/sponsorships/class-sponsorships-table-list.php:265
+msgid "Unknown Status"
+msgstr ""
+
+#: includes/abstract/class-custom-data.php:106
+msgid "This must be defined in each class."
+msgstr ""
+
+#. translators: %s: field name
+#: includes/abstract/class-form.php:139
+msgid "%s is a required field."
+msgstr ""
+
+#: includes/abstract/class-payment-gateway.php:165
+msgid "Enabled"
+msgstr ""
+
+#: includes/abstract/class-payment-gateway.php:166
+msgid "Enable this payment gateway"
+msgstr ""
+
+#: includes/admin/class-menus.php:28, includes/admin/class-menus.php:29, includes/admin/packages/class-packages-table-list.php:31
+msgid "Packages"
+msgstr ""
+
+#: includes/admin/class-menus.php:36
+msgid "Simple Sponsorships Settings"
+msgstr ""
+
+#: includes/admin/class-menus.php:37
+msgid "Settings"
+msgstr ""
+
+#: includes/admin/class-packages.php:50, includes/admin/class-packages.php:92
+msgid "Package Name is required."
+msgstr ""
+
+#: includes/admin/class-packages.php:96
+msgid "This package does not exist."
+msgstr ""
+
+#: includes/admin/class-packages.php:158
+msgid "Enter the Package Name"
+msgstr ""
+
+#: includes/admin/class-packages.php:159, includes/admin/packages/class-packages-table-list.php:173, includes/admin/sponsorships/class-sponsorships-table-list.php:291
+msgid "Title"
+msgstr ""
+
+#: includes/admin/class-packages.php:164
+msgid "Enter the Package Description"
+msgstr ""
+
+#: includes/admin/class-packages.php:165
+msgid "Description"
+msgstr ""
+
+#: includes/admin/class-packages.php:171, includes/admin/packages/class-packages-table-list.php:175
+msgid "Price"
+msgstr ""
+
+#: includes/admin/class-packages.php:177
+msgid "Quantity"
+msgstr ""
+
+#: includes/admin/class-packages.php:180
+msgid "How many content will this package allow to subscribe to. For example, a 12 episode package, would have 12 here."
+msgstr ""
+
+#: includes/admin/class-packages.php:194, includes/admin/class-sponsorships.php:353
+msgid "Normal"
+msgstr ""
+
+#: includes/admin/class-settings.php:104
+msgid "Content Types"
+msgstr ""
+
+#: includes/admin/class-settings.php:105
+msgid "Choose what content type can be sponsored. This will enable a box on each content to add sponsors."
+msgstr ""
+
+#: includes/admin/class-settings.php:108
+msgid "Select a Type"
+msgstr ""
+
+#: includes/admin/class-settings.php:113
+msgid "Pages"
+msgstr ""
+
+#: includes/admin/class-settings.php:116
+msgid "Page Settings"
+msgstr ""
+
+#: includes/admin/class-settings.php:117
+msgid "Configure Pages where Sponsors can see their settings."
+msgstr ""
+
+#: includes/admin/class-settings.php:121
+msgid "Sponsor Page"
+msgstr ""
+
+#: includes/admin/class-settings.php:122
+msgid "This is the page that will show the sponsor form. The [sponsor_form] shortcode should be on this page."
+msgstr ""
+
+#: includes/admin/class-settings.php:126, includes/admin/class-settings.php:135
+msgid "Select a page"
+msgstr ""
+
+#: includes/admin/class-settings.php:130
+msgid "Sponsorship Page"
+msgstr ""
+
+#: includes/admin/class-settings.php:131
+msgid "This is the page that will show the sponsorship details. The [ss_sponsorship_details] shortcode should be on this page."
+msgstr ""
+
+#: includes/admin/class-settings.php:143
+msgid "Enable Payments"
+msgstr ""
+
+#: includes/admin/class-settings.php:149, templates/payment-form.php:17
+msgid "Payment Instructions"
+msgstr ""
+
+#: includes/admin/class-settings.php:151
+msgid "Instructions that will show if the payments are not enabled so your sponsors know how to pay you."
+msgstr ""
+
+#: includes/admin/class-settings.php:152, templates/payment-form.php:15
+msgid "We will contact you with specific information through email."
+msgstr ""
+
+#: includes/admin/class-settings.php:156
+msgid "Currency"
+msgstr ""
+
+#: includes/admin/class-settings.php:218, includes/admin/class-settings.php:221
+msgid "General"
+msgstr ""
+
+#: includes/admin/class-settings.php:481
+msgid "Settings updated."
+msgstr ""
+
+#: includes/admin/class-sponsors.php:85
+msgid "Add Sponsors"
+msgstr ""
+
+#: includes/admin/class-sponsors.php:115
+msgid "Information"
+msgstr ""
+
+#: includes/admin/class-sponsors.php:176, includes/admin/class-sponsorships.php:300, includes/forms/class-form-payment.php:97, includes/gateways/class-paypal.php:41, includes/gateways/class-paypal.php:44, templates/sponsorship/sponsor.php:38
+msgid "Email"
+msgstr ""
+
+#: includes/admin/class-sponsors.php:182, includes/admin/class-sponsorships.php:306, includes/forms/class-form-sponsors.php:137, templates/sponsorship/sponsor.php:25
+msgid "Website"
+msgstr ""
+
+#: includes/admin/class-sponsors.php:188, includes/admin/class-sponsorships.php:312
+msgid "Company"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:76, includes/admin/class-sponsorships.php:147
+msgid "No Status is required."
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:83, includes/admin/class-sponsorships.php:162
+msgid "Select a Sponsor or insert the name to add a new one."
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:116
+msgid "Sponsorship could not be created."
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:151
+msgid "This Sponsorship does not exist."
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:247
+msgid "Create a new sponsor"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:265, includes/admin/sponsorships/class-sponsorships-table-list.php:292, templates/sponsorship/details.php:23
+msgid "Status"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:271
+msgid "The Sponsorship Amount"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:272
+msgid "Amount (%s)"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:277, includes/admin/packages/class-packages-table-list.php:30, includes/admin/sponsorships/class-sponsorships-table-list.php:293
+msgid "Package"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:283
+msgid "Sponsor Information"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:294
+msgid "Sponsor Name"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:322
+msgid "Payment"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:327
+msgid "Gateway"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:333, includes/admin/class-sponsorships.php:334
+msgid "Transaction ID"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:335
+msgid "The transaction ID, if any"
+msgstr ""
+
+#: includes/emails/class-email-activated-sponsorship.php:38
+msgid "Sponsorship #%d Activated"
+msgstr ""
+
+#: includes/emails/class-email-customer-invoice.php:37
+msgid "Invoice for Sponsorship #%d"
+msgstr ""
+
+#: includes/emails/class-email-new-sponsorship.php:36, includes/admin/views/sponsorships/new.php:8, templates/emails/new-sponsorship.php:12
+msgid "New Sponsorship"
+msgstr ""
+
+#: includes/emails/class-email-new-sponsorship.php:41
+msgid "New Sponsorship Request"
+msgstr ""
+
+#: includes/emails/class-email-pending-sponsorship.php:37
+msgid "Sponsorship Approved"
+msgstr ""
+
+#: includes/emails/class-email-pending-sponsorship.php:47
+msgid "Your Sponsorship has been approved"
+msgstr ""
+
+#: includes/forms/class-form-payment.php:33
+msgid "No Sponsorship"
+msgstr ""
+
+#: includes/forms/class-form-payment.php:65
+msgid "Select an available Payment Method"
+msgstr ""
+
+#: includes/forms/class-form-payment.php:80, includes/forms/class-form-sponsors.php:120
+msgid "Select a Package"
+msgstr ""
+
+#: includes/forms/class-form-payment.php:87
+msgid "First Name"
+msgstr ""
+
+#: includes/forms/class-form-payment.php:92
+msgid "Last Name"
+msgstr ""
+
+#: includes/forms/class-form-payment.php:102
+msgid "Address"
+msgstr ""
+
+#: includes/forms/class-form-payment.php:107
+msgid "Address Line 2"
+msgstr ""
+
+#: includes/forms/class-form-payment.php:112
+msgid "City"
+msgstr ""
+
+#: includes/forms/class-form-payment.php:117
+msgid "ZIP / Postal Code"
+msgstr ""
+
+#: includes/forms/class-form-payment.php:122
+msgid "Country"
+msgstr ""
+
+#: includes/forms/class-form-payment.php:128
+msgid "State / Province"
+msgstr ""
+
+#: includes/forms/class-form-sponsors.php:76
+msgid "Sponsorship could not be created. Try contacting the site owner through email."
+msgstr ""
+
+#: includes/forms/class-form-sponsors.php:127
+msgid "Your Name"
+msgstr ""
+
+#: includes/forms/class-form-sponsors.php:132
+msgid "Your Email"
+msgstr ""
+
+#: includes/forms/class-form-sponsors.php:142
+msgid "Company Name"
+msgstr ""
+
+#: includes/forms/class-form-sponsors.php:147, includes/admin/sponsorships/class-sponsorships-table-list.php:44, templates/sponsorship/details.php:41
+msgid "Sponsorship"
+msgstr ""
+
+#: includes/forms/class-form-sponsors.php:155
+msgid "Terms and Conditions"
+msgstr ""
+
+#: includes/forms/class-form-sponsors.php:158
+msgid "I have read the terms and conditions"
+msgstr ""
+
+#: includes/gateways/class-paypal.php:21, includes/gateways/class-paypal.php:22
+msgid "PayPal"
+msgstr ""
+
+#: includes/gateways/class-paypal.php:43
+msgid "Email that will receive payments from Sponsors"
+msgstr ""
+
+#: includes/gateways/class-paypal.php:49
+msgid "Mode"
+msgstr ""
+
+#: includes/gateways/class-paypal.php:52
+msgid "Sandbox"
+msgstr ""
+
+#: includes/gateways/class-paypal.php:53
+msgid "Live"
+msgstr ""
+
+#: includes/gateways/class-paypal.php:58
+msgid "Invoice prefix"
+msgstr ""
+
+#: includes/gateways/class-paypal.php:60
+msgid "Please enter a prefix for your invoice numbers. If you use your PayPal account for multiple stores ensure this prefix is unique as PayPal will not allow orders with the same invoice number."
+msgstr ""
+
+#: includes/gateways/class-paypal.php:66
+msgid "Identity Token"
+msgstr ""
+
+#: includes/gateways/class-paypal.php:68
+msgid "Enter your PayPal Identity Token to enable Payment Data Transfer (PDT)."
+msgstr ""
+
+#: includes/gateways/class-paypal.php:135
+msgid "Sponsorship %s"
+msgstr ""
+
+#: includes/widgets/class-widget-sponsors.php:23
+msgid "Display Sponsors"
+msgstr ""
+
+#: includes/widgets/class-widget-sponsors.php:25
+msgid "Sponsorships: Display Sponsors"
+msgstr ""
+
+#: includes/widgets/class-widget-sponsors.php:74
+msgid "Title:"
+msgstr ""
+
+#: includes/widgets/class-widget-sponsors.php:78
+msgid "Sponsors:"
+msgstr ""
+
+#: includes/widgets/class-widget-sponsors.php:80
+msgid "All Active Sponsors"
+msgstr ""
+
+#: includes/widgets/class-widget-sponsors.php:81
+msgid "Current Content Sponsors"
+msgstr ""
+
+#: includes/widgets/class-widget-sponsors.php:86
+msgid "Display Logo"
+msgstr ""
+
+#: includes/widgets/class-widget-sponsors.php:90
+msgid "Only Logo"
+msgstr ""
+
+#: includes/widgets/class-widget-sponsors.php:91
+msgid "It will show Sponsor name if there is no logo"
+msgstr ""
+
+#: includes/admin/packages/class-packages-table-list.php:105
+msgid "No packages."
+msgstr ""
+
+#: includes/admin/packages/class-packages-table-list.php:132, includes/admin/sponsorships/class-sponsorships-table-list.php:183
+msgid "Edit"
+msgstr ""
+
+#: includes/admin/packages/class-packages-table-list.php:174
+msgid "Type"
+msgstr ""
+
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:145
+msgid "No Sponsorships."
+msgstr ""
+
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:180
+msgid "Sponsorship #%d"
+msgstr ""
+
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:189, includes/admin/sponsorships/class-sponsorships-table-list.php:209, includes/admin/sponsorships/class-sponsorships-table-list.php:231, includes/admin/views/sponsorships/edit.php:13
+msgid "View"
+msgstr ""
+
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:207, includes/admin/sponsorships/class-sponsorships-table-list.php:229, includes/admin/sponsorships/class-sponsorships-table-list.php:251
+msgid "N/A"
+msgstr ""
+
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:295, templates/sponsorship/details.php:33
+msgid "Amount"
+msgstr ""
+
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:296, templates/sponsorship/details.php:57
+msgid "Date"
+msgstr ""
+
+#: includes/admin/views/packages/edit.php:8, includes/admin/views/packages/edit.php:64
+msgid "Edit Package"
+msgstr ""
+
+#: includes/admin/views/packages/edit.php:10, includes/admin/views/packages/new.php:10
+msgid "Back to Packages"
+msgstr ""
+
+#: includes/admin/views/packages/edit.php:20, includes/admin/views/packages/new.php:20, includes/admin/views/sponsorships/edit.php:23, includes/admin/views/sponsorships/new.php:20
+msgid "Dismiss this error."
+msgstr ""
+
+#: includes/admin/views/packages/list.php:3, includes/admin/views/sponsorships/list.php:3
+msgid "Add New"
+msgstr ""
+
+#: includes/admin/views/packages/new.php:8
+msgid "New Package"
+msgstr ""
+
+#: includes/admin/views/packages/new.php:62, includes/admin/views/sponsorships/new.php:82
+msgid "Add Package"
+msgstr ""
+
+#: includes/admin/views/sponsorships/edit.php:8, includes/admin/views/sponsorships/edit.php:86
+msgid "Edit Sponsorship"
+msgstr ""
+
+#: includes/admin/views/sponsorships/edit.php:10, includes/admin/views/sponsorships/new.php:10
+msgid "Back to Sponsorships"
+msgstr ""
+
+#: templates/payment-form.php:12
+msgid "Payment Information"
+msgstr ""
+
+#: templates/payment-form.php:57
+msgid "Payment Methods"
+msgstr ""
+
+#: templates/payment-form.php:76
+msgid "Complete"
+msgstr ""
+
+#: templates/sponsor-form.php:28
+msgid "Submit"
+msgstr ""
+
+#: templates/emails/approved-sponsorship.php:20
+msgid "Your Sponsorship was approved. You can view the Sponsorship details <a href=\"%s\">here</a>."
+msgstr ""
+
+#: templates/sponsorship/details.php:8
+msgid "Your Sponsorship Request is waiting to on approval from the site owner."
+msgstr ""
+
+#: templates/sponsorship/details.php:9
+msgid "You will receive an email upon the decision."
+msgstr ""
+
+#: templates/sponsorship/details.php:15
+msgid "This Sponsorship is awaiting your payment. Once paid it will be completed."
+msgstr ""
+
+#: templates/sponsorship/details.php:50
+msgid "No Package selected."
+msgstr ""
+
+#: templates/sponsorship/sponsor.php:13
+msgid "Name"
+msgstr ""

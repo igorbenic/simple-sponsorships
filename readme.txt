@@ -1,9 +1,8 @@
 === Simple Sponsorships ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: https://example.com/
+Contributors: ibenic
 Tags: comments, spam
 Requires at least: 4.4
-Tested up to: 4.9.8
+Tested up to: 5.0.2
 Stable tag: 0.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html

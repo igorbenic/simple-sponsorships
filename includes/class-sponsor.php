@@ -83,15 +83,6 @@ class Sponsor extends Custom_Data {
 	}
 
 	/**
-	 * Is the Sponsor active?
-	 * It should check for any active sponsorships if we don't have any status.
-	 */
-	public function is_active() {
-		$status = $this->get_data( 'post_status' );
-		return $status === 'ss-active';
-	}
-
-	/**
 	 * Add Sponsored Quantity.
 	 *
 	 * @param int $qty Quantity
@@ -107,8 +98,8 @@ class Sponsor extends Custom_Data {
 	 */
 	public function maybe_activate() {
 		$status = $this->get_data( 'post_status' );
-		if ( 'ss-active' !== $status ) {
-			$this->update_data( 'post_status', 'ss-active' );
+		if ( 'publish' !== $status ) {
+			$this->update_data( 'post_status', 'publish' );
 		}
 	}
 }

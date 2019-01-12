@@ -77,11 +77,18 @@ class Admin {
 		}
 
 		if ( ! $enqueue ) {
-			if ( ( 'edit.php' === $hook || 'post-new.php' === $hook ) && isset( $_GET['post_type'] ) && 'sponsors' === $_GET['post_type'] ) {
+			$post_types = ss_get_option( 'content_types', array( 'post' => 'Posts', 'page' => 'Page' ) );
+			if ( ! $post_types ) {
+				$post_types = array();
+			}
+			$post_types   = array_keys( $post_types );
+			$post_types[] = 'sponsors';
+
+			if ( ( 'edit.php' === $hook || 'post-new.php' === $hook ) && isset( $_GET['post_type'] ) && in_array( $_GET['post_type'], $post_types, true ) ) {
 				$enqueue = true;
 			}
 
-			if ( 'post.php' === $hook && $post && 'sponsors' === get_post_type( $post ) ) {
+			if ( 'post.php' === $hook && $post && in_array( get_post_type( $post ), $post_types, true ) ) {
 				$enqueue = true;
 			}
 		}
@@ -89,10 +96,7 @@ class Admin {
 		if ( $enqueue ) {
 			wp_enqueue_script( 'ss-admin-js', SS_PLUGIN_URL . '/assets/dist/js/admin.js', array( 'jquery' ), SS_VERSION, true );
 			wp_localize_script( 'ss-admin-js', 'ss_admin', array(
-				'statuses' => array(
-					'ss-active'   => __( 'Active', 'simple-sponsorships' ),
-					'ss-inactive' => __( 'Inactive', 'simple-sponsorships' ),
-				)
+				'nonce'    => wp_create_nonce( 'ss-admin-nonce' )
 			));
 
 			wp_enqueue_style( 'ss-admin-css', SS_PLUGIN_URL . '/assets/dist/css/admin.css', array(), SS_VERSION );

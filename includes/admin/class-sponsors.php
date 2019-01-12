@@ -25,6 +25,75 @@ class Sponsors {
 		add_action( 'add_meta_boxes', array( $this, 'register_sponsor_metaboxes' ) );
 		add_action( 'add_meta_boxes', array( $this, 'register_content_metaboxes' ) );
 		add_action( 'save_post', array( $this, 'save_sponsor' ), 20, 2 );
+		add_action( 'save_post', array( $this, 'save_sponsor_to_content' ), 20, 2 );
+	}
+
+	/**
+	 * Saving the Sponsor.
+	 *
+	 * @param $post_id
+	 * @param $post
+	 */
+	public function save_sponsor_to_content( $post_id, $post ) {
+
+		if ( wp_is_post_autosave( $post ) ) {
+			return;
+		}
+
+		if ( wp_is_post_revision( $post ) ) {
+			return;
+		}
+
+		if ( wp_doing_ajax() ) {
+			return;
+		}
+
+		if ( ! isset( $_POST['ss_sponsor_nonce'] ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_POST['ss_sponsor_nonce'], 'ss_sponsor_nonce' ) ) {
+			return;
+		}
+
+		$post_types = ss_get_content_types();
+
+		if ( in_array( get_post_type( $post ), array_keys( $post_types ), true ) ) {
+			return;
+		}
+
+		$sponsors = isset( $_POST['ss_sponsors'] ) ? $_POST['ss_sponsors'] : false;
+
+		if ( false === $sponsors ) {
+			return;
+		}
+
+		$sponsors          = explode(',', $sponsors );
+		$previous_sponsors = ss_get_sponsors_for_content( $post_id );
+		if ( ! $previous_sponsors ) {
+			$previous_sponsors = array();
+		}
+		ss_update_sponsors_for_content( $post_id, $sponsors );
+		
+		$new_sponsors = array_diff( $sponsors, $previous_sponsors  );
+		/**
+		 * @todo Remove 1 quantity for each added sponsor unless it's already there.
+		 */
+		// We have some previous sponsors.
+		if ( $previous_sponsors ) {
+			if ( ! is_array( $previous_sponsors ) ) {
+				$previous_sponsors = array( $previous_sponsors );
+			}
+			$removed_sponsors = array_diff( $previous_sponsors, $sponsors );
+			if ( $removed_sponsors ) {
+				/**
+				 * @todo Restore 1 quantity for each removed Sponsor.
+				 *
+				 */
+			}
+		}
+
+		do_action( 'ss_sponsor_post_saved_for_content', $sponsors, $post );
 	}
 
 	/**
@@ -76,10 +145,10 @@ class Sponsors {
 	}
 
 	/**
-	 * Register the metabox for other content.
+	 * Register the metabox for other content so we can assign sponsors to them.
 	 */
 	public function register_content_metaboxes() {
-		$post_types = ss_get_option( 'content_types', array( 'post' => 'Posts', 'page' => 'Page' ) );
+		$post_types = ss_get_content_types();
 
 		foreach ( $post_types as $post_type => $post_label ) {
 			add_meta_box( 'content-sponsor', __( 'Add Sponsors', 'simple-sponsorships' ), array( $this, 'metabox_sponsors' ), $post_type, 'side' );

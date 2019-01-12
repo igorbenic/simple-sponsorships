@@ -53,3 +53,18 @@ function ss_get_packages() {
 	$db = new \Simple_Sponsorships\DB\DB_Packages();
 	return $db->get_all();
 }
+
+/**
+ * Return content Types.
+ *
+ * @return mixed|string
+ */
+function ss_get_content_types() {
+	$content_types = ss_get_option( 'content_types', array( 'post' => 'Posts', 'page' => 'Page' ) );
+
+	if ( ! $content_types ) {
+		$content_types = array();
+	}
+
+	return apply_filters( 'ss_content_types', $content_types );
+}

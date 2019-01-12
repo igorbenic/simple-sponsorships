@@ -9,7 +9,15 @@ if ( ! $sponsorship ) {
 	return;
 }
 
+echo '<h3>' . esc_html__( 'Payment Information', 'simple-sponsorships' ) . '</h3>';
+
 if ( ! ss_payments_enabled() ) {
+    $instructions = ss_get_option( 'payment_instructions', __( 'We will contact you with specific information through email.', 'simple-sponsorships' ) );
+    if ( $instructions ) {
+        echo '<p><strong>' . __( 'Payment Instructions', 'simple-sponsorships' ) . '</strong></p>';
+	    echo $instructions;
+    }
+
     return;
 }
 
@@ -25,12 +33,12 @@ ss_print_notices();
 
 $form = new Form_Payment();
 
-do_action( 'ss_before_sponsor_form' );
+do_action( 'ss_before_payment_form' );
 
 ?>
     <form class="ss-sponsor-form" method="POST" action="">
 		<?php
-		do_action( 'ss_before_sponsor_form_fields' );
+		do_action( 'ss_before_payment_form_fields' );
 
 		wp_nonce_field( 'ss_sponsor_form', 'ss_nonce' );
 		foreach ( $form->get_fields() as $slug => $field ) {
@@ -39,7 +47,7 @@ do_action( 'ss_before_sponsor_form' );
 			ss_form_render_field( $field );
 		}
 
-		do_action( 'ss_after_sponsor_form_fields' );
+		do_action( 'ss_after_payment_form_fields' );
 
 		if ( $available_gateways ) {
 			if ( count( $available_gateways ) ) {
@@ -70,4 +78,4 @@ do_action( 'ss_before_sponsor_form' );
     </form>
 <?php
 
-do_action( 'ss_after_sponsor_form' );
+do_action( 'ss_after_payment_form' );

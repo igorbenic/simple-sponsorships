@@ -142,8 +142,14 @@ class Settings {
 						'id'      => 'enable_payments',
 						'name'    => __( 'Enable Payments', 'simple-sponsorships' ),
 						'type'    => 'checkbox',
-						'value' => '1',
 
+					),
+					'payment_instructions' => array(
+						'id'      => 'payment_instructions',
+						'name'    => __( 'Payment Instructions', 'simple-sponsorships' ),
+						'type'    => 'textarea',
+						'desc'    => __( 'Instructions that will show if the payments are not enabled so your sponsors know how to pay you.', 'simple-sponsorships' ),
+						'default' => __( 'We will contact you with specific information through email.', 'simple-sponsorships' ),
 					),
 					'currency' => array(
 						'id'      => 'currency',
@@ -192,10 +198,14 @@ class Settings {
 	 */
 	public function get_post_types() {
 
-		$post_types  = get_post_types( '', 'objects' );
+		$post_types  = get_post_types( array( 'show_ui' => true ), 'objects' );
 		$_post_types = array();
 
 		foreach ( $post_types as $type ) {
+			// We don't need our sponsors.
+			if ( 'sponsors' === $type->name ) {
+				continue;
+			}
 			$_post_types[ $type->name ] = $type->label;
 		}
 		return $_post_types;
