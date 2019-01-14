@@ -74,11 +74,13 @@ class Sponsors {
 			$previous_sponsors = array();
 		}
 		ss_update_sponsors_for_content( $post_id, $sponsors );
-		
+
 		$new_sponsors = array_diff( $sponsors, $previous_sponsors  );
-		/**
-		 * @todo Remove 1 quantity for each added sponsor unless it's already there.
-		 */
+		foreach ( $new_sponsors as $sponsor_id ) {
+			$sponsor = new Sponsor( $sponsor_id, false );
+			$sponsor->add_sponsored_quantity( 1 );
+		}
+
 		// We have some previous sponsors.
 		if ( $previous_sponsors ) {
 			if ( ! is_array( $previous_sponsors ) ) {
@@ -86,10 +88,10 @@ class Sponsors {
 			}
 			$removed_sponsors = array_diff( $previous_sponsors, $sponsors );
 			if ( $removed_sponsors ) {
-				/**
-				 * @todo Restore 1 quantity for each removed Sponsor.
-				 *
-				 */
+				foreach ( $removed_sponsors as $sponsor_id ) {
+					$sponsor = new Sponsor( $sponsor_id, false );
+					$sponsor->remove_sponsored_quantity( 1 );
+				}
 			}
 		}
 

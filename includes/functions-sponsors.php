@@ -24,6 +24,16 @@ function ss_get_sponsors( $args = array() ) {
 }
 
 /**
+ * Get a sponsor object
+ * @param int  $sponsor_id Sponsor ID.
+ * @param bool $populate If true, it will get the initial data from the table.
+ * @return \Simple_Sponsorships\Sponsor
+ */
+function ss_get_sponsor( $sponsor_id, $populate = true ) {
+	return new \Simple_Sponsorships\Sponsor( $sponsor_id, $populate );
+}
+
+/**
  * Return Active Sponsors
  *
  * @return array

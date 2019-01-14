@@ -88,8 +88,22 @@ class Sponsor extends Custom_Data {
 	 * @param int $qty Quantity
 	 */
 	public function add_sponsored_quantity( $qty ) {
-		$sponsored = $this->get_data( '_sponsored_quantity', 1 );
+		$sponsored = $this->get_data( '_sponsored_quantity', 0 );
 		$sponsored = $sponsored + $qty;
+		$this->update_data( '_sponsored_quantity', $sponsored );
+	}
+
+	/**
+	 * Remove Sponsored Quantity.
+	 *
+	 * @param int $qty Quantity
+	 */
+	public function remove_sponsored_quantity( $qty ) {
+		$sponsored = $this->get_data( '_sponsored_quantity', 0 );
+		$sponsored = $sponsored - $qty;
+		if ( $sponsored < 0 ) {
+			$sponsored = 0;
+		}
 		$this->update_data( '_sponsored_quantity', $sponsored );
 	}
 
