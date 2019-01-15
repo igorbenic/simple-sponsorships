@@ -83,4 +83,17 @@ class DB_Sponsors extends DB {
 	public function delete_meta( $id, $key, $value = '', $delete_all = false ) {
 		return \delete_post_meta( $id, $key, $value );
 	}
+
+	/**
+	 * Return all sponsors that are sponsoring a CPT.
+	 *
+	 * @param $post_id
+	 * @return array|null
+	 */
+	public function get_from_post( $post_id ) {
+		global $wpdb;
+
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->posts as posts INNER JOIN $wpdb->postmeta as meta on meta.meta_value = posts.ID WHERE meta.post_id=%d AND meta.meta_key='_ss_sponsor'", $post_id ) );
+		return $results;
+	}
 }

@@ -4,6 +4,7 @@
  */
 
 namespace Simple_Sponsorships\Widgets;
+use Simple_Sponsorships\DB\DB_Sponsors;
 use Simple_Sponsorships\Sponsor;
 use Simple_Sponsorships\Templates;
 
@@ -40,7 +41,12 @@ class Widget_Sponsors extends \WP_Widget {
 
 		if ( 'active' === $show_sponsors ) {
 			$sponsors = ss_get_active_sponsors();
-		}
+		} else {
+		    // No Current post. We don't get anything.
+		    if ( ! $post ) { return; }
+            $db = new DB_Sponsors();
+		    $sponsors = $db->get_from_post( $post->ID );
+        }
 
 		if ( ! $sponsors ) {
 			return;

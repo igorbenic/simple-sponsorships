@@ -39,7 +39,12 @@ function ss_get_sponsor( $sponsor_id, $populate = true ) {
  * @return array
  */
 function ss_get_active_sponsors() {
-	return ss_get_sponsors( array( 'post_status' => 'publish' ) );
+	return ss_get_sponsors( array(
+		'post_status'    => 'publish',
+		'meta_key'       => '_available_qty',
+		'meta_value_num' => 0,
+		'meta_compare'   => '>',
+	));
 }
 
 /**
@@ -97,9 +102,9 @@ function ss_delete_sponsors_for_content( $post_id, $sponsors_ids = false ) {
 		delete_post_meta( $post_id, '_ss_sponsor' );
 	} else {
 		if ( ! is_array( $sponsors_ids ) ) {
-			$sponsor_ids = array( $sponsor_ids );
+			$sponsors_ids = array( $sponsors_ids );
 		}
-		foreach ( $sponsor_ids as $sponsor_id ) {
+		foreach ( $sponsors_ids as $sponsor_id ) {
 			delete_post_meta( $post_id, '_ss_sponsor', $sponsor_id );
 		}
 	}

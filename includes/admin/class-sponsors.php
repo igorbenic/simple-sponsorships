@@ -58,7 +58,7 @@ class Sponsors {
 
 		$post_types = ss_get_content_types();
 
-		if ( in_array( get_post_type( $post ), array_keys( $post_types ), true ) ) {
+		if ( ! in_array( get_post_type( $post ), array_keys( $post_types ), true ) ) {
 			return;
 		}
 
@@ -68,7 +68,7 @@ class Sponsors {
 			return;
 		}
 
-		$sponsors          = explode(',', $sponsors );
+		$sponsors          = $sponsors ? explode(',', $sponsors ) : array();
 		$previous_sponsors = ss_get_sponsors_for_content( $post_id );
 		if ( ! $previous_sponsors ) {
 			$previous_sponsors = array();
