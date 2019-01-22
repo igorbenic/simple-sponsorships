@@ -159,6 +159,41 @@ class Settings {
 					)
 				)
 			) ),
+			'emails' => apply_filters( 'ss_settings_emails', array(
+				'main' => array(
+					'ss_email_background_color' => array(
+						'id'      => 'ss_email_background_color',
+						'name'    => __( 'Background Color', 'simple-sponsorships' ),
+						'type'    => 'color',
+						'default' => '#ffffff'
+
+					),
+					'ss_email_body_background_color' => array(
+						'id'      => 'ss_email_body_background_color',
+						'name'    => __( 'Body Background Color', 'simple-sponsorships' ),
+						'type'    => 'color',
+						'default' => '#ffffff'
+					),
+					'ss_email_base_color' => array(
+						'id'      => 'ss_email_base_color',
+						'name'    => __( 'Base Color', 'simple-sponsorships' ),
+						'type'    => 'color',
+						'default' => '#000000'
+					),
+					'ss_email_base_text_color' => array(
+						'id'      => 'ss_email_base_text_color',
+						'name'    => __( 'Base Text Color', 'simple-sponsorships' ),
+						'type'    => 'color',
+						'default' => '#ffffff'
+					),
+					'ss_email_text_color' => array(
+						'id'      => 'ss_email_text_color',
+						'name'    => __( 'Text Color', 'simple-sponsorships' ),
+						'type'    => 'color',
+						'default' => '#000000'
+					),
+				)
+			) ),
 		);
 
 		return apply_filters( 'ss_get_settings', $settings );
@@ -223,7 +258,10 @@ class Settings {
 			),
 			'gateways' => array(
 				'main' => __( 'General', 'simple-sponsorships' ),
-			)
+			),
+			'emails' => array(
+				'main' => __( 'General', 'simple-sponsorships' ),
+			),
 		);
 
 		return apply_filters( 'ss_get_settings_sections', $sections );
@@ -239,9 +277,9 @@ class Settings {
 	public function get_settings_tabs() {
 
 		$tabs             = array();
-		$tabs['general']  = __( 'General', 'easy-digital-downloads' );
-		$tabs['gateways'] = __( 'Payment Gateways', 'easy-digital-downloads' );
-		//$tabs['emails']   = __( 'Emails', 'easy-digital-downloads' );
+		$tabs['general']  = __( 'General', 'simple-sponsorships' );
+		$tabs['gateways'] = __( 'Payment Gateways', 'simple-sponsorships' );
+		$tabs['emails']   = __( 'Emails', 'simple-sponsorships' );
 		//$tabs['styles']   = __( 'Styles', 'easy-digital-downloads' );
 		//$tabs['taxes']    = __( 'Taxes', 'easy-digital-downloads' );
 		//$tabs['privacy']  = __( 'Privacy', 'easy-digital-downloads' );
@@ -688,6 +726,30 @@ class Settings {
 				$html     = '<input type="hidden"' . $name . ' value="-1" />';
 				$html    .= '<input type="checkbox" id="' . $id . '"' . $name . ' value="1" ' . $checked . ' class="' . $class . '"/>';
 				$html    .= '<label for="' . $id . '"> '  . wp_kses_post( $args['desc'] ) . '</label>';
+
+				echo apply_filters( 'ss_after_setting_output', $html, $args );
+				break;
+			// Color picker.
+			case 'color':
+				if ( $args['value'] ) {
+					$value = $args['value'];
+				} elseif( ! empty( $args['allow_blank'] ) && empty( $args['value'] ) ) {
+					$value = '';
+				} else {
+					$value = isset( $args['std'] ) ? $args['std'] : '';
+				}
+
+				if ( isset( $args['faux'] ) && true === $args['faux'] ) {
+					$args['readonly'] = true;
+					$value = isset( $args['std'] ) ? $args['std'] : '';
+					$name  = '';
+				}
+
+				$disabled = ! empty( $args['disabled'] ) ? ' disabled="disabled"' : '';
+				$readonly = $args['readonly'] === true ? ' readonly="readonly"' : '';
+				$size     = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
+				$html     = '<input type="text" class="ss-colorpicker ' . $class . ' ' . self::sanitize_html_class( $size ) . '-text" id="' . $id . '" ' . $name . ' value="' . esc_attr( stripslashes( $value ) ) . '"' . $readonly . $disabled . ' placeholder="' . esc_attr( $args['placeholder'] ) . '"/>';
+				$html    .= $label;
 
 				echo apply_filters( 'ss_after_setting_output', $html, $args );
 				break;

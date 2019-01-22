@@ -6,5 +6,8 @@ import { startContentSponsorsDropdown, showSponsorSelect } from './admin/sponsor
         showSponsorSelect();
         $( document ).on( 'change', '#ss_sponsorships\\[sponsor\\]', showSponsorSelect );
 
+        if ( $( '.ss-colorpicker' ).length ) {
+            $( '.ss-colorpicker' ).wpColorPicker();
+        }
     });
 })(jQuery)

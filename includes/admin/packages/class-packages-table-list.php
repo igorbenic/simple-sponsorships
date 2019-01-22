@@ -169,10 +169,10 @@ class Packages_Table_List extends \WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'cb'    => '<input type="checkbox" />',
-			'title' => __( 'Title', 'simple-sponsorships' ),
-			'type'  => __( 'Type', 'simple-sponsorships' ),
-			'price' => __( 'Price', 'simple-sponsorships' ),
+			'cb'       => '<input type="checkbox" />',
+			'title'    => __( 'Title', 'simple-sponsorships' ),
+			'quantity' => __( 'Quantity', 'simple-sponsorships' ),
+			'price'    => __( 'Price', 'simple-sponsorships' ),
 		);
 
 		return $columns;

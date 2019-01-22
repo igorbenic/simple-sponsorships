@@ -27,19 +27,48 @@ class Shortcodes {
 	public function register() {
 		add_shortcode( 'ss_sponsor_form', array( $this, 'sponsor_form' ) );
 		add_shortcode( 'ss_sponsorship_details', array( $this, 'sponsorship_details' ) );
+		add_shortcode( 'ss_sponsors', array( $this, 'sponsors' ) );
 	}
 
 	/**
 	 * Sponsor Form.
 	 */
 	public function sponsor_form( $args = array() ) {
+		ob_start();
 		Templates::get_template_part( 'sponsor-form' );
+		return ob_get_clean();
 	}
 
 	/**
-	 * Sponsor Form.
+	 * Sponsorship Details.
 	 */
 	public function sponsorship_details( $args = array() ) {
+		ob_start();
 		Templates::get_template_part( 'sponsorship', 'details' );
+		return ob_get_clean();
+	}
+
+	/**
+	 * Method to show sponsors.
+	 *
+	 * @param array $args Shortcode array.
+	 */
+	public function sponsors( $args = array() ) {
+		/**
+		 * Possible values:
+		 *
+		 * content: current or ID of a CPT,
+		 * all: 0 or 1 (If 1, it will ignore content and it will show all active sponsors.
+		 */
+		$atts = shortcode_atts( array(
+			'content' => 'current',
+			'all'     => '0',
+			'logo'    => '1',
+			'text'    => '1'
+		), $args, 'ss_sponsors' );
+
+		ob_start();
+		Templates::get_template_part( 'shortcode-sponsors', null, $atts );
+		return ob_get_clean();
 	}
 }

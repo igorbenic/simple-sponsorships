@@ -94,6 +94,10 @@ class Admin {
 		}
 
 		if ( $enqueue ) {
+			if ( 'sponsors_page_ss-settings' === $hook ) {
+				wp_enqueue_style( 'wp-color-picker' );
+				wp_enqueue_script( 'wp-color-picker' );
+			}
 			wp_enqueue_script( 'ss-admin-js', SS_PLUGIN_URL . '/assets/dist/js/admin.js', array( 'jquery' ), SS_VERSION, true );
 			wp_localize_script( 'ss-admin-js', 'ss_admin', array(
 				'nonce'    => wp_create_nonce( 'ss-admin-nonce' )
