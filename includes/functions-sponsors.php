@@ -41,6 +41,17 @@ function ss_get_sponsor( $sponsor_id, $populate = true ) {
 function ss_get_active_sponsors() {
 	return ss_get_sponsors( array(
 		'post_status'    => 'publish',
+	));
+}
+
+/**
+ * Return Available Sponsors
+ *
+ * @return array
+ */
+function ss_get_available_sponsors() {
+	return ss_get_sponsors( array(
+		'post_status'    => 'publish',
 		'meta_key'       => '_available_qty',
 		'meta_value_num' => 0,
 		'meta_compare'   => '>',

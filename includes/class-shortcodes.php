@@ -59,6 +59,8 @@ class Shortcodes {
 		 *
 		 * content: current or ID of a CPT,
 		 * all: 0 or 1 (If 1, it will ignore content and it will show all active sponsors.
+		 * text: 0 or 1
+		 * logo: 0 or 1
 		 */
 		$atts = shortcode_atts( array(
 			'content' => 'current',

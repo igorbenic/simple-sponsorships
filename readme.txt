@@ -2,112 +2,72 @@
 Contributors: ibenic
 Tags: comments, spam
 Requires at least: 4.4
-Tested up to: 5.0.2
+Tested up to: 5.0.3
 Stable tag: 0.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+Accept Sponsorships for any type of site, event or product. Manage & Display Sponsors.
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+Simple Sponsorships is a complete Sponsorships manager plugin where you can:
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+* accept sponsor requests
+* receive payments from approved sponsorships
+* manage and display Sponsors
+* create different sponsorship packages
 
-A few notes about the sections above:
-
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
-
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+If you want to handle payments differently, you can disable them and instruct sponsors with detailed information on how you will accept payments.
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
 
-e.g.
+1. Install it through the Plugins menu page
+1.1. Upload `simple-sponsorships` to the `/wp-content/plugins/` directory or
+1.2. Upload `simple-sponsorships.zip` under Plugins > Add New
 
-1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
+2. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= How many Sponsors can I have? =
 
-An answer to that question.
+As many as you want. Sponsors are regular WordPress post types so your database size is the only limitation.
 
-= What about foo bar? =
+= How can I assign Sponsors to an Event or Post? =
 
-Answer to foo bar dilemma.
+Under Sponsorships > Settings, you can enable various Post Types. Then, under each post, you will have a metabox where you will search for sponsors to add.
+Sponsors that will show are sponsors that have their available quantity higher than zero (0). Each time you add a Sponsor to a post type, the quantity is reduced.
+
+= How do I decide how many available content quantity a Sponsor has? =
+
+Each package has a Quantity option. If a package has quantity of 2, when a sponsor purchases a sponsorship of that package, the sponsor will get 2 more quantities.
+
+= What happens if I remove a Sponsor from a Content? =
+
+That sponsor will get 1 quantity back which you can then use to assign it to another content.
+
+= How can I show Sponsors on my site? =
+
+You can use the provided Widget and decide how to display them. You can choose to display all sponsors or for the current content.
+If the "Current Content Sponsors" is selected, it will display only the sponsors of the current post.
+
+You can also use the shortcode [ss_sponsors] where there are a few options. You can use the option all="1" to show all sponsors.
+By default it will show the current content sponsors. If the option content is set for example content="1" it will check for the sponsors of the post with ID of 1.
+If you want to use logo, you will use logo="1" or to hide use logo="0". By default, it will show.
+If you want to show description, you will use text="1" or to hide, use text="0". By default, it will show.
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. A screenshot of Sponsors.
 
 == Changelog ==
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
-
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+= 0.1.0 =
+* First beta version.
 
 == Upgrade Notice ==
 
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
-
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-== A brief Markdown Example ==
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](https://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: https://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
+= 0.1.0 =
+First update and push.
