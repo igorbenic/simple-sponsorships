@@ -205,11 +205,11 @@ class Plugin {
 		if ( is_admin() ) { return; }
 
 		if ( isset( $_POST['ss-action'] ) ) {
-			do_action( 'ss_' . strtolower( $_POST['ss-action'] ), $_POST );
+			do_action( 'ss_' . sanitize_text_field( strtolower( $_POST['ss-action'] ) ), $_POST );
 		}
 
 		if ( isset( $_GET['ss-action'] ) ) {
-			do_action( 'ss_' . strtolower( $_GET['ss-action'] ), $_GET );
+			do_action( 'ss_' . sanitize_text_field( strtolower( $_GET['ss-action'] ) ), $_GET );
 		}
 	}
 

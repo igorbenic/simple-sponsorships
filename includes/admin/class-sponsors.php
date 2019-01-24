@@ -62,7 +62,7 @@ class Sponsors {
 			return;
 		}
 
-		$sponsors = isset( $_POST['ss_sponsors'] ) ? $_POST['ss_sponsors'] : false;
+		$sponsors = isset( $_POST['ss_sponsors'] ) ? sanitize_text_field( $_POST['ss_sponsors'] ) : false;
 
 		if ( false === $sponsors ) {
 			return;

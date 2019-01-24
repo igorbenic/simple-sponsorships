@@ -202,7 +202,7 @@ class Sponsorships {
 	 * Admin Page
 	 */
 	public function page() {
-		$action = isset( $_GET['ss-action'] ) ? $_GET['ss-action'] : 'list';
+		$action = isset( $_GET['ss-action'] ) ? sanitize_text_field( $_GET['ss-action'] ) : 'list';
 
 		switch( $action ) {
 			case 'edit-sponsorship':

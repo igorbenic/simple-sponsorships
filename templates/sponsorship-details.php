@@ -15,7 +15,7 @@ if ( ! isset( $_GET['sponsorship-key'] ) || '' == $_GET['sponsorship-key'] ) {
 }
 
 $db           = new DB_Sponsorships();
-$sponsorships = $db->get_by_column( 'ss_key', $_GET['sponsorship-key'] );
+$sponsorships = $db->get_by_column( 'ss_key', sanitize_text_field( $_GET['sponsorship-key'] ) );
 
 if ( ! $sponsorships ) {
 	return;
