@@ -7,7 +7,7 @@
  * Author URI:      https://www.ibenic.com
  * Text Domain:     simple-sponsorships
  * Domain Path:     /languages
- * Version:         0.1.0
+ * Version:         0.1.1
  *
  * @package         Simple_Sponsorships
  */
@@ -35,7 +35,7 @@ class Plugin {
 	/**
 	 * @var string
 	 */
-	public $version = '0.1.0';
+	public $version = '0.1.1';
 
 	/**
 	 * Settings
