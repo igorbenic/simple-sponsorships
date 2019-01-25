@@ -69,39 +69,17 @@ class Sponsorships {
 		$status         = isset( $posted_data['status'] ) ? sanitize_text_field( $posted_data['status'] ) : '';
 		$amount         = isset( $posted_data['amount'] ) ? floatval( $posted_data['amount'] ) : 0;
 		$package        = isset( $posted_data['package'] ) ? absint( $posted_data['package'] ) : 0;
-		$sponsor        = isset( $posted_data['sponsor'] ) ? $posted_data['sponsor'] : false;
 		$transaction_id = isset( $posted_data['transaction_id'] ) ? sanitize_text_field( $posted_data['transaction_id'] ) : '';
 
 		if ( ! $status ) {
 			$this->errors->add( 'no-status', __( 'No Status is required.', 'simple-sponsorships' ) );
 		}
 
-		if ( 'new' === $sponsor ) {
-			$sponsor_name = isset( $posted_data['sponsor_name'] ) ? sanitize_text_field( $posted_data['sponsor_name'] ) : '';
-
-			if ( ! $sponsor_name ) {
-				$this->errors->add( 'no-sponsor', __( 'Select a Sponsor or insert the name to add a new one.', 'simple-sponsorships' ) );
-				return;
-			}
-
-			$sponsor_id = wp_insert_post( array(
-				'post_status' => 'publish',
-				'post_type'   => 'sponsors',
-				'post_title'  => $sponsor_name
-			) );
-
-			if ( is_wp_error( $sponsor_id ) ) {
-				$this->errors->add( $sponsor_id->get_error_code(), $sponsor_id->get_error_message() );
-			}
-
-			$sponsor = $sponsor_id;
-			do_action( 'ss_sponsorship_sponsor_created', $sponsor_id, $posted_data );
-		}
+		$sponsor = $this->create_sponsor_for_sponsorship( $posted_data );
 
 		if ( $this->errors->get_error_messages() ) {
 			return;
 		}
-
 
 		$sponsorship_id = ss_create_sponsorship(array(
 			'status'         => $status,
@@ -138,7 +116,6 @@ class Sponsorships {
 		$status         = isset( $posted_data['status'] ) ? sanitize_text_field( $posted_data['status'] ) : '';
 		$amount         = isset( $posted_data['amount'] ) ? floatval( $posted_data['amount'] ) : 0;
 		$package        = isset( $posted_data['package'] ) ? absint( $posted_data['package'] ) : 0;
-		$sponsor        = isset( $posted_data['sponsor'] ) ? $posted_data['sponsor'] : false;
 		$gateway        = isset( $posted_data['gateway'] ) ? $posted_data['gateway'] : 'manual';
 		$transaction_id = isset( $posted_data['transaction_id'] ) ? sanitize_text_field( $posted_data['transaction_id'] ) : '';
 		$id             = isset( $posted_data['id'] ) ? absint( $posted_data['id'] ) : 0;
@@ -155,27 +132,7 @@ class Sponsorships {
 			return;
 		}
 
-		if ( 'new' === $sponsor ) {
-			$sponsor_name = isset( $posted_data['_sponsor_name'] ) ? sanitize_text_field( $posted_data['_sponsor_name'] ) : '';
-
-			if ( ! $sponsor_name ) {
-				$this->errors->add( 'no-sponsor', __( 'Select a Sponsor or insert the name to add a new one.', 'simple-sponsorships' ) );
-				return;
-			}
-
-			$sponsor_id = wp_insert_post( array(
-				'post_status' => 'publish',
-				'post_type'   => 'sponsors',
-				'post_title'  => $sponsor_name
-			) );
-
-			if ( is_wp_error( $sponsor_id ) ) {
-				$this->errors->add( $sponsor_id->get_error_code(), $sponsor_id->get_error_message() );
-			}
-
-			$sponsor = $sponsor_id;
-			do_action( 'ss_sponsorship_sponsor_created', $sponsor_id, $posted_data );
-		}
+		$sponsor = $this->create_sponsor_for_sponsorship( $posted_data );
 
 		if ( $this->errors->get_error_messages() ) {
 			return;
@@ -196,6 +153,47 @@ class Sponsorships {
 		if ( $ret ) {
 			do_action( 'ss_sponsorship_updated', $id, $posted_data );
 		}
+	}
+
+	/**
+	 * @param $posted_data
+	 *
+	 * @return bool|int|\WP_Error
+	 */
+	public function create_sponsor_for_sponsorship( $posted_data ) {
+		$sponsor = isset( $posted_data['sponsor'] ) ? $posted_data['sponsor'] : false;
+		$status  = isset( $posted_data['status'] ) ? sanitize_text_field( $posted_data['status'] ) : '';
+
+		if ( ! $sponsor ) {
+			$this->errors->add( 'missing-sponsor', __( 'Sponsor data not posted.', 'simple-sponsorships' ) );
+			return false;
+		}
+
+		if ( 'new' === $sponsor ) {
+			$sponsor_name = isset( $posted_data['_sponsor_name'] ) ? sanitize_text_field( $posted_data['_sponsor_name'] ) : '';
+
+			if ( ! $sponsor_name ) {
+				$this->errors->add( 'no-sponsor', __( 'Select a Sponsor or insert the name to add a new one.', 'simple-sponsorships' ) );
+				return false;
+			}
+
+			$sponsor_status = $status !== 'paid' ? 'ss-inactive' : 'publish';
+
+			$sponsor_id = wp_insert_post( array(
+				'post_status' => $sponsor_status,
+				'post_type'   => 'sponsors',
+				'post_title'  => $sponsor_name
+			) );
+
+			if ( is_wp_error( $sponsor_id ) ) {
+				$this->errors->add( $sponsor_id->get_error_code(), $sponsor_id->get_error_message() );
+			}
+
+			$sponsor = $sponsor_id;
+			do_action( 'ss_sponsorship_sponsor_created', $sponsor_id, $posted_data );
+		}
+
+		return $sponsor;
 	}
 
 	/**

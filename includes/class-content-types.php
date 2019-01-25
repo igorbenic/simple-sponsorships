@@ -17,8 +17,9 @@ class Content_Types {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'register' ), 0 );
-		add_filter('gutenberg_can_edit_post_type', array( $this, 'disable_gutenberg_for_sponsors' ), 10, 2);
-		add_filter( 'use_block_editor_for_post_type', array( $this, 'disable_gutenberg_for_sponsors' ), 10, 2);
+		add_action( 'init', array( $this, 'register_post_status' ), 10 );
+		add_filter( 'gutenberg_can_edit_post_type', array( $this, 'disable_gutenberg_for_sponsors' ), 10, 2 );
+		add_filter( 'use_block_editor_for_post_type', array( $this, 'disable_gutenberg_for_sponsors' ), 10, 2 );
 	}
 
 	/**
@@ -97,5 +98,28 @@ class Content_Types {
 		);
 		register_post_type( 'sponsors', $args );
 
+	}
+
+	/**
+	 * Register our custom post statuses, used for sponsor status.
+	 */
+	public function register_post_status() {
+		$sponsor_statuses = apply_filters(
+			'ss_register_sponsor_post_statuses',
+			array(
+				'ss-inactive'    => array(
+					'label'                     => _x( 'Inactive', 'Sponsor status', 'simple-sponsorships' ),
+					'public'                    => false,
+					'exclude_from_search'       => false,
+					'show_in_admin_all_list'    => true,
+					'show_in_admin_status_list' => true,
+					/* translators: %s: number of orders */
+					'label_count'               => _n_noop( 'Inactive <span class="count">(%s)</span>', 'Inactive <span class="count">(%s)</span>', 'simple-sponsorships' ),
+				),
+			)
+		);
+		foreach ( $sponsor_statuses as $status => $values ) {
+			register_post_status( $status, $values );
+		}
 	}
 }
