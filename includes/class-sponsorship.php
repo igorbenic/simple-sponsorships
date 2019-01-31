@@ -116,7 +116,9 @@ class Sponsorship extends Custom_Data {
 	 */
 	public function set_status( $status ) {
 		if ( in_array( $status, array_keys( ss_get_sponsorship_statuses() ), true ) ) {
-			$this->update_data( 'status', $status );
+			if ( $this->get_data( 'status' ) !== $status ) {
+				$this->update_data( 'status', $status );
+			}
 		}
 	}
 

@@ -205,3 +205,17 @@ function ss_sponsorship_customer_details( $sponsorship ) {
 
 	\Simple_Sponsorships\Templates::get_template_part( 'sponsorship/customer-details', '', array( 'sponsorship' => $sponsorship ) );
 }
+
+/**
+ * Activate the sponsorships when it's status has changed.
+ *
+ * @param $status
+ * @param $old_status
+ * @param $sponsorship_id
+ */
+function ss_activate_sponsorship_on_status_change( $status, $old_status, $sponsorship_id ) {
+	if ( 'paid' === $status && 'paid' !== $old_status ) {
+		$sponsorship = new \Simple_Sponsorships\Sponsorship( $sponsorship_id );
+		$sponsorship->activate();
+	}
+}
