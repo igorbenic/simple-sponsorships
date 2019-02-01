@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name:     Simple Sponsorships
- * Plugin URI:      #
+ * Plugin URI:      https://wordpress.org/plugins/simple-sponsorships/
  * Description:     Accept sponsors and sponsorships on your site.
  * Author:          Igor Benic
  * Author URI:      https://www.ibenic.com
  * Text Domain:     simple-sponsorships
  * Domain Path:     /languages
- * Version:         0.1.1
+ * Version:         0.2.0
  *
  * @package         Simple_Sponsorships
  */
@@ -35,7 +35,7 @@ class Plugin {
 	/**
 	 * @var string
 	 */
-	public $version = '0.1.1';
+	public $version = '0.2.0';
 
 	/**
 	 * Settings
@@ -141,6 +141,7 @@ class Plugin {
 		include_once 'includes/class-payment-gateways.php';
 		include_once 'includes/class-countries.php';
 		include_once 'includes/class-widgets.php';
+		include_once 'includes/class-ajax.php';
 
 		// Gateways.
 		include_once 'includes/gateways/class-paypal.php';
@@ -187,6 +188,7 @@ class Plugin {
 		add_action( 'ss_sponsor_form', 'ss_process_sponsor_form' );
 		add_action( 'ss_payment_form', 'ss_process_payment_form' );
 		add_action( 'ss_sponsorship_form', 'ss_show_payment_form_for_sponsorship' );
+		add_filter( 'the_content', 'ss_show_sponsors_under_content' );
 	}
 
 	/**
@@ -196,6 +198,10 @@ class Plugin {
 
 		wp_enqueue_style( 'ss-style', SS_PLUGIN_URL . '/assets/dist/css/public.css', array(), $this->version );
 		wp_enqueue_script( 'ss-script', SS_PLUGIN_URL . '/assets/dist/js/public.js', array( 'jquery' ), $this->version, true );
+		wp_localize_script( 'ss-script', 'ss_wp', array(
+			'ajax' => admin_url( 'admin-ajax.php' ),
+			'nonce' => wp_create_nonce( 'ss-ajax' )
+		));
 	}
 
 	/**

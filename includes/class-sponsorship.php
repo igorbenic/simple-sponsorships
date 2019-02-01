@@ -131,7 +131,7 @@ class Sponsorship extends Custom_Data {
 		ss_add_notice( sprintf( __( 'Sponsorship #%d was successfully paid', 'simple-sponsorship' ), $this->get_id() ), 'success' );
 
 		$sponsor = $this->get_sponsor_data();
-		$sponsor->add_sponsored_quantity( $this->get_package()->get_data( 'quantity', 1 ) );
+		$sponsor->add_available_quantity( $this->get_package()->get_data( 'quantity', 1 ) );
 		$sponsor->maybe_activate();
 		do_action( 'ss_sponsorship_activated', $this );
 	}

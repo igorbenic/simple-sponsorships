@@ -3,7 +3,7 @@ Contributors: ibenic
 Tags: comments, spam
 Requires at least: 4.4
 Tested up to: 5.0.3
-Stable tag: 0.1.1
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,12 @@ If you want to show description, you will use text="1" or to hide, use text="0".
 1. A screenshot of Sponsors.
 
 == Changelog ==
+
+= 0.2.0 =
+* Added Column Available Quantity on Sponsors
+* Added Styles for Sponsors in widgets and under content
+* Added a setting for displaying sponsors under the sponsored content
+* Showing only available sponsors when searching them for a content (to add them)
 
 = 0.1.1 =
 * Sanitized and escaped data.

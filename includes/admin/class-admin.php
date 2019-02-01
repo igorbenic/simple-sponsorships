@@ -100,7 +100,8 @@ class Admin {
 			}
 			wp_enqueue_script( 'ss-admin-js', SS_PLUGIN_URL . '/assets/dist/js/admin.js', array( 'jquery' ), SS_VERSION, true );
 			wp_localize_script( 'ss-admin-js', 'ss_admin', array(
-				'nonce'    => wp_create_nonce( 'ss-admin-nonce' )
+				'nonce' => wp_create_nonce( 'ss-admin-nonce' ),
+				'ajax'  => admin_url( 'admin-ajax.php' ),
 			));
 
 			wp_enqueue_style( 'ss-admin-css', SS_PLUGIN_URL . '/assets/dist/css/admin.css', array(), SS_VERSION );

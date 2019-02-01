@@ -56,3 +56,20 @@
     }
   }
 }
+
+.wp-list-table {
+  .ss-badge {
+    display: inline-block;
+    min-width: 2em;
+    height: 1.5em;
+    border-radius: 0.15em;
+    padding: 0 0.5em;
+    text-align: center;
+    background-color: fade_out( $purple, 0.15 );
+    color: $white;
+
+    &.ss-qty-0 {
+      background-color: fade_out( $red, 0.15 );
+    }
+  }
+}

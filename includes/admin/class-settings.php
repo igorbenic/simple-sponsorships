@@ -108,6 +108,13 @@ class Settings {
 						'placeholder' => __( 'Select a Type', 'simple-sponsorships' ),
 						'default'     => array( 'post', 'page' ),
 					),
+					'show_in_content_footer' => array(
+						'id'      => 'show_in_content_footer',
+						'name'    => __( 'Show Sponsors under Content', 'simple-sponsorships' ),
+						'type'    => 'checkbox',
+						'desc'    => __( 'If checked, it will show sponsors that sponsored the content.', 'simple-sponsorships' ),
+						'default' => '0'
+					),
 					'page_settings' => array(
 						'id'   => 'page_settings',
 						'name' => '<h3>' . __( 'Pages', 'simple-sponsorships' ) . '</h3>',

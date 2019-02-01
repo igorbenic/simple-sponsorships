@@ -26,6 +26,58 @@ class Sponsors {
 		add_action( 'add_meta_boxes', array( $this, 'register_content_metaboxes' ) );
 		add_action( 'save_post', array( $this, 'save_sponsor' ), 20, 2 );
 		add_action( 'save_post', array( $this, 'save_sponsor_to_content' ), 20, 2 );
+
+		add_filter( 'manage_sponsors_posts_columns', array( $this, 'columns' ) );
+		add_action( 'manage_sponsors_posts_custom_column' , array( $this, 'custom_column' ), 10, 2 );
+
+		add_filter( 'display_post_states', array( $this, 'show_inactive_status' ), 20, 2 );
+	}
+
+	/**
+	 * Managing Sponsor Columns.
+	 *
+	 * @param array $columns Array of columns.
+	 *
+	 * @return mixed
+	 */
+	public function columns( $columns ) {
+		unset( $columns['date'] );
+		$columns['qty'] = __( 'Avl. Quantity', 'simple-sponsorships' );
+		return $columns;
+	}
+
+	/**
+	 * Used for displaying custom data.
+	 *
+	 * @param string $column Column.
+	 * @param integer $post_id Sponsor ID.
+	 */
+	public function custom_column( $column, $post_id ) {
+		switch ( $column ) {
+			case 'qty':
+				$sponsor = new Sponsor( $post_id, false );
+				$qty     = $sponsor->get_available_quantity();
+				echo '<span class="ss-badge ss-qty-' . $qty . '">' . $qty . '</span>';
+				break;
+		}
+		do_action( 'ss_sponsors_column_' . $column, $post_id );
+	}
+
+	/**
+	 * Show if a sponsor is inactive.
+	 *
+	 * @param array    $states Array of all states.
+	 * @param \WP_Post $post Post object.
+	 *
+	 * @return array
+	 */
+	public function show_inactive_status( $states, $post ) {
+
+		if ( 'sponsors' === get_post_type( $post ) && 'ss-inactive' === $post->post_status ) {
+			$states[] = __( 'Inactive', 'simple-sponsorships' );
+		}
+
+		return $states;
 	}
 
 	/**
@@ -78,7 +130,7 @@ class Sponsors {
 		$new_sponsors = array_diff( $sponsors, $previous_sponsors  );
 		foreach ( $new_sponsors as $sponsor_id ) {
 			$sponsor = new Sponsor( $sponsor_id, false );
-			$sponsor->add_sponsored_quantity( 1 );
+			$sponsor->remove_available_quantity( 1 );
 		}
 
 		// We have some previous sponsors.
@@ -90,7 +142,7 @@ class Sponsors {
 			if ( $removed_sponsors ) {
 				foreach ( $removed_sponsors as $sponsor_id ) {
 					$sponsor = new Sponsor( $sponsor_id, false );
-					$sponsor->remove_sponsored_quantity( 1 );
+					$sponsor->add_available_quantity( 1 );
 				}
 			}
 		}

@@ -1,0 +1,13 @@
+.ss-widget-sponsor,
+.ss-sponsors .ss-sponsor{
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 1em;
+  }
+}

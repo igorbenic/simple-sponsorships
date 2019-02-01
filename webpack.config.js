@@ -1,12 +1,14 @@
 const webpack = require( 'webpack' ); // WebPack module
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' ); // command to copy files
 const path = require( 'path' ); // for path
-const ExtractTextPlugin = require( 'extract-text-webpack-plugin' ); // for extracting css/scss from JS
 const inProduction = ('production' === process.env.NODE_ENV); // if in production
 const ImageminPlugin = require( 'imagemin-webpack-plugin' ).default; // Optimize images
 const CleanWebpackPlugin = require( 'clean-webpack-plugin' ); // To clean (remove files)
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' ); // for RTL support (optional)
 const wpPot = require( 'wp-pot' ); // For creating .pot files
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const config = {
     // Ensure modules like magnific know jQuery is external (loaded via WP).
@@ -30,19 +32,21 @@ const config = {
             // Create RTL styles.
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract( 'style-loader' )
+                loader: MiniCssExtractPlugin.loader
             },
 
             // SASS to CSS.
             {
                 test: /\.scss$/,
-                use: ExtractTextPlugin.extract( {
-                    use: [ {
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
                         loader: 'css-loader',
                         options: {
                             sourceMap: true
                         }
-                    }, {
+                    },
+                    {
                         loader: 'postcss-loader',
                         options: {
                             sourceMap: true
@@ -53,8 +57,8 @@ const config = {
                             sourceMap: true,
                             outputStyle: (inProduction ? 'compressed' : 'nested')
                         }
-                    } ]
-                } )
+                    }
+                ]
             },
 
             // Image files.
@@ -77,13 +81,37 @@ const config = {
         // Removes the "dist" folder before building.
         new CleanWebpackPlugin( [ 'assets/dist' ] ),
 
-        // Extract CSS to /css/
-        new ExtractTextPlugin( 'css/[name].css' ),
+        new MiniCssExtractPlugin({
+            filename: "css/[name].css",
+            chunkFilename: "[id].css"
+        }),
 
         // Create RTL css.
         new WebpackRTLPlugin()
     ]
 };
+
+if ( inProduction ) {
+
+    // POT file.
+    wpPot( {
+        package: 'simple-sponsorships',
+        domain: 'simple-sponsorships',
+        destFile: 'languages/simple-sponsorship.pot',
+        relativeTo: './',
+    } );
+
+    config.optimization = {
+        minimizer: [
+            new UglifyJsPlugin({
+                cache: true,
+                parallel: true,
+                sourceMap: true // set to true if you want JS source maps
+            }),
+            new OptimizeCSSAssetsPlugin({})
+        ]
+    };
+}
 
 module.exports = [
     // Adding entry points and output to the config.
@@ -111,20 +139,3 @@ module.exports = [
         },
     }, config)*/
 ];
-
-if ( inProduction ) {
-
-    // POT file.
-    wpPot( {
-        package: 'simple-sponsorships',
-        domain: 'simple-sponsorships',
-        destFile: 'languages/simple-sponsorship.pot',
-        relativeTo: './',
-    } );
-
-    // Uglify JS.
-    config.plugins.push( new webpack.optimize.UglifyJsPlugin( { sourceMap: true } ) );
-
-    // Minify CSS.
-    config.plugins.push( new webpack.LoaderOptionsPlugin( { minimize: true } ) );
-}

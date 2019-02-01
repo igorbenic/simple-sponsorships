@@ -120,6 +120,7 @@ abstract class Custom_Data {
 				} else {
 					$db    = $this->get_db_object();
 					$value = $db->get_meta( $this->id, $key, true );
+					$value = $value === '' ? $default : $value;
 					$this->set_data( $key, $value );
 				}
 			}

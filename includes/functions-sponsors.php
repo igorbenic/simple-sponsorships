@@ -49,13 +49,13 @@ function ss_get_active_sponsors() {
  *
  * @return array
  */
-function ss_get_available_sponsors() {
-	return ss_get_sponsors( array(
+function ss_get_available_sponsors( $args = array() ) {
+	return ss_get_sponsors( wp_parse_args( $args, array(
 		'post_status'    => 'publish',
 		'meta_key'       => '_available_qty',
 		'meta_value_num' => 0,
 		'meta_compare'   => '>',
-	));
+	)));
 }
 
 /**
@@ -119,4 +119,62 @@ function ss_delete_sponsors_for_content( $post_id, $sponsors_ids = false ) {
 			delete_post_meta( $post_id, '_ss_sponsor', $sponsor_id );
 		}
 	}
+}
+
+/**
+ * Show sponsors under the content.
+ * @param $content
+ *
+ * @return string
+ */
+function ss_show_sponsors_under_content( $content ) {
+	if ( is_singular( array_keys( ss_get_content_types() ) ) && '1' === ss_get_option( 'show_in_content_footer', '0' ) ) {
+		$content_id = get_the_ID();
+		$sponsors   = ss_get_sponsors_for_content( $content_id );
+		if ( $sponsors ) {
+			ob_start();
+			?>
+			<h2><?php esc_html_e( 'Sponsored By', 'simple-sponsorships' ); ?></h2>
+			<div class="ss-sponsors">
+				<?php
+				foreach ( $sponsors as $sponsor_id ) {
+					$sponsor = new \Simple_Sponsorships\Sponsor( $sponsor_id, false );
+					$has_logo  = has_post_thumbnail( $sponsor->get_id() );
+					$link      = $sponsor->get_link();
+					?>
+					<div class="ss-sponsor">
+						<?php
+
+						if ( $has_logo ) {
+							if ( $link ) {
+								echo '<a href="' . $link . '">';
+							}
+							echo get_the_post_thumbnail( $sponsor->get_id() );
+							if ( $link ) {
+								echo '</a>';
+							}
+						}
+						if ( ! $has_logo ) {
+							if ( $link ) {
+								echo '<a target="_blank" href="' . $link . '">';
+							}
+
+							echo $sponsor->get_data( 'post_title' );
+
+							if ( $link ) {
+								echo '</a>';
+							}
+						}
+						?>
+					</div>
+					<?php
+				}
+				?>
+			</div>
+			<?php
+			$content .= ob_get_clean();
+		}
+	}
+
+	return $content;
 }

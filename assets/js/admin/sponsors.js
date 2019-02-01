@@ -54,15 +54,9 @@ function removeContentSponsor( sponsor_id ) {
  * @param sponsor
  */
 function displayContentSponsor( sponsor, container ) {
-    var html = '<li>' + sponsor.title.rendered + '<button type="button" data-id="' + sponsor.id + '" class="ss-remove-sponsor-content">x</button></li>';
+    var html = '<li>' + sponsor.post_title + '<button type="button" data-id="' + sponsor.ID + '" class="ss-remove-sponsor-content">x</button></li>';
     container.append( html );
 }
-
-
-/**
- * Todo: remove sponsor from input.
- * Selected item show.
- */
 
 /**
  * Start the Content Sponsors Dropdown.
@@ -75,14 +69,13 @@ export function startContentSponsorsDropdown() {
             minChars: 2,
             menuClass: 'ss-autocompleter',
             source: function( term, response ) {
-                console.log(term);
                 $.ajax({
-                    url: '/wp-json/wp/v2/sponsors',
-                    data: { search: term },
+                    url: ss_admin.ajax,
+                    data: { search: term, nonce: ss_admin.nonce, action: 'ss_get_available_sponsors' },
                     success: function( resp ) {
-                        currentFoundSponsors = resp;
+                        currentFoundSponsors = resp.data;
 
-                        response( resp.map( item => item.title.rendered ));
+                        response( resp.data.map( item => item.post_title ));
                     }
                 });
             },
@@ -90,8 +83,8 @@ export function startContentSponsorsDropdown() {
                 if ( currentFoundSponsors.length ) {
                     for ( var i = 0; i < currentFoundSponsors.length; i++ ) {
                         var sponsor = currentFoundSponsors[ i ];
-                        if ( term === sponsor.title.rendered ) {
-                            var added = addContentSponsor( sponsor.id );
+                        if ( term === sponsor.post_title ) {
+                            var added = addContentSponsor( sponsor.ID );
                             if ( added ) {
                                 displayContentSponsor( sponsor, $( item ).parents('.inside').find('.ss-connected-sponsors') );
                             }

@@ -83,14 +83,23 @@ class Sponsor extends Custom_Data {
 	}
 
 	/**
+	 * Get how much quantity the sponsor has available to sponsor.
+	 *
+	 * @return mixed|string
+	 */
+	public function get_available_quantity() {
+		return $this->get_data( '_available_qty', 0 );
+	}
+
+	/**
 	 * Add Sponsored Quantity.
 	 *
 	 * @param int $qty Quantity
 	 */
-	public function add_sponsored_quantity( $qty ) {
+	public function add_available_quantity( $qty ) {
 		$sponsored = $this->get_data( '_available_qty', 0 );
-		$sponsored = $sponsored + $qty;
-		$this->update_data( '_sponsored_quantity', $sponsored );
+		$sponsored = absint( $sponsored ) + absint( $qty );
+		$this->update_data( '_available_qty', $sponsored );
 	}
 
 	/**
@@ -98,13 +107,13 @@ class Sponsor extends Custom_Data {
 	 *
 	 * @param int $qty Quantity
 	 */
-	public function remove_sponsored_quantity( $qty ) {
+	public function remove_available_quantity( $qty ) {
 		$sponsored = $this->get_data( '_available_qty', 0 );
-		$sponsored = $sponsored - $qty;
+		$sponsored = absint( $sponsored ) - absint( $qty );
 		if ( $sponsored < 0 ) {
 			$sponsored = 0;
 		}
-		$this->update_data( '_sponsored_quantity', $sponsored );
+		$this->update_data( '_available_qty', $sponsored );
 	}
 
 	/**
