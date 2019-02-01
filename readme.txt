@@ -61,6 +61,14 @@ If you want to show description, you will use text="1" or to hide, use text="0".
 == Screenshots ==
 
 1. A screenshot of Sponsors.
+2. Adding a Sponsor to a Content.
+3. List of Sponsorships.
+4. Sponsorship Page.
+5. List of Packages.
+6. Single Edit Package Page.
+7. Settings.
+8. Payment Settings.
+
 
 == Changelog ==
 
