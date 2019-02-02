@@ -55,3 +55,11 @@ function ss_email_invoice_on_activated_sponsorship( $sponsorship ) {
 	$email->trigger( $sponsorship );
 
 }
+
+/**
+ * @param \Simple_Sponsorships\Sponsorship $sponsorship
+ */
+function ss_email_on_rejected_sponsorship( $sponsorship ){
+	$email = new \Simple_Sponsorships\Emails\Email_Rejected_Sponsorship();
+	$email->trigger( $sponsorship );
+}

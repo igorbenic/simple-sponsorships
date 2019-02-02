@@ -155,6 +155,7 @@ class Plugin {
 		include_once 'includes/emails/class-email-pending-sponsorship.php';
 		include_once 'includes/emails/class-email-activated-sponsorship.php';
 		include_once 'includes/emails/class-email-customer-invoice.php';
+		include_once 'includes/emails/class-email-rejected-sponsorship.php';
 
 		// DB.
 		include_once 'includes/class-dbs.php';
@@ -185,6 +186,7 @@ class Plugin {
 		add_action( 'ss_sponsorship_activated', 'ss_email_invoice_on_activated_sponsorship' );
 		add_action( 'ss_sponsorship_status_updated', 'ss_email_on_approved_sponsorship', 20, 3 );
 		add_action( 'ss_sponsorship_status_updated', 'ss_activate_sponsorship_on_status_change', 20, 3 );
+		add_action( 'ss_sponsorship_status_rejected', 'ss_email_on_rejected_sponsorship', 20, 1 );
 		add_action( 'ss_sponsor_form', 'ss_process_sponsor_form' );
 		add_action( 'ss_payment_form', 'ss_process_payment_form' );
 		add_action( 'ss_sponsorship_form', 'ss_show_payment_form_for_sponsorship' );

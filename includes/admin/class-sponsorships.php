@@ -6,6 +6,7 @@
 namespace Simple_Sponsorships\Admin;
 use Simple_Sponsorships\DB\DB_Sponsors;
 use Simple_Sponsorships\DB\DB_Sponsorships;
+use Simple_Sponsorships\Sponsorship;
 
 /**
  * Class Levels
@@ -95,6 +96,8 @@ class Sponsorships {
 			return;
 		}
 
+		$this->add_meta( $sponsorship_id, $posted_data );
+
 		do_action( 'ss_sponsorship_added', $sponsorship_id );
 
 		if ( isset( $_POST['ss-redirect'] ) ) {
@@ -121,7 +124,7 @@ class Sponsorships {
 		$id             = isset( $posted_data['id'] ) ? absint( $posted_data['id'] ) : 0;
 
 		if ( ! $status ) {
-			$this->errors->add( 'no-status', __( 'No Status is required.', 'simple-sponsorships' ) );
+			$this->errors->add( 'no-status', __( 'Status is required.', 'simple-sponsorships' ) );
 		}
 
 		if ( ! $id ) {
@@ -133,6 +136,8 @@ class Sponsorships {
 		}
 
 		$sponsor = $this->create_sponsor_for_sponsorship( $posted_data );
+
+		$this->update_meta( $posted_data );
 
 		if ( $this->errors->get_error_messages() ) {
 			return;
@@ -153,6 +158,50 @@ class Sponsorships {
 		if ( $ret ) {
 			do_action( 'ss_sponsorship_updated', $id, $posted_data );
 		}
+	}
+
+	/**
+	 * Update Meta
+	 *
+	 * @param array $posted_data
+	 */
+	protected function update_meta( $posted_data = array() ) {
+		$db = new DB_Sponsorships();
+		$id = absint( $posted_data['id'] );
+
+		$sponsorship = new Sponsorship( $id, false );
+
+		foreach ( $posted_data as $key => $value ) {
+			if ( $sponsorship->is_table_column( $key ) ) {
+				continue;
+			}
+
+			$db->update_meta( $id, $key, $value );
+		}
+
+		do_action( 'ss_sponsorship_update_meta', $posted_data, $sponsorship );
+	}
+
+	/**
+	 * Update Meta
+	 *
+	 * @param integer $sponsorship_id
+	 * @param array   $posted_data
+	 */
+	protected function add_meta( $sponsorship_id, $posted_data = array() ) {
+		$db = new DB_Sponsorships();
+
+		$sponsorship = new Sponsorship( $sponsorship_id, false );
+
+		foreach ( $posted_data as $key => $value ) {
+			if ( $sponsorship->is_table_column( $key ) ) {
+				continue;
+			}
+
+			$db->add_meta( $sponsorship_id, $key, $value );
+		}
+
+		do_action( 'ss_sponsorship_add_meta', $posted_data, $sponsorship );
 	}
 
 	/**
@@ -262,6 +311,12 @@ class Sponsorships {
 				'type'    => 'select',
 				'title'   => __( 'Status', 'simple-sponsorships' ),
 				'options' => ss_get_sponsorship_statuses()
+			),
+			'reject_reason' => array(
+				'id'      => 'reject_reason',
+				'type'    => 'textarea',
+				'title'   => __( 'Reject Reason', 'simple-sponsorships' ),
+				'row_class'   => array( 'ss-hidden',  'show_if_status_rejected' ),
 			),
 			'amount' => array(
 				'id'          => 'amount',

@@ -36,9 +36,10 @@ if ( $errors ) {
 			foreach ( $fields as $field_slug => $field_args ) {
 				$field_args['id']    = 'ss_sponsorships[' . Settings::sanitize_key( $field_args['id'] ) . ']';
 				$field_args['value'] = $sponsorship->get_data( $field_slug );
+				$row_classes         = isset( $field_args['row_class'] ) ? Settings::sanitize_html_class( $field_args['row_class'] ) : '';
 				do_action( 'ss_edit_sponsorship_before_field_' . $field_slug, $fields );
 				?>
-				<tr id="<?php echo $field_args['id'] . '_row' ?>">
+				<tr id="<?php echo $field_args['id'] . '_row' ?>" class="ss-field-row <?php echo esc_attr( $row_classes ); ?>">
                 <?php
                     if ( 'section_start' === $field_args['type'] ) {
                     ?>

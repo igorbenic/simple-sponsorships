@@ -121,6 +121,7 @@ function ss_get_sponsorship_statuses() {
 		'request'  => __( 'Request', 'simple-sponsorships' ),
 		'approved' => __( 'Approved', 'simple-sponsorships' ),
 		'paid'     => __( 'Paid', 'simple-sponsorships' ),
+		'rejected' => __( 'Rejected', 'simple-sponsorships' ),
 	));
 }
 
