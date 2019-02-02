@@ -27,7 +27,7 @@ msgstr ""
 msgid "Sponsorships"
 msgstr ""
 
-#: includes/class-content-types.php:54, includes/class-content-types.php:80, includes/admin/class-sponsorships.php:286, includes/admin/sponsorships/class-sponsorships-table-list.php:294, templates/sponsorship/sponsor.php:9
+#: includes/class-content-types.php:54, includes/class-content-types.php:80, includes/admin/class-sponsorships.php:341, includes/admin/sponsorships/class-sponsorships-table-list.php:335, templates/sponsorship/sponsor.php:9
 msgid "Sponsor"
 msgstr ""
 
@@ -1267,7 +1267,11 @@ msgstr ""
 msgid "Paid"
 msgstr ""
 
-#: includes/functions-sponsorship.php:135, includes/admin/sponsorships/class-sponsorships-table-list.php:265
+#: includes/functions-sponsorship.php:124
+msgid "Rejected"
+msgstr ""
+
+#: includes/functions-sponsorship.php:136, includes/admin/sponsorships/class-sponsorships-table-list.php:306
 msgid "Unknown Status"
 msgstr ""
 
@@ -1286,6 +1290,10 @@ msgstr ""
 
 #: includes/abstract/class-payment-gateway.php:166
 msgid "Enable this payment gateway"
+msgstr ""
+
+#: includes/admin/class-admin.php:106
+msgid "No Sponsor Found"
 msgstr ""
 
 #: includes/admin/class-menus.php:28, includes/admin/class-menus.php:29, includes/admin/packages/class-packages-table-list.php:31
@@ -1312,7 +1320,7 @@ msgstr ""
 msgid "Enter the Package Name"
 msgstr ""
 
-#: includes/admin/class-packages.php:159, includes/admin/packages/class-packages-table-list.php:173, includes/admin/sponsorships/class-sponsorships-table-list.php:291
+#: includes/admin/class-packages.php:159, includes/admin/packages/class-packages-table-list.php:173, includes/admin/sponsorships/class-sponsorships-table-list.php:332
 msgid "Title"
 msgstr ""
 
@@ -1336,7 +1344,7 @@ msgstr ""
 msgid "How many content will this package allow to subscribe to. For example, a 12 episode package, would have 12 here."
 msgstr ""
 
-#: includes/admin/class-packages.php:194, includes/admin/class-sponsorships.php:351
+#: includes/admin/class-packages.php:194, includes/admin/class-sponsorships.php:406
 msgid "Normal"
 msgstr ""
 
@@ -1464,79 +1472,87 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:299, includes/admin/class-sponsorships.php:298, includes/forms/class-form-payment.php:97, includes/gateways/class-paypal.php:41, includes/gateways/class-paypal.php:44, templates/sponsorship/sponsor.php:38
+#: includes/admin/class-sponsors.php:299, includes/admin/class-sponsorships.php:353, includes/forms/class-form-payment.php:97, includes/gateways/class-paypal.php:41, includes/gateways/class-paypal.php:44, templates/sponsorship/sponsor.php:38
 msgid "Email"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:305, includes/admin/class-sponsorships.php:304, includes/forms/class-form-sponsors.php:137, templates/sponsorship/sponsor.php:25
+#: includes/admin/class-sponsors.php:305, includes/admin/class-sponsorships.php:359, includes/forms/class-form-sponsors.php:137, templates/sponsorship/sponsor.php:25
 msgid "Website"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:311, includes/admin/class-sponsorships.php:310
+#: includes/admin/class-sponsors.php:311, includes/admin/class-sponsorships.php:365
 msgid "Company"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:75, includes/admin/class-sponsorships.php:124
+#: includes/admin/class-sponsorships.php:76
 msgid "No Status is required."
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:94
+#: includes/admin/class-sponsorships.php:95
 msgid "Sponsorship could not be created."
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:128
+#: includes/admin/class-sponsorships.php:127
+msgid "Status is required."
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:131
 msgid "This Sponsorship does not exist."
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:168
+#: includes/admin/class-sponsorships.php:217
 msgid "Sponsor data not posted."
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:176
+#: includes/admin/class-sponsorships.php:225
 msgid "Select a Sponsor or insert the name to add a new one."
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:245
+#: includes/admin/class-sponsorships.php:294
 msgid "Create a new sponsor"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:263, includes/admin/sponsorships/class-sponsorships-table-list.php:292, templates/sponsorship/details.php:23
+#: includes/admin/class-sponsorships.php:312, includes/admin/sponsorships/class-sponsorships-table-list.php:333, templates/sponsorship/details.php:23
 msgid "Status"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:269
+#: includes/admin/class-sponsorships.php:318, templates/emails/rejected-sponsorship.php:21
+msgid "Reject Reason"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:324
 msgid "The Sponsorship Amount"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:270
+#: includes/admin/class-sponsorships.php:325
 msgid "Amount (%s)"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:275, includes/admin/packages/class-packages-table-list.php:30, includes/admin/sponsorships/class-sponsorships-table-list.php:293
+#: includes/admin/class-sponsorships.php:330, includes/admin/packages/class-packages-table-list.php:30, includes/admin/sponsorships/class-sponsorships-table-list.php:334
 msgid "Package"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:281
+#: includes/admin/class-sponsorships.php:336
 msgid "Sponsor Information"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:292
+#: includes/admin/class-sponsorships.php:347
 msgid "Sponsor Name"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:320
+#: includes/admin/class-sponsorships.php:375
 msgid "Payment"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:325
+#: includes/admin/class-sponsorships.php:380
 msgid "Gateway"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:331, includes/admin/class-sponsorships.php:332
+#: includes/admin/class-sponsorships.php:386, includes/admin/class-sponsorships.php:387
 msgid "Transaction ID"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:333
+#: includes/admin/class-sponsorships.php:388
 msgid "The transaction ID, if any"
 msgstr ""
 
@@ -1562,6 +1578,10 @@ msgstr ""
 
 #: includes/emails/class-email-pending-sponsorship.php:47
 msgid "Your Sponsorship has been approved"
+msgstr ""
+
+#: includes/emails/class-email-rejected-sponsorship.php:38
+msgid "Sponsorship #%d Rejected"
 msgstr ""
 
 #: includes/forms/class-form-payment.php:33
@@ -1716,32 +1736,48 @@ msgstr ""
 msgid "No packages."
 msgstr ""
 
-#: includes/admin/packages/class-packages-table-list.php:132, includes/admin/sponsorships/class-sponsorships-table-list.php:183
+#: includes/admin/packages/class-packages-table-list.php:132, includes/admin/sponsorships/class-sponsorships-table-list.php:224
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:145
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:186
 msgid "No Sponsorships."
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:180
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:221
 msgid "Sponsorship #%d"
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:189, includes/admin/sponsorships/class-sponsorships-table-list.php:209, includes/admin/sponsorships/class-sponsorships-table-list.php:231, includes/admin/views/sponsorships/edit.php:13
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:230, includes/admin/sponsorships/class-sponsorships-table-list.php:250, includes/admin/sponsorships/class-sponsorships-table-list.php:272, includes/admin/views/sponsorships/edit.php:13
 msgid "View"
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:207, includes/admin/sponsorships/class-sponsorships-table-list.php:229, includes/admin/sponsorships/class-sponsorships-table-list.php:251
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:248, includes/admin/sponsorships/class-sponsorships-table-list.php:270, includes/admin/sponsorships/class-sponsorships-table-list.php:292
 msgid "N/A"
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:295, templates/sponsorship/details.php:33
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:336, templates/sponsorship/details.php:33
 msgid "Amount"
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:296, templates/sponsorship/details.php:57
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:337, templates/sponsorship/details.php:57
 msgid "Date"
+msgstr ""
+
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:451
+msgid "Filter by Sponsor"
+msgstr ""
+
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:461
+msgid "Filter by Status"
+msgstr ""
+
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:471
+msgid "Filter by Package"
+msgstr ""
+
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:480
+msgid "Filter"
 msgstr ""
 
 #: includes/admin/views/packages/edit.php:8, includes/admin/views/packages/edit.php:64
@@ -1772,7 +1808,7 @@ msgstr ""
 msgid "Search for a sponsor"
 msgstr ""
 
-#: includes/admin/views/sponsorships/edit.php:8, includes/admin/views/sponsorships/edit.php:86
+#: includes/admin/views/sponsorships/edit.php:8, includes/admin/views/sponsorships/edit.php:87
 msgid "Edit Sponsorship"
 msgstr ""
 
@@ -1798,6 +1834,10 @@ msgstr ""
 
 #: templates/emails/approved-sponsorship.php:20
 msgid "Your Sponsorship was approved. You can view the Sponsorship details <a href=\"%s\">here</a>."
+msgstr ""
+
+#: templates/emails/rejected-sponsorship.php:18
+msgid "We're sorry, but your Sponsorship request was rejected."
 msgstr ""
 
 #: templates/sponsorship/details.php:8

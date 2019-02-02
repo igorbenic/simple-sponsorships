@@ -1,6 +1,6 @@
 === Simple Sponsorships ===
 Contributors: ibenic
-Tags: comments, spam
+Tags: sponsorships, sponsors, payment
 Requires at least: 4.4
 Tested up to: 5.0.3
 Stable tag: 0.3.0
