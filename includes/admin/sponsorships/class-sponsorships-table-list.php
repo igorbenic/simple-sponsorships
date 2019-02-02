@@ -87,6 +87,28 @@ class Sponsorships_Table_List extends \WP_List_Table {
 	}
 
 	/**
+     * Get Where Array for creating SQL
+	 * @return mixed
+	 */
+	public static function get_where() {
+		$sql_where = array();
+
+		if ( isset( $_REQUEST['ss_filter_sponsors'] ) && $_REQUEST['ss_filter_sponsors'] ) {
+			$sql_where['sponsor'] = absint( $_REQUEST['ss_filter_sponsors'] );
+		}
+
+		if ( isset( $_REQUEST['ss_filter_statuses'] ) && $_REQUEST['ss_filter_statuses'] ) {
+			$sql_where['status'] = sanitize_text_field( $_REQUEST['ss_filter_statuses'] );
+		}
+
+        if ( isset( $_REQUEST['ss_filter_packages'] ) && $_REQUEST['ss_filter_packages'] ) {
+	        $sql_where['package'] = sanitize_text_field( $_REQUEST['ss_filter_packages'] );
+        }
+
+		return apply_filters( 'ss_sponsorships_table_list_sql_where', $sql_where );
+    }
+
+	/**
 	 * Retrieve level's data from the database
 	 *
 	 * @param int $per_page
@@ -98,7 +120,16 @@ class Sponsorships_Table_List extends \WP_List_Table {
 
 		global $wpdb;
 
-		$sql = 'SELECT * FROM ' . $wpdb->sssponsorships . ' WHERE 1=1';
+		$sql = 'SELECT * FROM ' . $wpdb->sssponsorships;
+
+        $where = self::get_where();
+
+        if ( $where ) {
+            $sql .= ' WHERE 1=1 ';
+            foreach ( $where as $column => $column_value ) {
+                $sql .= $wpdb->prepare( 'AND ' . $column . '=%s ', $column_value );
+            }
+        }
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
@@ -110,6 +141,7 @@ class Sponsorships_Table_List extends \WP_List_Table {
 		$sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
 
 		$result = $wpdb->get_results( $sql, 'ARRAY_A' );
+
 
 		return $result;
 	}
@@ -134,6 +166,15 @@ class Sponsorships_Table_List extends \WP_List_Table {
 		global $wpdb;
 
 		$sql = 'SELECT COUNT(*) FROM ' . $wpdb->sssponsorships;
+
+		$where = self::get_where();
+
+		if ( $where ) {
+			$sql .= ' WHERE 1=1 ';
+			foreach ( $where as $column => $column_value ) {
+				$sql .= $wpdb->prepare( ' AND ' . $column . '=%s ', $column_value );
+			}
+		}
 
 		return $wpdb->get_var( $sql );
 	}
@@ -352,6 +393,9 @@ class Sponsorships_Table_List extends \WP_List_Table {
 
 	}
 
+	/**
+	 * Processing Bulk Action
+	 */
 	public function process_bulk_action() {
 
 		//Detect when a bulk action is being triggered...
@@ -393,16 +437,49 @@ class Sponsorships_Table_List extends \WP_List_Table {
 	 *
 	 * @param string $which
 	 */
-	/*protected function extra_tablenav( $which ) {
+	protected function extra_tablenav( $which ) {
 		if ( 'top' === $which ) {
-			$email = isset( $_REQUEST['ga_search_email'] ) ? $_REQUEST['ga_search_email'] : '';
+			$sponsors = ss_get_sponsors();
+			$statuses = ss_get_sponsorship_statuses();
+			$packages = ss_get_packages();
 			?>
 			<div class="alignleft actions">
-				<input type="email" name="ga_search_email" value="<?php echo esc_attr( $email ); ?>"
-				       placeholder="<?php esc_attr_e( 'Search for an Email', 'giveasap' ); ?>"/>
-				<button class="button ga-search-email"><?php _e( 'Search', 'giveasap' ); ?></button>
+				<?php
+				if ( $sponsors ) {
+				    $selected_sponsor = isset( $_REQUEST['ss_filter_sponsors'] ) ? absint( $_REQUEST['ss_filter_sponsors'] ) : '';
+					echo '<select name="ss_filter_sponsors" class="ss-filter">';
+					echo '<option value="">' . __( 'Filter by Sponsor', 'simple-sponsorships' ) . '</option>';
+					foreach ( $sponsors as $sponsor ) {
+					    echo '<option ' . selected( $selected_sponsor, $sponsor->ID, false ) . ' value="' . esc_attr( $sponsor->ID ) . '">' . esc_html( $sponsor->post_title ) . '</option>';
+                    }
+					echo '</select>';
+                }
+
+				if ( $statuses ) {
+					$selected_status = isset( $_REQUEST['ss_filter_statuses'] ) ? sanitize_text_field( $_REQUEST['ss_filter_statuses'] ) : '';
+					echo '<select name="ss_filter_statuses" class="ss-filter">';
+					echo '<option value="">' . __( 'Filter by Status', 'simple-sponsorships' ) . '</option>';
+					foreach ( $statuses as $status => $status_text ) {
+						echo '<option ' . selected( $selected_status, $status, false ) . ' value="' . esc_attr( $status ) . '">' . esc_html( $status_text ) . '</option>';
+					}
+					echo '</select>';
+				}
+
+				if ( $packages ) {
+					$selected_package = isset( $_REQUEST['ss_filter_packages'] ) ? sanitize_text_field( $_REQUEST['ss_filter_packages'] ) : '';
+					echo '<select name="ss_filter_packages" class="ss-filter">';
+					echo '<option value="">' . __( 'Filter by Package', 'simple-sponsorships' ) . '</option>';
+					foreach ( $packages as $package ) {
+						echo '<option ' . selected( $selected_package, $package['ID'], false ) . ' value="' . esc_attr( $package['ID'] ) . '">' . esc_html( $package['title'] ) . '</option>';
+					}
+					echo '</select>';
+				}
+				?>
+
+                <?php do_action( 'ss_sponsorships_table_list_filters' ); ?>
+				<button class="button ss-button-table-list-filter"><?php _e( 'Filter', 'simple-sponsorships' ); ?></button>
 			</div>
 			<?php
 		}
-	}*/
+	}
 }

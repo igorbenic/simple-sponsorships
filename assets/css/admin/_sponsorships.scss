@@ -1,0 +1,30 @@
+
+.wp-list-table {
+  .ss-sponsorship-status {
+    display: inline-block;
+    background: rgba( 0, 0, 0, 0.1 );
+    padding: 0.1em 1em;
+    font-size: 10px;
+    text-transform: uppercase;
+    border-radius: 3px;
+
+    &.status-paid {
+      background: $green;
+      color: $white;
+    }
+
+    &.status-rejected {
+      background: $red;
+      color: $white;
+    }
+
+    &.status-approved{
+      background: $purple;
+      color: $white;
+    }
+
+    &.status-request{
+      background: $yellow;
+    }
+  }
+}

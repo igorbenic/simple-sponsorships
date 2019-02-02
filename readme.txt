@@ -76,6 +76,7 @@ If you want to show description, you will use text="1" or to hide, use text="0".
 * Added Rejected Status on Sponsorships
 * Added Email for Reject status on Sponsorships
 * Improving search for available sponsors on content (excluding already added ones)
+* Added Filters for Sponsorships (By Sponsors, Status and Package)
 
 = 0.2.0 =
 * Added Column Available Quantity on Sponsors
