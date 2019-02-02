@@ -102,6 +102,9 @@ class Admin {
 			wp_localize_script( 'ss-admin-js', 'ss_admin', array(
 				'nonce' => wp_create_nonce( 'ss-admin-nonce' ),
 				'ajax'  => admin_url( 'admin-ajax.php' ),
+				'text'  => array(
+					'no_sponsor_found' => __( 'No Sponsor Found', 'simple-sponsorships' ),
+				)
 			));
 
 			wp_enqueue_style( 'ss-admin-css', SS_PLUGIN_URL . '/assets/dist/css/admin.css', array(), SS_VERSION );

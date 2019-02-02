@@ -69,14 +69,23 @@ export function startContentSponsorsDropdown() {
             minChars: 2,
             menuClass: 'ss-autocompleter',
             source: function( term, response ) {
+                var ids = $('[name=ss_sponsors]').val(),
+                    exclude = [];
+                if ( ids ) {
+                    exclude = ids.split(',');
+                }
                 $.ajax({
                     url: ss_admin.ajax,
-                    data: { search: term, nonce: ss_admin.nonce, action: 'ss_get_available_sponsors' },
+                    data: { search: term, exclude: exclude, nonce: ss_admin.nonce, action: 'ss_get_available_sponsors' },
                     success: function( resp ) {
                         currentFoundSponsors = resp.data;
-
-                        response( resp.data.map( item => item.post_title ));
+                        if (resp.data.length === 0) {
+                            response([ ss_admin.text.no_sponsor_found ]);
+                        } else {
+                            response( resp.data.map(item => item.post_title) );
+                        }
                     }
+
                 });
             },
             onSelect: function( event, term, item ) {

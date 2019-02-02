@@ -3,7 +3,7 @@ Contributors: ibenic
 Tags: comments, spam
 Requires at least: 4.4
 Tested up to: 5.0.3
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,11 @@ If you want to show description, you will use text="1" or to hide, use text="0".
 
 
 == Changelog ==
+
+= 0.3.0 =
+* Added Rejected Status on Sponsorships
+* Added Email for Reject status on Sponsorships
+* Improving search for available sponsors on content (excluding already added ones)
 
 = 0.2.0 =
 * Added Column Available Quantity on Sponsors
