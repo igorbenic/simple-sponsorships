@@ -1,0 +1,7 @@
+.ss-form-field {
+  input:not([type=checkbox]):not([type=radio]),
+  textarea,
+  select {
+    width: 100%;
+  }
+}

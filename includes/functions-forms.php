@@ -349,3 +349,11 @@ function ss_format_postcode( $postcode, $country ) {
 function ss_normalize_postcode( $postcode ) {
 	return preg_replace( '/[\s\-]/', '', trim( strtoupper( $postcode ) ) );
 }
+
+add_filter( 'ss_sponsor_form_field_value', 'ss_sponsor_form_field_value', 20, 2 );
+function ss_sponsor_form_field_value( $value, $field ) {
+	if ( $field['id'] === 'package' ) {
+		$value = isset( $_GET['package'] ) ? absint( $_GET['package'] ) : $value;
+	}
+	return $value;
+}

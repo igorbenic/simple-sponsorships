@@ -9,14 +9,14 @@ $form = new Form_Sponsors();
 do_action( 'ss_before_sponsor_form' );
 
 ?>
-<form class="ss-sponsor-form" method="POST" action="">
+<form class="simple-sponsorships ss-sponsor-form" method="POST" action="">
     <?php
     do_action( 'ss_before_sponsor_form_fields' );
 
     wp_nonce_field( 'ss_sponsor_form', 'ss_nonce' );
     foreach ( $form->get_fields() as $slug => $field ) {
-        $field['id'] = isset( $field['id'] ) ?  $field['id'] : $slug;
-
+        $field['id']    = isset( $field['id'] ) ?  $field['id'] : $slug;
+        $field['value'] = apply_filters( 'ss_sponsor_form_field_value', '', $field );
         ss_form_render_field( $field );
     }
 

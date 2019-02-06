@@ -40,10 +40,23 @@ class Package extends Custom_Data {
 	}
 
 	/**
-	 * @return mixed|void
+	 * @return mixed
 	 */
 	public function is_available() {
 		return apply_filters( 'ss_package_is_available', true, $this );
 	}
 
+	/**
+	 * Get the Price
+	 */
+	public function get_price() {
+		return $this->get_data( 'price' );
+	}
+
+	/**
+	 * Get the Price HTML.
+	 */
+	public function get_price_html() {
+		return ss_currency_symbol() . $this->get_price();
+	}
 }

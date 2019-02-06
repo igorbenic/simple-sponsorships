@@ -1,0 +1,17 @@
+.simple-sponsorships {
+  .ss-button {
+    display: inline-block;
+    padding: 0.25em 1em;
+    line-height: 40px;
+    background: $purple;
+    color: $white;
+    border-radius: 5px;
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: $purple;
+      background: $yellow;
+    }
+  }
+}
