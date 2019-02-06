@@ -8,16 +8,18 @@ $all     = isset( $args['all'] ) && '1' === $args['all'] ? true : false;
 $content = isset( $args['content'] ) ? $args['content'] : 'current';
 $logo    = isset( $args['logo'] ) ? absint( $args['logo'] ) : 1;
 $text    = isset( $args['text'] ) ? absint( $args['text'] ) : 1;
+$package = isset( $args['package'] ) ? absint( $args['package'] ) : 0;
+
+$ss_args = array(
+    'ss_package' => $args['package']
+);
 
 if ( $all ) {
-	$sponsors = ss_get_active_sponsors();
-} elseif ( is_numeric( $content ) ) {
-	$db = new \Simple_Sponsorships\DB\DB_Sponsors();
-	$sponsors = $db->get_from_post( $content );
+	$sponsors = ss_get_active_sponsors( $ss_args );
 } else {
-	$current_id = get_the_ID();
-	$db = new \Simple_Sponsorships\DB\DB_Sponsors();
-	$sponsors = $db->get_from_post( $current_id );
+    $content_id = is_numeric( $content ) ? absint( $content ) : get_the_ID();
+    $ss_args['ss_content'] = $content_id;
+	$sponsors = ss_get_sponsors( $ss_args );
 }
 
 if ( ! $sponsors ) {

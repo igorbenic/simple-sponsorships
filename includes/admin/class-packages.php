@@ -160,7 +160,7 @@ class Packages {
 			),
 			'description' => array(
 				'id' => 'description',
-				'type' => 'text',
+				'type' => 'editor',
 				'placeholder' => __( 'Enter the Package Description', 'simple-sponsorships' ),
 				'title' => __( 'Description', 'simple-sponsorships' ),
 				'field_class' => 'widefat',

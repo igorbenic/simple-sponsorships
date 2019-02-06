@@ -31,6 +31,66 @@ class DB_Sponsors extends DB {
 	protected $meta_table = 'postmeta';
 
 	/**
+	 * Add filters to the WP_Query to join Sponsorship table and content.
+	 */
+	public function filter_sponsors_query() {
+		add_filter( 'posts_where', array( $this, 'filter_sponsors_where' ), 20, 2 );
+		add_filter( 'posts_join', array( $this, 'filter_sponsors_join' ), 20, 2 );
+		add_filter( 'posts_distinct', array( $this, 'filter_sponsors_distinct' ), 20, 2 );
+	}
+
+	/**
+	 * Remove filters to the WP_Query to join Sponsorship table and content.
+	 */
+	public function unfilter_sponsors_query() {
+		remove_filter( 'posts_where', array( $this, 'filter_sponsors_where' ), 20 );
+		remove_filter( 'posts_join', array( $this, 'filter_sponsors_join' ), 20 );
+		remove_filter( 'posts_distinct', array( $this, 'filter_sponsors_distinct' ), 20 );
+	}
+
+	/**
+	 * Filtering WP_Query to DISTINCT the sponsors.
+	 *
+	 * @param string $distinct
+	 * @param \WP_Query $wp_query
+	 */
+	public function filter_sponsors_distinct( $distinct, $wp_query ) {
+		return 'DISTINCT';
+	}
+
+	/**
+	 * @param $where
+	 * @param $wp_query
+	 */
+	public function filter_sponsors_where( $where, $wp_query ) {
+		global $wpdb;
+		if ( isset( $wp_query->query['ss_package'] ) && absint( $wp_query->query['ss_package'] ) ) {
+			$where .= $wpdb->prepare( " AND ss_sponsorships.package=%d", absint( $wp_query->query['ss_package'] ) );
+		}
+
+		if ( isset( $wp_query->query['ss_content'] ) && absint( $wp_query->query['ss_content'] ) ) {
+			$where .= $wpdb->prepare( " AND ss_post_meta.post_id=%d AND ss_post_meta.meta_key='_ss_sponsor'", absint( $wp_query->query['ss_content'] ) );
+		}
+		return $where;
+	}
+
+	/**
+	 * @param $where
+	 * @param $wp_query
+	 */
+	public function filter_sponsors_join( $join, $wp_query ) {
+		global $wpdb;
+		if ( isset( $wp_query->query['ss_package'] ) && absint( $wp_query->query['ss_package'] ) ) {
+			$join .= " INNER JOIN $wpdb->sssponsorships as ss_sponsorships on ss_sponsorships.sponsor = $wpdb->posts.ID";
+		}
+
+		if ( isset( $wp_query->query['ss_content'] ) && absint( $wp_query->query['ss_content'] ) ) {
+			$join .= " INNER JOIN $wpdb->postmeta as ss_post_meta on ss_post_meta.meta_value = $wpdb->posts.ID";
+		}
+		return $join;
+	}
+
+	/**
 	 * Get the level meta data.
 	 *
 	 * @param      $id
@@ -94,6 +154,18 @@ class DB_Sponsors extends DB {
 		global $wpdb;
 
 		$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->posts as posts INNER JOIN $wpdb->postmeta as meta on meta.meta_value = posts.ID WHERE meta.post_id=%d AND meta.meta_key='_ss_sponsor'", $post_id ) );
+		return $results;
+	}
+
+	/**
+	 * Return all sponsors from a package.
+	 *
+	 * @param $package_id
+	 */
+	public function get_from_package( $package_id ) {
+		global $wpdb;
+
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->posts as posts INNER JOIN $wpdb->sssponsorships as sponsorships on sponsorships.sponsor = posts.ID WHERE sponsorships.package=%d", $package_id ) );
 		return $results;
 	}
 }

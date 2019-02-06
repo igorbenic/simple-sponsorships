@@ -31,7 +31,7 @@ if ( $errors ) {
             <?php
             if ( $fields ) {
 	            foreach ( $fields as $field_slug => $field_args ) {
-		            $field_args['id'] = 'ss_packages[' . Settings::sanitize_key( $field_args['id'] ) . ']';
+		            $field_args['name'] = 'ss_packages[' . Settings::sanitize_key( $field_args['id'] ) . ']';
 	                do_action( 'ss_add_package_before_field_' . $field_slug, $fields );
                     ?>
                     <tr>

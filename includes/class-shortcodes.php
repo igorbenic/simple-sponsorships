@@ -28,6 +28,7 @@ class Shortcodes {
 		add_shortcode( 'ss_sponsor_form', array( $this, 'sponsor_form' ) );
 		add_shortcode( 'ss_sponsorship_details', array( $this, 'sponsorship_details' ) );
 		add_shortcode( 'ss_sponsors', array( $this, 'sponsors' ) );
+		add_shortcode( 'ss_packages', array( $this, 'packages' ) );
 	}
 
 	/**
@@ -52,6 +53,7 @@ class Shortcodes {
 	 * Method to show sponsors.
 	 *
 	 * @param array $args Shortcode array.
+	 * @return string
 	 */
 	public function sponsors( $args = array() ) {
 		/**
@@ -66,11 +68,34 @@ class Shortcodes {
 			'content' => 'current',
 			'all'     => '0',
 			'logo'    => '1',
-			'text'    => '1'
+			'text'    => '1',
+			'package' => '0',
 		), $args, 'ss_sponsors' );
 
 		ob_start();
 		Templates::get_template_part( 'shortcode-sponsors', null, $atts );
+		return ob_get_clean();
+	}
+
+	/**
+	 * Method to show packages.
+	 *
+	 * @param array $args Shortcode array.
+	 * @return string
+	 */
+	public function packages( $args = array() ) {
+		/**
+		 * Possible values:
+		 *
+		 * id: 0 or X. If 0, it will show all.
+		 */
+		$atts = shortcode_atts( array(
+			'id'     => '0',
+			'button' => '0'
+		), $args, 'ss_sponsors' );
+
+		ob_start();
+		Templates::get_template_part( 'shortcode/packages', null, $atts );
 		return ob_get_clean();
 	}
 }

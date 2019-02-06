@@ -17,10 +17,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 function ss_get_sponsors( $args = array() ) {
 	$args = wp_parse_args( $args, array(
 		'post_type'      => 'sponsors',
-		'posts_per_page' => '-1'
+		'posts_per_page' => '-1',
+        'ss_package'     => 0,
+        'ss_content'     => 0
 	));
 
-	return get_posts( apply_filters( 'ss_get_sponsors_args', $args ) );
+	if ( $args['ss_content'] || $args['ss_package'] ) {
+	    $args['suppress_filters'] = false;
+        $db = new \Simple_Sponsorships\DB\DB_Sponsors();
+        $db->filter_sponsors_query();
+    }
+
+    $sponsors = get_posts( apply_filters( 'ss_get_sponsors_args', $args ) );
+
+	if ( $args['ss_content'] || $args['ss_package'] ) {
+        $db->unfilter_sponsors_query();
+	}
+
+	return $sponsors;
 }
 
 /**
@@ -36,12 +50,14 @@ function ss_get_sponsor( $sponsor_id, $populate = true ) {
 /**
  * Return Active Sponsors
  *
+ * @param array $args Arguments.
+ *
  * @return array
  */
-function ss_get_active_sponsors() {
-	return ss_get_sponsors( array(
+function ss_get_active_sponsors( $args = array() ) {
+	return ss_get_sponsors( array_merge( $args, array(
 		'post_status'    => 'publish',
-	));
+	)));
 }
 
 /**

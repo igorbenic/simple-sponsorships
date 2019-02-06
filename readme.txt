@@ -3,7 +3,7 @@ Contributors: ibenic
 Tags: sponsorships, sponsors, payment
 Requires at least: 4.4
 Tested up to: 5.0.3
-Stable tag: 0.3.0
+Stable tag: 0.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,10 @@ If you want to show description, you will use text="1" or to hide, use text="0".
 
 
 == Changelog ==
+
+= 0.4.0 =
+* Adding package parameter to shortcode ss_sponsors
+* Adding WP Editor for the Package description field
 
 = 0.3.0 =
 * Added Rejected Status on Sponsorships

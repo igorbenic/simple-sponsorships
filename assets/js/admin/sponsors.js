@@ -117,7 +117,7 @@ export function startContentSponsorsDropdown() {
  * This will show or hide the Sponsors box on Sponsorships New/Edit screens.
  */
 export function showSponsorSelect() {
-    var sponsorSelect = $('#ss_sponsorships\\[sponsor\\]');
+    var sponsorSelect = $('.ss-view-sponsorship #sponsor');
     if ( sponsorSelect.length ) {
         if ( 'new' !== sponsorSelect.val() ) {
             $( '.hide-if-sponsor').each(function(){

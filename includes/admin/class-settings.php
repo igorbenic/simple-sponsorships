@@ -583,7 +583,9 @@ class Settings {
 
 		$id = $args['id'];
 
-		$name = 'name="' . $id . '"';
+		$name = $args['name'] ? $args['name'] : $args['id'];
+
+		$name = 'name="' . $name . '"';
 
 		$label = '<label for="' . $id . '"> '  . wp_kses_post( $args['desc'] ) . '</label>';
 
@@ -652,6 +654,22 @@ class Settings {
 
 				echo apply_filters( 'ss_after_setting_output', $html, $args );
 				break;
+			case 'editor':
+
+				if ( $args['value'] ) {
+					$value = $args['value'];
+				} else {
+					$value = isset( $args['std'] ) ? $args['std'] : '';
+				}
+
+				ob_start();
+				\wp_editor( $value, $id, array( 'textarea_name' => $args['name'] ? $args['name'] : $args['id'] ) );
+
+				$html = ob_get_clean();
+				$html .= $label;
+
+				echo apply_filters( 'ss_after_setting_output', $html, $args );
+				break;
 			case 'select':
 
 				if ( $args['value'] ) {
@@ -682,7 +700,7 @@ class Settings {
 					: '';
 
 				// If the Select Field allows Multiple values, save as an Array
-				$name_attr = $id;
+				$name_attr = $args['name'] ? $args['name'] : $args['id'];
 				$name_attr = ( $args['multiple'] ) ? $name_attr . '[]' : $name_attr;
 
 				$html = '<select ' . $nonce . ' id="' . $id . '" name="' . $name_attr . '" class="' . $class . '" data-placeholder="' . esc_html( $placeholder ) . '" ' . ( ( $args['multiple'] ) ? 'multiple="true"' : '' ) . '>';

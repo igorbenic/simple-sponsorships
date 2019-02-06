@@ -32,7 +32,7 @@ if ( $errors ) {
 		if ( $fields ) {
 			foreach ( $fields as $field_slug => $field_args ) {
 			    $default = isset( $field_args['default'] ) ? $field_args['default'] : '';
-				$field_args['id'] = 'ss_packages[' . Settings::sanitize_key( $field_args['id'] ) . ']';
+				$field_args['name'] = 'ss_packages[' . Settings::sanitize_key( $field_args['id'] ) . ']';
 				$field_args['value'] = $package->get_data( $field_slug, $default );
 				do_action( 'ss_edit_package_before_field_' . $field_slug, $fields );
 				?>

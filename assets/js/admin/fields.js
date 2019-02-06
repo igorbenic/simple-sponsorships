@@ -7,13 +7,9 @@ function ssFieldShowHide( field ) {
         field = field.parents('.ss-field-row');
     }
 
-    var row_id     = field.attr('id'),
-        field_name = row_id.substring( 0, row_id.lastIndexOf("_row") ).replace( '[', '\\[').replace( ']', '\\]'),
-        field_val  = $( '#' + field_name ).val(),
-        field_id   = row_id.substring(
-            row_id.lastIndexOf("[") + 1,
-            row_id.lastIndexOf("]")
-        );
+    var row_id    = field.attr('id'),
+        field_id  = row_id.substring( 0, row_id.lastIndexOf("_row") ).replace( '[', '\\[').replace( ']', '\\]'),
+        field_val = $( '#' + field_id ).val();
 
     var hide_class = 'hide_if_' + field_id + '_' + field_val,
         show_class = 'show_if_' + field_id + '_' + field_val;

@@ -9,7 +9,7 @@ import ssFilterStart from './admin/filters';
         startContentSponsorsDropdown();
         showSponsorSelect();
         ssFilterStart();
-        $( document ).on( 'change', '#ss_sponsorships\\[sponsor\\]', showSponsorSelect );
+        $( document ).on( 'change', '.ss-view-sponsorship #sponsor', showSponsorSelect );
 
         if ( $( '.ss-colorpicker' ).length ) {
             $( '.ss-colorpicker' ).wpColorPicker();
