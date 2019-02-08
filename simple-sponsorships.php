@@ -142,6 +142,7 @@ class Plugin {
 		include_once 'includes/class-countries.php';
 		include_once 'includes/class-widgets.php';
 		include_once 'includes/class-ajax.php';
+		include_once 'includes/class-blocks.php';
 
 		// Gateways.
 		include_once 'includes/gateways/class-paypal.php';
@@ -239,6 +240,7 @@ class Plugin {
 		new Shortcodes();
 		new Emails();
 		new Widgets();
+		new Blocks();
 
 		// Registering the Databases to wpdb.
 		$dbs = new Databases();

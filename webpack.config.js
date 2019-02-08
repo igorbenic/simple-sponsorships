@@ -126,16 +126,16 @@ module.exports = [
         },
     }, config),
     // Adding our blocks JS as gutenberg.js and babel polyfill.
-    /*Object.assign({
+    Object.assign({
         entry: {
             'babel-polyfill': 'babel-polyfill',
-            'gutenberg': './blocks/load.js'
+            'gutenberg': ['./assets/css/blocks.scss', './assets/js/blocks.js']
         },
 
         // Tell webpack where to output.
         output: {
-            path: path.resolve( __dirname, './resources/dist/' ),
+            path: path.resolve( __dirname, './assets/dist/' ),
             filename: 'js/[name].js'
         },
-    }, config)*/
+    }, config)
 ];

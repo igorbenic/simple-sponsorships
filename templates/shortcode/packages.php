@@ -50,8 +50,7 @@ if ( $button ) {
 			    echo $package_content;
 			    echo '</div>';
             }
-			// price
-			// button
+
             if ( $button && $sponsor_page ) {
                 $link = add_query_arg( 'package', $package->get_data('id'), $sponsor_page );
                 echo '<a href="' . esc_attr( $link ) . '" class="button ss-button">';

@@ -85,7 +85,7 @@ class Content_Types {
 			'public'                => true,
 			'show_ui'               => true,
 			'show_in_menu'          => true,
-			'menu_position'         => 5,
+			'menu_position'         => 30,
 			'menu_icon'             => 'dashicons-awards',
 			'show_in_admin_bar'     => true,
 			'show_in_nav_menus'     => true,
