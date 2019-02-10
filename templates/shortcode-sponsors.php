@@ -9,6 +9,10 @@ $content = isset( $args['content'] ) ? $args['content'] : 'current';
 $logo    = isset( $args['logo'] ) ? absint( $args['logo'] ) : 1;
 $text    = isset( $args['text'] ) ? absint( $args['text'] ) : 1;
 $package = isset( $args['package'] ) ? absint( $args['package'] ) : 0;
+$size    = isset( $args['size'] ) ? sanitize_text_field( $args['size'] ) : 'medium';
+$col     = isset( $args['col'] ) ? absint( $args['col'] ) : '2';
+
+$colClass = 'ss-col ss-col-' . $col;
 
 $ss_args = array(
     'ss_package' => $args['package']
@@ -27,7 +31,7 @@ if ( ! $sponsors ) {
 }
 
 ?>
-<div class="ss-sponsors">
+<div class="ss-sponsors <?php echo esc_attr( $colClass ); ?>">
 	<?php
 		foreach ( $sponsors as $sponsor_object ) {
 			$sponsor = new \Simple_Sponsorships\Sponsor( 0, false );
@@ -38,11 +42,13 @@ if ( ! $sponsors ) {
 			<div class="ss-sponsor">
 				<?php
 
+				echo '<h3 class="sponsor-title">' . $sponsor->get_data( 'post_title' ) . '</h3>';
+
 				if ( $has_logo ) {
 					if ( $link ) {
 						echo '<a href="' . $link . '">';
 					}
-					echo get_the_post_thumbnail( $sponsor->get_id() );
+					echo get_the_post_thumbnail( $sponsor->get_id(), $size );
 					if ( $link ) {
 						echo '</a>';
 					}
@@ -50,8 +56,6 @@ if ( ! $sponsors ) {
 				if ( $link ) {
 					echo '<a target="_blank" href="' . $link . '">';
 				}
-
-				echo $sponsor->get_data( 'post_title' );
 
 				if ( $link ) {
 					echo '</a>';

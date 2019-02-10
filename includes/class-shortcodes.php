@@ -70,6 +70,7 @@ class Shortcodes {
 			'logo'    => '1',
 			'text'    => '1',
 			'package' => '0',
+			'size'    => 'medium',
 		), $args, 'ss_sponsors' );
 
 		ob_start();

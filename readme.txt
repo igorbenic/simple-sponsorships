@@ -75,6 +75,7 @@ If you want to show description, you will use text="1" or to hide, use text="0".
 = 0.4.0 =
 * Adding package parameter to shortcode ss_sponsors
 * Adding WP Editor for the Package description field
+* Adding Sponsor Block
 
 = 0.3.0 =
 * Added Rejected Status on Sponsorships

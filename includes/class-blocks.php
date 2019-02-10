@@ -20,6 +20,17 @@ class Blocks {
 		add_filter( 'block_categories', array( $this, 'add_block_category' ), 10 );
 		add_action( 'init', array( $this, 'register_blocks' ) );
 	}
+	
+	
+	public function get_sponsors( $args ) {
+		$block = \Simple_Sponsorships\Shortcodes::sponsors( $args );
+
+		if ( ! $block ) {
+			$block = __( 'There were no sponsors found.', 'simple-sponsorships' );
+		}
+
+		return $block;
+	}
 
 	/**
 	 * Registering the dynamic blocks.
@@ -27,7 +38,7 @@ class Blocks {
 	public function register_blocks() {
 
 		register_block_type( 'simple-sponsorships/sponsors', [
-			'render_callback' => array( '\Simple_Sponsorships\Shortcodes', 'sponsors' ),
+			'render_callback' => array( $this, 'get_sponsors' ),
 			'attributes'      => [
 				'all' => [
 					'default' => '0',
@@ -48,6 +59,10 @@ class Blocks {
 				'package' => [
 					'type' => 'string',
 					'default' => '0'
+				],
+				'type' => [
+					'type' => 'string',
+					'default' => ''
 				]
 			]
 		] );
@@ -80,8 +95,11 @@ class Blocks {
 		wp_enqueue_script(
 			'ss-block-js',
 			SS_PLUGIN_URL . '/assets/dist/js/gutenberg.js',
-			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components', 'wp-editor' )
+			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components', 'wp-editor', 'wp-compose' )
 		);
+		wp_localize_script( 'ss-block-js', 'ss_blocks', array(
+			'content_types' => \ss_get_content_types()
+		));
 
 		// Styles.
 		wp_enqueue_style(

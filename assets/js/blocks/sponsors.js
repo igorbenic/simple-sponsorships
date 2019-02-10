@@ -1,9 +1,6 @@
 const { registerBlockType } = wp.blocks;
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
-const { InspectorControls } = wp.editor;
-const { ServerSideRender, Panel, PanelBody, PanelRow } = wp.components;
-
+import SponsorsEdit from './sponsors/edit';
 
 registerBlockType( 'simple-sponsorships/sponsors', {
     title:  __( 'Sponsors' ),
@@ -29,27 +26,13 @@ registerBlockType( 'simple-sponsorships/sponsors', {
         package: {
             type: 'string',
             default: '0'
+        },
+        type: {
+            type: 'string',
+            default: ''
         }
     },
-    edit( props ) {
-        const { attributes } = props;
-        return <Fragment>
-            <InspectorControls>
-            <PanelBody
-            title={ __( 'Display Options' ) }
-            initialOpen={ true } >
-                <PanelRow>
-                My Panel Inputs and Labels
-                </PanelRow>
-            </PanelBody>
-
-            </InspectorControls>
-        <ServerSideRender
-            block="simple-sponsorships/sponsors"
-            attributes={ attributes }
-        />
-            </Fragment>;
-    },
+    edit: SponsorsEdit,
     save() {
         return null;
     }
