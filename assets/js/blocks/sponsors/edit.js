@@ -34,6 +34,7 @@ export default class Edit extends Component {
             content: [],
             type: props.attributes.type && props.attributes.all !== '1' ? props.attributes.type : '',
             loading: false,
+            packages: []
         }
 
         if ( props.attributes.all === '1' ) {
@@ -41,12 +42,32 @@ export default class Edit extends Component {
         }
 
         this.get_content = this.get_content.bind(this);
+        this.get_packages = this.get_packages.bind(this);
     }
 
     componentDidMount() {
         if ( this.state.type && 'all' !== this.state.displayOption ) {
             this.get_content( this.state.type );
         }
+        this.get_packages();
+    }
+
+    get_packages() {
+        var self = this;
+        fetch( ss_admin.ajax, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+            },
+            body: 'action=ss_get_packages&nonce=' + ss_admin.nonce,
+            credentials: 'same-origin'
+        }).then(function (res) {
+            return res.json();
+        }).then(function (res) {
+            if ( res.success ) {
+                self.setState({ packages: res.data })
+            }
+        });
     }
 
     get_content( type ) {
@@ -65,6 +86,7 @@ export default class Edit extends Component {
     render() {
         let content_options = [{ label: __( 'Select a Content' ), value: 'current' }];
         let content_types   = [{ label: __( 'Select a Content Type' ), value: '' }];
+        let packages        = [{ label: __( 'Select a Package' ), value: 0 }]
         const { content, displayOption, type, loading } = this.state;
         const { attributes, setAttributes } = this.props;
 
@@ -80,6 +102,14 @@ export default class Edit extends Component {
             return { label: ss_blocks.content_types[ content_type ], value: content_type }
         });
         content_types = content_types.concat( types );
+
+        if ( this.state.packages.length ) {
+            packages = packages.concat(this.state.packages.map(( post ) => {
+                return { label: post.title, value: post.ID }
+            }));
+        } else {
+            packages = [];
+        }
 
         return (
         <Fragment>
@@ -140,7 +170,22 @@ export default class Edit extends Component {
                     </PanelRow>]
                 }
             </PanelBody>
-
+            <PanelBody
+            title={ __( 'Package' ) }
+            initialOpen={ false }>
+                <PanelRow>
+                    <SelectControl 
+                        label={ __( 'Choose a Package' ) }
+                        value={ attributes.package }
+                        options={ packages }
+                        onChange={ ( value ) => {
+                            
+                            setAttributes({ package: value });
+                            
+                        }}
+                    />
+                </PanelRow>
+            </PanelBody>
             </InspectorControls>
            
             <ServerSideRender

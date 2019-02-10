@@ -23,6 +23,7 @@ class AJAX {
 
 		$actions = array(
 			'get_available_sponsors' => false,
+			'get_packages' => false
 		);
 
 		foreach ( $actions as $action => $nopriv ) {
@@ -52,6 +53,18 @@ class AJAX {
 		}
 
 		wp_send_json_success( $sponsors );
+		wp_die();
+	}
+
+	/**
+	 * Get only available sponsors.
+	 */
+	public function get_packages() {
+		check_ajax_referer( 'ss-admin-nonce', 'nonce', true );
+
+		$packages = ss_get_packages();
+
+		wp_send_json_success( $packages );
 		wp_die();
 	}
 }
