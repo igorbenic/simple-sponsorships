@@ -117,31 +117,29 @@ export default class Edit extends Component {
             <PanelBody
             title={ __( 'Display Options' ) }
             initialOpen={ true } >
-                <PanelRow>
-                    <RadioControl
-                        label={ __( 'Show' ) }
-                        help={ __( 'What Sponsors to show' ) }
-                        selected={ displayOption }
-                        options={ [
-                            { label: __( 'All Sponsors' ), value: 'all' },
-                            { label: __( 'Sponsors that sponsored this Content' ), value: 'current' },
-                            { label: __( 'Sponsors that sponsored other Content' ), value: 'other' }
-                        ] }
-                        onChange={ ( displayOption ) => { 
-                            this.setState( { displayOption } );
-                            if ( 'all' === displayOption ) {
-                                setAttributes( { all: '1' } );
-                            }
-                            if ( 'current' === displayOption ) {
+                <RadioControl
+                    label={ __( 'Show' ) }
+                    help={ __( 'What Sponsors to show' ) }
+                    selected={ displayOption }
+                    options={ [
+                        { label: __( 'All Sponsors' ), value: 'all' },
+                        { label: __( 'Sponsors that sponsored this Content' ), value: 'current' },
+                        { label: __( 'Sponsors that sponsored other Content' ), value: 'other' }
+                    ] }
+                    onChange={ ( displayOption ) => { 
+                        this.setState( { displayOption } );
+                        if ( 'all' === displayOption ) {
+                            setAttributes( { all: '1' } );
+                        }
+                        if ( 'current' === displayOption ) {
 
-                                setAttributes( { all: '0', content: get_current_content_id() } );
-                            }
-                        } }
-                    />
-                    
-                </PanelRow>
+                            setAttributes( { all: '0', content: get_current_content_id() } );
+                        }
+                    } }
+                />
+                     
                 { 'other' === displayOption &&
-                    [<PanelRow>
+                    [
                         <SelectControl 
                             label={ __( 'Content Type' ) }
                             value={ type }
@@ -155,9 +153,8 @@ export default class Edit extends Component {
                                     setAttributes( { type: type, all: '0', content: 'current' } );
                                 }
                             }}
-                        />
-                    </PanelRow>,
-                    <PanelRow>
+                        />,
+                        <div>
                         <SelectControl 
                             label={ __( 'Content' ) }
                             value={ attributes.content }
@@ -167,13 +164,13 @@ export default class Edit extends Component {
                             }}
                         />
                         { loading && <Spinner />}
-                    </PanelRow>]
+                        </div>
+                    ]
                 }
             </PanelBody>
             <PanelBody
             title={ __( 'Package' ) }
             initialOpen={ false }>
-                <PanelRow>
                     <SelectControl 
                         label={ __( 'Choose a Package' ) }
                         value={ attributes.package }
@@ -184,7 +181,6 @@ export default class Edit extends Component {
                             
                         }}
                     />
-                </PanelRow>
             </PanelBody>
             </InspectorControls>
            

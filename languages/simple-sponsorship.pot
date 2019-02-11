@@ -13,6 +13,18 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: includes/class-blocks.php:34
+msgid "There were no sponsors found."
+msgstr ""
+
+#: includes/class-blocks.php:50
+msgid "Please select a package."
+msgstr ""
+
+#: includes/class-blocks.php:119
+msgid "Simple Sponsorships"
+msgstr ""
+
 #: includes/class-content-types.php:51
 msgctxt "Post Type General Name"
 msgid "Sponsors"
@@ -1139,7 +1151,7 @@ msgstr ""
 msgid "Unserializing instances of this class is forbidden."
 msgstr ""
 
-#: includes/functions-sponsors.php:137
+#: includes/functions-sponsors.php:153
 msgid "Sponsored By"
 msgstr ""
 
@@ -1838,6 +1850,10 @@ msgstr ""
 
 #: templates/emails/rejected-sponsorship.php:18
 msgid "We're sorry, but your Sponsorship request was rejected."
+msgstr ""
+
+#: templates/shortcode/packages.php:57
+msgid "Sponsor %1$s (%2$s)"
 msgstr ""
 
 #: templates/sponsorship/details.php:8

@@ -28,7 +28,7 @@ class Shortcodes {
 		add_shortcode( 'ss_sponsor_form', array( $this, 'sponsor_form' ) );
 		add_shortcode( 'ss_sponsorship_details', array( $this, 'sponsorship_details' ) );
 		add_shortcode( 'ss_sponsors', array( __CLASS__, 'sponsors' ) );
-		add_shortcode( 'ss_packages', array( $this, 'packages' ) );
+		add_shortcode( 'ss_packages', array( __CLASS__, 'packages' ) );
 	}
 
 	/**
@@ -84,7 +84,7 @@ class Shortcodes {
 	 * @param array $args Shortcode array.
 	 * @return string
 	 */
-	public function packages( $args = array() ) {
+	public static function packages( $args = array() ) {
 		/**
 		 * Possible values:
 		 *

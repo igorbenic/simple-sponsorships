@@ -21,12 +21,33 @@ class Blocks {
 		add_action( 'init', array( $this, 'register_blocks' ) );
 	}
 	
-	
+	/**
+	 * Returning Sponsors for the Block.
+	 *
+	 * @param array $args Array of arguments.
+	 * @return string
+	 */
 	public function get_sponsors( $args ) {
 		$block = \Simple_Sponsorships\Shortcodes::sponsors( $args );
 
 		if ( ! $block ) {
 			$block = __( 'There were no sponsors found.', 'simple-sponsorships' );
+		}
+
+		return $block;
+	}
+
+	/**
+	 * Return the Package HTML.
+	 *
+	 * @param array $args Array of arguments.
+	 * @return string
+	 */
+	public function get_packages( $args ) {
+		$block = \Simple_Sponsorships\Shortcodes::packages( $args );
+
+		if ( ! $block ) {
+			$block = __( 'Please select a package.', 'simple-sponsorships' );
 		}
 
 		return $block;
@@ -66,7 +87,20 @@ class Blocks {
 				]
 			]
 		] );
-
+		
+		register_block_type( 'simple-sponsorships/packages', [
+			'render_callback' => array( $this, 'get_packages' ),
+			'attributes'      => [
+				'id' => [
+					'default' => '0',
+					'type'    => 'string',
+				],
+				'button'  => [
+					'type'    => 'string',
+					'default' => '0',
+				],
+			]
+		] );
 	}
 
 	/**

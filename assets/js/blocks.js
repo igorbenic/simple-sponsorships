@@ -1,1 +1,2 @@
-import './blocks/sponsors';
+import './blocks/sponsors/index';
+import './blocks/packages/index';

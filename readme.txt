@@ -22,7 +22,6 @@ If you want to handle payments differently, you can disable them and instruct sp
 
 == Installation ==
 
-
 1. Install it through the Plugins menu page
 1.1. Upload `simple-sponsorships` to the `/wp-content/plugins/` directory or
 1.2. Upload `simple-sponsorships.zip` under Plugins > Add New
@@ -58,6 +57,8 @@ By default it will show the current content sponsors. If the option content is s
 If you want to use logo, you will use logo="1" or to hide use logo="0". By default, it will show.
 If you want to show description, you will use text="1" or to hide, use text="0". By default, it will show.
 
+If your site is also using the new WordPress editor (Gutenberg), then you can also use blocks for showing Sponsors or Packages.
+
 == Screenshots ==
 
 1. A screenshot of Sponsors.
@@ -75,7 +76,9 @@ If you want to show description, you will use text="1" or to hide, use text="0".
 = 0.4.0 =
 * Adding package parameter to shortcode ss_sponsors
 * Adding WP Editor for the Package description field
-* Adding Sponsor Block
+* Adding Sponsors Block
+* Adding Packages Block
+* Package Button pre-selects the package on the Sponsor Form
 
 = 0.3.0 =
 * Added Rejected Status on Sponsorships

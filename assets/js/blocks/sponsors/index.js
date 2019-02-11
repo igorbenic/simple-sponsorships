@@ -1,9 +1,10 @@
 const { registerBlockType } = wp.blocks;
 const { __ } = wp.i18n;
-import SponsorsEdit from './sponsors/edit';
+import SponsorsEdit from './edit';
 
 registerBlockType( 'simple-sponsorships/sponsors', {
     title:  __( 'Sponsors' ),
+    description: __( 'Show all sponsors or for a specific content' ),
     icon: 'awards',
     category: 'simple-sponsorships',
     attributes: {
