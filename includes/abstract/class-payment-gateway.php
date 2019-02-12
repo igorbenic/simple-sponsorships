@@ -162,7 +162,7 @@ abstract class Payment_Gateway {
 		$settings[ $this->id ] = array_merge( array(
 			$this->id . '_enabled' => array(
 				'id'   => $this->id . '_enabled',
-				'name' => __( 'Enabled', 'simple-sponsorships' ),
+				'label' => __( 'Enabled', 'simple-sponsorships' ),
 				'desc' => __( 'Enable this payment gateway', 'simple-sponsorships' ),
 				'type' => 'checkbox',
 			)

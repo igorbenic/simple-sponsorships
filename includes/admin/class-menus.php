@@ -15,13 +15,6 @@ class Menus {
 	 * Registering Menus.
 	 */
 	public function register() {
-		add_submenu_page(
-			'edit.php?post_type=sponsors',
-			__( 'Sponsorships', 'simple-sponsorships' ),
-			__( 'Sponsorships', 'simple-sponsorships' ),
-			'manage_options',
-			'ss-sponsorships',
-			array( $this, 'view' ) );
 
 		add_submenu_page(
 			'edit.php?post_type=sponsors',
@@ -29,6 +22,14 @@ class Menus {
 			__( 'Packages', 'simple-sponsorships' ),
 			'manage_options',
 			'ss-packages',
+			array( $this, 'view' ) );
+
+		add_submenu_page(
+			'edit.php?post_type=sponsors',
+			__( 'Sponsorships', 'simple-sponsorships' ),
+			__( 'Sponsorships', 'simple-sponsorships' ),
+			'manage_options',
+			'ss-sponsorships',
 			array( $this, 'view' ) );
 
 		add_submenu_page(

@@ -38,7 +38,7 @@ class PayPal extends Payment_Gateway {
 			'paypal_email' => array(
 				'id'          => 'paypal_email',
 				'type'        => 'email',
-				'name'        => __( 'Email', 'simple-sponsorships' ),
+				'label'        => __( 'Email', 'simple-sponsorships' ),
 				'default'     => '',
 				'desc'        => __( 'Email that will receive payments from Sponsors', 'simple-sponsorships' ),
 				'placeholder' => __( 'Email', 'simple-sponsorships' ),
@@ -46,7 +46,7 @@ class PayPal extends Payment_Gateway {
 			'paypal_mode' => array(
 				'id'          => 'paypal_mode',
 				'type'        => 'select',
-				'name'        => __( 'Mode', 'simple-sponsorships' ),
+				'label'        => __( 'Mode', 'simple-sponsorships' ),
 				'default'     => 'sandbox',
 				'options' => array(
 					'sandbox' => __( 'Sandbox', 'simple-sponsorships' ),
@@ -55,7 +55,7 @@ class PayPal extends Payment_Gateway {
 			),
 			'paypal_invoice_prefix' => array(
 				'id'        => 'paypal_invoice_prefix',
-				'name'      => __( 'Invoice prefix', 'simple-sponsorships' ),
+				'label'      => __( 'Invoice prefix', 'simple-sponsorships' ),
 				'type'      => 'text',
 				'desc'      => __( 'Please enter a prefix for your invoice numbers. If you use your PayPal account for multiple stores ensure this prefix is unique as PayPal will not allow orders with the same invoice number.', 'simple-sponsorships' ),
 				'default'   => 'SS-',
@@ -63,7 +63,7 @@ class PayPal extends Payment_Gateway {
 			),
 			'paypal_identity_token' => array(
 				'id'   => 'paypal_identity_token',
-				'name' => __( 'Identity Token', 'simple-sponsorships' ),
+				'label' => __( 'Identity Token', 'simple-sponsorships' ),
 				'type' => 'text',
 				'desc' => __( 'Enter your PayPal Identity Token to enable Payment Data Transfer (PDT).', 'simple-sponsorships' )
 			)

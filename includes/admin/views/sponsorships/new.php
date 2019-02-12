@@ -31,10 +31,11 @@ if ( $errors ) {
 		<?php
 		if ( $fields ) {
 			foreach ( $fields as $field_slug => $field_args ) {
-				$field_args['name'] = 'ss_sponsorships[' . Settings::sanitize_key( $field_args['id'] ) . ']';
+				$field_args['name']  = 'ss_sponsorships[' . Settings::sanitize_key( $field_args['id'] ) . ']';
+				$row_classes         = isset( $field_args['row_class'] ) ? Settings::sanitize_html_class( $field_args['row_class'] ) : '';
 				do_action( 'ss_add_sponsorship_before_field_' . $field_slug, $fields );
 				?>
-                <tr id="<?php echo $field_args['id'] . '_row' ?>">
+                <tr id="<?php echo $field_args['id'] . '_row' ?>" class="ss-field-row <?php echo esc_attr( $row_classes ); ?>">
 					<?php
 					if ( 'section_start' === $field_args['type'] ) {
 					?>

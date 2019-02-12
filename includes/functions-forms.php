@@ -107,7 +107,7 @@ function ss_form_render_field( $args, $wrap_field = true ) {
 
 	$id = $args['id'];
 
-	$name = isset( $args['name'] ) ? 'name="' . $args['name'] . '"' : 'name="' . $id . '"';
+	$name = isset( $args['name'] ) && $args['name'] ? 'name="' . $args['name'] . '"' : 'name="' . $id . '"';
 
 	$label = '<label for="' . $id . '"> '  . wp_kses_post( $args['desc'] ) . '</label>';
 

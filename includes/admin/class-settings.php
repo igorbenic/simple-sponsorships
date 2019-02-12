@@ -101,7 +101,7 @@ class Settings {
 					),*/
 					'content_types' => array(
 						'id'          => 'content_types',
-						'name'        => __( 'Content Types', 'simple-sponsorships' ),
+						'label'        => __( 'Content Types', 'simple-sponsorships' ),
 						'desc'        => __( 'Choose what content type can be sponsored. This will enable a box on each content to add sponsors.', 'simple-sponsorships' ),
 						'type'        => 'multicheck',
 						'options'     => $this->get_post_types(),
@@ -110,14 +110,14 @@ class Settings {
 					),
 					'show_in_content_footer' => array(
 						'id'      => 'show_in_content_footer',
-						'name'    => __( 'Show Sponsors under Content', 'simple-sponsorships' ),
+						'label'    => __( 'Show Sponsors under Content', 'simple-sponsorships' ),
 						'type'    => 'checkbox',
 						'desc'    => __( 'If checked, it will show sponsors that sponsored the content.', 'simple-sponsorships' ),
 						'default' => '0'
 					),
 					'page_settings' => array(
 						'id'   => 'page_settings',
-						'name' => '<h3>' . __( 'Pages', 'simple-sponsorships' ) . '</h3>',
+						'label' => '<h3>' . __( 'Pages', 'simple-sponsorships' ) . '</h3>',
 						'desc' => '',
 						'type' => 'header',
 						'tooltip_title' => __( 'Page Settings', 'simple-sponsorships' ),
@@ -125,7 +125,7 @@ class Settings {
 					),
 					'sponsor_page' => array(
 						'id'          => 'sponsor_page',
-						'name'        => __( 'Sponsor Page', 'simple-sponsorships' ),
+						'label'        => __( 'Sponsor Page', 'simple-sponsorships' ),
 						'desc'        => __( 'This is the page that will show the sponsor form. The [sponsor_form] shortcode should be on this page.', 'simple-sponsorships' ),
 						'type'        => 'select',
 						'options'     => $this->get_pages(),
@@ -134,7 +134,7 @@ class Settings {
 					),
 					'sponsorship_page' => array(
 						'id'          => 'sponsorship_page',
-						'name'        => __( 'Sponsorship Page', 'simple-sponsorships' ),
+						'label'        => __( 'Sponsorship Page', 'simple-sponsorships' ),
 						'desc'        => __( 'This is the page that will show the sponsorship details. The [ss_sponsorship_details] shortcode should be on this page.', 'simple-sponsorships' ),
 						'type'        => 'select',
 						'options'     => $this->get_pages(),
@@ -147,20 +147,20 @@ class Settings {
 				'main' => array(
 					'enable_payments' => array(
 						'id'      => 'enable_payments',
-						'name'    => __( 'Enable Payments', 'simple-sponsorships' ),
+						'label'    => __( 'Enable Payments', 'simple-sponsorships' ),
 						'type'    => 'checkbox',
 
 					),
 					'payment_instructions' => array(
 						'id'      => 'payment_instructions',
-						'name'    => __( 'Payment Instructions', 'simple-sponsorships' ),
+						'label'    => __( 'Payment Instructions', 'simple-sponsorships' ),
 						'type'    => 'textarea',
 						'desc'    => __( 'Instructions that will show if the payments are not enabled so your sponsors know how to pay you.', 'simple-sponsorships' ),
 						'default' => __( 'We will contact you with specific information through email.', 'simple-sponsorships' ),
 					),
 					'currency' => array(
 						'id'      => 'currency',
-						'name'    => __( 'Currency', 'simple-sponsorships' ),
+						'label'    => __( 'Currency', 'simple-sponsorships' ),
 						'type'    => 'select',
 						'options' => ss_get_currencies()
 					)
@@ -170,32 +170,32 @@ class Settings {
 				'main' => array(
 					'ss_email_background_color' => array(
 						'id'      => 'ss_email_background_color',
-						'name'    => __( 'Background Color', 'simple-sponsorships' ),
+						'label'   => __( 'Background Color', 'simple-sponsorships' ),
 						'type'    => 'color',
 						'default' => '#ffffff'
 
 					),
 					'ss_email_body_background_color' => array(
 						'id'      => 'ss_email_body_background_color',
-						'name'    => __( 'Body Background Color', 'simple-sponsorships' ),
+						'label'   => __( 'Body Background Color', 'simple-sponsorships' ),
 						'type'    => 'color',
 						'default' => '#ffffff'
 					),
 					'ss_email_base_color' => array(
 						'id'      => 'ss_email_base_color',
-						'name'    => __( 'Base Color', 'simple-sponsorships' ),
+						'label'    => __( 'Base Color', 'simple-sponsorships' ),
 						'type'    => 'color',
 						'default' => '#000000'
 					),
 					'ss_email_base_text_color' => array(
 						'id'      => 'ss_email_base_text_color',
-						'name'    => __( 'Base Text Color', 'simple-sponsorships' ),
+						'label'    => __( 'Base Text Color', 'simple-sponsorships' ),
 						'type'    => 'color',
 						'default' => '#ffffff'
 					),
 					'ss_email_text_color' => array(
 						'id'      => 'ss_email_text_color',
-						'name'    => __( 'Text Color', 'simple-sponsorships' ),
+						'label'   => __( 'Text Color', 'simple-sponsorships' ),
 						'type'    => 'color',
 						'default' => '#000000'
 					),
@@ -354,6 +354,7 @@ class Settings {
 					$args = wp_parse_args( $option, array(
 						'section'       => $section,
 						'id'            => null,
+						'label'         => '',
 						'desc'          => '',
 						'name'          => '',
 						'size'          => null,
@@ -376,7 +377,7 @@ class Settings {
 
 					add_settings_field(
 						'ss_settings[' . $args['id'] . ']',
-						$args['name'],
+						$args['label'],
 						array( $this, 'settings_field' ),
 						'ss_settings_' . $tab . '_' . $section,
 						'ss_settings_' . $tab . '_' . $section,
