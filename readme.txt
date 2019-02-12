@@ -38,6 +38,11 @@ As many as you want. Sponsors are regular WordPress post types so your database 
 
 PayPal is available in this version as a payment gateway.
 
+= Can I accept payments offline? =
+
+Yes, you don't have to use a payment gateway such as PayPal.
+You can disable that (disabled by default) and set payment instructions for your sponsors.
+
 = How can I assign Sponsors to an Event or Post? =
 
 Under Sponsorships > Settings, you can enable various Post Types.
