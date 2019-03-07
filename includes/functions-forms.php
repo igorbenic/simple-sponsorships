@@ -109,7 +109,7 @@ function ss_form_render_field( $args, $wrap_field = true ) {
 
 	$name = isset( $args['name'] ) && $args['name'] ? 'name="' . $args['name'] . '"' : 'name="' . $id . '"';
 
-	$label = '<label for="' . $id . '"> '  . wp_kses_post( $args['desc'] ) . '</label>';
+	$label = '<p class="description"> '  . wp_kses_post( $args['desc'] ) . '</p>';
 
 	$required = '';
 

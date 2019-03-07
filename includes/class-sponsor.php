@@ -125,4 +125,12 @@ class Sponsor extends Custom_Data {
 			$this->update_data( 'post_status', 'publish' );
 		}
 	}
+
+	/**
+	 * @return \int[]|\WP_Post[]
+	 */
+	public function get_sponsored_content() {
+		$db = $this->get_db_object();
+		return $db->get_sponsored_content( $this->get_id() );
+	}
 }

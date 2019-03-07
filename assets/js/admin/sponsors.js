@@ -131,3 +131,27 @@ export function showSponsorSelect() {
     }
 }
 
+
+function updateSponsorQuantityColumnOnAjax( resp, button ) {
+    if ( resp.success ) {
+        updateSponsorQuantityAdminColumn( resp.data, button.parents('.column-qty') );
+    }
+}
+
+function updateSponsorQuantityAdminColumn( qty, column ) {
+    var qtyBadge = column.find('.ss-badge'),
+        oldQty   = parseInt( qtyBadge.text() );
+    qtyBadge.removeClass('ss-qty-' + oldQty );
+    qtyBadge.html( qty );
+    qtyBadge.addClass('ss-qty-' + qty );
+}
+
+function ssRemoveSponsorFromContent( resp, button ) {
+    if ( resp.success ) {
+        button.parents('tr').remove();
+    }
+}
+
+window.updateSponsorQuantityColumnOnAjax = updateSponsorQuantityColumnOnAjax;
+window.ssRemoveSponsorFromContent = ssRemoveSponsorFromContent;
+

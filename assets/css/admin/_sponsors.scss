@@ -72,4 +72,14 @@
       background-color: fade_out( $red, 0.15 );
     }
   }
+
+  .ss-button-action {
+
+    &.button-small {
+      height: 1.5em;
+      padding: 0 .5em;
+      line-height: 1em;
+      font-size: 1em;
+    }
+  }
 }

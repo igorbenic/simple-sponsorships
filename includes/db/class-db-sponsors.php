@@ -168,4 +168,16 @@ class DB_Sponsors extends DB {
 		$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->posts as posts INNER JOIN $wpdb->sssponsorships as sponsorships on sponsorships.sponsor = posts.ID WHERE sponsorships.package=%d", $package_id ) );
 		return $results;
 	}
+
+	/**
+	 * Get all content sponsored by a Sponsor
+	 *
+	 * @param $sponsor_id
+	 */
+	public function get_sponsored_content( $sponsor_id ) {
+		return get_posts(array(
+			'meta_key' => '_ss_sponsor',
+			'meta_value_num' => $sponsor_id
+		));
+	}
 }

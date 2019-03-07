@@ -1,10 +1,12 @@
 'use strict';
-import { startContentSponsorsDropdown, showSponsorSelect } from './admin/sponsors';
+import { startContentSponsorsDropdown, showSponsorSelect, updateSponsorQuantityColumnOnAjax } from './admin/sponsors';
 import { ssFieldsHideShow } from './admin/fields';
 import ssFilterStart from './admin/filters';
+import { attachButtonEvents } from './admin/buttons';
 
 (function($){
     $(function(){
+        attachButtonEvents();
         ssFieldsHideShow();
         startContentSponsorsDropdown();
         showSponsorSelect();

@@ -57,7 +57,9 @@ class Sponsors {
 			case 'qty':
 				$sponsor = new Sponsor( $post_id, false );
 				$qty     = $sponsor->get_available_quantity();
+				echo '<button class="button button-secondary button-small ss-button-action" data-success="updateSponsorQuantityColumnOnAjax" data-sponsor="' . $post_id . '" data-action="ss_add_quantity_sponsor" type="button">+</button>';
 				echo '<span class="ss-badge ss-qty-' . $qty . '">' . $qty . '</span>';
+				echo '<button class="button button-secondary button-small ss-button-action" data-success="updateSponsorQuantityColumnOnAjax" data-sponsor="' . $post_id . '"  data-action="ss_remove_quantity_sponsor" type="button">-</button>';
 				break;
 		}
 		do_action( 'ss_sponsors_column_' . $column, $post_id );
@@ -237,7 +239,11 @@ class Sponsors {
 			'sponsor-info' => array(
 				'title' => __( 'Information', 'simple-sponsorships' ),
 				'callback' => array( $this, 'metabox_info' ),
-			)
+			),
+			'sponsoring' => array(
+				'title' => __( 'Sponsoring', 'simple-sponsorships' ),
+				'callback' => array( $this, 'metabox_sponsoring' ),
+			),
 		));
 
 		if ( ! $metaboxes ) { return array(); }
@@ -276,6 +282,16 @@ class Sponsors {
 	 *
 	 * @param \WP_Post $post Post object.
 	 */
+	public function metabox_sponsoring( $post ) {
+		$fields = $this->get_metabox_sponsoring_fields();
+		include_once 'views/sponsors/metabox-sponsoring.php';
+	}
+
+	/**
+	 * Metabox info.
+	 *
+	 * @param \WP_Post $post Post object.
+	 */
 	public function metabox_sponsors( $post ) {
 		include_once 'views/sponsors/metabox-content.php';
 	}
@@ -287,6 +303,7 @@ class Sponsors {
 	 */
 	public function get_all_metabox_fields() {
 		$fields = $this->get_metabox_info_fields();
+		$fields = array_merge( $fields, $this->get_metabox_sponsoring_fields() );
 		return $fields;
 	}
 
@@ -312,6 +329,23 @@ class Sponsors {
 				'type'  => 'text',
 				'name'  => '_company',
 				'id'    => 'ss_company'
+			),
+		));
+
+		return $fields;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_metabox_sponsoring_fields() {
+		$fields = apply_filters( 'metabox_sponsoring_fields', array(
+			'_available_qty' => array(
+				'id'    => '_available_qty',
+				'name'  => '_available_qty',
+				'title' => __( 'Available Quantity', 'simple-sponsorships' ),
+				'desc'  => __( 'This is the quantity that is still unused and how many times this Sponsor can still be added to content', 'simple-sponsorships' ),
+				'type'  => 'number',
 			),
 		));
 

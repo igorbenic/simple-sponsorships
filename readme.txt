@@ -3,7 +3,7 @@ Contributors: ibenic
 Tags: sponsorships, sponsors, payment
 Requires at least: 4.4
 Tested up to: 5.0.3
-Stable tag: 0.4.1
+Stable tag: 0.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,6 +19,60 @@ Simple Sponsorships is a complete Sponsorships manager plugin where you can:
 * create different sponsorship packages
 
 If you want to handle payments differently, you can disable them and instruct sponsors with detailed information on how you will accept payments.
+
+This plugin can help you manage your sponsors, sponsor requests and all other related sponsor data.
+
+**How this plugin works?**
+
+1. A potential sponsor comes to your page. It goes to the Sponsor Page (it will create a /sponsor page),
+2. Fills the Sponsor Form and you get an email,
+3. A Sponsorship is created which you can then approve or reject,
+4. Once the Sponsorship is approved, the Sponsor is created from the provided information,
+5. If you want to accept payments through your site, you can use PayPal and the Sponsor will use it to pay for Sponsorship,
+6. Once paid, the Sponsorship will become active and the Sponsor can be added to a content
+
+Simple Sponsorships, to handle Sponsors, is composed of different types of data:
+
+- **Sponsors** - can have more than 1 sponsorship. Edited and managed as regular posts, pages and similar,
+- **Sponsorships** - connected to a sponsor and a package. Holds payment data,
+- **Packages** - packages are like products in a shop. A sponsor can choose a package to purchase and then the Sponsorship is created.
+
+**Use Cases**
+
+***Podcast Site***
+You have a podcast site where you accept Sponsors for your episodes.
+
+Each month has 2 episodes. 1 year (season) has 24 episodes in total. 1 Episode sponsorship is $100.
+
+You don't accept sponsorships for one episode but you actually have different packages:
+
+1. Half Season: You create a package with a quantity of 12 and the amount of $1200.
+2. Full Season: You create a package with a quantity of 24 and the amount of $2400.
+3. Early-Bird Full Season: You create a package with a quantity of 24 and with a lower amount of $1800.
+
+Once a sponsor pays for the Half Season, that sponsor will get an additional available quantity of 12. You can now assign this sponsor to 12 new episodes.
+
+***Event/WordCamp Site***
+You have a WordCamp site where you accept Sponsors for the WordCamp, a single event.
+
+There are different ways people can sponsor your event and what they get for it.
+
+So here are some of the sponsorship packages you can create
+
+1. Platinum: enter and explain this package. This sponsorship is a huge one and it will give the most exposure. The quantity is 1 and the amount is $5000.
+2. Gold: Gold sponsor has less exposure than platinum but still, they even get a place in the WordCamp venue where they can show what they do. Quantity is 1 and the amount is $2000.
+3. Freelancer: This sponsorship package is suited for people who want to get a little more exposure in the Thank you note of the WordCamp. The Quantity is 1 and the amount is $150.
+
+Each sponsor will get an additional available quantity of 1, but you can still show them anywhere with the shortcodes. Since this sponsorships are global on the whole event, you don't have to assign them to a content.
+
+**Planned Features**
+
+Some of the planned features to be implemented soon:
+
+- Package availability - option to disable a package from being purchased anymore. Still active, but can't be purchased anymore.
+- Ability to add more packages to a single sponsorship (Sponsor can choose more than 1 package option)
+- Add more gateways
+- Setup Wizard - for a better 1st time setup
 
 == Installation ==
 
@@ -87,6 +141,11 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 
 
 == Changelog ==
+
+= 0.5.0 =
+* New: Ability to add/remove available sponsor quantities on the Sponsors list
+* New: Ability to change the available sponsor quantity while editing a Sponsor
+* New: Displaying all the sponsored content on a Sponsor edit page
 
 = 0.4.1 =
 * Fixed: Settings did not save.

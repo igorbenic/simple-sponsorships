@@ -13,6 +13,18 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: includes/class-ajax.php:50, includes/class-ajax.php:82, includes/class-ajax.php:108
+msgid "No data found"
+msgstr ""
+
+#: includes/class-ajax.php:57, includes/class-ajax.php:89, includes/class-ajax.php:115
+msgid "No Sponsor provided"
+msgstr ""
+
+#: includes/class-ajax.php:64
+msgid "No Content provided"
+msgstr ""
+
 #: includes/class-blocks.php:34
 msgid "There were no sponsors found."
 msgstr ""
@@ -35,7 +47,7 @@ msgctxt "Post Type Singular Name"
 msgid "Sponsor"
 msgstr ""
 
-#: includes/class-content-types.php:53, includes/admin/class-menus.php:20, includes/admin/class-menus.php:21, includes/admin/sponsorships/class-sponsorships-table-list.php:45
+#: includes/class-content-types.php:53, includes/admin/class-menus.php:29, includes/admin/class-menus.php:30, includes/admin/sponsorships/class-sponsorships-table-list.php:45
 msgid "Sponsorships"
 msgstr ""
 
@@ -1308,15 +1320,15 @@ msgstr ""
 msgid "No Sponsor Found"
 msgstr ""
 
-#: includes/admin/class-menus.php:28, includes/admin/class-menus.php:29, includes/admin/packages/class-packages-table-list.php:31
+#: includes/admin/class-menus.php:21, includes/admin/class-menus.php:22, includes/admin/packages/class-packages-table-list.php:31
 msgid "Packages"
 msgstr ""
 
-#: includes/admin/class-menus.php:36
+#: includes/admin/class-menus.php:37
 msgid "Simple Sponsorships Settings"
 msgstr ""
 
-#: includes/admin/class-menus.php:37
+#: includes/admin/class-menus.php:38
 msgid "Settings"
 msgstr ""
 
@@ -1464,7 +1476,7 @@ msgstr ""
 msgid "Emails"
 msgstr ""
 
-#: includes/admin/class-settings.php:530
+#: includes/admin/class-settings.php:531
 msgid "Settings updated."
 msgstr ""
 
@@ -1472,28 +1484,40 @@ msgstr ""
 msgid "Avl. Quantity"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:77
+#: includes/admin/class-sponsors.php:79
 msgid "Inactive"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:208
+#: includes/admin/class-sponsors.php:210
 msgid "Add Sponsors"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:238
+#: includes/admin/class-sponsors.php:240
 msgid "Information"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:299, includes/admin/class-sponsorships.php:353, includes/forms/class-form-payment.php:97, includes/gateways/class-paypal.php:41, includes/gateways/class-paypal.php:44, templates/sponsorship/sponsor.php:38
+#: includes/admin/class-sponsors.php:244
+msgid "Sponsoring"
+msgstr ""
+
+#: includes/admin/class-sponsors.php:316, includes/admin/class-sponsorships.php:353, includes/forms/class-form-payment.php:97, includes/gateways/class-paypal.php:41, includes/gateways/class-paypal.php:44, templates/sponsorship/sponsor.php:38
 msgid "Email"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:305, includes/admin/class-sponsorships.php:359, includes/forms/class-form-sponsors.php:137, templates/sponsorship/sponsor.php:25
+#: includes/admin/class-sponsors.php:322, includes/admin/class-sponsorships.php:359, includes/forms/class-form-sponsors.php:137, templates/sponsorship/sponsor.php:25
 msgid "Website"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:311, includes/admin/class-sponsorships.php:365
+#: includes/admin/class-sponsors.php:328, includes/admin/class-sponsorships.php:365
 msgid "Company"
+msgstr ""
+
+#: includes/admin/class-sponsors.php:346
+msgid "Available Quantity"
+msgstr ""
+
+#: includes/admin/class-sponsors.php:347
+msgid "This is the quantity that is still unused and how many times this Sponsor can still be added to content"
 msgstr ""
 
 #: includes/admin/class-sponsorships.php:76
@@ -1812,12 +1836,20 @@ msgstr ""
 msgid "New Package"
 msgstr ""
 
-#: includes/admin/views/packages/new.php:62, includes/admin/views/sponsorships/new.php:82
+#: includes/admin/views/packages/new.php:62, includes/admin/views/sponsorships/new.php:83
 msgid "Add Package"
 msgstr ""
 
 #: includes/admin/views/sponsors/metabox-content.php:12
 msgid "Search for a sponsor"
+msgstr ""
+
+#: includes/admin/views/sponsors/metabox-sponsoring.php:20
+msgid "This Sponsor is not yet added to any content"
+msgstr ""
+
+#: includes/admin/views/sponsors/metabox-sponsoring.php:26
+msgid "Remove"
 msgstr ""
 
 #: includes/admin/views/sponsorships/edit.php:8, includes/admin/views/sponsorships/edit.php:87
