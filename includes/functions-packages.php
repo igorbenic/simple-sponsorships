@@ -41,19 +41,22 @@ function ss_get_packages() {
 }
 
 /**
- * Get all active packages.
+ * Get all available packages.
  *
- * @return array|null|object
+ * @since 0.6.0
+ *
+ * @return array Array of Package objects.
  */
 function ss_get_available_packages() {
 	$db       = new \Simple_Sponsorships\DB\DB_Packages();
-	$packages = $db->get_available();
-	if ( $packages ) {
-		foreach ( $packages as $index => $package_array ) {
+	$results  = $db->get_available();
+	$packages = array();
+	if ( $results ) {
+		foreach ( $results as $index => $package_array ) {
 			$package = new \Simple_Sponsorships\Package( 0 );
 			$package->populate_from_package( $package_array );
-			if ( ! $package->is_available() ) {
-				unset( $packages[ $index ] );
+			if ( $package->is_available() ) {
+				$packages[] = $package;
 			}
 		}
 	}

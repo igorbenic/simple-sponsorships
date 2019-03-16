@@ -148,6 +148,8 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 * New: Added Email Link Color.
 * New: Added PayPal documentation on PDT and IPN settings under the PayPal Gateway settings.
 * New: Package Statuses. You can now leave the package as Unavailable, and people won't be able to choose that package.
+* New: Package prices show in the Sponsor form.
+
 
 = 0.5.0 =
 * New: Ability to add/remove available sponsor quantities on the Sponsors list

@@ -23,7 +23,6 @@ do_action( 'ss_before_sponsor_form' );
     do_action( 'ss_after_sponsor_form_fields' );
     ?>
     <input type="hidden" name="ss-action" value="sponsor_form" />
-    <input type="hidden" name="ss-action" value="sponsor_form" />
 
     <button type="submit" name="ss_sponsor_form_submit" class="button ss-button">
         <?php esc_html_e( 'Submit', 'simple-sponsorships' ); ?>
