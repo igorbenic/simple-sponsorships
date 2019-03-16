@@ -199,6 +199,12 @@ class Settings {
 						'type'    => 'color',
 						'default' => '#000000'
 					),
+					'ss_email_link_text_color' => array(
+						'id'      => 'ss_email_link_text_color',
+						'label'    => __( 'Link Text Color', 'simple-sponsorships' ),
+						'type'    => 'color',
+						'default' => '#000000'
+					),
 				)
 			) ),
 		);
@@ -664,8 +670,9 @@ class Settings {
 					$value = isset( $args['std'] ) ? $args['std'] : '';
 				}
 
+
 				ob_start();
-				\wp_editor( $value, $id, array( 'textarea_name' => $args['name'] ? $args['name'] : $args['id'] ) );
+				\wp_editor( wp_unslash( $value ), $id, array( 'textarea_name' => $args['name'] ? $args['name'] : $args['id'] ) );
 
 				$html = ob_get_clean();
 				$html .= $label;

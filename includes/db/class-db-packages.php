@@ -85,6 +85,13 @@ class DB_Packages extends DB {
 	}
 
 	/**
+	 * Get only the available packages.
+	 */
+	public function get_available() {
+		return $this->get_by_column( 'status', 'available' );
+	}
+
+	/**
 	 * Installing the DB.
 	 *
 	 * @return string
@@ -97,13 +104,14 @@ class DB_Packages extends DB {
 		description longtext NOT NULL,
 		price tinytext NOT NULL,
 		quantity int(3) NOT NULL,
+		status varchar(20) NOT NULL default 'active',
 		PRIMARY KEY ID (ID)
 		) CHARACTER SET utf8 COLLATE utf8_general_ci;";
 
 		$meta_table_name = $this->get_meta_table_name();
 		$schema .= "CREATE TABLE {$meta_table_name} (
 		meta_id bigint(20) NOT NULL AUTO_INCREMENT,
-		sslevel_id bigint(20) NOT NULL DEFAULT '0',
+		sspackage_id bigint(20) NOT NULL DEFAULT '0',
 		meta_key varchar(255) DEFAULT NULL,
 		meta_value longtext,
 		PRIMARY KEY meta_id (meta_id),

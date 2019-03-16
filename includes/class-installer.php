@@ -13,11 +13,59 @@ namespace Simple_Sponsorships;
 class Installer {
 
 	/**
+	 * DB updates and callbacks that need to be run per version.
+	 *
+	 * @var array
+	 */
+	private static $db_updates = array();
+
+	/**
 	 * Activating the Plugin.
 	 */
 	public static function activate() {
 		self::install();
 		self::create_pages();
+	}
+
+	/**
+	 * Check the version and run the updater is required.
+	 *
+	 * This check is done on all requests and runs if the versions do not match.
+	 */
+	public static function check_version() {
+		if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( get_option( 'ss_version', '0.5.0' ), SS()->version, '<' ) ) {
+			self::update( get_option( 'ss_version', '0.5.0' ) );
+			do_action( 'ss_updated' );
+		}
+	}
+
+	/**
+	 * Get list of DB update callbacks.
+	 *
+	 * @since  0.6.0
+	 * @return array
+	 */
+	public static function get_db_update_callbacks() {
+		return self::$db_updates;
+	}
+
+	/**
+	 * Update the Simple Sponsorships database
+	 *
+	 * @param string $from From which version are we updating it.
+	 */
+	public static function update( $from ) {
+		self::install();
+
+		foreach ( self::get_db_update_callbacks() as $version => $update_callbacks ) {
+			if ( version_compare( $from, $version, '<' ) ) {
+				foreach ( $update_callbacks as $update_callback ) {
+					$update_callback();
+				}
+			}
+		}
+
+		update_option( 'ss_version', SS()->version );
 	}
 
 	/**

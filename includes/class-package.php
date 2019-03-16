@@ -25,7 +25,8 @@ class Package extends Custom_Data {
 		'title'       => 'title',
 		'description' => 'description',
 		'quantity'    => 'quantity',
-		'price'       => 'price'
+		'price'       => 'price',
+		'status'      => 'status',
 	);
 
 	/**
@@ -40,10 +41,21 @@ class Package extends Custom_Data {
 	}
 
 	/**
+	 * Get the status.
+	 *
+	 * @since 0.6.0
+	 *
+	 * @return mixed|string
+	 */
+	public function get_status() {
+		return $this->get_data( 'status' ) ? $this->get_data( 'status' ) : 'active';
+	}
+
+	/**
 	 * @return mixed
 	 */
 	public function is_available() {
-		return apply_filters( 'ss_package_is_available', true, $this );
+		return apply_filters( 'ss_package_is_available', 'unavailable' !== $this->get_status(), $this );
 	}
 
 	/**
@@ -58,5 +70,40 @@ class Package extends Custom_Data {
 	 */
 	public function get_price_html() {
 		return ss_currency_symbol() . $this->get_price();
+	}
+
+	/**
+	 * Get the Description.
+	 *
+	 * @return string
+	 */
+	public function get_description() {
+		$description = $this->get_data( 'description' );
+		if ( ! $description ) {
+			return '';
+		}
+
+		return wpautop( wp_unslash( $description ) );
+	}
+
+	/**
+	 * Populate data from a package array.
+	 *
+	 * @param array $package
+	 */
+	public function populate_from_package( $package ) {
+		$this->set_id( $package['ID'] );
+		foreach ( $package as $column => $value ) {
+			$this->set_data( $column, $value );
+			$additional_keys = array();
+			foreach ( $this->table_columns as $key => $table_column ) {
+				if ( $column === $table_column && $key !== $column ) {
+					$additional_keys[] = $key;
+				}
+			}
+			foreach ( $additional_keys as $key ) {
+				$this->set_data( $key, $value );
+			}
+		}
 	}
 }

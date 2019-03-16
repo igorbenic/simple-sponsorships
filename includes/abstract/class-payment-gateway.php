@@ -401,6 +401,7 @@ abstract class Payment_Gateway {
 	 * @param \Simple_Sponsorships\Sponsorship $sponsorship Object.
 	 */
 	public function complete( $sponsorship ) {
-		$sponsorship->activate();
+		// Setting it to Paid.
+		$sponsorship->set_status( 'paid' );
 	}
 }

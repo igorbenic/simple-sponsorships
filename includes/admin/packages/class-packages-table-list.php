@@ -162,6 +162,11 @@ class Packages_Table_List extends \WP_List_Table {
 		);
 	}
 
+	public function column_status( $item ) {
+		$statuses = ss_get_package_statuses();
+		return isset( $statuses[ $item['status'] ] ) ? $statuses[ $item['status'] ] : __( 'Available', 'simple-sponsorships' );
+	}
+
 	/**
 	 *  Associative array of columns
 	 *
@@ -173,6 +178,7 @@ class Packages_Table_List extends \WP_List_Table {
 			'title'    => __( 'Title', 'simple-sponsorships' ),
 			'quantity' => __( 'Quantity', 'simple-sponsorships' ),
 			'price'    => __( 'Price', 'simple-sponsorships' ),
+			'status'   => __( 'Status', 'simple-sponsorships' ),
 		);
 
 		return $columns;

@@ -126,8 +126,10 @@ class Sponsorship extends Custom_Data {
 	 * Activating the Sponsorship.
 	 */
 	public function activate() {
-		// Setting it to Paid.
-		$this->set_status( 'paid' );
+		// Activate only on paid sponsorships.
+		if ( ! $this->is_status( 'paid' ) ) {
+			return;
+		}
 		ss_add_notice( sprintf( __( 'Sponsorship #%d was successfully paid', 'simple-sponsorship' ), $this->get_id() ), 'success' );
 
 		$sponsor = $this->get_sponsor_data();

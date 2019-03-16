@@ -7,7 +7,7 @@
  * Author URI:      https://www.ibenic.com
  * Text Domain:     simple-sponsorships
  * Domain Path:     /languages
- * Version:         0.5.0
+ * Version:         0.6.0
  *
  * @package         Simple_Sponsorships
  */
@@ -35,7 +35,7 @@ class Plugin {
 	/**
 	 * @var string
 	 */
-	public $version = '0.5.0';
+	public $version = '0.6.0';
 
 	/**
 	 * Settings
@@ -127,6 +127,7 @@ class Plugin {
 		include_once 'includes/functions-emails.php';
 		include_once 'includes/functions-gateways.php';
 		include_once 'includes/functions-sponsors.php';
+		include_once 'includes/functions-packages.php';
 
 		// Classes.
 		include_once 'includes/class-session.php';
@@ -177,6 +178,7 @@ class Plugin {
 	public function hooks() {
 		add_action( 'plugins_loaded', array( $this, 'run' ) );
 		add_action( 'init', array( $this, 'process_actions' ) );
+		add_action( 'init', array( '\Simple_Sponsorships\Installer', 'check_version' ), 5 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 
 		add_action( 'ss_sponsorship_details', 'ss_sponsorship_details' );

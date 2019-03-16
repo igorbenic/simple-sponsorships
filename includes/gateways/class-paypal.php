@@ -25,6 +25,8 @@ class PayPal extends Payment_Gateway {
 
 		$this->testmode = 'sandbox' === $this->settings['paypal_mode'];
 
+		add_action( 'ss_settings_field_paypal_documentation', array( $this, 'paypal_documentation_field' ) );
+
 		parent::__construct();
 	}
 
@@ -66,6 +68,11 @@ class PayPal extends Payment_Gateway {
 				'label' => __( 'Identity Token', 'simple-sponsorships' ),
 				'type' => 'text',
 				'desc' => __( 'Enter your PayPal Identity Token to enable Payment Data Transfer (PDT).', 'simple-sponsorships' )
+			),
+			'paypal_documentation_field' => array(
+				'id' => 'paypal_documentation_field',
+				'type' => 'paypal_documentation',
+				'label' => __( 'Documentation', 'simple-sponsorships' ),
 			)
 		);
 	}
@@ -560,5 +567,39 @@ class PayPal extends Payment_Gateway {
 		}
 
 		return $sponsorship;
+	}
+
+	/**
+	 * PayPal Documentation Field.
+	 *
+	 * @param $field
+	 */
+	public function paypal_documentation_field( $field ) {
+		?>
+		<p>To configure your account for PDT:</p>
+
+		<ol>
+			<li>Log in to your PayPal account.</li>
+			<li id="step2">In your <strong>Profile</strong>, choose <strong>My Selling Tools</strong> on the left.</li>
+			<li id="step3">Click <strong>Update</strong> for <strong>Website Preferences</strong>.</li>
+			<li>In Auto Return for Website Payments, click the <strong>On</strong> option.</li>
+			<li>For the return URL, enter the URL on your site that will receive the transaction ID posted by PayPal after a customer payment.</li>
+			<li>In Payment Data Transfer, click the <strong>On</strong> option.</li>
+			<li>Click <strong>Save</strong>.</li>
+			<li>Repeat steps <a href="#step2" pa-marked="1">2</a> and <a href="#step3" pa-marked="1">3</a>.</li>
+			<li>To view your PDT identity token, scroll down to the <strong>Payment Data Transfer</strong> section on the page.</li>
+		</ol>
+
+		<p>To Configure the IPN PayPal settings:</p>
+		<ol>
+			<li>Log in to your PayPal account.</li>
+			<li id="step2">In your <strong>Profile</strong>, choose <strong>My Selling Tools</strong> on the left.</li>
+			<li id="step3">Click <strong>Update</strong> for <strong>Website Preferences</strong>.</li>
+			<li>Click on the Update link for Instant Payment Notifications (IPN.)</li>
+			<li>Set the notification URL to <code>http://yoursite.com/?ss-listener=paypal</code> where <em>yoursite.com</em>> needs to be changed into your site.</li>
+			<li>Select "Receive IPN messages (Enabled)".</li>
+			<li>Click <strong>Save</strong>.</li>
+		</ol>
+		<?php
 	}
 }

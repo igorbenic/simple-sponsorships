@@ -2,8 +2,8 @@
 Contributors: ibenic
 Tags: sponsorships, sponsors, payment
 Requires at least: 4.4
-Tested up to: 5.0.3
-Stable tag: 0.5.0
+Tested up to: 5.1.0
+Stable tag: 0.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -141,6 +141,13 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 
 
 == Changelog ==
+
+= 0.6.0 =
+* Fix: When a sponsorship has been paid, the emails are not sent twice.
+* Fix: Package description does not use the the_content filter anymore.
+* New: Added Email Link Color.
+* New: Added PayPal documentation on PDT and IPN settings under the PayPal Gateway settings.
+* New: Package Statuses. You can now leave the package as Unavailable, and people won't be able to choose that package.
 
 = 0.5.0 =
 * New: Ability to add/remove available sponsor quantities on the Sponsors list

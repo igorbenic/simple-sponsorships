@@ -44,7 +44,7 @@ if ( $button ) {
 		<div class="ss-package">
 			<?php
 			echo '<h2>' . $package->get_data('title') . '</h2>';
-			$package_content = apply_filters( 'the_content', $package->get_data('description') );
+			$package_content = $package->get_description();
 			if ( $package_content ) {
 			    echo '<div class="ss-package-content">';
 			    echo $package_content;

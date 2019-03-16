@@ -114,7 +114,7 @@ class Form_Sponsors extends Form {
 	 * Return the fields for Form Sponsors.
 	 */
 	public function get_fields() {
-		$packages = ss_get_packages();
+		$packages = ss_get_available_packages();
 		$package_options = array();
 		if ( $packages ) {
 			$package_options[0] = __( 'Select a Package', 'simple-sponsorships' );

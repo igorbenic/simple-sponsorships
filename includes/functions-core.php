@@ -36,25 +36,6 @@ function ss_get_option( $key, $default = '' ) {
 }
 
 /**
- * Get the package.
- *
- * @param integer $id
- */
-function ss_get_package( $id ) {
-	return new \Simple_Sponsorships\Package( $id, true );
-}
-
-/**
- * Get all Packages
- *
- * @return array
- */
-function ss_get_packages() {
-	$db = new \Simple_Sponsorships\DB\DB_Packages();
-	return $db->get_all();
-}
-
-/**
  * Return content Types.
  *
  * @return mixed|string

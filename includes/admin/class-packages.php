@@ -42,7 +42,8 @@ class Packages {
 
 		$posted_data = isset( $_POST['ss_packages'] ) ? $_POST['ss_packages'] : array();
 		$title       = isset( $posted_data['title'] ) ? sanitize_text_field( $posted_data['title'] ) : '';
-		$description = isset( $posted_data['description'] ) ? sanitize_text_field( $posted_data['description'] ) : '';
+		$status      = isset( $posted_data['status'] ) ? sanitize_text_field( $posted_data['status'] ) : '';
+		$description = isset( $posted_data['description'] ) ? $posted_data['description'] : '';
 		$quantity    = isset( $posted_data['quantity'] ) ? absint( $posted_data['quantity'] ) : 1;
 		$price       = isset( $posted_data['price'] ) ? floatval( $posted_data['price'] ) : 0;
 
@@ -59,10 +60,11 @@ class Packages {
 			'title'       => $title,
 			'description' => $description,
 			'quantity'    => $quantity,
-			'price'       => $price
+			'price'       => $price,
+			'status'      => $status,
 		);
 
-		$level_id = $db->insert( $db_data, array( '%s', '%s', '%s', '%d' ) );
+		$level_id = $db->insert( $db_data, array( '%s', '%s', '%s', '%d', '%s' ) );
 
 		do_action( 'ss_package_added', $level_id );
 
@@ -83,7 +85,8 @@ class Packages {
 
 		$posted_data = isset( $_POST['ss_packages'] ) ? $_POST['ss_packages'] : array();
 		$title       = isset( $posted_data['title'] ) ? sanitize_text_field( $posted_data['title'] ) : '';
-		$description = isset( $posted_data['description'] ) ? sanitize_text_field( $posted_data['description'] ) : '';
+		$status      = isset( $posted_data['status'] ) ? sanitize_text_field( $posted_data['status'] ) : '';
+		$description = isset( $posted_data['description'] ) ?  $posted_data['description'] : '';
 		$quantity    = isset( $posted_data['quantity'] ) ? absint( $posted_data['quantity'] ) : 1;
 		$price       = isset( $posted_data['price'] ) ? floatval( $posted_data['price'] ) : 0;
 		$id          = isset( $posted_data['id'] ) ? absint( $posted_data['id'] ) : 0;
@@ -105,10 +108,11 @@ class Packages {
 			'title'       => $title,
 			'description' => $description,
 			'quantity'    => $quantity,
-			'price'       => $price
+			'price'       => $price,
+			'status'      => $status,
 		);
 
-		$ret = $db->update( $id, $db_data, array( '%s', '%s', '%s', '%d' ) );
+		$ret = $db->update( $id, $db_data, array( '%s', '%s', '%s', '%d', '%s' ) );
 
 		if ( $ret ) {
 			do_action( 'ss_package_updated', $id, $posted_data );
@@ -157,6 +161,15 @@ class Packages {
 				'type' => 'text',
 				'placeholder' => __( 'Enter the Package Name', 'simple-sponsorships' ),
 				'title' => __( 'Title', 'simple-sponsorships' ),
+			),
+			'status' => array(
+				'id' => 'status',
+				'type' => 'select',
+				'placeholder' => __( 'Choose a Status', 'simple-sponsorships' ),
+				'title' => __( 'Status', 'simple-sponsorships' ),
+				'field_class' => 'widefat',
+				'options' => ss_get_package_statuses(),
+				'default' => 'active',
 			),
 			'description' => array(
 				'id' => 'description',
