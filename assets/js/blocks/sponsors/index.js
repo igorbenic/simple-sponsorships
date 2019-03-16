@@ -31,6 +31,10 @@ registerBlockType( 'simple-sponsorships/sponsors', {
         type: {
             type: 'string',
             default: ''
+        },
+        col: {
+            type: 'number',
+            default: 2
         }
     },
     edit: SponsorsEdit,

@@ -1,0 +1,20 @@
+.ss-col {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  &.ss-col-2 {
+    grid-template-columns: repeat( 2, 1fr );
+  }
+
+  &.ss-col-3 {
+    grid-template-columns: repeat( 3, 1fr );
+  }
+
+  &.ss-col-4 {
+    grid-template-columns: repeat( 4, 1fr );
+  }
+
+  &.ss-col-5 {
+    grid-template-columns: repeat( 5, 1fr );
+  }
+}

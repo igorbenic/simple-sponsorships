@@ -84,6 +84,10 @@ class Blocks {
 				'type' => [
 					'type' => 'string',
 					'default' => ''
+				],
+				'col' => [
+					'type' => 'number',
+					'default' => 1
 				]
 			]
 		] );

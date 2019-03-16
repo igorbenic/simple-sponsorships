@@ -1,4 +1,4 @@
-const { RadioControl, ServerSideRender, Panel, PanelBody, PanelRow, SelectControl, Spinner } = wp.components;
+const { RadioControl, ServerSideRender, Panel, PanelBody, PanelRow, SelectControl, Spinner, RangeControl } = wp.components;
 const { __ } = wp.i18n;
 const { Fragment, Component } = wp.element;
 const { InspectorControls } = wp.editor;
@@ -28,7 +28,6 @@ export default class Edit extends Component {
     constructor( props ) {
         super( ...props );
         this.props = props;
-        console.log(props);
         this.state = { 
             displayOption: props.attributes.content !== 'all' && props.attributes.content !== 'current' ? 'other' : this.props.attributes.content,
             content: [],
@@ -89,6 +88,7 @@ export default class Edit extends Component {
         let packages        = [{ label: __( 'Select a Package' ), value: 0 }]
         const { content, displayOption, type, loading } = this.state;
         const { attributes, setAttributes } = this.props;
+        let columns = attributes.col || 2;
 
         if ( content.length ) {
             content_options = content_options.concat(content.map(( post ) => {
@@ -167,6 +167,18 @@ export default class Edit extends Component {
                         </div>
                     ]
                 }
+
+                <RangeControl
+                    label={ __( 'Columns' ) }
+                    value={ columns }
+                    onChange={ ( nextColumns ) => {
+                        setAttributes( {
+                            col: nextColumns
+                        } );
+                    } }
+                    min={ 1 }
+                    max={ 5 }
+                        />
             </PanelBody>
             <PanelBody
             title={ __( 'Package' ) }

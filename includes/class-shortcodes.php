@@ -71,6 +71,7 @@ class Shortcodes {
 			'text'    => '1',
 			'package' => '0',
 			'size'    => 'medium',
+			'col'     => '2',
 		), $args, 'ss_sponsors' );
 
 		ob_start();
