@@ -33,7 +33,7 @@ msgstr ""
 msgid "Please select a package."
 msgstr ""
 
-#: includes/class-blocks.php:119
+#: includes/class-blocks.php:123
 msgid "Simple Sponsorships"
 msgstr ""
 
@@ -1163,6 +1163,14 @@ msgstr ""
 msgid "Unserializing instances of this class is forbidden."
 msgstr ""
 
+#: includes/functions-packages.php:18, includes/admin/packages/class-packages-table-list.php:167
+msgid "Available"
+msgstr ""
+
+#: includes/functions-packages.php:19
+msgid "Unavailable"
+msgstr ""
+
 #: includes/functions-sponsors.php:153
 msgid "Sponsored By"
 msgstr ""
@@ -1332,43 +1340,51 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/class-packages.php:50, includes/admin/class-packages.php:92
+#: includes/admin/class-packages.php:51, includes/admin/class-packages.php:95
 msgid "Package Name is required."
 msgstr ""
 
-#: includes/admin/class-packages.php:96
+#: includes/admin/class-packages.php:99
 msgid "This package does not exist."
 msgstr ""
 
-#: includes/admin/class-packages.php:158
+#: includes/admin/class-packages.php:162
 msgid "Enter the Package Name"
 msgstr ""
 
-#: includes/admin/class-packages.php:159, includes/admin/packages/class-packages-table-list.php:173, includes/admin/sponsorships/class-sponsorships-table-list.php:332
+#: includes/admin/class-packages.php:163, includes/admin/packages/class-packages-table-list.php:178, includes/admin/sponsorships/class-sponsorships-table-list.php:332
 msgid "Title"
 msgstr ""
 
-#: includes/admin/class-packages.php:164
+#: includes/admin/class-packages.php:168
+msgid "Choose a Status"
+msgstr ""
+
+#: includes/admin/class-packages.php:169, includes/admin/class-sponsorships.php:312, includes/admin/packages/class-packages-table-list.php:181, includes/admin/sponsorships/class-sponsorships-table-list.php:333, templates/sponsorship/details.php:23
+msgid "Status"
+msgstr ""
+
+#: includes/admin/class-packages.php:177
 msgid "Enter the Package Description"
 msgstr ""
 
-#: includes/admin/class-packages.php:165
+#: includes/admin/class-packages.php:178
 msgid "Description"
 msgstr ""
 
-#: includes/admin/class-packages.php:171, includes/admin/packages/class-packages-table-list.php:175
+#: includes/admin/class-packages.php:184, includes/admin/packages/class-packages-table-list.php:180
 msgid "Price"
 msgstr ""
 
-#: includes/admin/class-packages.php:177, includes/admin/packages/class-packages-table-list.php:174
+#: includes/admin/class-packages.php:190, includes/admin/packages/class-packages-table-list.php:179
 msgid "Quantity"
 msgstr ""
 
-#: includes/admin/class-packages.php:180
+#: includes/admin/class-packages.php:193
 msgid "How many content will this package allow to subscribe to. For example, a 12 episode package, would have 12 here."
 msgstr ""
 
-#: includes/admin/class-packages.php:194, includes/admin/class-sponsorships.php:406
+#: includes/admin/class-packages.php:207, includes/admin/class-sponsorships.php:406
 msgid "Normal"
 msgstr ""
 
@@ -1464,19 +1480,23 @@ msgstr ""
 msgid "Text Color"
 msgstr ""
 
-#: includes/admin/class-settings.php:264, includes/admin/class-settings.php:267, includes/admin/class-settings.php:270, includes/admin/class-settings.php:287
+#: includes/admin/class-settings.php:204
+msgid "Link Text Color"
+msgstr ""
+
+#: includes/admin/class-settings.php:270, includes/admin/class-settings.php:273, includes/admin/class-settings.php:276, includes/admin/class-settings.php:293
 msgid "General"
 msgstr ""
 
-#: includes/admin/class-settings.php:288
+#: includes/admin/class-settings.php:294
 msgid "Payment Gateways"
 msgstr ""
 
-#: includes/admin/class-settings.php:289
+#: includes/admin/class-settings.php:295
 msgid "Emails"
 msgstr ""
 
-#: includes/admin/class-settings.php:531
+#: includes/admin/class-settings.php:537
 msgid "Settings updated."
 msgstr ""
 
@@ -1500,7 +1520,7 @@ msgstr ""
 msgid "Sponsoring"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:316, includes/admin/class-sponsorships.php:353, includes/forms/class-form-payment.php:97, includes/gateways/class-paypal.php:41, includes/gateways/class-paypal.php:44, templates/sponsorship/sponsor.php:38
+#: includes/admin/class-sponsors.php:316, includes/admin/class-sponsorships.php:353, includes/forms/class-form-payment.php:97, includes/gateways/class-paypal.php:43, includes/gateways/class-paypal.php:46, templates/sponsorship/sponsor.php:38
 msgid "Email"
 msgstr ""
 
@@ -1546,10 +1566,6 @@ msgstr ""
 
 #: includes/admin/class-sponsorships.php:294
 msgid "Create a new sponsor"
-msgstr ""
-
-#: includes/admin/class-sponsorships.php:312, includes/admin/sponsorships/class-sponsorships-table-list.php:333, templates/sponsorship/details.php:23
-msgid "Status"
 msgstr ""
 
 #: includes/admin/class-sponsorships.php:318, templates/emails/rejected-sponsorship.php:21
@@ -1696,39 +1712,43 @@ msgstr ""
 msgid "PayPal"
 msgstr ""
 
-#: includes/gateways/class-paypal.php:43
+#: includes/gateways/class-paypal.php:45
 msgid "Email that will receive payments from Sponsors"
 msgstr ""
 
-#: includes/gateways/class-paypal.php:49
+#: includes/gateways/class-paypal.php:51
 msgid "Mode"
 msgstr ""
 
-#: includes/gateways/class-paypal.php:52
+#: includes/gateways/class-paypal.php:54
 msgid "Sandbox"
 msgstr ""
 
-#: includes/gateways/class-paypal.php:53
+#: includes/gateways/class-paypal.php:55
 msgid "Live"
 msgstr ""
 
-#: includes/gateways/class-paypal.php:58
+#: includes/gateways/class-paypal.php:60
 msgid "Invoice prefix"
 msgstr ""
 
-#: includes/gateways/class-paypal.php:60
+#: includes/gateways/class-paypal.php:62
 msgid "Please enter a prefix for your invoice numbers. If you use your PayPal account for multiple stores ensure this prefix is unique as PayPal will not allow orders with the same invoice number."
 msgstr ""
 
-#: includes/gateways/class-paypal.php:66
+#: includes/gateways/class-paypal.php:68
 msgid "Identity Token"
 msgstr ""
 
-#: includes/gateways/class-paypal.php:68
+#: includes/gateways/class-paypal.php:70
 msgid "Enter your PayPal Identity Token to enable Payment Data Transfer (PDT)."
 msgstr ""
 
-#: includes/gateways/class-paypal.php:135
+#: includes/gateways/class-paypal.php:75
+msgid "Documentation"
+msgstr ""
+
+#: includes/gateways/class-paypal.php:142
 msgid "Sponsorship %s"
 msgstr ""
 
