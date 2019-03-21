@@ -107,7 +107,7 @@ if ( ! function_exists( 'ss_hex_lighter' ) ) {
 $bg              = ss_get_option( 'ss_email_background_color', '#ffffff' );
 $body            = ss_get_option( 'ss_email_body_background_color', '#ffffff' );
 $base            = ss_get_option( 'ss_email_base_color', '#000000' );
-$base_text       = ss_get_option( 'ss_email_base_text_color', '#000000' );;
+$base_text       = ss_get_option( 'ss_email_base_text_color', '#ffffff' );;
 $text            = ss_get_option( 'ss_email_text_color', '#000000' );
 
 // Pick a contrasting color for links.
