@@ -145,6 +145,9 @@ class Plugin {
 		include_once 'includes/class-ajax.php';
 		include_once 'includes/class-blocks.php';
 
+		// Integrations
+		include_once 'includes/integrations/class-gravityforms.php';
+
 		// Gateways.
 		include_once 'includes/gateways/class-paypal.php';
 

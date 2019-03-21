@@ -19,7 +19,9 @@ function ss_get_sponsors( $args = array() ) {
 		'post_type'      => 'sponsors',
 		'posts_per_page' => '-1',
         'ss_package'     => 0,
-        'ss_content'     => 0
+        'ss_content'     => 0,
+        'post_status'    => apply_filters( 'ss_get_sponsors_default_statuses',
+            array( 'publish', 'ss-inactive' )),
 	));
 
 	if ( $args['ss_content'] || $args['ss_package'] ) {
