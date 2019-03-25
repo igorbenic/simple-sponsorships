@@ -33,11 +33,25 @@ function ss_get_package( $id ) {
 /**
  * Get all Packages
  *
+ * @param string $type If we want the raw array from DB, leave it as it is.
+ *                     If we want an array of objects, pass 'object'.
+ *
  * @return array
  */
-function ss_get_packages() {
-	$db = new \Simple_Sponsorships\DB\DB_Packages();
-	return $db->get_all();
+function ss_get_packages( $type = 'raw' ) {
+	$db       = new \Simple_Sponsorships\DB\DB_Packages();
+	$packages = $db->get_all();
+
+	if ( 'object' === $type && $packages ) {
+		$_packages = $packages;
+		$packages = array();
+		foreach ( $_packages as $index => $package_array ) {
+			$package = new \Simple_Sponsorships\Package( 0 );
+			$package->populate_from_package( $package_array );
+			$packages[] = $package;
+		}
+	}
+	return $packages;
 }
 
 /**

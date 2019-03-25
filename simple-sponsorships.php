@@ -187,7 +187,7 @@ class Plugin {
 		add_action( 'ss_sponsorship_details', 'ss_sponsorship_details' );
 		add_action( 'ss_sponsorship_sponsor', 'ss_sponsorship_sponsor' );
 		add_action( 'ss_sponsorship_customer_details', 'ss_sponsorship_customer_details' );
-		add_action( 'ss_sponsor_form_sponsorship_created', 'ss_email_on_new_sponsorhip' );
+		add_action( 'ss_sponsor_form_sponsorship_created', 'ss_email_on_new_sponsorship' );
 		add_action( 'ss_sponsorship_activated', 'ss_email_on_activated_sponsorship' );
 		add_action( 'ss_sponsorship_activated', 'ss_email_invoice_on_activated_sponsorship' );
 		add_action( 'ss_sponsorship_status_updated', 'ss_email_on_approved_sponsorship', 20, 3 );

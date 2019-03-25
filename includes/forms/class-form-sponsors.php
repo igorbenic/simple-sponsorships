@@ -34,9 +34,10 @@ class Form_Sponsors extends Form {
 	/**
 	 * Create a Sponsorship.
 	 *
-	 * @param array $posted_data
+	 * @param array   $posted_data
+	 * @param boolean $redirect
 	 */
-	public function create_sponsorship( $posted_data ) {
+	public function create_sponsorship( $posted_data, $redirect = true ) {
 
 		$args = array();
 
@@ -61,7 +62,7 @@ class Form_Sponsors extends Form {
 
 			$sponsorship_page = ss_get_option( 'sponsorship_page', 0 );
 
-			if ( $sponsorship_page ) {
+			if ( $sponsorship_page && $redirect ) {
 				$sponsorship = new Sponsorship( $sponsorship_id );
 				$redirect = get_permalink( $sponsorship_page );
 				$redirect = add_query_arg( 'sponsorship-key', $sponsorship->get_data( 'ss_key' ), $redirect );
@@ -69,12 +70,13 @@ class Form_Sponsors extends Form {
 				exit;
 			}
 
-			/**
-			 * @todo Send an email.
-			 */
+			return $sponsorship_id;
+
 		} else {
 			ss_add_notice( __( 'Sponsorship could not be created. Try contacting the site owner through email.', 'simple-sponsorships' ), 'error' );
 		}
+
+		return false;
 	}
 
 	/**

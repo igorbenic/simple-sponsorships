@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param integer $sponsorship_id
  */
-function ss_email_on_new_sponsorhip( $sponsorship_id ) {
+function ss_email_on_new_sponsorship( $sponsorship_id ) {
 	$email = new \Simple_Sponsorships\Emails\Email_New_Sponsorship();
 	$email->trigger( $sponsorship_id );
 }
