@@ -2,8 +2,8 @@
 Contributors: ibenic
 Tags: sponsorships, sponsors, payment
 Requires at least: 4.4
-Tested up to: 5.1.0
-Stable tag: 0.6.0
+Tested up to: 5.1.1
+Stable tag: 0.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -141,6 +141,11 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 
 
 == Changelog ==
+
+= 0.7.0 - 2019-03-29 =
+* New: Gravity Forms Integration.
+* New: Prices/Amounts are formatted with the number format.
+* New: Sponsor microdata from Schema.org added to each Sponsor.
 
 = 0.6.0 =
 * Fix: When a sponsorship has been paid, the emails are not sent twice.
