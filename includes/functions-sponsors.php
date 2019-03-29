@@ -160,12 +160,12 @@ function ss_show_sponsors_under_content( $content ) {
 					$has_logo  = has_post_thumbnail( $sponsor->get_id() );
 					$link      = $sponsor->get_link();
 					?>
-					<div class="ss-sponsor">
+					<div class="ss-sponsor" itemprop="sponsor" itemtype="http://schema.org/Organization">
 						<?php
 
 						if ( $has_logo ) {
 							if ( $link ) {
-								echo '<a href="' . $link . '">';
+								echo '<a itemprop="url" href="' . $link . '">';
 							}
 							echo get_the_post_thumbnail( $sponsor->get_id() );
 							if ( $link ) {
@@ -174,10 +174,10 @@ function ss_show_sponsors_under_content( $content ) {
 						}
 						if ( ! $has_logo ) {
 							if ( $link ) {
-								echo '<a target="_blank" href="' . $link . '">';
+								echo '<a itemprop="url" target="_blank" href="' . $link . '">';
 							}
 
-							echo $sponsor->get_data( 'post_title' );
+							echo '<span itemprop="name"">' . $sponsor->get_data( 'post_title' ) . '</span>';
 
 							if ( $link ) {
 								echo '</a>';

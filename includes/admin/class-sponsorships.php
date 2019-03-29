@@ -149,11 +149,11 @@ class Sponsorships {
 			'amount'         => $amount,
 			'gateway'        => $gateway,
 			'transaction_id' => $transaction_id,
-			'package'        => $package,
+			'package'        => $package, // @todo Move to meta instead for multiple packages.
 			'sponsor'        => $sponsor,
 		);
 
-		$ret = $db->update( $id, $db_data, array( '%s', '%s', '%s', '%d' ) );
+		$ret = $db->update( $id, $db_data, array( '%s', '%s', '%s', '%s', '%d', '%d' ) );
 
 		if ( $ret ) {
 			do_action( 'ss_sponsorship_updated', $id, $posted_data );
@@ -323,6 +323,7 @@ class Sponsorships {
 				'type'        => 'number',
 				'placeholder' => __( 'The Sponsorship Amount', 'simple-sponsorships' ),
 				'title'       => sprintf( __( 'Amount (%s)', 'simple-sponsorships' ), ss_get_currency() ),
+				'step'        => '0.01',
 			),
 			'package' => array(
 				'id'      => 'package',

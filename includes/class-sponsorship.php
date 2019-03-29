@@ -151,4 +151,13 @@ class Sponsorship extends Custom_Data {
 	public function is_request() {
 		return $this->is_status( 'request' );
 	}
+
+	/**
+	 * Return the formatted amount.
+	 *
+	 * @return string
+	 */
+	public function get_formatted_amount() {
+		return Formatting::price( $this->get_data( 'amount' ) );
+	}
 }

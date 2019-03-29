@@ -9,6 +9,7 @@
 namespace Simple_Sponsorships\Admin;
 
 use Simple_Sponsorships\DB\DB_Sponsorships;
+use Simple_Sponsorships\Formatting;
 use Simple_Sponsorships\Package;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -205,8 +206,7 @@ class Sponsorships_Table_List extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_amount( $item ) {
-		$currency = ss_currency_symbol();
-		return $currency . $item['amount'];
+		return Formatting::price( $item['amount'] );
 	}
 
 	/**

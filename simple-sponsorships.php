@@ -130,6 +130,7 @@ class Plugin {
 		include_once 'includes/functions-packages.php';
 
 		// Classes.
+		include_once 'includes/class-formatting.php';
 		include_once 'includes/class-session.php';
 		include_once 'includes/class-content-types.php';
 		include_once 'includes/class-installer.php';

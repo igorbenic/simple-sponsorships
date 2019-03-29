@@ -64,7 +64,7 @@ class Packages {
 			'status'      => $status,
 		);
 
-		$level_id = $db->insert( $db_data, array( '%s', '%s', '%s', '%d', '%s' ) );
+		$level_id = $db->insert( $db_data, array( '%s', '%s', '%s', '%s', '%s' ) );
 
 		do_action( 'ss_package_added', $level_id );
 
@@ -112,7 +112,7 @@ class Packages {
 			'status'      => $status,
 		);
 
-		$ret = $db->update( $id, $db_data, array( '%s', '%s', '%s', '%d', '%s' ) );
+		$ret = $db->update( $id, $db_data, array( '%s', '%s', '%s', '%s', '%s' ) );
 
 		if ( $ret ) {
 			do_action( 'ss_package_updated', $id, $posted_data );
@@ -183,6 +183,7 @@ class Packages {
 				'type' => 'number',
 				'title' => __( 'Price', 'simple-sponsorships' ),
 				'field_class' => 'widefat',
+				'step' => '0.01',
 			),
 			'quantity' => array(
 				'id' => 'quantity',

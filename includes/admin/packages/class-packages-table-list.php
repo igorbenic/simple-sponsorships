@@ -9,6 +9,7 @@
 namespace Simple_Sponsorships\Admin;
 
 use Simple_Sponsorships\DB\DB_Packages;
+use Simple_Sponsorships\Formatting;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
@@ -145,8 +146,7 @@ class Packages_Table_List extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_price( $item ) {
-		$currency = ss_currency_symbol();
-		return $currency . $item['price'];
+		return Formatting::price( $item['price'] );
 	}
 
 	/**

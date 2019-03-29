@@ -39,11 +39,17 @@ if ( ! $sponsors ) {
 			$has_logo  = $logo && has_post_thumbnail( $sponsor->get_id() );
 			$link      = $sponsor->get_link();
 			?>
-			<div class="ss-sponsor">
+			<div class="ss-sponsor" itemprop="sponsor" itemtype="http://schema.org/Organization">
 				<?php
 
-				echo '<h3 class="sponsor-title">' . $sponsor->get_data( 'post_title' ) . '</h3>';
+				if ( $link ) {
+					echo '<a itemprop="url" target="_blank" href="' . $link . '">';
+				}
+				echo '<h3 class="sponsor-title" itemprop="name">' . $sponsor->get_data( 'post_title' ) . '</h3>';
 
+				if ( $link ) {
+					echo '</a>';
+				}
 				if ( $has_logo ) {
 					if ( $link ) {
 						echo '<a href="' . $link . '">';
@@ -53,13 +59,9 @@ if ( ! $sponsors ) {
 						echo '</a>';
 					}
 				}
-				if ( $link ) {
-					echo '<a target="_blank" href="' . $link . '">';
-				}
 
-				if ( $link ) {
-					echo '</a>';
-				}
+
+
 				if ( $text ) {
 					$content = $sponsor->get_data( 'post_content' );
 					if ( $content ) {

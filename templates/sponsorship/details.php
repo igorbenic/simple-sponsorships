@@ -33,7 +33,7 @@ if ( $sponsorship->is_request() ) {
 			<?php esc_html_e( 'Amount', 'simple-sponsorships' ); ?>
 		</th>
 		<td>
-			<?php echo ss_currency_symbol() . $sponsorship->get_data( 'amount' ); ?>
+			<?php echo $sponsorship->get_formatted_amount(); ?>
 		</td>
 	</tr>
 	<tr>

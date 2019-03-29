@@ -69,7 +69,7 @@ class Package extends Custom_Data {
 	 * Get the Price HTML.
 	 */
 	public function get_price_html() {
-		return ss_currency_symbol() . $this->get_price();
+		return Formatting::price( $this->get_price() );
 	}
 
 	/**

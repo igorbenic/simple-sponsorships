@@ -80,6 +80,6 @@ if ( $errors ) {
 	<p class="submit">
 		<input type="hidden" name="ss-action" value="add_sponsorship"/>
 		<input type="hidden" name="ss-redirect" value="<?php echo esc_url( admin_url( 'edit.php?post_type=sponsors&page=ss-sponsorships' ) ); ?>"/>
-		<input type="submit" value="<?php esc_attr_e( 'Add Package', 'simple-sponsorships' ); ?>" class="button-primary"/>
+		<input type="submit" value="<?php esc_attr_e( 'Create Sponsorship', 'simple-sponsorships' ); ?>" class="button-primary"/>
 	</p>
 </form>
