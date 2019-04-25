@@ -736,7 +736,6 @@ class Settings {
 				echo apply_filters( 'ss_after_setting_output', $html, $args );
 				break;
 			case 'multicheck':
-
 				$html = '';
 				if ( ! empty( $args['options'] ) ) {
 					$html .= '<input type="hidden" ' . $name . ' value="-1" />';

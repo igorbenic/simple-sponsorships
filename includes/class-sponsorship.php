@@ -4,6 +4,7 @@
  */
 namespace Simple_Sponsorships;
 
+use Simple_Sponsorships\DB\DB_Sponsorship_Items;
 use Simple_Sponsorships\DB\DB_Sponsorships;
 
 /**
@@ -34,6 +35,12 @@ class Sponsorship extends Custom_Data {
 		'ss_key'         => 'ss_key',
 	);
 
+	/**
+	 * Sponsorship Items
+	 *
+	 * @var array
+	 */
+	protected $items = null;
 
 	/**
 	 * Get the DB Object.
@@ -83,6 +90,134 @@ class Sponsorship extends Custom_Data {
 		$package_id = $this->get_data( 'package' );
 		$package    = new Package( $package_id );
 		return $package;
+	}
+
+	/**
+	 * Calculate Totals
+	 */
+	public function calculate_totals() {
+		$items = $this->get_items();
+
+		$total = 0;
+
+		if ( $items ) {
+			foreach ( $items as $item ) {
+				$total += $item['item_amount'] * $item['item_qty'];
+			}
+		}
+
+		$this->update_data( 'amount', $total );
+	}
+
+	/**
+	 * Get the package for this sponsorship.
+	 *
+	 * @return array
+	 */
+	public function get_packages() {
+		$items = $this->get_items();
+		if ( ! $items ) {
+			return array();
+		}
+
+		$packages = array();
+		foreach ( $items as $item ) {
+			if ( 'package' === $item['item_type'] ) {
+				$packages[] = $item;
+			}
+		}
+
+		if ( ! $packages ) {
+			return array();
+		}
+
+		$objects = array();
+
+		foreach ( $packages as $package ) {
+			$objects[] = new Package( $package['item_id'] );
+		}
+
+		return $objects;
+	}
+
+	/**
+	 * Add Package
+	 *
+	 * @param integer|Package $package_id Package ID.
+	 * @param integer $qty Quantity.
+	 */
+	public function add_package( $package, $qty = 1 ) {
+		if ( is_numeric( $package ) ) {
+			$package = ss_get_package( $package );
+		}
+
+		$item = array(
+			'item_id'     => $package->get_id(),
+			'item_qty'    => $qty,
+			'item_name'   => $package->get_data( 'title' ),
+			'item_type'   => 'package',
+			'item_amount' => $package->get_price(),
+		);
+
+		$this->add_item( $item );
+	}
+
+	/**
+	 * Add an Item
+	 *
+	 * @param array $item Item array
+	 *
+	 * @return integer|false|\WP_Error
+	 */
+	public function add_item( $item ) {
+		$item = wp_parse_args( $item, array(
+			'item_amount' => 0,
+			'item_name'   => '',
+			'item_type'   => 'package',
+			'item_id'     => 0,
+			'item_qty'    => 1
+		));
+
+		$item['sponsorship_id'] = $this->get_id();
+
+		$db      = new DB_Sponsorship_Items();
+		$item_id = $db->create_item( $item );
+
+		return $item_id;
+	}
+
+	/**
+	 * Array of items to be added.
+	 *
+	 * @param array  $items
+	 * @param string $item_type
+	 */
+	public function add_items( $items, $item_type = 'package' ) {
+		if ( ! is_array( $items ) ) {
+			return false;
+		}
+
+		foreach ( $items as $item ) {
+			$item['item_type'] = $item_type;
+			$this->add_item( $item );
+		}
+	}
+
+	/**
+	 * Get items.
+	 */
+	public function get_items() {
+		if ( null === $this->items ) {
+			$db    = new DB_Sponsorship_Items();
+			$items = $db->get_by_column( 'sponsorship_id', $this->get_id() );
+			if ( $items ) {
+				$this->items = $items;
+			} else {
+				$this->items = array();
+			}
+		}
+
+		return $this->items;
 	}
 
 	/**

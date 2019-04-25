@@ -24,10 +24,13 @@ function ss_get_package_statuses() {
 /**
  * Get the package.
  *
- * @param integer $id
+ * @param integer $id Package ID.
+ * @param boolean $load Should load initial data.
+ *
+ * @return \Simple_Sponsorships\Package
  */
-function ss_get_package( $id ) {
-	return new \Simple_Sponsorships\Package( $id, true );
+function ss_get_package( $id, $load = true ) {
+	return new \Simple_Sponsorships\Package( $id, $load );
 }
 
 /**

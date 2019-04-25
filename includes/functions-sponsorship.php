@@ -106,9 +106,10 @@ function ss_currency_symbol( $currency = '' ) {
  * Get the Sponsorship.
  *
  * @param integer $id
+ * @param boolean $load_data If true, the data will be loaded immediately.
  */
-function ss_get_sponsorship( $id ) {
-	return new \Simple_Sponsorships\Sponsorship( $id, true );
+function ss_get_sponsorship( $id, $load_data = true ) {
+	return new \Simple_Sponsorships\Sponsorship( $id, $load_data );
 }
 
 /**
@@ -149,6 +150,7 @@ function ss_create_sponsorship( $args = array() ) {
 		'status'         => 'request',
 		'amount'         => 0,
 		'package'        => 0,
+		'packages'       => array(),
 		'gateway'        => 'manual',
 		'sponsor'        => 0,
 		'currency'       => ss_get_currency(),
@@ -157,11 +159,20 @@ function ss_create_sponsorship( $args = array() ) {
 		'ss_key'         => uniqid( '_ss', true ),
 	);
 
-	$args = wp_parse_args( $args, $default );
-	$db   = new \Simple_Sponsorships\DB\DB_Sponsorships();
-	$ret  = $db->insert( $args );
+	$args     = wp_parse_args( $args, $default );
+	$packages = $args['packages'];
+	unset( $args['packages'] );
+	$db  = new \Simple_Sponsorships\DB\DB_Sponsorships();
+	$ret = $db->insert( $args );
 
 	if ( $ret ) {
+		$sponsorship = ss_get_sponsorship( $ret, false );
+		if ( $packages ) {
+			foreach ( $packages as $package_id ) {
+				$sponsorship->add_package( $package_id );
+			}
+		}
+		$sponsorship->calculate_totals();
 		do_action( 'ss_sponsorship_created', $ret );
 	}
 

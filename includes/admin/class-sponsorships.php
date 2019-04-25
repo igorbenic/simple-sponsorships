@@ -70,10 +70,15 @@ class Sponsorships {
 		$status         = isset( $posted_data['status'] ) ? sanitize_text_field( $posted_data['status'] ) : '';
 		$amount         = isset( $posted_data['amount'] ) ? floatval( $posted_data['amount'] ) : 0;
 		$package        = isset( $posted_data['package'] ) ? absint( $posted_data['package'] ) : 0;
+		$packages       = isset( $posted_data['packages'] ) ? $posted_data['packages'] : array();
 		$transaction_id = isset( $posted_data['transaction_id'] ) ? sanitize_text_field( $posted_data['transaction_id'] ) : '';
 
 		if ( ! $status ) {
 			$this->errors->add( 'no-status', __( 'No Status is required.', 'simple-sponsorships' ) );
+		}
+
+		if ( ! is_array( $packages ) && is_numeric( $packages ) ) {
+			$packages = array( absint( $packages ) );
 		}
 
 		$sponsor = $this->create_sponsor_for_sponsorship( $posted_data );
@@ -89,6 +94,7 @@ class Sponsorships {
 			'transaction_id' => $transaction_id,
 			'package'        => $package,
 			'sponsor'        => $sponsor,
+			'packages'       => $packages,
 		));
 
 		if ( ! $sponsorship_id ) {
@@ -325,8 +331,8 @@ class Sponsorships {
 				'title'       => sprintf( __( 'Amount (%s)', 'simple-sponsorships' ), ss_get_currency() ),
 				'step'        => '0.01',
 			),
-			'package' => array(
-				'id'      => 'package',
+			'packages' => array(
+				'id'      => 'packages',
 				'type'    => 'select',
 				'title'   => __( 'Package', 'simple-sponsorships' ),
 				'options' => $packages,

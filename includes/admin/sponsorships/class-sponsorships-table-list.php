@@ -244,8 +244,23 @@ class Sponsorships_Table_List extends \WP_List_Table {
 	 * @return mixed|string
 	 */
 	public function column_package( $item ) {
-		$package = new Package( absint( $item['package' ] ) );
-		$html    = $item['package'] ? $package->get_data( 'title' ) : __( 'N/A', 'simple-sponsorships' );
+	    $sponsorship = ss_get_sponsorship( $item['ID'], false );
+	    $packages    = $sponsorship->get_packages();
+
+	    if ( ! $packages ) {
+	        $html = __( 'N/A', 'simple-sponsorships' );
+        } elseif ( count( $packages ) > 4 ) {
+	        $html = sprintf( _n( '%s Package', '%s Packages', count( $packages ), 'simple-sponsorships' ), count( $packages ) );
+        } else {
+	        $titles = array();
+	        foreach ( $packages as $package ) {
+	            $titles[] = $package->get_data( 'title' );
+            }
+            $html = implode( ', ', $titles );
+        }
+
+
+		/*$package = new Package( absint( $item['package' ] ) );
 		$actions = apply_filters( 'ss_sponsorships_column_package_actions', array(
 			'view' => '<a href="' . admin_url( 'edit.php?post_type=sponsors&page=ss-packages&ss-action=edit-package&id=' . $item['package'] ) . '">' . __( 'View', 'simple-sponsorships' ) . '</a>',
 		));
@@ -255,8 +270,9 @@ class Sponsorships_Table_List extends \WP_List_Table {
 		}
 
 		if ( $actions ) {
-			$html .= '<div class="ss-table-actions">' . implode( ' | ', $actions ) . '</div>';
-		}
+			//$html .= '<div class="ss-table-actions">' . implode( ' | ', $actions ) . '</div>';
+		}*/
+
 		return $html;
 	}
 

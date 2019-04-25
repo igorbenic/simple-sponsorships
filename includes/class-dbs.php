@@ -9,6 +9,7 @@
 namespace Simple_Sponsorships;
 
 use Simple_Sponsorships\DB\DB_Packages;
+use Simple_Sponsorships\DB\DB_Sponsorship_Items;
 use Simple_Sponsorships\DB\DB_Sponsorships;
 
 class Databases {
@@ -28,6 +29,10 @@ class Databases {
 		$wpdb->sssponsorshipmeta = $db_sponsorships->get_meta_table_name();
 		$wpdb->sssponsorships    = $db_sponsorships->get_table_name();
 
+		$db_sponsorship_items = new DB_Sponsorship_Items();
+		$wpdb->sssponsorship_items = $db_sponsorship_items->get_table_name();
+		$wpdb->sssponsorship_itemmeta = $db_sponsorship_items->get_meta_table_name();
+
 	}
 
 	/**
@@ -46,6 +51,11 @@ class Databases {
 		$sponsorship_schema = $db_sponsorships->get_schema();
 
 		@dbDelta( $sponsorship_schema );
+
+		$db_sponsorship_items = new DB_Sponsorship_Items();
+		$sponsorship_items_schema = $db_sponsorship_items->get_schema();
+
+		@dbDelta( $sponsorship_items_schema );
 
 		$bla = '';
 	}
