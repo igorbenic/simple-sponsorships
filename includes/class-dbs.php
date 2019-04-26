@@ -57,6 +57,5 @@ class Databases {
 
 		@dbDelta( $sponsorship_items_schema );
 
-		$bla = '';
 	}
 }

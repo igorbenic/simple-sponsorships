@@ -6,6 +6,7 @@
 namespace Simple_Sponsorships\Admin;
 use Simple_Sponsorships\DB\DB_Sponsors;
 use Simple_Sponsorships\DB\DB_Sponsorships;
+use Simple_Sponsorships\Formatting;
 use Simple_Sponsorships\Sponsorship;
 
 /**
@@ -23,12 +24,20 @@ class Sponsorships {
 	public $errors = null;
 
 	/**
+	 * Sponsorship Item
+	 *
+	 * @var null|Sponsorship
+	 */
+	public $sponsorship = null;
+
+	/**
 	 * Levels constructor.
 	 */
 	public function __construct() {
 		add_action( 'ss_admin_page_ss_sponsorships', array( $this, 'page' ) );
 		add_action( 'ss_new-sponsorship', array( $this, 'new_sponsorship' ) );
 		add_action( 'ss_edit-sponsorship', array( $this, 'edit_sponsorship' ) );
+		add_action( 'ss_settings_field_sponsorship_package_select', array( $this, 'package_field' ) );
 
 		add_action( 'ss_sponsorship_sponsor_created', array( $this, 'save_meta_to_sponsor' ), 20, 2 );
 		$this->errors = new \WP_Error();
@@ -255,6 +264,7 @@ class Sponsorships {
 	 * Admin Page
 	 */
 	public function page() {
+		global $sponsorship;
 		$action = isset( $_GET['ss-action'] ) ? sanitize_text_field( $_GET['ss-action'] ) : 'list';
 
 		switch( $action ) {
@@ -267,6 +277,7 @@ class Sponsorships {
 			case 'new-sponsorship':
 				$errors = $this->errors->get_error_messages();
 				$fields = $this->get_fields();
+				$sponsorship = ss_get_sponsorship(0 );
 				include_once 'views/sponsorships/new.php';
 				break;
 			default:
@@ -333,8 +344,8 @@ class Sponsorships {
 			),
 			'packages' => array(
 				'id'      => 'packages',
-				'type'    => 'select',
-				'title'   => __( 'Package', 'simple-sponsorships' ),
+				'type'    => 'sponsorship_package_select',
+				'title'   => '', //__( 'Package', 'simple-sponsorships' ),
 				'options' => $packages,
 			),
 			'sponsor_heading' => array(
@@ -401,6 +412,88 @@ class Sponsorships {
 		);
 
 		return apply_filters( 'ss_get_package_fields', $fields );
+	}
+
+	/**
+	 * Package Field
+	 *
+	 * @param $field
+	 */
+	public function package_field( $field ) {
+		global $sponsorship;
+		$items = $sponsorship->get_items( 'package' );
+
+		?>
+		<table class="ss-packages ss-items">
+			<thead>
+				<tr>
+					<th class="item-title">
+						<?php esc_html_e( 'Package', 'simple-sponsorships' ); ?>
+					</th>
+					<th class="item-qty">
+						<?php esc_html_e( 'Qty.', 'simple-sponsorships' ); ?>
+					</th>
+					<th class="item-amount">
+						<?php esc_html_e( 'Amount', 'simple-sponsorships' ); ?>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				if ( $items ) {
+					foreach ( $items as $item ) {
+						?>
+						<tr>
+							<td class="item-title">
+								<input type="hidden" name="ss_sponsorships[packages][]" value="<?php echo $item['item_id']; ?>" />
+								<?php
+
+									echo $item['item_name'];
+								?>
+							</td>
+							<td class="item-qty">
+								<?php
+								echo $item['item_qty']
+								?>
+							</td>
+							<td class="item-amount">
+								<?php
+								echo Formatting::price( $item['item_amount'] );
+								?>
+							</td>
+						</tr>
+						<?php
+					}
+				} else {
+					?>
+					<tr>
+						<td colspan="3">
+							<?php
+								if ( $field['options'] ) {
+									esc_html_e( 'Add a package:', 'simple-sponsorships' );
+									?>
+									<select name="ss_sponsorships[packages][]">
+										<?php
+										foreach ( $field['options'] as $package_id => $package_title ) {
+											echo '<option value="' . esc_attr( $package_id ) . '">' . $package_title . '</option>';
+										}
+										?>
+									</select>
+									<?php
+								} else {
+									echo '<p>' . __( 'Please create some packages first.', 'simple-sponsorships' ) . '</p>';
+								}
+								?>
+						</td>
+					</tr>
+					<?php
+				}
+
+				do_action( 'ss_sponsorships_admin_package_field_after_packages', $field, $sponsorship );
+				?>
+			</tbody>
+		</table>
+		<?php
 	}
 
 	/**

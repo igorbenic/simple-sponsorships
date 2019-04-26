@@ -88,6 +88,21 @@ class Sponsorships_Table_List extends \WP_List_Table {
 	}
 
 	/**
+	 * Get Where Array for creating SQL
+	 * @return mixed
+	 */
+	public static function get_join() {
+	    global $wpdb;
+		$join = array();
+
+		if ( isset( $_REQUEST['ss_filter_packages'] ) && $_REQUEST['ss_filter_packages'] ) {
+		    $join['packages'] = ' INNER JOIN ' . $wpdb->sssponsorship_items . ' as ss_items on ss_items.sponsorship_id = sponsorships.ID';
+		}
+
+		return apply_filters( 'ss_sponsorships_table_list_sql_where', $join );
+	}
+
+	/**
      * Get Where Array for creating SQL
 	 * @return mixed
 	 */
@@ -103,7 +118,8 @@ class Sponsorships_Table_List extends \WP_List_Table {
 		}
 
         if ( isset( $_REQUEST['ss_filter_packages'] ) && $_REQUEST['ss_filter_packages'] ) {
-	        $sql_where['package'] = sanitize_text_field( $_REQUEST['ss_filter_packages'] );
+	        $sql_where['ss_items.item_id']   = sanitize_text_field( $_REQUEST['ss_filter_packages'] );
+	        $sql_where['ss_items.item_type'] = 'package';
         }
 
 		return apply_filters( 'ss_sponsorships_table_list_sql_where', $sql_where );
@@ -121,7 +137,15 @@ class Sponsorships_Table_List extends \WP_List_Table {
 
 		global $wpdb;
 
-		$sql = 'SELECT * FROM ' . $wpdb->sssponsorships;
+		$sql = 'SELECT DISTINCT sponsorships.* FROM ' . $wpdb->sssponsorships . ' as sponsorships';
+
+		$join  = self::get_join();
+
+		if ( $join ) {
+            foreach ( $join as $join_string ) {
+                $sql .= $join_string;
+            }
+        }
 
         $where = self::get_where();
 
@@ -166,7 +190,15 @@ class Sponsorships_Table_List extends \WP_List_Table {
 	public static function record_count() {
 		global $wpdb;
 
-		$sql = 'SELECT COUNT(*) FROM ' . $wpdb->sssponsorships;
+		$sql = 'SELECT COUNT(DISTINCT sponsorships.ID) FROM ' . $wpdb->sssponsorships . ' as sponsorships';
+
+		$join  = self::get_join();
+
+		if ( $join ) {
+			foreach ( $join as $join_string ) {
+				$sql .= $join_string;
+			}
+		}
 
 		$where = self::get_where();
 

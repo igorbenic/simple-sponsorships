@@ -173,6 +173,22 @@ abstract class DB {
 	}
 
 	/**
+	 * Delete records.
+	 *
+	 * @param      $where
+	 * @param null $format
+	 *
+	 * @return bool
+	 */
+	public function delete_all_meta( $where, $format = null ) {
+		global $wpdb;
+
+		$ret = $wpdb->delete( $this->get_meta_table_name(), $where, $format );
+
+		return $ret ? true : false;
+	}
+
+	/**
 	 * Delete by ID.
 	 *
 	 * @param $id

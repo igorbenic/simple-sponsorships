@@ -28,3 +28,34 @@
     }
   }
 }
+
+#packages_row {
+  > td { padding: 0; }
+}
+.ss-items {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba( 255, 255, 255, 0.5 );
+
+  .item-amount {
+    width: 100px;
+    text-align: right;
+  }
+
+  .item-qty {
+    width: 50px;
+    text-align: center;
+  }
+
+  td {
+    border-bottom: 1px solid rgba( 0, 0, 0, 0.15 );
+    padding: 1em;
+  }
+
+  thead {
+    th {
+      background: rgba( 0, 0, 0, 0.1 );
+      padding: 0.5em 1em;
+    }
+  }
+}

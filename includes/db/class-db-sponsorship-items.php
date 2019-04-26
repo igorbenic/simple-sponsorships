@@ -126,6 +126,17 @@ class DB_Sponsorship_Items extends DB {
 	}
 
 	/**
+	 * Delete Item.
+	 * @param $item_id
+	 */
+	public function delete_item( $item_id ) {
+		$delete = $this->delete( array( 'ID' => $item_id ) );
+		if ( $delete ) {
+			$this->delete_all_meta( array( 'sssponsorship_item_id' => $item_id ) );
+		}
+	}
+
+	/**
 	 * Installing the DB.
 	 *
 	 * @return string

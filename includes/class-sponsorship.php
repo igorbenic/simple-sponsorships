@@ -204,9 +204,34 @@ class Sponsorship extends Custom_Data {
 	}
 
 	/**
+	 * Get the data for the level
+	 *
+	 * @param string|array $key Key or array of keys for data.
+	 */
+	public function get_data( $key, $default = '' ) {
+
+		if ( 'packages' === $key ) {
+			$value = $this->get_packages();
+			$this->set_data( $key, $value );
+		} else {
+			parent::get_data( $key, $default );
+		}
+
+		return isset( $this->data[ $key ] ) ? $this->data[ $key ] : $default;
+	}
+
+	/**
+	 * Reset items data.
+	 */
+	public function reset_items_data() {
+		$this->items = null;
+		$this->get_items();
+	}
+
+	/**
 	 * Get items.
 	 */
-	public function get_items() {
+	public function get_items( $item_type = '' ) {
 		if ( null === $this->items ) {
 			$db    = new DB_Sponsorship_Items();
 			$items = $db->get_by_column( 'sponsorship_id', $this->get_id() );
@@ -217,7 +242,48 @@ class Sponsorship extends Custom_Data {
 			}
 		}
 
-		return $this->items;
+		$items = $this->items;
+
+		if ( $item_type && $items ) {
+			$items = array();
+			foreach ( $this->items as $item ) {
+				if ( $item_type !== $item['item_type'] ) {
+					continue;
+				}
+
+				$items[] = $item;
+			}
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Remove items.
+	 *
+	 * @param array $delete_ids
+	 */
+	public function remove_items( $delete_ids ) {
+		$items = $this->get_items();
+		$db    = new DB_Sponsorship_Items();
+
+		if ( ! is_array( $delete_ids ) ) {
+			$delete_ids = array( $delete_ids );
+		}
+
+		$items_ids = wp_list_pluck( $items, 'ID' );
+		foreach ( $delete_ids as $id ) {
+			if ( ! in_array( $id, $items_ids ) ) {
+				unset( $delete_ids[ $id ] );
+			}
+		}
+
+		if ( $delete_ids ) {
+			foreach ( $delete_ids as $delete_id ) {
+				$db->delete_item( $delete_id );
+			}
+			$this->reset_items_data();
+		}
 	}
 
 	/**

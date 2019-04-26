@@ -42,10 +42,13 @@ if ( $sponsorship->is_request() ) {
 		</th>
 		<td>
 			<?php
-				$package = $sponsorship->get_data( 'package' );
-				if ( $package ) {
-					$package = ss_get_package( $package );
-					echo $package->get_data( 'title' );
+                $packages = $sponsorship->get_packages();
+				if ( $packages ) {
+				    $titles = array();
+				    foreach ( $packages as $package ) {
+					    $titles[] = $package->get_data( 'title' );
+                    }
+                    echo implode( '<br/>', $titles );
 				} else {
 					echo __( 'No Package selected.', 'simple-sponsorships' );
 				}

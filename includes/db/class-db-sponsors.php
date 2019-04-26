@@ -65,7 +65,7 @@ class DB_Sponsors extends DB {
 	public function filter_sponsors_where( $where, $wp_query ) {
 		global $wpdb;
 		if ( isset( $wp_query->query['ss_package'] ) && absint( $wp_query->query['ss_package'] ) ) {
-			$where .= $wpdb->prepare( " AND ss_sponsorships.package=%d", absint( $wp_query->query['ss_package'] ) );
+			$where .= $wpdb->prepare( " AND ss_items.item_type='package' AND ss_items.item_id=%d", absint( $wp_query->query['ss_package'] ) );
 		}
 
 		if ( isset( $wp_query->query['ss_content'] ) && absint( $wp_query->query['ss_content'] ) ) {
@@ -82,6 +82,7 @@ class DB_Sponsors extends DB {
 		global $wpdb;
 		if ( isset( $wp_query->query['ss_package'] ) && absint( $wp_query->query['ss_package'] ) ) {
 			$join .= " INNER JOIN $wpdb->sssponsorships as ss_sponsorships on ss_sponsorships.sponsor = $wpdb->posts.ID";
+			$join .= " INNER JOIN $wpdb->sssponsorship_items as ss_items on ss_items.sponsorship_id = ss_sponsorships.ID";
 		}
 
 		if ( isset( $wp_query->query['ss_content'] ) && absint( $wp_query->query['ss_content'] ) ) {
