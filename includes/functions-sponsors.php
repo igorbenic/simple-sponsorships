@@ -203,7 +203,7 @@ function ss_show_sponsors_under_content( $content ) {
 			$hide_placeholder = get_post_meta( $content_id, '_ss_hide_placeholder', true );
 			$show_placeholder = '1' === $hide_placeholder ? false : true;
 
-			if ( apply_filters( 'ss_content_show_placeholder', $show_placeholder, $content_qqid, $sponsors ) ) {
+			if ( apply_filters( 'ss_content_show_placeholder', $show_placeholder, $content_id, $sponsors ) ) {
 				$sponsorship_page = ss_get_sponsor_page();
 
 				if ( ! $sponsorship_page ) {

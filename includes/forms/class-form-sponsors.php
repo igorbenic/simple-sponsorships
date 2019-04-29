@@ -42,10 +42,11 @@ class Form_Sponsors extends Form {
 		$args = array();
 
 		if ( isset( $posted_data['package'] ) ) {
-			$args['package'] = absint( $posted_data['package'] );
-			$package         = ss_get_package( $args['package'] );
-			$args['amount']  = floatval( $package->get_data('price' ) );
+			$args['packages'] = array( $posted_data['package'] );
+			//$package         = ss_get_package( $args['package'] );
+			//$args['amount']  = floatval( $package->get_data('price' ) );
 		}
+
 
 		$sponsorship_id = ss_create_sponsorship( $args );
 		$db             = new DB_Sponsorships();

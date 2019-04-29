@@ -397,6 +397,14 @@ class Sponsorship extends Custom_Data {
 		$sponsor = $this->get_sponsor_data();
 		$sponsor->add_available_quantity( $this->get_package()->get_data( 'quantity', 1 ) );
 		$sponsor->maybe_activate();
+		$content_id = $this->get_data( '_content_id' );
+		if ( $content_id ) {
+			$sponsor_id = $sponsor->get_id();
+			$add        = ss_add_sponsor_for_content( $content_id, $sponsor_id );
+			if ( $add ) {
+				$sponsor->remove_available_quantity( 1 );
+			}
+		}
 		do_action( 'ss_sponsorship_activated', $this );
 	}
 
