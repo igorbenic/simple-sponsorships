@@ -27,6 +27,7 @@ class AJAX {
 			'add_quantity_sponsor' => false,
 			'remove_quantity_sponsor' => false,
 			'remove_sponsor_from_content' => false,
+			'sponsorship_calculate_totals' => false,
 		);
 
 		foreach ( $actions as $action => $nopriv ) {
@@ -152,6 +153,40 @@ class AJAX {
 		$packages = ss_get_packages();
 
 		wp_send_json_success( $packages );
+		wp_die();
+	}
+
+	/**
+	 * Calculate the Totals
+	 */
+	public function sponsorship_calculate_totals() {
+		check_ajax_referer( 'ss-admin-nonce', 'nonce', true );
+
+		$data = isset( $_REQUEST['data'] ) ? $_REQUEST['data'] : array();
+
+		if ( ! $data ) {
+			wp_send_json_error( __( 'No data found', 'simple-sponsorships' ) );
+			wp_die();
+		}
+
+		if ( ! isset( $data['id'] ) || ! absint( $data['id'] ) ) {
+			wp_send_json_error( __( 'No ID provided for the Sponsorship.', 'simple-sponsorships' ) );
+			wp_die();
+		}
+
+		$sponsorship = ss_get_sponsorship( absint( $data['id'] ), false );
+
+		if ( ! $sponsorship ) {
+			wp_send_json_error( __( 'No Sponsorship found.', 'simple-sponsorships' ) );
+			wp_die();
+		}
+
+		$sponsorship->calculate_totals();
+
+		wp_send_json_success( array(
+			'amount' => $sponsorship->get_data('amount'),
+			'formatted_amount' => $sponsorship->get_formatted_amount()
+		) );
 		wp_die();
 	}
 }

@@ -3,7 +3,9 @@ import { startContentSponsorsDropdown, showSponsorSelect, updateSponsorQuantityC
 import { ssFieldsHideShow } from './admin/fields';
 import ssFilterStart from './admin/filters';
 import { attachButtonEvents } from './admin/buttons';
+import './admin/sponsorships';
 
+window.ssponsorships = window.ssponsorships || {};
 (function($){
     $(function(){
         attachButtonEvents();

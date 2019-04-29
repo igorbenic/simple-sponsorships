@@ -357,3 +357,32 @@ function ss_sponsor_form_field_value( $value, $field ) {
 	}
 	return $value;
 }
+
+add_action( 'ss_after_sponsor_form_fields', 'ss_after_sponsor_form_fields_content_id' );
+
+/**
+ * Adding the Content ID on the sponsor form.
+ */
+function ss_after_sponsor_form_fields_content_id() {
+	if ( isset( $_GET['ss_content_id'] ) && absint( $_GET['ss_content_id'] ) > 0 ) {
+		?>
+		<input type="hidden" value="<?php echo esc_attr( absint( $_GET['ss_content_id'] ) ); ?>" name="ss_content_id" />
+		<?php
+	}
+}
+
+add_filter( 'ss_form_sponsors_posted_data', 'ss_form_sponsors_add_content_id' );
+
+/**
+ * Adding content ID.
+ *
+ * @param $data
+ *
+ * @return mixed
+ */
+function ss_form_sponsors_add_content_id( $data ) {
+	if ( isset( $_POST['ss_content_id'] ) && absint( $_POST['ss_content_id'] ) > 0 ) {
+		$data['content_id'] = absint( $_POST['ss_content_id'] );
+	}
+	return $data;
+}

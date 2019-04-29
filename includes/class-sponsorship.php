@@ -147,9 +147,12 @@ class Sponsorship extends Custom_Data {
 	 * @param integer $qty Quantity.
 	 */
 	public function add_package( $package, $qty = 1 ) {
+		if ( ! $package ) { return false; }
 		if ( is_numeric( $package ) ) {
 			$package = ss_get_package( $package );
 		}
+
+		if ( ! $package ) { return false; }
 
 		$item = array(
 			'item_id'     => $package->get_id(),
@@ -256,6 +259,64 @@ class Sponsorship extends Custom_Data {
 		}
 
 		return $items;
+	}
+
+	/**
+	 * Update sponsorship items.
+	 *
+	 * @param array $items
+	 */
+	public function update_items( $items ) {
+		$db_items      = $this->get_items();
+		$db            = new DB_Sponsorship_Items();
+		$new_items     = array();
+		$update_items  = array();
+
+		if ( $db_items ) {
+			if ( ! $items ) {
+				// No Items anymore? Delete DB items.
+				foreach ( $db_items as $db_item ) {
+					$db->delete_item( $db_item['ID'] );
+				}
+
+				return;
+			}
+
+			$item_ids      = wp_list_pluck( $items, 'ID' );
+			$removed_items = array();
+			foreach ( $db_items as $index => $db_item ) {
+				if ( ! in_array( $db_item['ID'], $item_ids ) ) {
+					$removed_items[] = $db_item['ID'];
+					unset( $db_items[ $index ] );
+				}
+			}
+
+			if ( $removed_items ) {
+				foreach ( $removed_items as $removed_item_id ) {
+					$db->delete_item( $removed_item_id );
+				}
+			}
+		}
+
+		foreach ( $items as $item ) {
+			if ( ! isset( $item['ID'] ) || ! $item['ID'] ) {
+				$new_items[] = $item;
+			} else {
+				$update_items[] = $item;
+			}
+		}
+
+		foreach ( $new_items as $item ) {
+			$item['sponsorship_id'] = $this->get_id();
+			$db->create_item( $item );
+		}
+
+		foreach ( $update_items as $update_item ) {
+			$update_item['sponsorship_id'] = $this->get_id();
+			$db->update_item( $update_item );
+		}
+
+		$this->reset_items_data();
 	}
 
 	/**

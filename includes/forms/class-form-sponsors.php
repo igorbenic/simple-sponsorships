@@ -121,7 +121,7 @@ class Form_Sponsors extends Form {
 		if ( $packages ) {
 			$package_options[0] = __( 'Select a Package', 'simple-sponsorships' );
 			foreach( $packages as $package ) {
-				$package_options[ $package->get_data( 'ID' ) ] = $package->get_data( 'title' ) . ' (' . $package->get_price_html() . ')';
+				$package_options[ $package->get_data( 'ID' ) ] = $package->get_data( 'title' ) . ' (' . $package->get_price_formatted() . ')';
 			}
 		}
 		$fields = array(

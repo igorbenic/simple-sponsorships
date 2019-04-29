@@ -7,8 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-$id = isset( $args['id'] ) ? absint( $args['id'] ) : 0;
-$button = isset( $args['button'] ) ? absint( $args['button'] ) : 0;
+$id       = isset( $args['id'] ) ? absint( $args['id'] ) : 0;
+$button   = isset( $args['button'] ) ? absint( $args['button'] ) : 0;
+$heading = isset( $args['heading'] ) ? $args['heading'] : 'h2';
 
 $packages = array();
 
@@ -43,7 +44,7 @@ if ( $button ) {
 		?>
 		<div class="ss-package">
 			<?php
-			echo '<h2>' . $package->get_data('title') . '</h2>';
+			echo '<' . $heading . '>' . $package->get_data('title') . '</' . $heading . '>';
 			$package_content = $package->get_description();
 			if ( $package_content ) {
 			    echo '<div class="ss-package-content">';

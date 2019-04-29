@@ -2,6 +2,21 @@
 
 var $ = window.jQuery;
 
+function getFunction( name ) {
+    if ( name ) {
+        var ss = window['ssponsorships'];
+        if ( ss && typeof ss[ name ] === 'function' ) {
+            return ss[ name ];
+        }
+
+        if ( typeof window[ name ] === 'function' ) {
+            return window[ name ];
+        }
+    }
+
+    return false;
+}
+
 /**
  * Attaching the Button Events for SS Button Action.
  */
@@ -27,13 +42,19 @@ export function attachButtonEvents() {
                 url: ss_admin.ajax,
                 data: { nonce: ss_admin.nonce, action: action, data: data },
                 success: function( resp ) {
-                    if ( success && typeof window[ success ] === 'function' ) {
-                        var fc = window[success];
+                    var fc = getFunction( success );
+                    if ( false !== fc ) {
                         fc( resp, $button );
                     }
+
                 }
 
             });
+        } else {
+            var fc = getFunction( success );
+            if ( false !== fc ) {
+                fc( data, $button );
+            }
         }
     });
 }

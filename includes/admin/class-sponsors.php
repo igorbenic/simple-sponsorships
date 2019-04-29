@@ -116,6 +116,14 @@ class Sponsors {
 			return;
 		}
 
+		$placeholder = isset( $_POST['ss_hide_placeholder'] ) ? true : false;
+
+		if ( $placeholder ) {
+			update_post_meta( $post_id, '_ss_hide_placeholder', '1' );
+		} else{
+			delete_post_meta( $post_id, '_ss_hide_placeholder' );
+		}
+
 		$sponsors = isset( $_POST['ss_sponsors'] ) ? sanitize_text_field( $_POST['ss_sponsors'] ) : false;
 
 		if ( false === $sponsors ) {
@@ -207,7 +215,7 @@ class Sponsors {
 		$post_types = ss_get_content_types();
 
 		foreach ( $post_types as $post_type => $post_label ) {
-			add_meta_box( 'content-sponsor', __( 'Add Sponsors', 'simple-sponsorships' ), array( $this, 'metabox_sponsors' ), $post_type, 'side' );
+			add_meta_box( 'content-sponsor', __( 'Sponsors', 'simple-sponsorships' ), array( $this, 'metabox_sponsors' ), $post_type, 'side' );
 		}
 	}
 

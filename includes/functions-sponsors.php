@@ -146,53 +146,105 @@ function ss_delete_sponsors_for_content( $post_id, $sponsors_ids = false ) {
  * @return string
  */
 function ss_show_sponsors_under_content( $content ) {
-	if ( is_singular( array_keys( ss_get_content_types() ) ) && '1' === ss_get_option( 'show_in_content_footer', '0' ) ) {
+	if ( is_singular( array_keys( ss_get_content_types() ) ) ) {
 		$content_id = get_the_ID();
-		$sponsors   = ss_get_sponsors_for_content( $content_id );
-		if ( $sponsors ) {
-			ob_start();
-			?>
-			<h2><?php esc_html_e( 'Sponsored By', 'simple-sponsorships' ); ?></h2>
-			<div class="ss-sponsors">
-				<?php
-				foreach ( $sponsors as $sponsor_id ) {
-					$sponsor = new \Simple_Sponsorships\Sponsor( $sponsor_id, false );
-					$has_logo  = has_post_thumbnail( $sponsor->get_id() );
-					$link      = $sponsor->get_link();
-					?>
-					<div class="ss-sponsor" itemprop="sponsor" itemtype="http://schema.org/Organization">
-						<?php
+		$sponsors   = array();
 
-						if ( $has_logo ) {
-							if ( $link ) {
-								echo '<a itemprop="url" href="' . $link . '">';
-							}
-							echo get_the_post_thumbnail( $sponsor->get_id() );
-							if ( $link ) {
-								echo '</a>';
-							}
-						}
-						if ( ! $has_logo ) {
-							if ( $link ) {
-								echo '<a itemprop="url" target="_blank" href="' . $link . '">';
-							}
+		if ( '1' === ss_get_option( 'show_in_content_footer', '0' ) ) {
+			$sponsors = ss_get_sponsors_for_content( $content_id );
 
-							echo '<span itemprop="name"">' . $sponsor->get_data( 'post_title' ) . '</span>';
-
-							if ( $link ) {
-								echo '</a>';
-							}
-						}
-						?>
-					</div>
-					<?php
-				}
+			if ( $sponsors ) {
+				ob_start();
 				?>
-			</div>
-			<?php
-			$content .= ob_get_clean();
+                <h2><?php esc_html_e( 'Sponsored By', 'simple-sponsorships' ); ?></h2>
+                <div class="ss-sponsors">
+					<?php
+					foreach ( $sponsors as $sponsor_id ) {
+						$sponsor  = new \Simple_Sponsorships\Sponsor( $sponsor_id, false );
+						$has_logo = has_post_thumbnail( $sponsor->get_id() );
+						$link     = $sponsor->get_link();
+						?>
+                        <div class="ss-sponsor" itemprop="sponsor" itemtype="http://schema.org/Organization">
+							<?php
+
+							if ( $has_logo ) {
+								if ( $link ) {
+									echo '<a itemprop="url" href="' . $link . '">';
+								}
+								echo get_the_post_thumbnail( $sponsor->get_id() );
+								if ( $link ) {
+									echo '</a>';
+								}
+							}
+							if ( ! $has_logo ) {
+								if ( $link ) {
+									echo '<a itemprop="url" target="_blank" href="' . $link . '">';
+								}
+
+								echo '<span itemprop="name"">' . $sponsor->get_data( 'post_title' ) . '</span>';
+
+								if ( $link ) {
+									echo '</a>';
+								}
+							}
+							?>
+                        </div>
+						<?php
+					}
+					?>
+                </div>
+				<?php
+				$content .= ob_get_clean();
+			}
 		}
+
+		if ( '1' === ss_get_option( 'show_content_placeholder', '0' ) ) {
+
+			$hide_placeholder = get_post_meta( $content_id, '_ss_hide_placeholder', true );
+			$show_placeholder = '1' === $hide_placeholder ? false : true;
+
+			if ( apply_filters( 'ss_content_show_placeholder', $show_placeholder, $content_qqid, $sponsors ) ) {
+				$sponsorship_page = ss_get_sponsor_page();
+
+				if ( ! $sponsorship_page ) {
+					return $content;
+				}
+
+				$sponsorship_page = add_query_arg( 'ss_content_id', $content_id, $sponsorship_page );
+				$placeholder_svg  = \Simple_Sponsorships\Templates::get_file_contents( trailingslashit( SS_PLUGIN_PATH ) . 'assets/images/svg/id-user.svg', 'placeholder-image' );
+				ob_start();
+				?>
+                <a class="ss-content-placeholder" href="<?php echo esc_attr( $sponsorship_page ); ?>">
+					<?php if ( $placeholder_svg ) {
+						echo '<div class="ss-placeholder-image">' . $placeholder_svg . '</div>';
+					} ?>
+					<?php esc_html_e( 'Become a Sponsor', 'simple-sponsorships' ); ?>
+                </a>
+				<?php
+				$content .= ob_get_clean();
+			}
+		}
+
 	}
 
 	return $content;
+}
+
+
+/**
+ * Return the Sponsor Page
+ *
+ * @since 0.8.0
+ *
+ * @string
+ */
+function ss_get_sponsor_page(){
+	$sponsor_page = ss_get_option( 'sponsor_page', 0 );
+    $link         = '';
+
+	if ( $sponsor_page ) {
+		$link = get_permalink( $sponsor_page );
+	}
+
+	return apply_filters( 'ss_get_sponsor_page', $link );
 }

@@ -109,7 +109,7 @@ class GF_Addon extends \GFAddOn {
                     ( isset( $form_field['sponsor_field'] ) && $form_field['sponsor_field'] )
                 ) {
 	                $field_id = $form_field['id'];
-	                $ss_field = 'ss_packages' === $form_field['type'] ? 'package' : $form_field['sponsor_field'];
+	                $ss_field = 'ss_packages' === $form_field['type'] ? 'packages' : $form_field['sponsor_field'];
 	                if ( is_array( $form_field['inputs'] ) ) {
 		                $ss_data[ $ss_field ] = array();
                         foreach( $form_field['inputs'] as $input ) {

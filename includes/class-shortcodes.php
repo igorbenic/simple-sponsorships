@@ -92,8 +92,9 @@ class Shortcodes {
 		 * id: 0 or X. If 0, it will show all.
 		 */
 		$atts = shortcode_atts( array(
-			'id'     => '0',
-			'button' => '0'
+			'id'      => '0',
+			'button'  => '0',
+			'heading' => 'h2'
 		), $args, 'ss_sponsors' );
 
 		ob_start();

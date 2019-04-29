@@ -115,6 +115,13 @@ class Settings {
 						'desc'    => __( 'If checked, it will show sponsors that sponsored the content.', 'simple-sponsorships' ),
 						'default' => '0'
 					),
+					'show_content_placeholder' => array(
+						'id'      => 'show_content_placeholder',
+						'label'    => __( 'Placeholder', 'simple-sponsorships' ),
+						'type'    => 'checkbox',
+						'desc'    => __( 'If checked, it will show sponsor placeholder under the content.', 'simple-sponsorships' ),
+						'default' => '0'
+					),
 					'page_settings' => array(
 						'id'   => 'page_settings',
 						'label' => '<h3>' . __( 'Pages', 'simple-sponsorships' ) . '</h3>',

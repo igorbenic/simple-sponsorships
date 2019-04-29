@@ -58,6 +58,10 @@ class Blocks {
 	 */
 	public function register_blocks() {
 
+		if ( ! function_exists( 'register_block_type' ) ) {
+			return;
+		}
+
 		register_block_type( 'simple-sponsorships/sponsors', [
 			'render_callback' => array( $this, 'get_sponsors' ),
 			'attributes'      => [
@@ -102,6 +106,10 @@ class Blocks {
 				'button'  => [
 					'type'    => 'string',
 					'default' => '0',
+				],
+				'heading' => [
+					'default' => 'h2',
+					'type'    => 'string',
 				],
 			]
 		] );

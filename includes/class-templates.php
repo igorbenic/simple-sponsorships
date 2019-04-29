@@ -158,4 +158,22 @@ class Templates {
 		// Return the part that is found
 		return $template;
 	}
+
+	/**
+	 * Get the file content.
+	 *
+	 * @param $path
+	 * @param $id Can be used to make it filterable.
+	 */
+	public static function get_file_contents( $path, $id = '' ) {
+
+		$path    = apply_filters( 'ss_get_file_contents_path', $path, $id );
+		$content = '';
+
+		if ( $path ) {
+			$content = file_get_contents( $path );
+		}
+
+		return apply_filters( 'ss_get_file_contents', $content, $path, $id );
+	}
 }

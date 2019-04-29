@@ -125,6 +125,53 @@ class DB_Sponsorship_Items extends DB {
 		return $id;
 	}
 
+
+	/**
+	 * Create the Item.
+	 */
+	public function update_item( $item ) {
+		$table_columns = array(
+			'ID',
+			'item_type',
+			'item_name',
+			'sponsorship_id',
+			'item_id',
+			'item_qty',
+			'item_amount',
+		);
+
+		if ( ! isset( $item['ID'] ) || ! $item['ID'] ) {
+			return new \WP_Error( 'item-id', __( 'When updating an item, ID should be present.', 'simple-sponsorships' ) );
+		}
+
+		if ( ! isset( $item['sponsorship_id'] ) || ! $item['sponsorship_id'] ) {
+			return new \WP_Error( 'sponsorship-id', __( 'There has to be a sponsorship ID.', 'simple-sponsorships' ) );
+		}
+
+		$meta = array();
+
+		foreach ( $item as $item_key => $item_value ) {
+			if ( in_array( $item_key, $table_columns, true ) ) {
+				continue;
+			}
+
+			$meta[ $item_key ] = $item_value;
+			unset( $item[ $item_key ] );
+		}
+
+		$id = $item['ID'];
+		unset( $item['ID'] );
+		$update = $this->update( $id, $item );
+
+		if ( false !== $update ) {
+			foreach ( $meta as $meta_key => $meta_value ) {
+				$this->update_meta( $id, $meta_key, $meta_value );
+			}
+		}
+
+		return $id;
+	}
+
 	/**
 	 * Delete Item.
 	 * @param $item_id

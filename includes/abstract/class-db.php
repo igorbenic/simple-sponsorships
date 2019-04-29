@@ -151,7 +151,7 @@ abstract class DB {
 			}
 		}
 
-		return $ret ? true : false;
+		return false !== $ret ? true : false;
 	}
 
 	/***** DB Removers *****/

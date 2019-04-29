@@ -135,6 +135,8 @@ class Sponsorships {
 		$amount         = isset( $posted_data['amount'] ) ? floatval( $posted_data['amount'] ) : 0;
 		$package        = isset( $posted_data['package'] ) ? absint( $posted_data['package'] ) : 0;
 		$gateway        = isset( $posted_data['gateway'] ) ? $posted_data['gateway'] : 'manual';
+		$items          = isset( $posted_data['items'] ) ? $posted_data['items'] : array();
+		$packages       = isset( $posted_data['packages'] ) ? $posted_data['packages'] : array();
 		$transaction_id = isset( $posted_data['transaction_id'] ) ? sanitize_text_field( $posted_data['transaction_id'] ) : '';
 		$id             = isset( $posted_data['id'] ) ? absint( $posted_data['id'] ) : 0;
 
@@ -171,6 +173,15 @@ class Sponsorships {
 		$ret = $db->update( $id, $db_data, array( '%s', '%s', '%s', '%s', '%d', '%d' ) );
 
 		if ( $ret ) {
+			$sponsorship = ss_get_sponsorship( $id, false );
+			$sponsorship->update_items( $items );
+
+			if ( $packages ) {
+			    foreach ( $packages as $package_id ) {
+			        $sponsorship->add_package( $package_id );
+                }
+            }
+
 			do_action( 'ss_sponsorship_updated', $id, $posted_data );
 		}
 	}
@@ -191,6 +202,10 @@ class Sponsorships {
 				continue;
 			}
 
+			if ( 'items' === $key ) {
+			    continue;
+            }
+
 			$db->update_meta( $id, $key, $value );
 		}
 
@@ -210,6 +225,10 @@ class Sponsorships {
 
 		foreach ( $posted_data as $key => $value ) {
 			if ( $sponsorship->is_table_column( $key ) ) {
+				continue;
+			}
+
+			if ( 'items' === $key ) {
 				continue;
 			}
 
@@ -436,59 +455,91 @@ class Sponsorships {
 					<th class="item-amount">
 						<?php esc_html_e( 'Amount', 'simple-sponsorships' ); ?>
 					</th>
+                    <th class="item-actions"></th>
 				</tr>
 			</thead>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td class="ss-items-total">
+                        <?php esc_html_e( 'Total', 'simple-sponsorships' ); ?>
+                    </td>
+                    <td class="item-amount"><?php echo $sponsorship->get_formatted_amount(); ?></td>
+                    <td class="item-actions">
+                        <button type="button" aria-label="<?php esc_html_e( 'Calculate Totals', 'simple-sponsorships' ); ?>" class="button button-secondary ss-button-action" data-id="<?php echo esc_attr( $sponsorship->get_id() ); ?>" data-action="ss_sponsorship_calculate_totals" data-success="sponsorshipCalculateTotals">
+		                    <?php esc_html_e( 'Calculate Totals', 'simple-sponsorships' ); ?>
+                        </button>
+                    </td>
+                </tr>
+            </tfoot>
 			<tbody>
 				<?php
 				if ( $items ) {
-					foreach ( $items as $item ) {
+					foreach ( $items as $index => $item ) {
 						?>
 						<tr>
 							<td class="item-title">
-								<input type="hidden" name="ss_sponsorships[packages][]" value="<?php echo $item['item_id']; ?>" />
-								<?php
-
-									echo $item['item_name'];
-								?>
+                                <input type="hidden" name="ss_sponsorships[items][<?php echo $index ?>][ID]" value="<?php echo esc_attr( $item['ID'] ); ?>" />
+                                <input type="hidden" name="ss_sponsorships[items][<?php echo $index ?>][item_id]" value="<?php echo esc_attr( $item['item_id'] ); ?>" />
+                                <input type="hidden" name="ss_sponsorships[items][<?php echo $index ?>][item_type]" value="<?php echo esc_attr( $item['item_type'] ); ?>" />
+                                <input type="hidden" name="ss_sponsorships[items][<?php echo $index ?>][item_name]" class="ss-field-editable" value="<?php echo esc_attr( $item['item_name'] ); ?>" />
+								<div class="ss-item-field-text">
+                                    <?php
+									    echo $item['item_name'];
+								    ?>
+                                </div>
 							</td>
 							<td class="item-qty">
-								<?php
-								echo $item['item_qty']
-								?>
+                                <input type="hidden" name="ss_sponsorships[items][<?php echo $index ?>][item_qty]" class="ss-field-editable" value="<?php echo esc_attr( $item['item_qty'] ); ?>" />
+                                <div class="ss-item-field-text">
+                                    <?php
+                                    echo $item['item_qty'];
+                                    ?>
+                                </div>
 							</td>
 							<td class="item-amount">
-								<?php
-								echo Formatting::price( $item['item_amount'] );
-								?>
+                                <input type="hidden" name="ss_sponsorships[items][<?php echo $index ?>][item_amount]" class="ss-field-editable" value="<?php echo esc_attr( $item['item_amount'] ); ?>" />
+                                <div class="ss-item-field-text">
+                                    <?php
+                                    echo Formatting::price( $item['item_amount'] );
+                                    ?>
+                                </div>
 							</td>
+                            <td class="item-actions">
+                                <button type="button" aria-label="<?php esc_html_e( 'Delete the item', 'simple-sponsorships' ); ?>" class="button button-secondary ss-button-action dashicons dashicons-trash" data-success="sponsorshipRemovePackage" data-id="<?php echo esc_attr( $item['ID'] ); ?>">
+                                    <?php esc_html_e( 'Delete', 'simple-sponsorships' ); ?>
+                                </button>
+                                <button type="button" aria-label="<?php esc_html_e( 'Edit item', 'simple-sponsorships' ); ?>" class="button button-secondary ss-button-action dashicons dashicons-edit" data-success="sponsorshipEditPackage">
+		                            <?php esc_html_e( 'Edit', 'simple-sponsorships' ); ?>
+                                </button>
+                            </td>
 						</tr>
 						<?php
 					}
-				} else {
-					?>
-					<tr>
-						<td colspan="3">
-							<?php
-								if ( $field['options'] ) {
-									esc_html_e( 'Add a package:', 'simple-sponsorships' );
-									?>
-									<select name="ss_sponsorships[packages][]">
-										<?php
-										foreach ( $field['options'] as $package_id => $package_title ) {
-											echo '<option value="' . esc_attr( $package_id ) . '">' . $package_title . '</option>';
-										}
-										?>
-									</select>
-									<?php
-								} else {
-									echo '<p>' . __( 'Please create some packages first.', 'simple-sponsorships' ) . '</p>';
-								}
-								?>
-						</td>
-					</tr>
-					<?php
 				}
-
+				?>
+                <tr id="addPackage" <?php if ( $items ) { ?>class="ss-hidden"<?php } ?>>
+                    <td colspan="4">
+                        <?php
+                            if ( $field['options'] ) {
+                                esc_html_e( 'Add a package:', 'simple-sponsorships' );
+                                ?>
+                                <select name="ss_sponsorships[packages][]">
+                                    <option value="0"><?php esc_html_e( 'Select a Package', 'simple-sponsorships' ); ?></option>
+                                    <?php
+                                    foreach ( $field['options'] as $package_id => $package_title ) {
+                                        echo '<option value="' . esc_attr( $package_id ) . '">' . $package_title . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                                <?php
+                            } else {
+                                echo '<p>' . __( 'Please create some packages first.', 'simple-sponsorships' ) . '</p>';
+                            }
+                            ?>
+                    </td>
+                </tr>
+                <?php
 				do_action( 'ss_sponsorships_admin_package_field_after_packages', $field, $sponsorship );
 				?>
 			</tbody>

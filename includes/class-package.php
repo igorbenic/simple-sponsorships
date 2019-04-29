@@ -73,6 +73,13 @@ class Package extends Custom_Data {
 	}
 
 	/**
+	 * Get the Price HTML.
+	 */
+	public function get_price_formatted() {
+		return Formatting::price( $this->get_price(), array( 'exclude_html' => true ));
+	}
+
+	/**
 	 * Get the Description.
 	 *
 	 * @return string

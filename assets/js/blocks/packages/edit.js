@@ -1,4 +1,4 @@
-const { RadioControl, ServerSideRender, Panel, PanelBody, PanelRow, SelectControl, Spinner } = wp.components;
+const { RadioControl, ServerSideRender, Panel, PanelBody, PanelRow, SelectControl, Spinner, Toolbar } = wp.components;
 const { __ } = wp.i18n;
 const { Fragment, Component } = wp.element;
 const { InspectorControls } = wp.editor;
@@ -11,13 +11,32 @@ export default class Edit extends Component {
         this.state = {
             packages: [],
             button: props.attributes.button,
-            id: props.attributes.id
-        }
+            id: props.attributes.id,
+            heading: props.attributes.heading || 'h2'
+        };
         this.get_packages = this.get_packages.bind(this);
+        this.changeHeading = this.changeHeading.bind(this);
     }
 
     componentDidMount() {
         this.get_packages();
+    }
+
+    createLevelControl( targetLevel, selectedLevel, onChange ) {
+        return {
+            icon: 'heading',
+            // translators: %s: heading level e.g: "1", "2", "3"
+            title: sprintf( __( 'Heading %d' ), targetLevel ),
+            isActive: targetLevel === selectedLevel,
+            onClick: () => onChange( targetLevel ),
+            subscript: String( targetLevel ),
+        };
+    }
+
+    changeHeading( value ) {
+        const { setAttributes } = this.props;
+        setAttributes({ heading: 'h' + value });
+        this.setState( { heading: 'h' + value } );
     }
 
     get_packages() {
@@ -39,7 +58,7 @@ export default class Edit extends Component {
     }
 
     render() {
-        let packages        = [{ label: __( 'Select a Package' ), value: 0 }]
+        let packages = [{ label: __( 'Select a Package' ), value: 0 }]
         const { attributes, setAttributes } = this.props;
         const { button, id } = this.state;
 
@@ -50,6 +69,8 @@ export default class Edit extends Component {
         } else {
             packages = [];
         }
+
+        let selectedHeading = parseInt( this.state.heading.replace( 'h', '' ) );
 
         return (
         <Fragment>
@@ -80,6 +101,8 @@ export default class Edit extends Component {
                             this.setState( { button: value } );
                         }}
                         />
+                        <p>{ __( 'Package Title' ) }</p>
+                        <Toolbar controls={ [ 1, 2, 3, 4, 5, 6 ].map( ( index ) => this.createLevelControl( index, selectedHeading, this.changeHeading ) ) } />
             </PanelBody>
             </InspectorControls>
            

@@ -4,9 +4,14 @@
  */
 
 wp_nonce_field( 'ss_sponsor_nonce', 'ss_sponsor_nonce' );
-$sponsors = get_post_meta( $post->ID, '_ss_sponsor', false );
+
+$hide_placeholder = get_post_meta( $post->ID, '_ss_hide_placeholder', true );
+$sponsors         = get_post_meta( $post->ID, '_ss_sponsor', false );
 if ( ! $sponsors ) {
     $sponsors = array();
+}
+if ( ! $hide_placeholder ) {
+    $hide_placeholder = false;
 }
 ?>
 <input type="text" class="widefat ss-autocompleter-input" name="ss-search-sponsor" placeholder="<?php esc_attr_e( 'Search for a sponsor', 'simple-sponsorships' ); ?>"/>
@@ -22,3 +27,9 @@ if ( ! $sponsors ) {
     }
     ?>
 </ul>
+
+
+<div class="widefat ss-admin-field">
+    <input id="ss_hide_placeholder" <?php checked( $hide_placeholder, '1', true ); ?> type="checkbox" name="ss_hide_placeholder" value="1" style="margin-top:0;" />
+    <label for="ss_hide_placeholder"><?php esc_html_e( 'Hide Sponsor Placeholder', 'simple-sponsorships' ); ?></label>
+</div>

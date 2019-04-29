@@ -47,6 +47,7 @@ class Formatting {
 					'thousand_separator' => self::get_price_thousand_separator(),
 					'decimals'           => self::get_price_decimals(),
 					'price_format'       => self::get_price_format(),
+					'exclude_html'       => false,
 				)
 			)
 		);
@@ -60,8 +61,9 @@ class Formatting {
 			$price = self::trim_zeros( $price );
 		}
 
-		$formatted_price = ( $negative ? '-' : '' ) . sprintf( $args['price_format'], '<span class="ss-price-currencysymbol">' . ss_currency_symbol( $args['currency'] ) . '</span>', $price );
-		$return          = '<span class="ss-price-amount amount">' . $formatted_price . '</span>';
+		$symbol          = $args['exclude_html'] ? ss_currency_symbol( $args['currency'] ) : '<span class="ss-price-currencysymbol">' . ss_currency_symbol( $args['currency'] ) . '</span>';
+		$formatted_price = ( $negative ? '-' : '' ) . sprintf( $args['price_format'], $symbol, $price );
+		$return          = $args['exclude_html'] ? $formatted_price : '<span class="ss-price-amount amount">' . $formatted_price . '</span>';
 
 		/**
 		 * Filters the string of price markup.
