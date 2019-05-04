@@ -44,7 +44,7 @@ if ( $button ) {
 		?>
 		<div class="ss-package">
 			<?php
-			echo '<' . $heading . '>' . $package->get_data('title') . '</' . $heading . '>';
+			echo '<' . $heading . '>' . $package->get_title() . '</' . $heading . '>';
 			$package_content = $package->get_description();
 			if ( $package_content ) {
 			    echo '<div class="ss-package-content">';
@@ -52,7 +52,7 @@ if ( $button ) {
 			    echo '</div>';
             }
 
-            if ( $button && $sponsor_page ) {
+            if ( $button && $sponsor_page && $package->is_available() ) {
                 $link = add_query_arg( 'package', $package->get_data('id'), $sponsor_page );
                 echo '<a href="' . esc_attr( $link ) . '" class="button ss-button">';
                 echo sprintf( __( 'Sponsor %1$s (%2$s)', 'simple-sponsorships' ), $package->get_data( 'title' ), $package->get_price_html() );

@@ -365,9 +365,31 @@ add_action( 'ss_after_sponsor_form_fields', 'ss_after_sponsor_form_fields_conten
  */
 function ss_after_sponsor_form_fields_content_id() {
 	if ( isset( $_GET['ss_content_id'] ) && absint( $_GET['ss_content_id'] ) > 0 ) {
+	    $content_id = absint( $_GET['ss_content_id'] );
+	    $post       = get_post( $content_id );
+	    if ( ! $post ) {
+	        return;
+        }
+
+        setup_postdata( $post );
 		?>
+        <div class="ss-form-sponsor-content-container">
+            <strong><?php esc_html_e( 'You are sponsoring', 'simple-sponsorships' ); ?></strong>
+            <div class="ss-form-sponsor-content">
+                <?php
+                    if ( has_post_thumbnail( $post ) ) {
+                        echo get_the_post_thumbnail( $post, 'medium' );
+                    }
+
+                    echo '<p class="ss-content-title"><a href="' . get_permalink( $post ) . '">' . $post->post_title . '</a></p>';
+                    echo get_the_content( '' );
+
+                ?>
+            </div>
+        </div>
 		<input type="hidden" value="<?php echo esc_attr( absint( $_GET['ss_content_id'] ) ); ?>" name="ss_content_id" />
 		<?php
+        wp_reset_postdata();
 	}
 }
 

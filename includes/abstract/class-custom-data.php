@@ -107,6 +107,13 @@ abstract class Custom_Data {
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public function get_current_class() {
+		return str_replace( 'simple_sponsorships_', '', strtolower( str_replace( '\\', '_', get_class( $this ) ) ) );
+	}
+
+	/**
 	 * Get the data for the level
 	 *
 	 * @param string|array $key Key or array of keys for data.
@@ -125,8 +132,8 @@ abstract class Custom_Data {
 				}
 			}
 		}
-
-		return isset( $this->data[ $key ] ) ? $this->data[ $key ] : $default;
+		$return = isset( $this->data[ $key ] ) ? $this->data[ $key ] : $default;
+		return $return;
 	}
 
 	/**
@@ -183,6 +190,7 @@ abstract class Custom_Data {
 		} else {
 			$db->update_meta( $this->get_id(), $key, $value );
 		}
+		do_action( 'ss_update_' . $this->get_current_class() . '_data_' . $key, $value, $this );
 		$this->set_data( $key, $value );
 	}
 

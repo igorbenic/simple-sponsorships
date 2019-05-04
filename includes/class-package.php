@@ -66,6 +66,15 @@ class Package extends Custom_Data {
 	}
 
 	/**
+	 * Get the title
+	 *
+	 * @return string
+	 */
+	public function get_title() {
+		return apply_filters( 'ss_package_get_title', $this->get_data('title' ), $this );
+	}
+
+	/**
 	 * Get the Price HTML.
 	 */
 	public function get_price_html() {

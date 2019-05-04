@@ -9,15 +9,57 @@
  * Domain Path:     /languages
  * Version:         0.8.0
  *
+ * @fs_premium_only /includes/premium/
  * @package         Simple_Sponsorships
  */
 
 namespace Simple_Sponsorships;
 
+use Simple_Sponsorships\Admin\Admin;
 use Simple_Sponsorships\Widgets\Widgets;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	return;
+}
+
+
+if ( function_exists( '\Simple_Sponsorships\ss_fs' ) ) {
+	ss_fs()->set_basename( true, __FILE__ );
+} else {
+	if ( ! function_exists( '\Simple_Sponsorships\ss_fs' ) ) {
+		// Create a helper function for easy SDK access.
+		function ss_fs() {
+			global $ss_fs;
+
+			if ( ! isset( $ss_fs ) ) {
+				// Include Freemius SDK.
+				require_once dirname( __FILE__ ) . '/freemius/start.php';
+
+				$ss_fs = \fs_dynamic_init( array(
+					'id'                  => '3701',
+					'slug'                => 'simple-sponsorships',
+					'type'                => 'plugin',
+					'public_key'          => 'pk_79a74779312b5f726d168770a13c2',
+					'is_premium'          => true,
+					// If your plugin is a serviceware, set this option to false.
+					'has_premium_version' => true,
+					'has_addons'          => false,
+					'has_paid_plans'      => true,
+					'menu'                => array(
+						'slug'    => 'edit.php?post_type=sponsors',
+						'support' => false,
+					),
+				) );
+			}
+
+			return $ss_fs;
+		}
+
+		// Init Freemius.
+		ss_fs();
+		// Signal that SDK was initiated.
+		do_action( 'ss_fs_loaded' );
+	}
 }
 
 /**
@@ -175,6 +217,8 @@ class Plugin {
 		}
 
 		$this->session = new Session();
+
+		do_action( 'ss_plugin_loaded' );
 	}
 
 	/**
@@ -252,7 +296,33 @@ class Plugin {
 		// Registering the Databases to wpdb.
 		$dbs = new Databases();
 		$dbs->register();
+
+		if ( is_admin() ) {
+			new Admin();
+		}
 	}
+}
+
+if ( ss_fs()->is__premium_only() ) {
+	class Premium {
+		/**
+		 * @var
+		 */
+		private static $instance;
+
+		/**
+		 * Premium constructor.
+		 */
+		public function __construct() {
+			add_action( 'ss_plugin_loaded', array( $this, 'includes' ) );
+		}
+
+		public function includes() {
+			include_once 'includes/premium/package-slots/package-slots.php';
+		}
+	}
+
+	new Premium();
 }
 
 /**

@@ -121,7 +121,7 @@ class DB_Sponsorship_Items extends DB {
 				$this->add_meta( $id, $meta_key, $meta_value );
 			}
 		}
-
+		do_action( 'ss_sponsorship_create_item', $id, $this, $item, $meta );
 		return $id;
 	}
 
@@ -168,7 +168,7 @@ class DB_Sponsorship_Items extends DB {
 				$this->update_meta( $id, $meta_key, $meta_value );
 			}
 		}
-
+		do_action( 'ss_sponsorship_update_item', $id, $this, $item, $meta );
 		return $id;
 	}
 
@@ -177,6 +177,7 @@ class DB_Sponsorship_Items extends DB {
 	 * @param $item_id
 	 */
 	public function delete_item( $item_id ) {
+		do_action( 'ss_sponsorship_item_delete', $item_id );
 		$delete = $this->delete( array( 'ID' => $item_id ) );
 		if ( $delete ) {
 			$this->delete_all_meta( array( 'sssponsorship_item_id' => $item_id ) );

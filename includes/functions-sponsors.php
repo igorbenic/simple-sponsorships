@@ -146,7 +146,7 @@ function ss_delete_sponsors_for_content( $post_id, $sponsors_ids = false ) {
  * @return string
  */
 function ss_show_sponsors_under_content( $content ) {
-	if ( is_singular( array_keys( ss_get_content_types() ) ) ) {
+	if ( is_singular( array_keys( ss_get_content_types() ) ) && is_main_query() && in_the_loop() ) {
 		$content_id = get_the_ID();
 		$sponsors   = array();
 
@@ -224,7 +224,6 @@ function ss_show_sponsors_under_content( $content ) {
 				$content .= ob_get_clean();
 			}
 		}
-
 	}
 
 	return $content;

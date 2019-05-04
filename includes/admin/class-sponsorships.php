@@ -430,7 +430,7 @@ class Sponsorships {
 			),
 		);
 
-		return apply_filters( 'ss_get_package_fields', $fields );
+		return apply_filters( 'ss_get_sponsorship_fields', $fields );
 	}
 
 	/**
