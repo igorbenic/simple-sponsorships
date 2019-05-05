@@ -118,7 +118,7 @@ class Form_Sponsors extends Form {
 	 */
 	public function get_fields() {
 		$packages = ss_get_available_packages();
-		$package_options = array();
+		$package_options = array( 0 => __( 'There are no packages available', 'simple-sponsorships' ) );
 		if ( $packages ) {
 			$package_options[0] = __( 'Select a Package', 'simple-sponsorships' );
 			foreach( $packages as $package ) {

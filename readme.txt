@@ -142,6 +142,15 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 
 == Changelog ==
 
+= 1.0.0 - 2019-05-05 =
+* New: Introduced Sponsorship Items for a more stable future development.
+* New: Redesigned the admin Sponsorship page introducing the new sponsorship items table.
+* New: Added Heading option in Packages Block
+* New: Placehoder under each content to drive more sponsorships
+* New: Sponsor will be automatically added to a content if it arrived from a placeholder
+* New: Freemius integration
+* New: (Premium) Package Slots
+
 = 0.7.0 - 2019-03-29 =
 * New: Gravity Forms Integration.
 * New: Prices/Amounts are formatted with the number format.
