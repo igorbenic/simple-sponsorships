@@ -13,16 +13,24 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: includes/class-ajax.php:50, includes/class-ajax.php:82, includes/class-ajax.php:108
+#: includes/class-ajax.php:51, includes/class-ajax.php:83, includes/class-ajax.php:109, includes/class-ajax.php:168
 msgid "No data found"
 msgstr ""
 
-#: includes/class-ajax.php:57, includes/class-ajax.php:89, includes/class-ajax.php:115
+#: includes/class-ajax.php:58, includes/class-ajax.php:90, includes/class-ajax.php:116
 msgid "No Sponsor provided"
 msgstr ""
 
-#: includes/class-ajax.php:64
+#: includes/class-ajax.php:65
 msgid "No Content provided"
+msgstr ""
+
+#: includes/class-ajax.php:173
+msgid "No ID provided for the Sponsorship."
+msgstr ""
+
+#: includes/class-ajax.php:180
+msgid "No Sponsorship found."
 msgstr ""
 
 #: includes/class-blocks.php:34
@@ -33,7 +41,7 @@ msgstr ""
 msgid "Please select a package."
 msgstr ""
 
-#: includes/class-blocks.php:123, includes/integrations/gravityforms/includes/class-packages-field.php:70
+#: includes/class-blocks.php:131, includes/integrations/gravityforms/includes/class-packages-field.php:70
 msgid "Simple Sponsorships"
 msgstr ""
 
@@ -51,7 +59,7 @@ msgstr ""
 msgid "Sponsorships"
 msgstr ""
 
-#: includes/class-content-types.php:54, includes/class-content-types.php:80, includes/admin/class-sponsorships.php:342, includes/admin/sponsorships/class-sponsorships-table-list.php:335, templates/sponsorship/sponsor.php:9
+#: includes/class-content-types.php:54, includes/class-content-types.php:80, includes/admin/class-sponsorships.php:378, includes/admin/sponsorships/class-sponsorships-table-list.php:383, templates/sponsorship/sponsor.php:9
 msgid "Sponsor"
 msgstr ""
 
@@ -67,7 +75,7 @@ msgstr ""
 msgid "Parent Item:"
 msgstr ""
 
-#: includes/class-content-types.php:58, includes/class-content-types.php:81, includes/widgets/class-widget-sponsors.php:74
+#: includes/class-content-types.php:58, includes/class-content-types.php:81, includes/admin/class-sponsors.php:218, includes/widgets/class-widget-sponsors.php:74
 msgid "Sponsors"
 msgstr ""
 
@@ -1163,6 +1171,10 @@ msgstr ""
 msgid "Unserializing instances of this class is forbidden."
 msgstr ""
 
+#: includes/functions-forms.php:377
+msgid "You are sponsoring"
+msgstr ""
+
 #: includes/functions-packages.php:18, includes/admin/packages/class-packages-table-list.php:167
 msgid "Available"
 msgstr ""
@@ -1171,8 +1183,12 @@ msgstr ""
 msgid "Unavailable"
 msgstr ""
 
-#: includes/functions-sponsors.php:155
+#: includes/functions-sponsors.php:159
 msgid "Sponsored By"
+msgstr ""
+
+#: includes/functions-sponsors.php:221
+msgid "Become a Sponsor"
 msgstr ""
 
 #: includes/functions-sponsorship.php:19
@@ -1287,23 +1303,23 @@ msgstr ""
 msgid "Angolan Kwanza"
 msgstr ""
 
-#: includes/functions-sponsorship.php:121
+#: includes/functions-sponsorship.php:122
 msgid "Request"
 msgstr ""
 
-#: includes/functions-sponsorship.php:122
+#: includes/functions-sponsorship.php:123
 msgid "Approved"
 msgstr ""
 
-#: includes/functions-sponsorship.php:123
+#: includes/functions-sponsorship.php:124
 msgid "Paid"
 msgstr ""
 
-#: includes/functions-sponsorship.php:124
+#: includes/functions-sponsorship.php:125
 msgid "Rejected"
 msgstr ""
 
-#: includes/functions-sponsorship.php:136, includes/admin/sponsorships/class-sponsorships-table-list.php:306
+#: includes/functions-sponsorship.php:137, includes/admin/sponsorships/class-sponsorships-table-list.php:354
 msgid "Unknown Status"
 msgstr ""
 
@@ -1352,7 +1368,7 @@ msgstr ""
 msgid "Enter the Package Name"
 msgstr ""
 
-#: includes/admin/class-packages.php:163, includes/admin/packages/class-packages-table-list.php:178, includes/admin/sponsorships/class-sponsorships-table-list.php:332
+#: includes/admin/class-packages.php:163, includes/admin/packages/class-packages-table-list.php:178, includes/admin/sponsorships/class-sponsorships-table-list.php:380
 msgid "Title"
 msgstr ""
 
@@ -1360,7 +1376,7 @@ msgstr ""
 msgid "Choose a Status"
 msgstr ""
 
-#: includes/admin/class-packages.php:169, includes/admin/class-sponsorships.php:312, includes/admin/packages/class-packages-table-list.php:181, includes/admin/sponsorships/class-sponsorships-table-list.php:333, templates/sponsorship/details.php:23
+#: includes/admin/class-packages.php:169, includes/admin/class-sponsorships.php:348, includes/admin/packages/class-packages-table-list.php:181, includes/admin/sponsorships/class-sponsorships-table-list.php:381, templates/sponsorship/details.php:23
 msgid "Status"
 msgstr ""
 
@@ -1384,7 +1400,7 @@ msgstr ""
 msgid "How many content will this package allow to subscribe to. For example, a 12 episode package, would have 12 here."
 msgstr ""
 
-#: includes/admin/class-packages.php:208, includes/admin/class-sponsorships.php:407
+#: includes/admin/class-packages.php:208, includes/admin/class-sponsorships.php:557
 msgid "Normal"
 msgstr ""
 
@@ -1409,94 +1425,102 @@ msgid "If checked, it will show sponsors that sponsored the content."
 msgstr ""
 
 #: includes/admin/class-settings.php:120
+msgid "Placeholder"
+msgstr ""
+
+#: includes/admin/class-settings.php:122
+msgid "If checked, it will show sponsor placeholder under the content."
+msgstr ""
+
+#: includes/admin/class-settings.php:127
 msgid "Pages"
 msgstr ""
 
-#: includes/admin/class-settings.php:123
+#: includes/admin/class-settings.php:130
 msgid "Page Settings"
 msgstr ""
 
-#: includes/admin/class-settings.php:124
+#: includes/admin/class-settings.php:131
 msgid "Configure Pages where Sponsors can see their settings."
 msgstr ""
 
-#: includes/admin/class-settings.php:128
+#: includes/admin/class-settings.php:135
 msgid "Sponsor Page"
 msgstr ""
 
-#: includes/admin/class-settings.php:129
+#: includes/admin/class-settings.php:136
 msgid "This is the page that will show the sponsor form. The [sponsor_form] shortcode should be on this page."
 msgstr ""
 
-#: includes/admin/class-settings.php:133, includes/admin/class-settings.php:142
+#: includes/admin/class-settings.php:140, includes/admin/class-settings.php:149
 msgid "Select a page"
 msgstr ""
 
-#: includes/admin/class-settings.php:137
+#: includes/admin/class-settings.php:144
 msgid "Sponsorship Page"
 msgstr ""
 
-#: includes/admin/class-settings.php:138
+#: includes/admin/class-settings.php:145
 msgid "This is the page that will show the sponsorship details. The [ss_sponsorship_details] shortcode should be on this page."
 msgstr ""
 
-#: includes/admin/class-settings.php:150
+#: includes/admin/class-settings.php:157
 msgid "Enable Payments"
 msgstr ""
 
-#: includes/admin/class-settings.php:156, templates/payment-form.php:17
+#: includes/admin/class-settings.php:163, templates/payment-form.php:17
 msgid "Payment Instructions"
 msgstr ""
 
-#: includes/admin/class-settings.php:158
+#: includes/admin/class-settings.php:165
 msgid "Instructions that will show if the payments are not enabled so your sponsors know how to pay you."
 msgstr ""
 
-#: includes/admin/class-settings.php:159, templates/payment-form.php:15
+#: includes/admin/class-settings.php:166, templates/payment-form.php:15
 msgid "We will contact you with specific information through email."
 msgstr ""
 
-#: includes/admin/class-settings.php:163
+#: includes/admin/class-settings.php:170
 msgid "Currency"
 msgstr ""
 
-#: includes/admin/class-settings.php:173
+#: includes/admin/class-settings.php:180
 msgid "Background Color"
 msgstr ""
 
-#: includes/admin/class-settings.php:180
+#: includes/admin/class-settings.php:187
 msgid "Body Background Color"
 msgstr ""
 
-#: includes/admin/class-settings.php:186
+#: includes/admin/class-settings.php:193
 msgid "Base Color"
 msgstr ""
 
-#: includes/admin/class-settings.php:192
+#: includes/admin/class-settings.php:199
 msgid "Base Text Color"
 msgstr ""
 
-#: includes/admin/class-settings.php:198
+#: includes/admin/class-settings.php:205
 msgid "Text Color"
 msgstr ""
 
-#: includes/admin/class-settings.php:204
+#: includes/admin/class-settings.php:211
 msgid "Link Text Color"
 msgstr ""
 
-#: includes/admin/class-settings.php:270, includes/admin/class-settings.php:273, includes/admin/class-settings.php:276, includes/admin/class-settings.php:293
+#: includes/admin/class-settings.php:277, includes/admin/class-settings.php:280, includes/admin/class-settings.php:283, includes/admin/class-settings.php:300
 msgid "General"
 msgstr ""
 
-#: includes/admin/class-settings.php:294
+#: includes/admin/class-settings.php:301
 msgid "Payment Gateways"
 msgstr ""
 
-#: includes/admin/class-settings.php:295
+#: includes/admin/class-settings.php:302
 msgid "Emails"
 msgstr ""
 
-#: includes/admin/class-settings.php:537
+#: includes/admin/class-settings.php:544
 msgid "Settings updated."
 msgstr ""
 
@@ -1508,104 +1532,156 @@ msgstr ""
 msgid "Inactive"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:210
-msgid "Add Sponsors"
-msgstr ""
-
-#: includes/admin/class-sponsors.php:240
+#: includes/admin/class-sponsors.php:248
 msgid "Information"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:244
+#: includes/admin/class-sponsors.php:252
 msgid "Sponsoring"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:316, includes/admin/class-sponsorships.php:354, includes/forms/class-form-payment.php:97, includes/gateways/class-paypal.php:43, includes/gateways/class-paypal.php:46, templates/sponsorship/sponsor.php:38
+#: includes/admin/class-sponsors.php:324, includes/admin/class-sponsorships.php:390, includes/forms/class-form-payment.php:97, includes/gateways/class-paypal.php:43, includes/gateways/class-paypal.php:46, templates/sponsorship/sponsor.php:38
 msgid "Email"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:322, includes/admin/class-sponsorships.php:360, includes/forms/class-form-sponsors.php:139, templates/sponsorship/sponsor.php:25
+#: includes/admin/class-sponsors.php:330, includes/admin/class-sponsorships.php:396, includes/forms/class-form-sponsors.php:140, templates/sponsorship/sponsor.php:25
 msgid "Website"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:328, includes/admin/class-sponsorships.php:366
+#: includes/admin/class-sponsors.php:336, includes/admin/class-sponsorships.php:402
 msgid "Company"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:346
+#: includes/admin/class-sponsors.php:354
 msgid "Available Quantity"
 msgstr ""
 
-#: includes/admin/class-sponsors.php:347
+#: includes/admin/class-sponsors.php:355
 msgid "This is the quantity that is still unused and how many times this Sponsor can still be added to content"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:76
+#: includes/admin/class-sponsorships.php:86
 msgid "No Status is required."
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:95
+#: includes/admin/class-sponsorships.php:110
 msgid "Sponsorship could not be created."
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:127
+#: includes/admin/class-sponsorships.php:144
 msgid "Status is required."
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:131
+#: includes/admin/class-sponsorships.php:148
 msgid "This Sponsorship does not exist."
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:217
+#: includes/admin/class-sponsorships.php:251
 msgid "Sponsor data not posted."
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:225
+#: includes/admin/class-sponsorships.php:259
 msgid "Select a Sponsor or insert the name to add a new one."
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:294
+#: includes/admin/class-sponsorships.php:330
 msgid "Create a new sponsor"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:318, templates/emails/rejected-sponsorship.php:21
+#: includes/admin/class-sponsorships.php:354, templates/emails/rejected-sponsorship.php:21
 msgid "Reject Reason"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:324
+#: includes/admin/class-sponsorships.php:360
 msgid "The Sponsorship Amount"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:325
+#: includes/admin/class-sponsorships.php:361
 msgid "Amount (%s)"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:331, includes/admin/packages/class-packages-table-list.php:31, includes/admin/sponsorships/class-sponsorships-table-list.php:334
-msgid "Package"
-msgstr ""
-
-#: includes/admin/class-sponsorships.php:337
+#: includes/admin/class-sponsorships.php:373
 msgid "Sponsor Information"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:348
+#: includes/admin/class-sponsorships.php:384
 msgid "Sponsor Name"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:376
+#: includes/admin/class-sponsorships.php:412
 msgid "Payment"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:381
+#: includes/admin/class-sponsorships.php:417
 msgid "Gateway"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:387, includes/admin/class-sponsorships.php:388
+#: includes/admin/class-sponsorships.php:423, includes/admin/class-sponsorships.php:424
 msgid "Transaction ID"
 msgstr ""
 
-#: includes/admin/class-sponsorships.php:389
+#: includes/admin/class-sponsorships.php:425
 msgid "The transaction ID, if any"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:450, includes/admin/packages/class-packages-table-list.php:31, includes/admin/sponsorships/class-sponsorships-table-list.php:382
+msgid "Package"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:453
+msgid "Qty."
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:456, includes/admin/sponsorships/class-sponsorships-table-list.php:384, templates/sponsorship/details.php:33
+msgid "Amount"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:465
+msgid "Total"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:469, includes/admin/class-sponsorships.php:470
+msgid "Calculate Totals"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:509
+msgid "Delete the item"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:510
+msgid "Delete"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:512
+msgid "Edit item"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:513, includes/admin/packages/class-packages-table-list.php:133, includes/admin/sponsorships/class-sponsorships-table-list.php:256
+msgid "Edit"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:525
+msgid "Add a package:"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:528, includes/forms/class-form-payment.php:80, includes/forms/class-form-sponsors.php:123
+msgid "Select a Package"
+msgstr ""
+
+#: includes/admin/class-sponsorships.php:537
+msgid "Please create some packages first."
+msgstr ""
+
+#: includes/db/class-db-sponsorship-items.php:99
+msgid "When creating an item, ID should not be passed."
+msgstr ""
+
+#: includes/db/class-db-sponsorship-items.php:103, includes/db/class-db-sponsorship-items.php:148
+msgid "There has to be a sponsorship ID."
+msgstr ""
+
+#: includes/db/class-db-sponsorship-items.php:144
+msgid "When updating an item, ID should be present."
 msgstr ""
 
 #: includes/emails/class-email-activated-sponsorship.php:38
@@ -1644,10 +1720,6 @@ msgstr ""
 msgid "Select an available Payment Method"
 msgstr ""
 
-#: includes/forms/class-form-payment.php:80, includes/forms/class-form-sponsors.php:122
-msgid "Select a Package"
-msgstr ""
-
 #: includes/forms/class-form-payment.php:87
 msgid "First Name"
 msgstr ""
@@ -1680,31 +1752,35 @@ msgstr ""
 msgid "State / Province"
 msgstr ""
 
-#: includes/forms/class-form-sponsors.php:76
+#: includes/forms/class-form-sponsors.php:77
 msgid "Sponsorship could not be created. Try contacting the site owner through email."
 msgstr ""
 
-#: includes/forms/class-form-sponsors.php:129
+#: includes/forms/class-form-sponsors.php:121
+msgid "There are no packages available"
+msgstr ""
+
+#: includes/forms/class-form-sponsors.php:130
 msgid "Your Name"
 msgstr ""
 
-#: includes/forms/class-form-sponsors.php:134
+#: includes/forms/class-form-sponsors.php:135
 msgid "Your Email"
 msgstr ""
 
-#: includes/forms/class-form-sponsors.php:144
+#: includes/forms/class-form-sponsors.php:145
 msgid "Company Name"
 msgstr ""
 
-#: includes/forms/class-form-sponsors.php:149, includes/admin/sponsorships/class-sponsorships-table-list.php:45, templates/sponsorship/details.php:41
+#: includes/forms/class-form-sponsors.php:150, includes/admin/sponsorships/class-sponsorships-table-list.php:45, templates/sponsorship/details.php:41
 msgid "Sponsorship"
 msgstr ""
 
-#: includes/forms/class-form-sponsors.php:157
+#: includes/forms/class-form-sponsors.php:158
 msgid "Terms and Conditions"
 msgstr ""
 
-#: includes/forms/class-form-sponsors.php:160
+#: includes/forms/class-form-sponsors.php:161
 msgid "I have read the terms and conditions"
 msgstr ""
 
@@ -1792,47 +1868,45 @@ msgstr ""
 msgid "No packages."
 msgstr ""
 
-#: includes/admin/packages/class-packages-table-list.php:133, includes/admin/sponsorships/class-sponsorships-table-list.php:224
-msgid "Edit"
-msgstr ""
-
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:187
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:219
 msgid "No Sponsorships."
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:221
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:253
 msgid "Sponsorship #%d"
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:230, includes/admin/sponsorships/class-sponsorships-table-list.php:250, includes/admin/sponsorships/class-sponsorships-table-list.php:272, includes/admin/views/sponsorships/edit.php:13
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:262, includes/admin/sponsorships/class-sponsorships-table-list.php:320, includes/admin/views/sponsorships/edit.php:13
 msgid "View"
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:248, includes/admin/sponsorships/class-sponsorships-table-list.php:270, includes/admin/sponsorships/class-sponsorships-table-list.php:292
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:283, includes/admin/sponsorships/class-sponsorships-table-list.php:318, includes/admin/sponsorships/class-sponsorships-table-list.php:340
 msgid "N/A"
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:336, templates/sponsorship/details.php:33
-msgid "Amount"
-msgstr ""
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:285
+msgid "%s Package"
+msgid_plural "%s Packages"
+msgstr[0] ""
+msgstr[1] ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:337, templates/sponsorship/details.php:57
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:385, templates/sponsorship/details.php:60
 msgid "Date"
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:451
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:499
 msgid "Filter by Sponsor"
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:461
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:509
 msgid "Filter by Status"
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:471
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:519
 msgid "Filter by Package"
 msgstr ""
 
-#: includes/admin/sponsorships/class-sponsorships-table-list.php:480
+#: includes/admin/sponsorships/class-sponsorships-table-list.php:528
 msgid "Filter"
 msgstr ""
 
@@ -1850,6 +1924,22 @@ msgstr ""
 
 #: includes/integrations/gravityforms/class-gf-addon.php:245
 msgid "Choose a Sponsor Field"
+msgstr ""
+
+#: includes/premium/package-slots/package-slots.php:44
+msgid "Slots"
+msgstr ""
+
+#: includes/premium/package-slots/package-slots.php:47
+msgid "How many slots does this package have? If 0 or empty, unlimited."
+msgstr ""
+
+#: includes/premium/package-slots/package-slots.php:53
+msgid "Used Slots"
+msgstr ""
+
+#: includes/premium/package-slots/package-slots.php:56
+msgid "How many slots have already been used? This will be also updated automatically."
 msgstr ""
 
 #: includes/admin/views/packages/edit.php:8, includes/admin/views/packages/edit.php:64
@@ -1876,8 +1966,12 @@ msgstr ""
 msgid "Add Package"
 msgstr ""
 
-#: includes/admin/views/sponsors/metabox-content.php:12
+#: includes/admin/views/sponsors/metabox-content.php:17
 msgid "Search for a sponsor"
+msgstr ""
+
+#: includes/admin/views/sponsors/metabox-content.php:34
+msgid "Hide Sponsor Placeholder"
 msgstr ""
 
 #: includes/admin/views/sponsors/metabox-sponsoring.php:20
@@ -1932,7 +2026,7 @@ msgstr ""
 msgid "We're sorry, but your Sponsorship request was rejected."
 msgstr ""
 
-#: templates/shortcode/packages.php:57
+#: templates/shortcode/packages.php:58
 msgid "Sponsor %1$s (%2$s)"
 msgstr ""
 
@@ -1948,7 +2042,7 @@ msgstr ""
 msgid "This Sponsorship is awaiting your payment. Once paid it will be completed."
 msgstr ""
 
-#: templates/sponsorship/details.php:50
+#: templates/sponsorship/details.php:53
 msgid "No Package selected."
 msgstr ""
 
