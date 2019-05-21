@@ -1,3 +1,8 @@
-/**
- * Created by igor on 09/12/18.
- */
+'use strict';
+
+window.ssponsorships = window.ssponsorships || {};
+(function($){
+    $(function(){
+
+    });
+})(jQuery);

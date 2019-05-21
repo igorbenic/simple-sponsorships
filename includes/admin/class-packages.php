@@ -115,6 +115,7 @@ class Packages {
 		$ret = $db->update( $id, $db_data, array( '%s', '%s', '%s', '%s', '%s' ) );
 
 		if ( $ret ) {
+			// We are sure that there were changes to the main package fields.
 			do_action( 'ss_package_updated', $id, $posted_data );
 		}
 	}

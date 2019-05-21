@@ -293,7 +293,7 @@ function ss_form_render_field( $args, $wrap_field = true ) {
 			echo isset( $args['desc'] ) ? '<h2>' . $args['desc'] . '</h2>' : '';
 			break;
 		default:
-			do_action( 'ss_form_field_' . $args['type'], $args );
+			do_action( 'ss_form_field_' . $args['type'], $args, $wrap_field );
 			break;
 	}
 }

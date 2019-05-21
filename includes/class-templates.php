@@ -135,7 +135,7 @@ class Templates {
 	 */
 	public static function get_template_part( $slug, $name = null, $args = array(), $load = false ) {
 		// Execute code for this part
-		do_action( 'get_template_part_' . $slug, $slug, $name );
+		do_action( 'get_template_part_' . $slug, $slug, $name, $args );
 
 		$load_template = apply_filters( 'ss_allow_template_part_' . $slug . '_' . $name, true );
 		if ( false === $load_template ) {

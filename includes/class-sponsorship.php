@@ -416,6 +416,13 @@ class Sponsorship extends Custom_Data {
 	}
 
 	/**
+	 * Return if the Sponsorship is paid.
+	 */
+	public function is_paid() {
+		return $this->is_status( 'paid' );
+	}
+
+	/**
 	 * Return if the Sponsorship is pending payment.
 	 */
 	public function is_request() {

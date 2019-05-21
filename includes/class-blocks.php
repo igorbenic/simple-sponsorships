@@ -144,7 +144,9 @@ class Blocks {
 			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components', 'wp-editor', 'wp-compose' )
 		);
 		wp_localize_script( 'ss-block-js', 'ss_blocks', array(
-			'content_types' => \ss_get_content_types()
+			'content_types' => \ss_get_content_types(),
+			'nonce'         => wp_create_nonce( 'ss-admin-nonce' ),
+			'ajax'          => admin_url( 'admin-ajax.php' ),
 		));
 
 		// Styles.

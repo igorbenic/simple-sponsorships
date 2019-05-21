@@ -53,12 +53,12 @@ export default class Edit extends Component {
 
     get_packages() {
         var self = this;
-        fetch( ss_admin.ajax, {
+        fetch( ss_blocks.ajax, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
             },
-            body: 'action=ss_get_packages&nonce=' + ss_admin.nonce,
+            body: 'action=ss_get_packages&nonce=' + ss_blocks.nonce,
             credentials: 'same-origin'
         }).then(function (res) {
             return res.json();

@@ -36,7 +36,10 @@ class Shortcodes {
 	 */
 	public function sponsor_form( $args = array() ) {
 		ob_start();
-		Templates::get_template_part( 'sponsor-form' );
+		$atts = shortcode_atts( array(
+			'packages' => '',
+		), $args, 'ss_sponsor_form' );
+		Templates::get_template_part( 'sponsor-form', null, $atts );
 		return ob_get_clean();
 	}
 
