@@ -1,0 +1,12 @@
+.ss-package-feature {
+  display: flex;
+  padding-bottom: 0.5em;
+
+  .button {
+    margin-left: 20px;
+  }
+
+  .ss-sortable-handle {
+    cursor: move;
+  }
+}

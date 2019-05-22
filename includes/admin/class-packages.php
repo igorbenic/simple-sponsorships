@@ -64,9 +64,9 @@ class Packages {
 			'status'      => $status,
 		);
 
-		$level_id = $db->insert( $db_data, array( '%s', '%s', '%s', '%s', '%s' ) );
+		$package_id = $db->insert( $db_data, array( '%s', '%s', '%s', '%s', '%s' ) );
 
-		do_action( 'ss_package_added', $level_id );
+		do_action( 'ss_package_added', $package_id, $posted_data );
 
 		if ( isset( $_POST['ss-redirect'] ) ) {
 			wp_safe_redirect( $_POST['ss-redirect'] );

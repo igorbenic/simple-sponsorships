@@ -4,6 +4,7 @@ import { ssFieldsHideShow } from './admin/fields';
 import ssFilterStart from './admin/filters';
 import { attachButtonEvents } from './admin/buttons';
 import './admin/sponsorships';
+import { ssMakePackageFeaturesSortable } from './admin/packages';
 
 window.ssponsorships = window.ssponsorships || {};
 (function($){
@@ -12,6 +13,7 @@ window.ssponsorships = window.ssponsorships || {};
         ssFieldsHideShow();
         startContentSponsorsDropdown();
         showSponsorSelect();
+        ssMakePackageFeaturesSortable();
         ssFilterStart();
         $( document ).on( 'change', '.ss-view-sponsorship #sponsor', showSponsorSelect );
 

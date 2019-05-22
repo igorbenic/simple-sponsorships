@@ -327,6 +327,10 @@ if ( ss_fs()->is__premium_only() ) {
 		public function includes() {
 			include_once 'includes/premium/package-slots/package-slots.php';
 			include_once 'includes/premium/post-paid-form/post-paid-form.php';
+
+			if ( ss_fs()->is_plan( 'platinum' ) ) {
+				include_once 'includes/premium/package-features/package-features.php';
+			}
 		}
 
 		/**

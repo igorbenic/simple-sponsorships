@@ -43,9 +43,6 @@ class Form_Post_Paid extends Form {
 			return;
 		}
 
-		// Validate Form Field Data.
-		$data = $this->process_data();
-
 		$sponsorship_id = isset( $_POST['ss_sponsorship_id'] ) ? absint( $_POST['ss_sponsorship_id'] ) : 0;
 
 		if ( ! $sponsorship_id ) {
@@ -57,6 +54,22 @@ class Form_Post_Paid extends Form {
 		if ( ! $sponsor_id ) {
 			ss_add_notice( __( 'No Sponsor.', 'simple-sponsorships' ), 'error' );
 		}
+
+		if ( isset( $_POST['ss_sponsor_delete_logo'] ) ) {
+			$sponsor = ss_get_sponsor( $sponsor_id );
+			$logo_id = $sponsor->get_data( '_thumbnail_id' );
+			if ( $logo_id ) {
+				$logo_delete = wp_delete_attachment( $logo_id, true );
+				if ( false !== $logo_delete ) {
+					$sponsor->delete_data( '_thumbnail_id' );
+					ss_add_notice( __( 'Logo Deleted.', 'simple-sponsorships' ), 'success' );
+				}
+			}
+			return;
+		}
+
+		// Validate Form Field Data.
+		$data = $this->process_data();
 
 		if ( $data && empty( ss_get_notices( 'error' ) ) ) {
 
