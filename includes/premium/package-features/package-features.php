@@ -11,6 +11,7 @@ namespace Simple_Sponsorships\Package_Features;
 use Simple_Sponsorships\DB\DB_Packages;
 use Simple_Sponsorships\DB\DB_Sponsorship_Items;
 use Simple_Sponsorships\Sponsorship;
+use Simple_Sponsorships\Templates;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	return;
@@ -26,8 +27,31 @@ class Plugin {
 		add_action( 'ss_package_updated', array( $this, 'save_package_features' ), 20, 2 );
 		add_action( 'ss_package_added', array( $this, 'save_package_features' ), 20, 2 );
 		add_action( 'ss_settings_field_package_features', array( $this, 'features_field' ) );
+		add_action( 'init', array( $this, 'register_shortcode' ) );
 	}
 
+	/**
+	 * Register the Shortcode
+	 */
+	public function register_shortcode() {
+		add_shortcode( 'ss_package_pricing_tables', array( $this, 'pricing_tables_shortcode' ) );
+	}
+
+	/**
+	 * Pricing Tables
+	 *
+	 * @param $atts
+	 */
+	public function pricing_tables_shortcode( $atts ) {
+		$atts = shortcode_atts( array(
+			'packages' => '',
+			'button'   => 1,
+		), $atts, 'ss_package_pricing_tables' );
+
+		ob_start();
+		Templates::get_template_part( 'shortcode/package-pricing-tables', null, $atts );
+		return ob_get_clean();
+	}
 
 	/**
 	 * Features Field

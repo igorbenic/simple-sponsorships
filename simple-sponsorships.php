@@ -228,7 +228,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			add_action( 'plugins_loaded', array( $this, 'run' ) );
 			add_action( 'init', array( $this, 'process_actions' ) );
 			add_action( 'init', array( '\Simple_Sponsorships\Installer', 'check_version' ), 5 );
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ), 20 );
 
 			add_action( 'ss_sponsorship_details', 'ss_sponsorship_details' );
 			add_action( 'ss_sponsorship_sponsor', 'ss_sponsorship_sponsor' );
@@ -250,8 +250,16 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 		 */
 		public function enqueue() {
 
-			wp_enqueue_style( 'ss-style', SS_PLUGIN_URL . '/assets/dist/css/public.css', array(), $this->version );
-			wp_enqueue_script( 'ss-script', SS_PLUGIN_URL . '/assets/dist/js/public.js', array( 'jquery' ), $this->version, true );
+			if ( ! wp_style_is( 'ss-style', 'registered' ) ) {
+				wp_register_style( 'ss-style', SS_PLUGIN_URL . '/assets/dist/css/public.css', array(), $this->version );
+			}
+
+			if ( ! wp_script_is( 'ss-script', 'registered' ) ) {
+				wp_register_script( 'ss-script', SS_PLUGIN_URL . '/assets/dist/js/public.js', array( 'jquery' ), $this->version, true );
+			}
+
+			wp_enqueue_style( 'ss-style' );
+			wp_enqueue_style( 'ss-script' );
 			wp_localize_script( 'ss-script', 'ss_wp', array(
 				'ajax'  => admin_url( 'admin-ajax.php' ),
 				'nonce' => wp_create_nonce( 'ss-ajax' )
@@ -319,6 +327,8 @@ if ( ss_fs()->is__premium_only() ) {
 		public function __construct() {
 			add_action( 'ss_plugin_loaded', array( $this, 'includes' ) );
 			add_filter( 'ss_template_paths', array( $this, 'premium_templates' ) );
+			add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_scripts' ), 10 );
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ), 10 );
 		}
 
 		/**
@@ -343,6 +353,24 @@ if ( ss_fs()->is__premium_only() ) {
 		public function premium_templates( $paths ) {
 			$paths[90] = SS_PLUGIN_PATH . '/includes/premium/templates';
 			return $paths;
+		}
+
+		/**
+		 * Enqueue premium scripts for block editor.
+		 */
+		public function enqueue_editor_scripts() {
+			wp_register_script(
+				'ss-block-js',
+				SS_PLUGIN_URL . '/assets/dist/js/premium/gutenberg.js',
+				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components', 'wp-editor', 'wp-compose' )
+			);
+		}
+
+		/**
+		 * Register premium styles.
+		 */
+		public function enqueue() {
+			wp_register_style( 'ss-style', SS_PLUGIN_URL . '/assets/dist/css/premium/public.css', array(), get_main()->version );
 		}
 	}
 

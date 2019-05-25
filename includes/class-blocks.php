@@ -16,7 +16,7 @@ class Blocks {
 	 * Blocks constructor.
 	 */
 	public function __construct() {
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue' ), 20 );
 		add_filter( 'block_categories', array( $this, 'add_block_category' ), 10 );
 		add_action( 'init', array( $this, 'register_blocks' ) );
 	}
@@ -138,11 +138,16 @@ class Blocks {
 	 * Enqueue Editor Assets for Blocks.
 	 */
 	public function enqueue() {
-		wp_enqueue_script(
-			'ss-block-js',
-			SS_PLUGIN_URL . '/assets/dist/js/gutenberg.js',
-			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components', 'wp-editor', 'wp-compose' )
-		);
+
+		if ( ! wp_script_is( 'ss-block-js', 'registered' ) ) {
+			wp_register_script(
+				'ss-block-js',
+				SS_PLUGIN_URL . '/assets/dist/js/gutenberg.js',
+				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components', 'wp-editor', 'wp-compose' )
+			);
+		}
+
+		wp_enqueue_script( 'ss-block-js' );
 		wp_localize_script( 'ss-block-js', 'ss_blocks', array(
 			'content_types' => \ss_get_content_types(),
 			'nonce'         => wp_create_nonce( 'ss-admin-nonce' ),

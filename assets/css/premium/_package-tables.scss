@@ -1,0 +1,64 @@
+.ss-packages-pricing-table {
+  display: flex;
+
+  .ss-package-table {
+    width: 100%;
+    padding: .5em;
+    background: rgba( 0, 0, 0, 0.05 );
+    margin: 0;
+    border: none;
+    border-radius: 5px;
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+
+    h2 {
+      background: $purple;
+      color: $white;
+      font-size: 1em;
+      font-weight: 600;
+      padding: 1em;
+      text-align: center;
+      margin: 0;
+      &:before,
+      &:after {
+        display: none;
+      }
+    }
+
+    .package-price {
+      text-align: center;
+      font-size: 1.25em;
+      background: white;
+    }
+
+    .package-features {
+      background: white;
+      list-style-type: none;
+      margin: 0;
+      padding: 1em;
+      font-size: 1em;
+
+      li {
+        font-size: 0.875em;
+        line-height: 1.5;
+        &:not(:last-child) {
+          padding-bottom: .5em;
+          margin-bottom: .5em;
+          border-bottom: 1px solid rgba( 0, 0, 0, 0.5 );
+        }
+      }
+    }
+
+    .package-action {
+      padding: 1em;
+      text-align: center;
+      background: $yellow;
+
+      .ss-button {
+        width: 100%;
+      }
+    }
+  }
+}

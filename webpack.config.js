@@ -118,7 +118,7 @@ module.exports = [
     Object.assign({
         entry: {
             'public': ['./assets/css/public.scss', './assets/js/public.js'],
-            'admin': ['./assets/css/admin.scss', './assets/js/admin.js'],
+            'admin': ['./assets/css/admin.scss', './assets/js/admin.js']
         },
         output: {
             path: path.join( __dirname, './assets/dist/' ),
@@ -129,7 +129,9 @@ module.exports = [
     Object.assign({
         entry: {
             'babel-polyfill': 'babel-polyfill',
-            'gutenberg': ['./assets/css/blocks.scss', './assets/js/blocks.js']
+            'gutenberg': ['./assets/css/blocks.scss', './assets/js/blocks.js'],
+            'premium/public': ['./assets/css/premium/public.scss', './assets/js/public.js'],
+            'premium/gutenberg' : './assets/js/premium/blocks.js'
         },
 
         // Tell webpack where to output.

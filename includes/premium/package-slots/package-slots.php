@@ -171,7 +171,7 @@ class Plugin {
 		if ( $slots ) {
 			$used_slots = $package->get_data( 'used_slots', 0 );
 
-			$title .= '(' . $used_slots . '/' . $slots . ')';
+			$title .= ' (' . $used_slots . '/' . $slots . ')';
 		}
 		return $title;
 	}
