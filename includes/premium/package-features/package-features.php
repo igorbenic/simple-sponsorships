@@ -46,6 +46,7 @@ class Plugin {
 		$atts = shortcode_atts( array(
 			'packages' => '',
 			'button'   => 1,
+			'col'      => 0,
 		), $atts, 'ss_package_pricing_tables' );
 
 		ob_start();

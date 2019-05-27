@@ -1,20 +1,44 @@
 .ss-col {
+  display: flex;
   display: grid;
+  flex-flow: row wrap;
+  justify-content: space-between;
   grid-template-columns: 1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 
   &.ss-col-2 {
+    .ss-col-item {
+      width: 48%;
+    }
     grid-template-columns: repeat( 2, 1fr );
   }
 
   &.ss-col-3 {
+    .ss-col-item {
+      width: 32%;
+    }
     grid-template-columns: repeat( 3, 1fr );
   }
 
   &.ss-col-4 {
+    .ss-col-item {
+      width: 24%;
+    }
     grid-template-columns: repeat( 4, 1fr );
   }
 
   &.ss-col-5 {
+    .ss-col-item {
+      width: 19%;
+    }
     grid-template-columns: repeat( 5, 1fr );
+  }
+
+  @supports (display: grid) {
+    > .ss-col-item {
+      width: 100% !important;
+      margin-bottom: 0px !important; // We are using the grid gap.
+    }
   }
 }

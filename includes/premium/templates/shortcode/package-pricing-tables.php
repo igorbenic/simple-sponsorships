@@ -9,8 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $id       = isset( $args['id'] ) ? absint( $args['id'] ) : 0;
 $button   = isset( $args['button'] ) ? absint( $args['button'] ) : 0;
-$heading = isset( $args['heading'] ) ? $args['heading'] : 'h2';
-
+$heading  = isset( $args['heading'] ) ? $args['heading'] : 'h2';
+$col      = isset( $args['col'] ) && absint( $args['col'] ) ? absint( $args['col'] ) : 0;
 $packages = array();
 
 if ( ! $id ) {
@@ -37,8 +37,14 @@ if ( $button ) {
 	}
 }
 
+$col_class = '';
+
+if ( $col ) {
+    $col_class = 'ss-col ss-col-' . $col;
+}
+
 ?>
-<div class="simple-sponsorships ss-packages-pricing-table">
+<div class="simple-sponsorships ss-packages-pricing-table <?php echo esc_attr( $col_class ); ?>">
 	<?php
 	foreach ( $packages as $package ) {
 		$features = $package->get_data('features', array() );
@@ -49,7 +55,7 @@ if ( $button ) {
 			unset( $features['package'] );
 		}
 		?>
-		<div class="ss-package ss-package-table">
+		<div class="ss-package ss-package-table ss-col-item">
 			<?php
 			echo '<' . $heading . '>' . $package->get_title() . '</' . $heading . '>';
             echo '<div class="package-price">' . $package->get_price_formatted() . '</div>';

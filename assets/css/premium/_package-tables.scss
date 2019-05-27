@@ -1,17 +1,15 @@
 .ss-packages-pricing-table {
-  display: flex;
+  //display: flex;
 
   .ss-package-table {
     width: 100%;
     padding: .5em;
     background: rgba( 0, 0, 0, 0.05 );
-    margin: 0;
+    margin: 0 0 20px 0;
     border: none;
     border-radius: 5px;
-
-    &:not(:last-child) {
-      margin-right: 10px;
-    }
+    display: flex;
+    flex-direction: column;
 
     h2 {
       background: $purple;
@@ -34,6 +32,7 @@
     }
 
     .package-features {
+      height: 100%;
       background: white;
       list-style-type: none;
       margin: 0;

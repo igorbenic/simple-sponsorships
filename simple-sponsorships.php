@@ -9,7 +9,7 @@
  * Domain Path:     /languages
  * Version:         1.1.0
  *
- * @fs_premium_only /includes/premium/
+ * @fs_premium_only /includes/premium/, /assets/css/premium/, /assets/js/premium/, /assets/dist/css/premium/, /assets/dist/js/premium/
  * @package         Simple_Sponsorships
  */
 
