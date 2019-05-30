@@ -131,7 +131,7 @@ module.exports = [
             'babel-polyfill': 'babel-polyfill',
             'gutenberg': ['./assets/css/blocks.scss', './assets/js/blocks.js'],
             'premium/public': ['./assets/css/premium/public.scss', './assets/js/public.js'],
-            'premium/gutenberg' : './assets/js/premium/blocks.js'
+            'premium/gutenberg' : ['./assets/js/premium/blocks.js', './assets/css/premium/editor.scss' ]
         },
 
         // Tell webpack where to output.

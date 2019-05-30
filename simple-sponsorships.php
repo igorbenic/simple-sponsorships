@@ -364,6 +364,11 @@ if ( ss_fs()->is__premium_only() ) {
 				SS_PLUGIN_URL . '/assets/dist/js/premium/gutenberg.js',
 				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components', 'wp-editor', 'wp-compose' )
 			);
+
+			wp_register_style(
+				'ss-block-css',
+				SS_PLUGIN_URL . '/assets/dist/css/premium/gutenberg.css'
+			);
 		}
 
 		/**

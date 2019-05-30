@@ -35,6 +35,28 @@ class Plugin {
 	 */
 	public function register_shortcode() {
 		add_shortcode( 'ss_package_pricing_tables', array( $this, 'pricing_tables_shortcode' ) );
+
+		if ( ! function_exists( 'register_block_type' ) ) {
+			return;
+		}
+
+		register_block_type( 'simple-sponsorships/package-pricing-tables', [
+			'render_callback' => array( $this, 'pricing_tables_shortcode' ),
+			'attributes'      => [
+				'packages' => [
+					'default' => '0',
+					'type'    => 'string'
+				],
+				'button' => [
+					'type' => 'string',
+					'default' => '0'
+				],
+				'col' => [
+					'type' => 'number',
+					'default' => 2
+				]
+			]
+		] );
 	}
 
 	/**
