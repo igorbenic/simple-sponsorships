@@ -57,6 +57,13 @@
 
       .ss-button {
         width: 100%;
+
+        &:hover,
+        &:active,
+        &:focus {
+          color: $purple;
+          background: #fff;
+        }
       }
     }
   }

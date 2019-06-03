@@ -7,12 +7,19 @@
     color: $white;
     border-radius: 5px;
     height: auto;
+    text-decoration: none !important;
 
     &:hover,
     &:active,
     &:focus {
       color: $purple;
       background: $yellow;
+    }
+
+    &.disabled,
+    &[disabled] {
+      pointer-events:none;
+      background: lighten($purple, 10);
     }
   }
 }

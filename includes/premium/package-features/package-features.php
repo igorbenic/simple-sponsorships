@@ -51,6 +51,10 @@ class Plugin {
 					'type' => 'string',
 					'default' => '0'
 				],
+				'id' => [
+					'type' => 'string',
+					'default' => '0'
+				],
 				'col' => [
 					'type' => 'number',
 					'default' => 2
@@ -69,6 +73,7 @@ class Plugin {
 			'packages' => '',
 			'button'   => 1,
 			'col'      => 0,
+			'id'       => 0,
 		), $atts, 'ss_package_pricing_tables' );
 
 		ob_start();

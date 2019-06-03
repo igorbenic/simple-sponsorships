@@ -9,14 +9,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $id       = isset( $args['id'] ) ? absint( $args['id'] ) : 0;
 $button   = isset( $args['button'] ) ? absint( $args['button'] ) : 0;
+$ids      = isset( $args['packages'] ) ? $args['packages'] : '';
 $heading  = isset( $args['heading'] ) ? $args['heading'] : 'h2';
 $col      = isset( $args['col'] ) && absint( $args['col'] ) ? absint( $args['col'] ) : 0;
 $packages = array();
+
+if ( $ids && ! is_array( $ids ) ) {
+    $ids = array_map( 'trim', explode( ',', $ids ) );
+
+    if ( 1 == count( $ids ) ) {
+        $id = $ids[0];
+    }
+}
 
 if ( ! $id ) {
 	$db_packages = ss_get_packages();
 	if ( $db_packages ) {
 		foreach ( $db_packages as $package ) {
+		    if ( $ids && ! in_array( $package['ID'], $ids ) ) {
+		        continue;
+            }
 			$packages[] = ss_get_package( $package['ID'] );
 		}
 	}
@@ -76,7 +88,7 @@ if ( $col ) {
 			if ( $button && $sponsor_page ) {
 				$disabled = $package->is_available() ? '' : 'disabled=disabled';
 				$link = add_query_arg( 'package', $package->get_data('id'), $sponsor_page );
-				echo '<div class="package-action"><a href="' . esc_attr( $link ) . '" class="button ss-button" ' . $disabled . '>';
+				echo '<div class="package-action"><a href="' . esc_attr( $link ) . '" class="ss-button" ' . $disabled . '>';
 				echo __( 'Sponsor', 'simple-sponsorships' );
 				echo '</a></div>';
 			}
