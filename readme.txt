@@ -145,7 +145,7 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 = 1.1.0 - 2019-06-02 =
 * Fix: Package Meta Table was not Installing
 * Fix: Error in JavaScript for Blocks where it was using the JavaScript object used elsewhere
-* New: Each Sponsor Form can display different packages to choose from.
+* New: Each Sponsor Form can display different packages to choose from using the attribute packages.
 * New: (Premium) Sponsors can edit their information and upload an image once the Sponsorship is paid.
 * New: (Platinum) Package Features (list) and Package Pricing Tables (block and shortcode).
 
