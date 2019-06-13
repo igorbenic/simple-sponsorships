@@ -36,7 +36,7 @@ $form = new Form_Payment();
 do_action( 'ss_before_payment_form' );
 
 ?>
-    <form class="ss-sponsor-form" method="POST" action="">
+    <form class="ss-payment-form" method="POST" action="">
 		<?php
 		do_action( 'ss_before_payment_form_fields' );
 

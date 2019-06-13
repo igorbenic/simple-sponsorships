@@ -259,7 +259,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			}
 
 			wp_enqueue_style( 'ss-style' );
-			wp_enqueue_style( 'ss-script' );
+			wp_enqueue_script( 'ss-script' );
 			wp_localize_script( 'ss-script', 'ss_wp', array(
 				'ajax'  => admin_url( 'admin-ajax.php' ),
 				'nonce' => wp_create_nonce( 'ss-ajax' )
@@ -337,6 +337,7 @@ if ( ss_fs()->is__premium_only() ) {
 		public function includes() {
 			include_once 'includes/premium/package-slots/package-slots.php';
 			include_once 'includes/premium/post-paid-form/post-paid-form.php';
+			include_once 'includes/premium/stripe-gateway/stripe-gateway.php';
 
 			if ( ss_fs()->is_plan( 'platinum' ) ) {
 				include_once 'includes/premium/package-features/package-features.php';
