@@ -34,6 +34,25 @@ class Plugin {
 	 */
 	public function confirm_payment() {
 		$intent = false;
+		$sponsorship_id = isset( $_REQUEST['sponsorship_id'] ) ? absint( $_REQUEST['sponsorship_id'] ) : false;
+
+		if ( ! $sponsorship_id ) {
+			wp_send_json_error( __( 'No Sponsorship Provided for payment', 'simple-sponsorships-premium' ) );
+			wp_die();
+		}
+
+		$sponsorship = ss_get_sponsorship( $sponsorship_id );
+
+		if ( ! $sponsorship ) {
+			wp_send_json_error( __( 'Sponsorship does not exist.', 'simple-sponsorships-premium' ) );
+			wp_die();
+		}
+
+		if ( $sponsorship->is_status( 'paid' ) ) {
+			wp_send_json_error( __( 'Sponsorship was already paid.', 'simple-sponsorships-premium' ) );
+			wp_die();
+		}
+
 		if ( isset( $_REQUEST['payment_method_id'] ) ) {
 			$intent = Stripe_API::request(
 				[
@@ -63,7 +82,8 @@ class Plugin {
 		}
 
 		if ( false !== $intent ) {
-			if ( $intent->status == 'requires_source_action' &&
+			$sponsorship->update_data( '_stripe_payment_intent', $intent->id );
+			if ( $intent->status == 'requires_action' &&
 			     $intent->next_action->type == 'use_stripe_sdk'
 			) {
 				wp_send_json_success([

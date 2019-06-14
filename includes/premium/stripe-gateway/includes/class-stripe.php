@@ -3,6 +3,7 @@
  * Stripe implementation
  */
 namespace Simple_Sponsorships\Gateways;
+use Simple_Sponsorships\Stripe\Stripe_API;
 
 /**
  * Class Stripe
@@ -63,7 +64,10 @@ class Stripe extends Payment_Gateway {
 	public function payment_fields() {
 		parent::payment_fields();
 		?>
-		<input id="cardholder-name" type="text" />
+        <div class="ss-form-field ss-form-field-text">
+            <label for="stripe-cardholder-name"><?php esc_html_e( 'Cardholder Name', 'simple-sponsorships-premium' ); ?></label>
+            <input id="stripe-cardholder-name" type="text" placeholder="<?php esc_attr_e( 'Cardholder Name', 'simple-sponsorships-premium' ); ?>" />
+        </div>
 		<!-- placeholder for Elements -->
 		<div id="ss-stripe-card-element"></div>
 		<?php
@@ -84,6 +88,27 @@ class Stripe extends Payment_Gateway {
 	 * @return array
 	 */
 	public function process_payment( $sponsorship ) {
+
+	    $payment_intent_id = $sponsorship->get_data( '_stripe_payment_intent', false );
+
+	    if ( false === $payment_intent_id ) {
+		    return new \WP_Error( 'no-stripe-intent', __( 'No Payment Intent information from Stripe', 'simple-sponsorships-premium' ) );
+        }
+
+        $payment_intent = Stripe_API::request( [], 'payment_intents/' .$payment_intent_id, 'GET' );
+
+	    if ( ! $payment_intent ) {
+		    return new \WP_Error( 'no-stripe-intent', __( 'No Payment Intent information from Stripe', 'simple-sponsorships-premium' ) );
+	    }
+
+	    if ( is_wp_error( $payment_intent ) ) {
+	        return $payment_intent;
+        }
+
+        if ( 'succeeded' !== $payment_intent->status ) {
+	        return new \WP_Error( 'stripe-status', __( 'Waiting on Payment to succeed', 'simple-sponsorships-premium' ) );
+        }
+
         $sponsorship->set_status( 'paid' );
 
 		return array(

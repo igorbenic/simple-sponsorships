@@ -7,24 +7,63 @@
     display: block;
     background: $white;
     border: 1px solid darken( $white, 20 );
-    padding: 10px 10px 10px 30px;
     position: relative;
-    height: 50px;
+    min-height: 50px;
     line-height: 30px;
+
+    &:not(:first-child) {
+      border-top: 0;
+    }
 
     input[name=payment_method] {
       position: absolute;
       left: 10px;
-      top: 0;
-      bottom: 0;
-      margin: auto;
+      top: 15px;
+      margin: 0;
     }
 
-    label {
+    > label {
+      padding: 10px 10px 10px 30px;
       display: block;
       margin: 0;
       width: 100%;
       cursor: pointer;
     }
+
+    .payment_box {
+      line-height: 1.5;
+      font-size: 0.875em;
+      padding: 1em;
+      background: rgba( 0, 0, 0, 0.05 );
+    }
   }
+}
+
+.StripeElement {
+  margin-top: 1em;
+  box-sizing: border-box;
+
+  height: 40px;
+
+  padding: 10px 12px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: white;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
 }
