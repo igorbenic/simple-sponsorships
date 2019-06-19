@@ -41,7 +41,7 @@ msgstr ""
 msgid "Please select a package."
 msgstr ""
 
-#: includes/class-blocks.php:131, includes/integrations/gravityforms/includes/class-packages-field.php:70
+#: includes/class-blocks.php:153, includes/integrations/gravityforms/includes/class-packages-field.php:70
 msgid "Simple Sponsorships"
 msgstr ""
 
