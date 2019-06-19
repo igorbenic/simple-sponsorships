@@ -40,7 +40,7 @@ do_action( 'ss_before_post_paid_form' );
         <input type="hidden" name="ss_sponsor_id" value="<?php echo esc_attr( $sponsor->get_id() ); ?>" />
 
         <button type="submit" name="ss_sponsor_form_submit" class="button ss-button">
-			<?php esc_html_e( 'Update', 'simple-sponsorships' ); ?>
+			<?php esc_html_e( 'Update', 'simple-sponsorships-premium' ); ?>
 		</button>
 	</form>
 <?php

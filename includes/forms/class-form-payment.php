@@ -43,11 +43,17 @@ class Form_Payment extends Form {
 
 			$response = $gateway->process_payment( $sponsorship );
 
+			if ( is_wp_error( $response ) ) {
+				ss_add_notice( $response->get_error_message(), 'error' );
+				return;
+			}
 			if ( 'success' === $response['result'] ) {
 				if ( $response['redirect'] ) {
 					wp_redirect( $response['redirect'] );
 					exit;
 				}
+			} elseif ( isset( $response['message'] ) ) {
+				ss_add_notice( $response['message'], 'error' );
 			}
 		}
 	}

@@ -20,5 +20,9 @@ window.ssponsorships = window.ssponsorships || {};
         if ( $( '.ss-colorpicker' ).length ) {
             $( '.ss-colorpicker' ).wpColorPicker();
         }
+
+        if ( $( '.ss-datepicker' ).length ) {
+            $( '.ss-datepicker' ).datepicker({ dateFormat: 'yy-mm-dd' });
+        }
     });
 })(jQuery);

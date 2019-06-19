@@ -371,6 +371,14 @@ function ss_after_sponsor_form_fields_content_id() {
 	        return;
         }
 
+		$availability = get_post_meta( $content_id, '_ss_availability', true );
+		if ( $availability && $availability > 0 ) {
+			$sponsors = ss_get_sponsors_for_content( $content_id );
+			if ( $sponsors && count( $sponsors ) >= $availability ) {
+				return;
+			}
+		}
+
         setup_postdata( $post );
 		?>
         <div class="ss-form-sponsor-content-container">

@@ -67,7 +67,7 @@ class Plugin {
 		if ( $args['value'] ) {
 			$html .= wp_get_attachment_image( $args['value'], 'full' );
 			if ( $can_delete_logo ) {
-				$html .= '<button type="submit" name="ss_sponsor_delete_logo">' . __( 'Delete Logo', 'simple-sponsorships' ) . '</button>';
+				$html .= '<button type="submit" name="ss_sponsor_delete_logo">' . __( 'Delete Logo', 'simple-sponsorships-premium' ) . '</button>';
 			} elseif ( $can_replace_logo ) {
 				$html .= '<input type="file" ' . $required . ' class="ss-file-input" name="' . esc_attr( $name ) . '_file" />';
 			}
@@ -113,17 +113,17 @@ class Plugin {
 			if ( 'show_content_placeholder' === $settings_id ) {
 				$new_main['allow_sponsors_logo_replace'] = array(
 					'id'      => 'allow_sponsors_logo_replace',
-					'label'   => __( 'Sponsors Logo Replace', 'simple-sponsorships' ),
+					'label'   => __( 'Sponsors Logo Replace', 'simple-sponsorships-premium' ),
 					'type'    => 'checkbox',
-					'desc'    => __( 'If checked, it will allow sponsors to replace their logo.', 'simple-sponsorships' ),
+					'desc'    => __( 'If checked, it will allow sponsors to replace their logo.', 'simple-sponsorships-premium' ),
 					'default' => '0'
 				);
 
 				$new_main['allow_sponsors_logo_delete'] = array(
 					'id'      => 'allow_sponsors_logo_delete',
-					'label'   => __( 'Sponsors Logo Delete', 'simple-sponsorships' ),
+					'label'   => __( 'Sponsors Logo Delete', 'simple-sponsorships-premium' ),
 					'type'    => 'checkbox',
-					'desc'    => __( 'If checked, it will allow sponsors to delete their logo and it will delete the logo from your site.', 'simple-sponsorships' ),
+					'desc'    => __( 'If checked, it will allow sponsors to delete their logo and it will delete the logo from your site.', 'simple-sponsorships-premium' ),
 					'default' => '0'
 				);
 			}

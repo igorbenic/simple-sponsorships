@@ -1,0 +1,206 @@
+# Copyright (C) 2019 simple-sponsorships
+# This file is distributed under the same license as the simple-sponsorships package.
+msgid ""
+msgstr ""
+"Project-Id-Version: simple-sponsorships\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/premium/package-features/package-features.php:113
+msgid "Includes Features from: "
+msgstr ""
+
+#: includes/premium/package-features/package-features.php:115
+msgid "No Package"
+msgstr ""
+
+#: includes/premium/package-features/package-features.php:131
+msgid "Move Feature Up or Down"
+msgstr ""
+
+#: includes/premium/package-features/package-features.php:140
+msgid "Add Feature"
+msgstr ""
+
+#: includes/premium/package-features/package-features.php:156
+msgid "Features"
+msgstr ""
+
+#: includes/premium/package-features/package-features.php:159
+msgid "List package features."
+msgstr ""
+
+#: includes/premium/package-slots/package-slots.php:44
+msgid "Slots"
+msgstr ""
+
+#: includes/premium/package-slots/package-slots.php:47
+msgid "How many slots does this package have? If 0 or empty, unlimited."
+msgstr ""
+
+#: includes/premium/package-slots/package-slots.php:53
+msgid "Used Slots"
+msgstr ""
+
+#: includes/premium/package-slots/package-slots.php:56
+msgid "How many slots have already been used? This will be also updated automatically."
+msgstr ""
+
+#: includes/premium/package-timed-availability/package-timed-availability.php:60
+msgid "From"
+msgstr ""
+
+#: includes/premium/package-timed-availability/package-timed-availability.php:61
+msgid "Leave empty to make it available from any date."
+msgstr ""
+
+#: includes/premium/package-timed-availability/package-timed-availability.php:66
+msgid "To"
+msgstr ""
+
+#: includes/premium/package-timed-availability/package-timed-availability.php:67
+msgid "Leave empty to make it available until any date."
+msgstr ""
+
+#: includes/premium/package-timed-availability/package-timed-availability.php:83
+msgid "Availability"
+msgstr ""
+
+#: includes/premium/package-timed-availability/package-timed-availability.php:86
+msgid "From when is this package available"
+msgstr ""
+
+#: includes/premium/post-paid-form/post-paid-form.php:70
+msgid "Delete Logo"
+msgstr ""
+
+#: includes/premium/post-paid-form/post-paid-form.php:116
+msgid "Sponsors Logo Replace"
+msgstr ""
+
+#: includes/premium/post-paid-form/post-paid-form.php:118
+msgid "If checked, it will allow sponsors to replace their logo."
+msgstr ""
+
+#: includes/premium/post-paid-form/post-paid-form.php:124
+msgid "Sponsors Logo Delete"
+msgstr ""
+
+#: includes/premium/post-paid-form/post-paid-form.php:126
+msgid "If checked, it will allow sponsors to delete their logo and it will delete the logo from your site."
+msgstr ""
+
+#: includes/premium/stripe-gateway/stripe-gateway.php:40
+msgid "No Sponsorship Provided for payment"
+msgstr ""
+
+#: includes/premium/stripe-gateway/stripe-gateway.php:47
+msgid "Sponsorship does not exist."
+msgstr ""
+
+#: includes/premium/stripe-gateway/stripe-gateway.php:52
+msgid "Sponsorship was already paid."
+msgstr ""
+
+#: includes/premium/templates/post-paid-form.php:43
+msgid "Update"
+msgstr ""
+
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:42
+msgid "Something went wrong. Try again later."
+msgstr ""
+
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:49
+msgid "No Sponsorship."
+msgstr ""
+
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:55
+msgid "No Sponsor."
+msgstr ""
+
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:65
+msgid "Logo Deleted."
+msgstr ""
+
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:105
+msgid "Name"
+msgstr ""
+
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:110
+msgid "Email"
+msgstr ""
+
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:115
+msgid "Website"
+msgstr ""
+
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:120
+msgid "Post Content"
+msgstr ""
+
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:125
+msgid "Logo"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe-api.php:114
+msgid "There was an error. Stripe did not return any information."
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:19, includes/premium/stripe-gateway/includes/class-stripe.php:20
+msgid "Stripe"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:40
+msgid "Public Key"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:42
+msgid "Your Stripe Public Key"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:47
+msgid "Secret Key"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:49
+msgid "Your Stripe Secret Key"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:54
+msgid "Mode"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:57
+msgid "Sandbox"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:58
+msgid "Live"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:68, includes/premium/stripe-gateway/includes/class-stripe.php:69
+msgid "Cardholder Name"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:95, includes/premium/stripe-gateway/includes/class-stripe.php:101
+msgid "No Payment Intent information from Stripe"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:109
+msgid "Waiting on Payment to succeed"
+msgstr ""
+
+#: includes/premium/templates/shortcode/package-pricing-tables.php:65
+msgid "All in %s"
+msgstr ""
+
+#: includes/premium/templates/shortcode/package-pricing-tables.php:92
+msgid "Sponsor"
+msgstr ""

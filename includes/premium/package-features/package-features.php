@@ -110,9 +110,9 @@ class Plugin {
 		if ( $package_options ) {
 			$package_selected = isset( $args['value'] ) && is_array( $args['value'] ) && isset( $args['value']['package'] ) ? absint( $args['value']['package'] ) : 0;
 			$html .= '<div class="ss-package-feature">';
-			$html .= '<label for="includes_package_feature">' . __( 'Includes Features from: ', 'simple-sponsorships' ) . '</label>';
+			$html .= '<label for="includes_package_feature">' . __( 'Includes Features from: ', 'simple-sponsorships-premium' ) . '</label>';
 			$html .= '<select class="widefat" id="includes_package_feature" name="' . esc_attr( $name ) . '[package]">';
-			$html .= '<option value="0">' . esc_html__( 'No Package', 'simple-sponsorships' ) . '</option>';
+			$html .= '<option value="0">' . esc_html__( 'No Package', 'simple-sponsorships-premium' ) . '</option>';
 			foreach ( $package_options as $package_id => $package_title ) {
 				$html .= '<option ' . selected( $package_id, $package_selected, false ) . ' value="' . esc_attr( $package_id ) . '">' . esc_html( $package_title ) . '</option>';
 			}
@@ -128,7 +128,7 @@ class Plugin {
 				$html .= '<button type="button" class="button button-secondary button-small ss-button-action" data-success="removePackageFeature">x</button>';
 
 				if ( $features_count > 1 ) {
-					$html .= '<span type="button" class="button button-secondary button-small ss-sortable-handle" aria-label="' . esc_attr__( 'Move Feature Up or Down', 'simple-sponsorships' ) . '"><span class=" dashicons dashicons-sort"></span></span>';
+					$html .= '<span type="button" class="button button-secondary button-small ss-sortable-handle" aria-label="' . esc_attr__( 'Move Feature Up or Down', 'simple-sponsorships-premium' ) . '"><span class=" dashicons dashicons-sort"></span></span>';
 				}
 				$html .= '</div>';
 			}
@@ -137,7 +137,7 @@ class Plugin {
 		$html .= '<div class="ss-package-feature" id="ss_package_feature_template">';
 		$html .= '<input type="text" class="widefat" name="' . esc_attr( $name ) . '[]" />';
 		$html .= '</div>';
-		$html .= '<button type="button" class="button button-secondary ss-button-action" data-success="addPackageFeature">' . esc_attr__( 'Add Feature', 'simple-sponsorships' ) . '</button>';
+		$html .= '<button type="button" class="button button-secondary ss-button-action" data-success="addPackageFeature">' . esc_attr__( 'Add Feature', 'simple-sponsorships-premium' ) . '</button>';
 		$html .= '<p class="description">' . $args['desc'] . '</p>';
 
 
@@ -153,10 +153,10 @@ class Plugin {
 		$fields['features'] = array(
 			'id'          => 'features',
 			'type'        => 'package_features',
-			'title'       => __( 'Features', 'simple-sponsorships' ),
+			'title'       => __( 'Features', 'simple-sponsorships-premium' ),
 			'field_class' => 'widefat',
 			'default'     => array(),
-			'desc'        => __( 'List package features.', 'simple-sponsorships' ),
+			'desc'        => __( 'List package features.', 'simple-sponsorships-premium' ),
 		);
 
 		return $fields;

@@ -41,19 +41,19 @@ class Plugin {
 		$fields['slots'] = array(
 			'id' => 'slots',
 			'type' => 'number',
-			'title' => __( 'Slots', 'simple-sponsorships' ),
+			'title' => __( 'Slots', 'simple-sponsorships-premium' ),
 			'field_class' => 'widefat',
 			'default' => 0,
-			'desc' => __( 'How many slots does this package have? If 0 or empty, unlimited.', 'simple-sponsorships' ),
+			'desc' => __( 'How many slots does this package have? If 0 or empty, unlimited.', 'simple-sponsorships-premium' ),
 		);
 
 		$fields['used_slots'] = array(
 			'id' => 'used_slots',
 			'type' => 'number',
-			'title' => __( 'Used Slots', 'simple-sponsorships' ),
+			'title' => __( 'Used Slots', 'simple-sponsorships-premium' ),
 			'field_class' => 'widefat',
 			'default' => 0,
-			'desc' => __( 'How many slots have already been used? This will be also updated automatically.', 'simple-sponsorships' ),
+			'desc' => __( 'How many slots have already been used? This will be also updated automatically.', 'simple-sponsorships-premium' ),
 		);
 		return $fields;
 	}
