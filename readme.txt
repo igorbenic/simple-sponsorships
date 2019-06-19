@@ -142,8 +142,9 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 
 == Changelog ==
 
-= 1.2.0 - TBD =
+= 1.2.0 - 2019-06-19 =
 * New: Content Availability - Set how much a content can have sponsors.
+* New: Sponsor Form available as a Block.
 * New: Sponsors Widget can also display a description.
 * New: (Premium) Stripe Payment Gateway
 * New: (Platinum) Package Timed Availability - Set the date range when the package is available.
