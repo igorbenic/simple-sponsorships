@@ -99,7 +99,8 @@ class Admin {
 				wp_enqueue_script( 'wp-color-picker' );
 			}
 
-			wp_enqueue_script( 'ss-admin-js', SS_PLUGIN_URL . '/assets/dist/js/admin.js', array( 'jquery', 'wp-util', 'jquery-ui-sortable' ), SS_VERSION, true );
+			wp_enqueue_script( 'ss-admin-js', SS_PLUGIN_URL . '/assets/dist/js/admin.js', array( 'jquery', 'wp-util', 'jquery-ui-sortable', 'jquery-ui-datepicker' ), SS_VERSION, true );
+			wp_enqueue_style( 'ss-ui-datepicker-style' , '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css');
 			wp_localize_script( 'ss-admin-js', 'ss_admin', apply_filters( 'ss_admin_localize_script', array(
 				'nonce' => wp_create_nonce( 'ss-admin-nonce' ),
 				'ajax'  => admin_url( 'admin-ajax.php' ),

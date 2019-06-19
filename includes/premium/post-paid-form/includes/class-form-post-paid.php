@@ -39,20 +39,20 @@ class Form_Post_Paid extends Form {
 
 		if ( ! isset( $_POST['ss_post_paid_form_nonce'] )
 			|| ! wp_verify_nonce( $_POST['ss_post_paid_form_nonce'], 'ss_post_paid_form' ) ) {
-			ss_add_notice( __( 'Something went wrong. Try again later.', 'simple-sponsorships' ), 'error' );
+			ss_add_notice( __( 'Something went wrong. Try again later.', 'simple-sponsorships-premium' ), 'error' );
 			return;
 		}
 
 		$sponsorship_id = isset( $_POST['ss_sponsorship_id'] ) ? absint( $_POST['ss_sponsorship_id'] ) : 0;
 
 		if ( ! $sponsorship_id ) {
-			ss_add_notice( __( 'No Sponsorship.', 'simple-sponsorships' ), 'error' );
+			ss_add_notice( __( 'No Sponsorship.', 'simple-sponsorships-premium' ), 'error' );
 		}
 
 		$sponsor_id = isset( $_POST['ss_sponsor_id'] ) ? absint( $_POST['ss_sponsor_id'] ) : 0;
 
 		if ( ! $sponsor_id ) {
-			ss_add_notice( __( 'No Sponsor.', 'simple-sponsorships' ), 'error' );
+			ss_add_notice( __( 'No Sponsor.', 'simple-sponsorships-premium' ), 'error' );
 		}
 
 		if ( isset( $_POST['ss_sponsor_delete_logo'] ) ) {
@@ -62,7 +62,7 @@ class Form_Post_Paid extends Form {
 				$logo_delete = wp_delete_attachment( $logo_id, true );
 				if ( false !== $logo_delete ) {
 					$sponsor->delete_data( '_thumbnail_id' );
-					ss_add_notice( __( 'Logo Deleted.', 'simple-sponsorships' ), 'success' );
+					ss_add_notice( __( 'Logo Deleted.', 'simple-sponsorships-premium' ), 'success' );
 				}
 			}
 			return;
@@ -102,27 +102,27 @@ class Form_Post_Paid extends Form {
 
 		$fields = array(
 			'post_title' => array(
-				'title'    => __( 'Name', 'simple-sponsorships' ),
+				'title'    => __( 'Name', 'simple-sponsorships-premium' ),
 				'type'     => 'text',
 				'required' => true,
 			),
 			'_email' => array(
-				'title'    => __( 'Email', 'simple-sponsorships' ),
+				'title'    => __( 'Email', 'simple-sponsorships-premium' ),
 				'type'     => 'text',
 				'required' => true,
 			),
 			'_website' => array(
-				'title'    => __( 'Website', 'simple-sponsorships' ),
+				'title'    => __( 'Website', 'simple-sponsorships-premium' ),
 				'type'     => 'text',
 				'required' => true,
 			),
 			'post_content' => array(
-				'title'    => __( 'Post Content', 'simple-sponsorships' ),
+				'title'    => __( 'Post Content', 'simple-sponsorships-premium' ),
 				'type'     => 'textarea',
 				'required' => false,
 			),
 			'_thumbnail_id' => array(
-				'title'    => __( 'Logo', 'simple-sponsorships' ),
+				'title'    => __( 'Logo', 'simple-sponsorships-premium' ),
 				'type'     => 'sponsor_logo',
 				'required' => false,
 			),

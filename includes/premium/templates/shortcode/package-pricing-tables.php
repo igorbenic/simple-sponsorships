@@ -62,7 +62,7 @@ if ( $col ) {
 		$features = $package->get_data('features', array() );
 		if ( isset( $features['package'] ) && absint( $features['package'] ) ) {
 			$feature_package = ss_get_package( $features['package'], false );
-			$features['package'] = sprintf( __( 'All in %s', 'simple-sponsorships' ), $feature_package->get_data('title' ) );
+			$features['package'] = sprintf( __( 'All in %s', 'simple-sponsorships-premium' ), $feature_package->get_data('title' ) );
 		} else {
 			unset( $features['package'] );
 		}
@@ -89,7 +89,7 @@ if ( $col ) {
 				$disabled = $package->is_available() ? '' : 'disabled=disabled';
 				$link = add_query_arg( 'package', $package->get_data('id'), $sponsor_page );
 				echo '<div class="package-action"><a href="' . esc_attr( $link ) . '" class="ss-button" ' . $disabled . '>';
-				echo __( 'Sponsor', 'simple-sponsorships' );
+				echo __( 'Sponsor', 'simple-sponsorships-premium' );
 				echo '</a></div>';
 			}
 			?>

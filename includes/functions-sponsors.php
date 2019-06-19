@@ -210,6 +210,14 @@ function ss_show_sponsors_under_content( $content ) {
 					return $content;
 				}
 
+				$availability = get_post_meta( $content_id, '_ss_availability', true );
+                if ( $availability && $availability > 0 ) {
+	                $sponsors = $sponsors ? $sponsors : ss_get_sponsors_for_content( $content_id );
+	                if ( $sponsors && count( $sponsors ) >= $availability ) {
+	                    return $content;
+                    }
+                }
+
 				$sponsorship_page = add_query_arg( 'ss_content_id', $content_id, $sponsorship_page );
 				$placeholder_svg  = \Simple_Sponsorships\Templates::get_file_contents( trailingslashit( SS_PLUGIN_PATH ) . 'assets/images/svg/id-user.svg', 'placeholder-image' );
 				ob_start();

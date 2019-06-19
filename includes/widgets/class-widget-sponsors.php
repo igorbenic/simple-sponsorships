@@ -37,6 +37,7 @@ class Widget_Sponsors extends \WP_Widget {
 		$show_sponsors = ! empty( $instance['sponsors'] ) ? $instance['sponsors'] : 'active';
 		$logo          = ! isset( $instance['logo'] ) ? '1' : $instance['logo'];
 		$only_logo     = ! isset( $instance['only_logo'] ) ? '0' : $instance['only_logo'];
+		$text          = ! isset( $instance['text'] ) ? '0' : $instance['text'];
 		$sponsors      = array();
 
 		if ( 'active' === $show_sponsors ) {
@@ -60,7 +61,7 @@ class Widget_Sponsors extends \WP_Widget {
 		foreach ( $sponsors as $sponsor ) {
 			$_sponsor = new Sponsor( 0 );
 			$_sponsor->populate_from_post( $sponsor );
-			Templates::get_template_part( 'widgets/sponsor', null, array( 'sponsor' => $_sponsor, 'show_logo' => $logo, 'only_logo' => $only_logo ) );
+			Templates::get_template_part( 'widgets/sponsor', null, array( 'sponsor' => $_sponsor, 'show_logo' => $logo, 'only_logo' => $only_logo, 'text' => $text ) );
 		}
 		echo $args['after_widget'];
 	}
@@ -75,6 +76,7 @@ class Widget_Sponsors extends \WP_Widget {
 		$sponsors  = ! empty( $instance['sponsors'] ) ? $instance['sponsors'] : 'active';
 		$logo      = ! isset( $instance['logo'] ) ? '1' : $instance['logo'];
 		$only_logo = ! isset( $instance['only_logo'] ) ? '0' : $instance['only_logo'];
+		$text      = ! isset( $instance['text'] ) ? '0' : $instance['text'];
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:', 'simple-sponsorships' ); ?></label>
@@ -96,6 +98,10 @@ class Widget_Sponsors extends \WP_Widget {
 			<label for="<?php echo esc_attr( $this->get_field_id( 'only_logo' ) ); ?>"><?php esc_attr_e( 'Only Logo', 'simple-sponsorships' ); ?></label>
 			<br/><span class="description"><?php esc_html_e( 'It will show Sponsor name if there is no logo', 'simple-sponsorships' ); ?></span>
 		</p>
+        <p>
+            <input <?php checked( $text, '1', true ); ?> id="<?php echo esc_attr( $this->get_field_id( 'text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'text' ) ); ?>" type="checkbox" value="1">
+            <label for="<?php echo esc_attr( $this->get_field_id( 'text' ) ); ?>"><?php esc_attr_e( 'Include Description', 'simple-sponsorships' ); ?></label>
+        </p>
 		<?php
 	}
 
@@ -113,6 +119,7 @@ class Widget_Sponsors extends \WP_Widget {
 		$instance['sponsors'] = ( ! empty( $new_instance['sponsors'] ) ) ? sanitize_text_field( $new_instance['sponsors'] ) : 'active';
 		$instance['logo']     = ( ! empty( $new_instance['logo'] ) ) ? '1' : '0';
 		$instance['only_logo']     = ( ! empty( $new_instance['only_logo'] ) ) ? '1' : '0';
+		$instance['text']     = ( ! empty( $new_instance['text'] ) ) ? '1' : '0';
 
 		return $instance;
 	}

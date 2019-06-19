@@ -111,7 +111,7 @@ class Stripe_API {
 		}
 
 		if( empty( $response['body'] ) ) {
-			return new \WP_Error( 'no-body', __( 'There was an error. Stripe did not return any information.', 'simple-sponsorships' ) );
+			return new \WP_Error( 'no-body', __( 'There was an error. Stripe did not return any information.', 'simple-sponsorships-premium' ) );
 		}
 
 		return json_decode( $response['body'] );

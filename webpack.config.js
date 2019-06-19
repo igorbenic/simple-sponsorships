@@ -97,7 +97,14 @@ if ( inProduction ) {
     wpPot( {
         package: 'simple-sponsorships',
         domain: 'simple-sponsorships',
-        destFile: 'languages/simple-sponsorship.pot',
+        destFile: 'languages/simple-sponsorships.pot',
+        relativeTo: './',
+    } );
+
+    wpPot( {
+        package: 'simple-sponsorships',
+        domain: 'simple-sponsorships-premium',
+        destFile: 'includes/premium/languages/simple-sponsorships-premium.pot',
         relativeTo: './',
     } );
 

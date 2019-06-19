@@ -2,8 +2,8 @@
 Contributors: ibenic
 Tags: sponsorships, sponsors, payment
 Requires at least: 4.4
-Tested up to: 5.2.1
-Stable tag: 1.1.0
+Tested up to: 5.2.2
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -141,6 +141,13 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 
 
 == Changelog ==
+
+= 1.2.0 - TBD =
+* New: Content Availability - Set how much a content can have sponsors.
+* New: Sponsors Widget can also display a description.
+* New: (Premium) Stripe Payment Gateway
+* New: (Platinum) Package Timed Availability - Set the date range when the package is available.
+
 
 = 1.1.0 - 2019-06-02 =
 * Fix: Package Meta Table was not Installing

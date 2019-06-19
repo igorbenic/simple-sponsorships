@@ -7,7 +7,7 @@
  * Author URI:      https://www.ibenic.com
  * Text Domain:     simple-sponsorships
  * Domain Path:     /languages
- * Version:         1.1.0
+ * Version:         1.2.0
  *
  * @fs_premium_only /includes/premium/, /assets/css/premium/, /assets/js/premium/, /assets/dist/css/premium/, /assets/dist/js/premium/
  * @package         Simple_Sponsorships
@@ -77,7 +77,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 		/**
 		 * @var string
 		 */
-		public $version = '1.1.0';
+		public $version = '1.2.0';
 
 		/**
 		 * Settings
@@ -310,6 +310,9 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			if ( is_admin() ) {
 				new Admin();
 			}
+
+			\load_plugin_textdomain( 'simple-sponsorships', false, basename( dirname( __FILE__ ) ) . '/languages' );
+
 		}
 	}
 }
@@ -325,10 +328,18 @@ if ( ss_fs()->is__premium_only() ) {
 		 * Premium constructor.
 		 */
 		public function __construct() {
+			add_action( 'plugins_loaded', array( $this, 'run' ) );
 			add_action( 'ss_plugin_loaded', array( $this, 'includes' ) );
 			add_filter( 'ss_template_paths', array( $this, 'premium_templates' ) );
 			add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_scripts' ), 10 );
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ), 10 );
+		}
+
+		/**
+		 * Run the Premium
+		 */
+		public function run() {
+			\load_plugin_textdomain( 'simple-sponsorships-premium', false, basename( dirname( __FILE__ ) ) . '/includes/premium/languages' );
 		}
 
 		/**
@@ -341,6 +352,7 @@ if ( ss_fs()->is__premium_only() ) {
 
 			if ( ss_fs()->is_plan( 'platinum' ) ) {
 				include_once 'includes/premium/package-features/package-features.php';
+				include_once 'includes/premium/package-timed-availability/package-timed-availability.php';
 			}
 		}
 

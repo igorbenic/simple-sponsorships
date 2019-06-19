@@ -16,8 +16,8 @@ class Stripe extends Payment_Gateway {
 	 */
 	public function __construct() {
 		$this->id = 'stripe';
-		$this->method_title = __( 'Stripe', 'simple-sponsorships' );
-		$this->title        = __( 'Stripe', 'simple-sponsorships' );
+		$this->method_title = __( 'Stripe', 'simple-sponsorships-premium' );
+		$this->title        = __( 'Stripe', 'simple-sponsorships-premium' );
 		$this->has_fields   = true;
 
 		$this->get_settings();
@@ -37,25 +37,25 @@ class Stripe extends Payment_Gateway {
 			'stripe_public_key' => array(
 				'id'          => 'stripe_public_key',
 				'type'        => 'text',
-				'label'       => __( 'Public Key', 'simple-sponsorships' ),
+				'label'       => __( 'Public Key', 'simple-sponsorships-premium' ),
 				'default'     => '',
-				'placeholder' => __( 'Your Stripe Public Key', 'simple-sponsorships' ),
+				'placeholder' => __( 'Your Stripe Public Key', 'simple-sponsorships-premium' ),
 			),
 			'stripe_secret_key' => array(
 				'id'          => 'stripe_secret_key',
 				'type'        => 'text',
-				'label'        => __( 'Secret Key', 'simple-sponsorships' ),
+				'label'        => __( 'Secret Key', 'simple-sponsorships-premium' ),
 				'default'     => '',
-				'placeholder' => __( 'Your Stripe Secret Key', 'simple-sponsorships' ),
+				'placeholder' => __( 'Your Stripe Secret Key', 'simple-sponsorships-premium' ),
 			),
 			'stripe_mode' => array(
 				'id'          => 'stripe_mode',
 				'type'        => 'select',
-				'label'        => __( 'Mode', 'simple-sponsorships' ),
+				'label'        => __( 'Mode', 'simple-sponsorships-premium' ),
 				'default'     => 'sandbox',
 				'options' => array(
-					'sandbox' => __( 'Sandbox', 'simple-sponsorships' ),
-					'live'    => __( 'Live', 'simple-sponsorships' ),
+					'sandbox' => __( 'Sandbox', 'simple-sponsorships-premium' ),
+					'live'    => __( 'Live', 'simple-sponsorships-premium' ),
 				),
 			)
 		);

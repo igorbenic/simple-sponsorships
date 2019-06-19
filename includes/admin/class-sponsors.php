@@ -124,6 +124,9 @@ class Sponsors {
 			delete_post_meta( $post_id, '_ss_hide_placeholder' );
 		}
 
+		$ss_content_availability = isset( $_POST['ss_content_availability'] ) ? absint( $_POST['ss_content_availability'] ) : 0;
+		update_post_meta( $post_id, '_ss_availability', $ss_content_availability );
+
 		$sponsors = isset( $_POST['ss_sponsors'] ) ? sanitize_text_field( $_POST['ss_sponsors'] ) : false;
 
 		if ( false === $sponsors ) {
