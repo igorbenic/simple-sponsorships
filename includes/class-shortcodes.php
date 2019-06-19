@@ -25,7 +25,7 @@ class Shortcodes {
 	 * Register all shortcodes.
 	 */
 	public function register() {
-		add_shortcode( 'ss_sponsor_form', array( $this, 'sponsor_form' ) );
+		add_shortcode( 'ss_sponsor_form', array( __CLASS__, 'sponsor_form' ) );
 		add_shortcode( 'ss_sponsorship_details', array( $this, 'sponsorship_details' ) );
 		add_shortcode( 'ss_sponsors', array( __CLASS__, 'sponsors' ) );
 		add_shortcode( 'ss_packages', array( __CLASS__, 'packages' ) );
@@ -34,7 +34,7 @@ class Shortcodes {
 	/**
 	 * Sponsor Form.
 	 */
-	public function sponsor_form( $args = array() ) {
+	public static function sponsor_form( $args = array() ) {
 		ob_start();
 		$atts = shortcode_atts( array(
 			'packages' => '',

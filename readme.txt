@@ -147,7 +147,7 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 * New: Sponsors Widget can also display a description.
 * New: (Premium) Stripe Payment Gateway
 * New: (Platinum) Package Timed Availability - Set the date range when the package is available.
-
+* Refactor: Moved Premium translations out of the Free version.
 
 = 1.1.0 - 2019-06-02 =
 * Fix: Package Meta Table was not Installing

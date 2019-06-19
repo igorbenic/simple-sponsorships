@@ -54,6 +54,18 @@ class Blocks {
 	}
 
 	/**
+	 * Return the Package HTML.
+	 *
+	 * @param array $args Array of arguments.
+	 * @return string
+	 */
+	public function get_form_sponsor( $args ) {
+		$block = \Simple_Sponsorships\Shortcodes::sponsor_form( $args );
+
+		return $block;
+	}
+
+	/**
 	 * Registering the dynamic blocks.
 	 */
 	public function register_blocks() {
@@ -110,6 +122,16 @@ class Blocks {
 				'heading' => [
 					'default' => 'h2',
 					'type'    => 'string',
+				],
+			]
+		] );
+
+		register_block_type( 'simple-sponsorships/form-sponsor', [
+			'render_callback' => array( $this, 'get_form_sponsor' ),
+			'attributes'      => [
+				'packages' => [
+					'default' => '',
+					'type'    => 'string'
 				],
 			]
 		] );

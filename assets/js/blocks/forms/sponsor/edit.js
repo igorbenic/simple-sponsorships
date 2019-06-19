@@ -1,8 +1,7 @@
-const { RangeControl, RadioControl, ServerSideRender, FormTokenField, PanelBody, SelectControl, Spinner } = wp.components;
+const { ServerSideRender, FormTokenField, PanelBody } = wp.components;
 const { __ } = wp.i18n;
 const { Fragment, Component } = wp.element;
 const { InspectorControls } = wp.editor;
-const apiFetch = wp.apiFetch;
 
 export default class Edit extends Component {
     constructor( props ) {
@@ -86,10 +85,9 @@ export default class Edit extends Component {
 
     render() {
         let packages = [{ label: __( 'Show All' ), value: 0 }]
-        const { attributes, setAttributes } = this.props;
-        const { button, id, suggestions, selected } = this.state;
+        const { attributes } = this.props;
+        const { suggestions, selected } = this.state;
         let { ids } = this.state;
-        const columns = attributes.col;
         
         if ( this.state.packages.length ) {
             packages = packages.concat(this.state.packages.map(( post ) => {
@@ -110,7 +108,7 @@ export default class Edit extends Component {
                         title={ __( 'Display Options' ) }
                         initialOpen={ false }>
                         <FormTokenField 
-                            label={ __( 'Choose Package(s) to display. Leave Empty for all.' ) }
+                            label={ __( 'Choose Package(s) that can be sponspored. Leave Empty for all.' ) }
                             value={ selected }
                             onChange={ ( tokens ) => {
                                 this.changeTokens( tokens );
@@ -120,36 +118,11 @@ export default class Edit extends Component {
                             } }
                             suggestions={ suggestions }
                         />
-
-                        <RangeControl
-                            label={ __( 'Columns' ) }
-                            value={ columns }
-                            onChange={ ( nextColumns ) => {
-                                setAttributes( {
-                                    col: nextColumns
-                                } );
-                            } }
-                            min={ 1 }
-                            max={ 5 }
-                        />
-
-                        <RadioControl
-                            label={ __( 'Show Purchase Button?' ) }
-                            selected={ button }
-                            options={ [
-                                { value: '0', label: __( 'No' ) },
-                                { value: '1', label: __( 'Yes' ) }
-                            ] }
-                            onChange={ ( value ) => {
-                                setAttributes( { button: value } );
-                                this.setState( { button: value } );
-                            }}
-                        />
                     </PanelBody>
                 </InspectorControls>
 
                 <ServerSideRender
-                    block="simple-sponsorships/package-pricing-tables"
+                    block="simple-sponsorships/form-sponsor"
                     attributes={ attributes }
                         />
             </Fragment>
