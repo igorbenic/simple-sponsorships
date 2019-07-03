@@ -57,8 +57,8 @@ class Plugin {
 			$intent = Stripe_API::request(
 				[
 				'payment_method' => $_REQUEST['payment_method_id'],
-				'amount' => 1099,
-				'currency' => 'usd',
+				'amount' => $sponsorship->get_data('amount') * 100,
+				'currency' => strtolower( $sponsorship->get_data('currency') ),
 				'confirmation_method' => 'manual',
 				'confirm' => 'true',
 				],

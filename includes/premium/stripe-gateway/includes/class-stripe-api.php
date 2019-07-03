@@ -82,7 +82,7 @@ class Stripe_API {
 			array(
 				'Authorization'              => 'Basic ' . base64_encode( self::get_secret_key() . ':' ),
 				'Stripe-Version'             => self::STRIPE_API_VERSION,
-				'User-Agent'                 => $app_info['name'] . '/' . $app_info['version'] . ' (' . $app_info['url'] . ')',
+				'User-Agent'                 => $app_info['name'] . '/' . $app_info['version'],
 				'X-Stripe-Client-User-Agent' => json_encode( $user_agent ),
 			)
 		);

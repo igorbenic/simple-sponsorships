@@ -142,6 +142,11 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 
 == Changelog ==
 
+
+= 1.2.1 - 2019-07-03 =
+* Fix: When sponsorship request is made, two sponsor data would be added on accidental double refresh.
+* Fix: (Premium) Stripe was using wrong amount and currency.
+
 = 1.2.0 - 2019-06-19 =
 * New: Content Availability - Set how much a content can have sponsors.
 * New: Sponsor Form available as a Block.

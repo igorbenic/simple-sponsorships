@@ -56,7 +56,7 @@ class Form_Sponsors extends Form {
 			$meta_data = $this->unset_sponsorship_columns( $posted_data );
 
 			foreach ( $meta_data as $key => $value ) {
-				$db->add_meta( $sponsorship_id, '_' . $key, $value );
+				$db->update_meta( $sponsorship_id, '_' . $key, $value );
 			}
 
 			do_action( 'ss_sponsor_form_sponsorship_created', $sponsorship_id );
