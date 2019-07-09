@@ -3,7 +3,7 @@ Contributors: ibenic
 Tags: sponsorships, sponsors, payment
 Requires at least: 4.4
 Tested up to: 5.2.2
-Stable tag: 1.2.0
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -142,6 +142,10 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 
 == Changelog ==
 
+= 1.2.2 - 2019-07-09 =
+* Fix: Payment Form incorrect classes.
+* Fix: JavaScript code for handling payments was not loaded.
+* Update: Licensing software to newest version.
 
 = 1.2.1 - 2019-07-03 =
 * Fix: When sponsorship request is made, two sponsor data would be added on accidental double refresh.

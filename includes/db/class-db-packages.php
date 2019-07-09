@@ -115,7 +115,7 @@ class DB_Packages extends DB {
 		meta_key varchar(255) DEFAULT NULL,
 		meta_value longtext,
 		PRIMARY KEY meta_id (meta_id),
-		KEY sslevel_id (sspackage_id),
+		KEY sspackage_id (sspackage_id),
 		KEY meta_key (meta_key)
 		) CHARACTER SET utf8 COLLATE utf8_general_ci;";
 
