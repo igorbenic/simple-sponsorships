@@ -54,7 +54,7 @@ class Stripe_API {
 	 */
 	public static function get_user_agent() {
 		$app_info = array(
-			'name'    => 'Simple Sponsorships Stripe Gateway',
+			'name'    => 'WordPress Simple Sponsorships',
 			'version' => '1.0.0',
 		);
 

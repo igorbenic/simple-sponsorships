@@ -22,3 +22,9 @@ The preferable workflow:
 3. If accepted, create a branch issue/{NUMBER OF THE ISSUE} and make changes
 3. Create the PR (Pull Request) for it
 4. Assign one of the core contributors to it so they can take a look at it.
+
+## Sponsors
+
+Browserstack allowed me to use their sevices to test Simple Sponsorships on various devices.
+
+[![Browserstack](browserstack.png)](https://www.browserstack.com/)
