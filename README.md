@@ -25,6 +25,6 @@ The preferable workflow:
 
 ## Sponsors
 
-Browserstack allowed me to use their sevices to test Simple Sponsorships on various devices.
+[BrowserStack](https://www.browserstack.com/) allowed me to use their sevices to test Simple Sponsorships on various devices.
 
 [![Browserstack](browserstack.png)](https://www.browserstack.com/)
