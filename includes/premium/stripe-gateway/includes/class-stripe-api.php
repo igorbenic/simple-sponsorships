@@ -56,6 +56,7 @@ class Stripe_API {
 		$app_info = array(
 			'name'    => 'WordPress Simple Sponsorships',
 			'version' => '1.0.0',
+			'partner_id' => 'pp_partner_FZfXH9OU0g47rP',
 		);
 
 		return array(

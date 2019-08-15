@@ -28,6 +28,19 @@ class Stripe extends Payment_Gateway {
 	}
 
 	/**
+     * Return if the Stripe is available or not.
+     *
+	 * @return bool
+	 */
+	public function is_available() {
+        if ( ! is_ssl() ) {
+            return false;
+        }
+
+		return parent::is_available();
+	}
+
+	/**
 	 * Fields for PayPal.
 	 *
 	 * @return array
