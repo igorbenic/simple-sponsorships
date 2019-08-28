@@ -122,7 +122,7 @@ class Stripe extends Payment_Gateway {
 	        return new \WP_Error( 'stripe-status', __( 'Waiting on Payment to succeed', 'simple-sponsorships-premium' ) );
         }
 
-        $sponsorship->set_status( 'paid' );
+        $this->complete( $sponsorship );
 
 		return array(
 			'result'   => 'success',

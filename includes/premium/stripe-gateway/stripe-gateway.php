@@ -114,6 +114,10 @@ class Plugin {
 	 * Enqueue
 	 */
 	public function enqueue() {
+		if ( ! is_ssl() ) {
+			return;
+		}
+
 		if ( ss_get_option( 'stripe_enabled', '0' ) !== '1' ) {
 			return;
 		}

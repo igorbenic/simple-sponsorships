@@ -121,6 +121,7 @@ function ss_get_sponsorship_statuses() {
 	return apply_filters( 'ss_sponsorship_statuses', array(
 		'request'  => __( 'Request', 'simple-sponsorships' ),
 		'approved' => __( 'Approved', 'simple-sponsorships' ),
+		'on-hold'  => __( 'On Hold', 'simple-sponsorships' ),
 		'paid'     => __( 'Paid', 'simple-sponsorships' ),
 		'rejected' => __( 'Rejected', 'simple-sponsorships' ),
 	));

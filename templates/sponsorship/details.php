@@ -9,7 +9,7 @@ if ( $sponsorship->is_request() ) {
 		<p><?php esc_html_e( 'You will receive an email upon the decision.', 'simple-sponsorships' ); ?></p>
 	</div>
 	<?php
-} elseif ( $sponsorship->is_approved() ) {
+} elseif ( $sponsorship->is_approved() || $sponsorship->is_on_hold() ) {
 	?>
 	<div class="ss-notice ss-notice-info">
 		<p><?php esc_html_e( 'This Sponsorship is awaiting your payment. Once paid it will be completed.', 'simple-sponsorships' ); ?></p>

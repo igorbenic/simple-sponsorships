@@ -430,6 +430,13 @@ class Sponsorship extends Custom_Data {
 	}
 
 	/**
+	 * Return if the Sponsorship is pending payment.
+	 */
+	public function is_on_hold() {
+		return $this->is_status( 'on-hold' );
+	}
+
+	/**
 	 * Return the formatted amount.
 	 *
 	 * @return string

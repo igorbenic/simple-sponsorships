@@ -2,6 +2,10 @@
 (function($){
     $(function(){
 
+        if ( ! $('#ss-stripe-card-element').length ) {
+            return;
+        }
+
         var stripe = Stripe( ss_stripe.key );
 
         var elements = stripe.elements();

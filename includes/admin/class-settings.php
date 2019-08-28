@@ -592,6 +592,7 @@ class Settings {
 			'title'         => '',
 			'required'      => false,
 			'value'         => '',
+			'type'          => 'text',
 		) );
 
 		$class = self::sanitize_html_class( $args['field_class'] );

@@ -75,6 +75,7 @@ class Payment_Gateways {
 	public function init() {
 		$load_gateways = array(
 			'\Simple_Sponsorships\Gateways\PayPal',
+			'\Simple_Sponsorships\Gateways\Bank_Transfer',
 		);
 
 		// Filter.

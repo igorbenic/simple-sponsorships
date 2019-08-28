@@ -193,6 +193,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 
 			// Gateways.
 			include_once 'includes/gateways/class-paypal.php';
+			include_once 'includes/gateways/class-bank-transfer.php';
 
 			// Forms.
 			include_once 'includes/forms/class-form-sponsors.php';
