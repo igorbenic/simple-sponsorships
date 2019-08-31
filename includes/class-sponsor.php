@@ -62,7 +62,7 @@ class Sponsor extends Custom_Data {
 			return '';
 		}
 
-		$link = $this->get_data( 'website', '' );
+		$link = $this->get_data( '_website', '' );
 
 		if ( ! $link ) {
 			$link = get_permalink( $this->get_id() );

@@ -32,3 +32,56 @@
     display: block;
   }
 }
+
+.ss-sponsors {
+  &.ss-sponsors-layout-vertical {
+    .ss-sponsor {
+      text-align: center;
+    }
+
+    &.ss-sponsors-show-text {
+      .ss-sponsor {
+        display: flex;
+        text-align: left;
+
+        .ss-sponsor-content {
+          padding-left: 20px;
+
+          p {
+            margin: 0 0 1.5em 0;
+          }
+        }
+      }
+    }
+  }
+
+  &.ss-sponsors-layout-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .ss-sponsor {
+      width: 30%;
+      margin-right: 5%;
+
+      &:nth-child(3n),
+      &:last-child {
+        margin-right: 0;
+      }
+
+    }
+
+    &.ss-sponsors-count-1 {
+      .ss-sponsor {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    &.ss-sponsors-count-2 {
+      .ss-sponsor {
+        width: 45%;
+      }
+    }
+  }
+}

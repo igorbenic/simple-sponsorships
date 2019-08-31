@@ -125,6 +125,8 @@ class Form_Sponsors extends Form {
 				$package_options[ $package->get_data( 'ID' ) ] = $package->get_data( 'title' ) . ' (' . $package->get_price_formatted() . ')';
 			}
 		}
+		$package_field_type = ss_multiple_packages_enabled() ? 'package_select' : 'select';
+
 		$fields = array(
 			'sponsor_name' => array(
 				'title'    => __( 'Your Name', 'simple-sponsorships' ),
@@ -149,7 +151,7 @@ class Form_Sponsors extends Form {
 			'package' => array(
 				'title'             => __( 'Sponsorship', 'simple-sponsorships' ),
 				'required'          => true,
-				'type'              => 'select',
+				'type'              => $package_field_type,
 				'options'           => $package_options,
 				'validate'          => array( $this, 'is_valid_package' ),
 				'not_valid_message' => __( 'Please select a %s', 'simple-sponsorship' ),

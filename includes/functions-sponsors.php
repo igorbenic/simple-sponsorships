@@ -154,10 +154,24 @@ function ss_show_sponsors_under_content( $content ) {
 			$sponsors = ss_get_sponsors_for_content( $content_id );
 
 			if ( $sponsors ) {
+				$show_title = 1 === absint( ss_get_option( 'show_in_content_footer_title', '0' ) );
+				$show_text  = 1 === absint( ss_get_option( 'show_in_content_footer_text', '0' ) );
+				$logo_size  = ss_get_option( 'show_in_content_footer_size', 'full' );
+				$layout     = ss_get_option( 'show_in_content_footer_layout', 'vertical' );
+                $classes    = array( 'ss-sponsors-layout-' . $layout );
+
+                if ( $show_text ) {
+                    $classes[] = 'ss-sponsors-show-text';
+                }
+
+                if ( 'horizontal' === $layout ) {
+                    $classes[] = 'ss-sponsors-count-' . count( $sponsors );
+                }
+
 				ob_start();
 				?>
                 <h2><?php esc_html_e( 'Sponsored By', 'simple-sponsorships' ); ?></h2>
-                <div class="ss-sponsors">
+                <div class="ss-sponsors <?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 					<?php
 					foreach ( $sponsors as $sponsor_id ) {
 						$sponsor  = new \Simple_Sponsorships\Sponsor( $sponsor_id, false );
@@ -171,12 +185,18 @@ function ss_show_sponsors_under_content( $content ) {
 								if ( $link ) {
 									echo '<a itemprop="url" href="' . $link . '">';
 								}
-								echo get_the_post_thumbnail( $sponsor->get_id() );
+								echo get_the_post_thumbnail( $sponsor->get_id(), $logo_size );
+
 								if ( $link ) {
 									echo '</a>';
 								}
 							}
-							if ( ! $has_logo ) {
+
+							if ( $show_text ) {
+							    echo '<div class="ss-sponsor-content">';
+                            }
+
+							if ( ! $has_logo || $show_title ) {
 								if ( $link ) {
 									echo '<a itemprop="url" target="_blank" href="' . $link . '">';
 								}
@@ -186,6 +206,11 @@ function ss_show_sponsors_under_content( $content ) {
 								if ( $link ) {
 									echo '</a>';
 								}
+							}
+
+							if ( $show_text ) {
+								echo wpautop( $sponsor->get_data( 'post_content' ) );
+								echo '</div>'; // Closing ss-sponsor-content
 							}
 							?>
                         </div>

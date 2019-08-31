@@ -143,6 +143,7 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 == Changelog ==
 
 = 1.3.0 - TBD =
+* Fix: Sponsor website was not used when linking sponsors.
 * Fix: (Premium) Stripe JS loaded even if Stripe was not enabled.
 
 = 1.2.2 - 2019-07-09 =

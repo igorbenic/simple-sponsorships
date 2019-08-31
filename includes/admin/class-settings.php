@@ -20,6 +20,13 @@ class Settings {
 	protected $pages = null;
 
 	/**
+	 * Image Sizes.
+	 *
+	 * @var null
+	 */
+	protected $image_sizes = null;
+
+	/**
 	 * Settings constructor.
 	 */
 	public function __construct() {
@@ -108,20 +115,6 @@ class Settings {
 						'placeholder' => __( 'Select a Type', 'simple-sponsorships' ),
 						'default'     => array( 'post', 'page' ),
 					),
-					'show_in_content_footer' => array(
-						'id'      => 'show_in_content_footer',
-						'label'    => __( 'Show Sponsors under Content', 'simple-sponsorships' ),
-						'type'    => 'checkbox',
-						'desc'    => __( 'If checked, it will show sponsors that sponsored the content.', 'simple-sponsorships' ),
-						'default' => '0'
-					),
-					'show_content_placeholder' => array(
-						'id'      => 'show_content_placeholder',
-						'label'    => __( 'Placeholder', 'simple-sponsorships' ),
-						'type'    => 'checkbox',
-						'desc'    => __( 'If checked, it will show sponsor placeholder under the content.', 'simple-sponsorships' ),
-						'default' => '0'
-					),
 					'page_settings' => array(
 						'id'   => 'page_settings',
 						'label' => '<h3>' . __( 'Pages', 'simple-sponsorships' ) . '</h3>',
@@ -149,6 +142,71 @@ class Settings {
 						'placeholder' => __( 'Select a page', 'simple-sponsorships' ),
 					),
 				)
+			),
+			'sponsors' => array(
+				'main' => array(
+					'show_content_placeholder' => array(
+						'id'      => 'show_content_placeholder',
+						'label'    => __( 'Placeholder', 'simple-sponsorships' ),
+						'type'    => 'checkbox',
+						'desc'    => __( 'If checked, it will show sponsor placeholder under the content.', 'simple-sponsorships' ),
+						'default' => '0'
+					)
+				),
+				'under_content' => array(
+					'show_in_content_footer' => array(
+						'id'      => 'show_in_content_footer',
+						'label'    => __( 'Show Sponsors under Content', 'simple-sponsorships' ),
+						'type'    => 'checkbox',
+						'desc'    => __( 'If checked, it will show sponsors that sponsored the content.', 'simple-sponsorships' ),
+						'default' => '0'
+					),
+					'show_in_content_footer_title' => array(
+						'id'      => 'show_in_content_footer_title',
+						'label'   => __( 'Show Sponsor Title', 'simple-sponsorships' ),
+						'type'    => 'checkbox',
+						'desc'    => __( 'If checked, it will show the sponsor title under the sponsored content.', 'simple-sponsorships' ),
+						'default' => '0'
+					),
+					'show_in_content_footer_text' => array(
+						'id'      => 'show_in_content_footer_text',
+						'label'   => __( 'Show Sponsor Text', 'simple-sponsorships' ),
+						'type'    => 'checkbox',
+						'desc'    => __( 'If checked, it will show the sponsor text under the sponsored content.', 'simple-sponsorships' ),
+						'default' => '0'
+					),
+					'show_in_content_footer_size' => array(
+						'id'          => 'show_in_content_footer_size',
+						'label'       => __( 'Logo size', 'simple-sponsorships' ),
+						'desc'        => __( 'Sponsor logo size when displayed under the content', 'simple-sponsorships' ),
+						'type'        => 'select',
+						'options'     => $this->get_image_sizes(),
+						'placeholder' => __( 'Select an Image Size', 'simple-sponsorships' ),
+						'default'     => 'full'
+					),
+					'show_in_content_footer_layout' => array(
+						'id'          => 'show_in_content_footer_layout',
+						'label'       => __( 'Layout', 'simple-sponsorships' ),
+						'desc'        => __( 'Layout of sponsors under the content', 'simple-sponsorships' ),
+						'type'        => 'select',
+						'options'     => array(
+							'vertical'   => __( 'Vertical', 'simple-sponsorships' ),
+							'horizontal' => __( 'Horizontal', 'simple-sponsorships' )
+						),
+						'default'     => 'vertical'
+					),
+				)
+			),
+			'packages' => array(
+				'main' => array(
+					'allow_multiple_packages' => array(
+						'id'      => 'allow_multiple_packages',
+						'label'   => __( 'Multiple Packages', 'simple-sponsorships' ),
+						'type'    => 'checkbox',
+						'desc'    => __( 'If checked, it will allow people to purchase more than 1 package.', 'simple-sponsorships' ),
+						'default' => '0'
+					)
+				),
 			),
 			'gateways' => apply_filters( 'ss_settings_gateways', array(
 				'main' => array(
@@ -247,6 +305,26 @@ class Settings {
 	}
 
 	/**
+	 * Image Sizes.
+	 */
+	public function get_image_sizes() {
+		if ( null == $this->image_sizes ) {
+			$this->image_sizes = ss_get_image_sizes();
+		}
+
+		$sizes = array_keys( $this->image_sizes );
+		if ( ! in_array( 'full', $sizes ) ) {
+			$sizes[] = 'full';
+		}
+
+		$sizes_array = array();
+		foreach ( $sizes as $size ) {
+			$sizes_array[ $size ] = $size;
+		}
+		return $sizes_array;
+	}
+
+	/**
 	 * Return an array with pages
 	 *
 	 * @return array
@@ -276,6 +354,13 @@ class Settings {
 			'general' => array(
 				'main' => __( 'General', 'simple-sponsorships' ),
 			),
+			'sponsors' => array(
+				'main'          => __( 'General', 'simple-sponsorships' ),
+				'under_content' => __( 'Under Content', 'simple-sponsorships' ),
+			),
+			'packages' => array(
+				'main'          => __( 'General', 'simple-sponsorships' ),
+			),
 			'gateways' => array(
 				'main' => __( 'General', 'simple-sponsorships' ),
 			),
@@ -298,6 +383,8 @@ class Settings {
 
 		$tabs             = array();
 		$tabs['general']  = __( 'General', 'simple-sponsorships' );
+		$tabs['sponsors'] = __( 'Sponsors', 'simple-sponsorships' );
+		$tabs['packages'] = __( 'Packages', 'simple-sponsorships' );
 		$tabs['gateways'] = __( 'Payment Gateways', 'simple-sponsorships' );
 		$tabs['emails']   = __( 'Emails', 'simple-sponsorships' );
 		//$tabs['styles']   = __( 'Styles', 'easy-digital-downloads' );

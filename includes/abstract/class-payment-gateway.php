@@ -403,5 +403,6 @@ abstract class Payment_Gateway {
 	public function complete( $sponsorship ) {
 		// Setting it to Paid.
 		$sponsorship->set_status( 'paid' );
+		$sponsorship->update_data( 'gateway', $this->id );
 	}
 }

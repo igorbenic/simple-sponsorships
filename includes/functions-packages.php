@@ -79,3 +79,14 @@ function ss_get_available_packages() {
 	}
 	return $packages;
 }
+
+/**
+ * Return true if we allow multiple packages.
+ *
+ * @since 1.3.0
+ *
+ * @return bool
+ */
+function ss_multiple_packages_enabled() {
+	return 1 === absint( ss_get_option( 'allow_multiple_packages', '0' ) );
+}
