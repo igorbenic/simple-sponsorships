@@ -122,6 +122,7 @@ class GF_Addon extends \GFAddOn {
                 }
             }
 
+            $ss_data['package'] = array( $ss_data['package'] => 1 );
             $redirect = isset( $form['ss_sponsorship_redirect'] ) ? absint( $form['ss_sponsorship_redirect'] ) : 0;
             $ss_form->create_sponsorship( $ss_data, $redirect );
         }

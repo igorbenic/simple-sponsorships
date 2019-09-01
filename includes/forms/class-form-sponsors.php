@@ -42,9 +42,11 @@ class Form_Sponsors extends Form {
 		$args = array();
 
 		if ( isset( $posted_data['package'] ) ) {
-			$args['packages'] = array( $posted_data['package'] );
-			//$package         = ss_get_package( $args['package'] );
-			//$args['amount']  = floatval( $package->get_data('price' ) );
+			if ( ss_multiple_packages_enabled() ) {
+				$args['packages'] = $posted_data['package'];
+			} else {
+				$args['packages'] = array( $posted_data['package'] => 1 );
+			}
 		}
 
 
@@ -126,7 +128,7 @@ class Form_Sponsors extends Form {
 			}
 		}
 		$package_field_type = ss_multiple_packages_enabled() ? 'package_select' : 'select';
-
+		$package_required_function = ss_multiple_packages_enabled() ? array( $this, 'package_check_required' ) : false;
 		$fields = array(
 			'sponsor_name' => array(
 				'title'    => __( 'Your Name', 'simple-sponsorships' ),
@@ -155,6 +157,8 @@ class Form_Sponsors extends Form {
 				'options'           => $package_options,
 				'validate'          => array( $this, 'is_valid_package' ),
 				'not_valid_message' => __( 'Please select a %s', 'simple-sponsorship' ),
+				'packages'          => $packages,
+				'required_function' => $package_required_function,
 			),
 			'sponsor_terms' => array(
 				'title'    => __( 'Terms and Conditions', 'simple-sponsorships' ),
@@ -173,18 +177,48 @@ class Form_Sponsors extends Form {
 	 * @param $package
 	 */
 	public function is_valid_package( $package ) {
+		if ( ss_multiple_packages_enabled() ) {
+			if ( $package ) {
+				foreach ( $package as $package_id => $qty ) {
+					$_package = ss_get_package( $package_id );
 
-		if ( ! absint( $package ) ) {
-			return false;
-		}
+					if ( ! $_package->is_available() ) {
+						return false;
+					}
+				}
+			}
+		} else {
 
-		$package = ss_get_package( $package );
+			if ( ! absint( $package ) ) {
+				return false;
+			}
 
-		if ( ! $package->is_available() ) {
-			return false;
+			$package = ss_get_package( $package );
+
+			if ( ! $package->is_available() ) {
+				return false;
+			}
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param $packages
+	 */
+	public function package_check_required( $packages ) {
+		$qty = 0;
+		if ( is_array( $packages ) && $packages ) {
+			foreach ( $packages as $package_id => $package_qty ) {
+				$qty += $package_qty;
+			}
+		}
+
+		if ( $qty ) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

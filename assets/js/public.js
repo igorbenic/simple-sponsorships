@@ -12,5 +12,34 @@ window.ssponsorships = window.ssponsorships || {};
                box.show();
            }
         });
+
+        var packageSelect = $('.ss-form-field-package_select');
+        if ( packageSelect.length ) {
+            packageSelect.find('.package-item input').on( 'change', function(){
+               var $this   = $(this),
+                   $items  = $this.parents('.packages-select-items'),
+                   data    = $items.find(':input').serialize(),
+                   $select = $items.parent('.packages-select');
+
+               $select.addClass('ss-loading');
+               $.ajax({
+                   url: ss_wp.ajax,
+                   method: 'GET',
+                   data: { action: 'ss_packages_get_total', data: data, nonce: ss_wp.nonce },
+                   success: function( resp ) {
+                       if ( resp.success ) {
+                           $select.find('.packages-total').html( resp.data.total_formatted );
+                       }
+                   },
+                   error: function( e ) {
+                       console.error( e );
+                   },
+                   complete: function() {
+                       $select.removeClass('ss-loading');
+                   }
+               })
+
+            });
+        }
     });
 })(jQuery);

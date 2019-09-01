@@ -28,6 +28,7 @@ class AJAX {
 			'remove_quantity_sponsor' => false,
 			'remove_sponsor_from_content' => false,
 			'sponsorship_calculate_totals' => false,
+			'packages_get_total' => true,
 		);
 
 		foreach ( $actions as $action => $nopriv ) {
@@ -188,6 +189,35 @@ class AJAX {
 			'formatted_amount' => $sponsorship->get_formatted_amount()
 		) );
 		wp_die();
+	}
+
+	/**
+	 * Get totals by package
+	 */
+	public function packages_get_total() {
+		check_ajax_referer( 'ss-ajax', 'nonce', true );
+
+		$data = isset( $_REQUEST['data'] ) ? $_REQUEST['data'] : '';
+
+		if ( ! $data ) {
+			wp_send_json_error( __( 'No data found', 'simple-sponsorships' ) );
+			wp_die();
+		}
+
+		$packages = array();
+		parse_str( $data, $packages );
+
+		$total = 0;
+
+		foreach ( $packages['package'] as $package_id => $qty ) {
+			$package = ss_get_package( $package_id );
+			$total  += $package->get_price() * $qty;
+		}
+
+
+		wp_send_json_success( array(
+			'total' => $total,
+			'total_formatted' => Formatting::price( $total ) ) );
 	}
 }
 

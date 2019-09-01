@@ -292,6 +292,37 @@ function ss_form_render_field( $args, $wrap_field = true ) {
 		case 'heading':
 			echo isset( $args['desc'] ) ? '<h2>' . $args['desc'] . '</h2>' : '';
 			break;
+        case 'package_select':
+	        $name     = isset( $args['name'] ) && $args['name'] ? $args['name'] : $id;
+	        $total    = isset( $args['total'] ) ? $args['total'] : 0;
+	        $packages = isset( $args['packages'] ) ? $args['packages'] : array();
+            $html     = '<div class="packages-select">';
+            $html    .= '<div class="packages-select-header">';
+            $html    .= '<span class="package-column">' . __( 'Package', 'simple-sponsorships' ) . '</span>';
+	        $html    .= '<span class="qty-column">' . __( 'Quantity', 'simple-sponsorships' ) . '</span>';
+	        $html    .= '<span class="price-column">' . __( 'Price', 'simple-sponsorships' ) . '</span>';
+	        $html    .= '</div>';
+	        $html    .= '<div class="packages-select-items">';
+            foreach ( $packages as $package ) {
+                $html .= '<div class="package-item">';
+	            $html .= '<span class="package-column">' . $package->get_title() . '</span>';
+	            $html .= '<span class="qty-column"><input type="number" name="' . esc_attr( $name ) . '[' . $package->get_id() . ']" value="0" /></span>';
+	            $html .= '<span class="price-column">' . $package->get_price_formatted( false ) . '</span>';
+	            $html .= '</div>';
+            }
+	        $html .= '</div>';
+	        $html .= '<div class="packages-select-footer">';
+	        $html .= '<span>' . __( 'Total', 'simple-sponsorships' ) . '</span>';
+	        $html .= '<span class="packages-total">' . \Simple_Sponsorships\Formatting::price( $total, array( 'exclude_html' => false )) . '</span>';
+	        $html .= '</div>';
+	        $html .= '</div>';
+
+	        if ( $wrap_field ) {
+		        $html = sprintf( $html_wrap, $html );
+	        }
+
+	        echo apply_filters( 'ss_after_field_output', $html, $args );
+            break;
 		default:
 			do_action( 'ss_form_field_' . $args['type'], $args, $wrap_field );
 			break;

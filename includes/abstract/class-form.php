@@ -117,6 +117,7 @@ abstract class Form {
 			}
 
 			$required     = isset( $field['required'] ) ? $field['required'] : false;
+			$required_fnc = isset( $field['required_function'] ) ? $field['required_function'] : false;
 			$validate     = isset( $field['validate'] ) ? $field['validate'] : '';
 			$sanitization = isset( $field['sanitize'] ) ? $field['sanitize'] : '';
 			$field_label  = isset( $field['title'] ) ? $field['title'] : '';
@@ -134,9 +135,20 @@ abstract class Form {
 				$data[ $key ] = call_user_func( $sanitization, $data[ $key ] );
 			}
 
-			if ( $required && '' === $data[ $key ] ) {
-				/* translators: %s: field name */
-				$this->errors->add( 'required-field', apply_filters( 'ss_required_field_notice', sprintf( __( '%s is a required field.', 'simple-sponsorships' ), '<strong>' . esc_html( $field_label ) . '</strong>' ), $field_label ) );
+			if ( $required ) {
+				$add_error = '' === $data[ $key ] ? true : false;
+
+				if ( $required_fnc && is_callable( $required_fnc ) ) {
+					$add_error = false;
+					if ( ! call_user_func( $required_fnc, $data[ $key ] ) ) {
+						$add_error = true;
+					}
+				}
+
+				if ( $add_error ) {
+					/* translators: %s: field name */
+					$this->errors->add( 'required-field', apply_filters( 'ss_required_field_notice', sprintf( __( '%s is a required field.', 'simple-sponsorships' ), '<strong>' . esc_html( $field_label ) . '</strong>' ), $field_label ) );
+				}
 			}
 		}
 	}

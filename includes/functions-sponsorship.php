@@ -169,8 +169,11 @@ function ss_create_sponsorship( $args = array() ) {
 	if ( $ret ) {
 		$sponsorship = ss_get_sponsorship( $ret, false );
 		if ( $packages ) {
-			foreach ( $packages as $package_id ) {
-				$sponsorship->add_package( $package_id );
+			foreach ( $packages as $package_id => $qty ) {
+				if ( ! $qty ) {
+					continue;
+				}
+				$sponsorship->add_package( $package_id, $qty );
 			}
 		}
 		$sponsorship->calculate_totals();
