@@ -142,7 +142,7 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 
 == Changelog ==
 
-= 1.3.0 - TBD =
+= 1.3.0 - 2019-09-03 =
 * New: Option to allow the purchase of multiple packages.
 * New: Email option under Settings > Emails to define where should sponsorship emails be sent to.
 * New: Shortcode attribute link_sponsors (0 or 1). Default is 1 to link the sponsors.
