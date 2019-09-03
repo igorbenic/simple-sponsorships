@@ -9,17 +9,23 @@
 namespace Simple_Sponsorships\Package_Timed_Availability;
 
 use Simple_Sponsorships\DB\DB_Packages;
+use Simple_Sponsorships\Integrations\Integration;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-class Plugin {
+class Plugin extends Integration {
 
 	/**
 	 * Plugin constructor.
 	 */
 	public function __construct() {
+		$this->title = __( 'Package Timed Availability', 'simple-sponsorships-premium' );
+		$this->id    = 'package-timed-availability';
+		$this->desc  = __( 'Define the availability of each package through date and time.', 'simple-sponsorships-premium' );
+		$this->image = trailingslashit( SS_PLUGIN_URL ) . 'assets/images/svg/integrations/clock.svg';
+
 		add_action( 'ss_get_package_fields', array( $this, 'add_field' ) );
 		add_action( 'ss_package_updated', array( $this, 'save_package' ), 20, 2 );
 		add_action( 'ss_package_added', array( $this, 'save_package' ), 20, 2 );
@@ -159,5 +165,3 @@ class Plugin {
 	}
 
 }
-
-new Plugin();

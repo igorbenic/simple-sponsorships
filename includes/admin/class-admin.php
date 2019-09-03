@@ -30,6 +30,7 @@ class Admin {
 		include_once 'class-sponsorships.php';
 		include_once 'class-sponsors.php';
 		include_once 'functions-settings.php';
+		include_once 'class-integrations.php';
 	}
 
 	/**
@@ -67,6 +68,7 @@ class Admin {
 			'sponsors_page_ss-sponsorships',
 			'sponsors_page_ss-packages',
 			'sponsors_page_ss-settings',
+			'sponsors_page_ss-integrations',
 			'widgets.php',
 		);
 
@@ -106,6 +108,8 @@ class Admin {
 				'ajax'  => admin_url( 'admin-ajax.php' ),
 				'text'  => array(
 					'no_sponsor_found' => __( 'No Sponsor Found', 'simple-sponsorships' ),
+					'activate'         => __( 'Activate', 'simple-sponsorships' ),
+					'deactivate'       => __( 'Deactivate', 'simple-sponsorships' ),
 				),
 				'package' => array(
 					'editable' => array(

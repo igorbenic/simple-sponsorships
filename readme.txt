@@ -143,6 +143,11 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 == Changelog ==
 
 = 1.3.0 - TBD =
+* New: Option to allow the purchase of multiple packages.
+* New: Email option under Settings > Emails to define where should sponsorship emails be sent to.
+* New: Shortcode attribute link_sponsors (0 or 1). Default is 1 to link the sponsors.
+* New: Sponsors Block got the Link Sponsors option.
+* New: Integrations page where you can activate or deactivate various integrations (for example: Gravity Forms).
 * Fix: Sponsor website was not used when linking sponsors.
 * Fix: (Premium) Stripe JS loaded even if Stripe was not enabled.
 

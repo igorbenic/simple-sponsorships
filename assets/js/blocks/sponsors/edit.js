@@ -1,4 +1,4 @@
-const { RadioControl, ServerSideRender, Panel, PanelBody, PanelRow, SelectControl, Spinner, RangeControl } = wp.components;
+const { RadioControl, ServerSideRender, Panel, PanelBody, PanelRow, SelectControl, Spinner, RangeControl, CheckboxControl } = wp.components;
 const { __ } = wp.i18n;
 const { Fragment, Component } = wp.element;
 const { InspectorControls } = wp.editor;
@@ -179,6 +179,19 @@ export default class Edit extends Component {
                     min={ 1 }
                     max={ 5 }
                         />
+
+                <CheckboxControl
+                    heading={ __( 'Link Sponsors' ) }
+                    label={ __( 'If unchecked, it will not link sponsors.' ) }
+                    checked={ parseInt( attributes.link_sponsor ) === 1 }
+                    onChange={ ( isChecked ) => { 
+                        if ( isChecked ) {
+                            setAttributes( { link_sponsor: '1' } );
+                        } else {
+                            setAttributes( { link_sponsor: '0' } );
+                        }
+                    } }
+                />
             </PanelBody>
             <PanelBody
             title={ __( 'Package' ) }

@@ -77,7 +77,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 		/**
 		 * @var string
 		 */
-		public $version = '1.2.2';
+		public $version = '1.3.0';
 
 		/**
 		 * Settings
@@ -92,6 +92,11 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 		 * @var null
 		 */
 		public $session = null;
+
+		/**
+		 * Integrations
+		 */
+		protected $integrations = array();
 
 		/**
 		 * Plugin constructor.
@@ -160,6 +165,8 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			include_once 'includes/abstract/class-email.php';
 			include_once 'includes/abstract/class-payment-gateway.php';
 			include_once 'includes/abstract/class-form.php';
+			include_once 'includes/abstract/class-integration.php';
+			include_once 'includes/abstract/class-premium-integration-dummy.php';
 
 			// Functions.
 			include_once 'includes/functions-core.php';
@@ -190,6 +197,11 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 
 			// Integrations
 			include_once 'includes/integrations/class-gravityforms.php';
+			include_once 'includes/integrations/dummy/class-stripe.php';
+			include_once 'includes/integrations/dummy/class-package-slots.php';
+			include_once 'includes/integrations/dummy/class-post-paid-form.php';
+			include_once 'includes/integrations/dummy/class-package-features.php';
+			include_once 'includes/integrations/dummy/class-package-timed-availability.php';
 
 			// Gateways.
 			include_once 'includes/gateways/class-paypal.php';
@@ -230,6 +242,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			add_action( 'init', array( $this, 'process_actions' ) );
 			add_action( 'init', array( '\Simple_Sponsorships\Installer', 'check_version' ), 5 );
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ), 20 );
+			add_action( 'plugins_loaded', array( $this, 'load_integrations' ), 99 );
 
 			add_action( 'ss_sponsorship_details', 'ss_sponsorship_details' );
 			add_action( 'ss_sponsorship_sponsor', 'ss_sponsorship_sponsor' );
@@ -245,6 +258,22 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			add_action( 'ss_sponsorship_form', 'ss_show_payment_form_for_sponsorship' );
 			add_filter( 'the_content', 'ss_show_sponsors_under_content' );
 		}
+
+		/**
+		 * Loading Integrations
+		 * @return array
+		 */
+		public function load_integrations() {
+			$active_integrations = ss_get_active_integrations();
+			$integrations = ss_get_registered_integrations();
+			foreach ( $active_integrations as $slug ) {
+				if( isset( $integrations[ $slug ] ) ) {
+					$integration = $integrations[ $slug ];
+					$this->integrations[ $slug ] = new $integration();
+				}
+			}
+		}
+
 
 		/**
 		 * Enqueueing Scripts and Styles.
@@ -331,6 +360,7 @@ if ( ss_fs()->is__premium_only() ) {
 		public function __construct() {
 			add_action( 'plugins_loaded', array( $this, 'run' ) );
 			add_action( 'ss_plugin_loaded', array( $this, 'includes' ) );
+			add_filter( 'ss_registered_integrations', array( $this, 'register_integrations' ) );
 			add_filter( 'ss_template_paths', array( $this, 'premium_templates' ) );
 			add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_scripts' ), 10 );
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ), 10 );
@@ -347,6 +377,7 @@ if ( ss_fs()->is__premium_only() ) {
 		 * Including premium files.
 		 */
 		public function includes() {
+			include_once 'includes/premium/functions-update.php';
 			include_once 'includes/premium/package-slots/package-slots.php';
 			include_once 'includes/premium/post-paid-form/post-paid-form.php';
 			include_once 'includes/premium/stripe-gateway/stripe-gateway.php';
@@ -367,6 +398,21 @@ if ( ss_fs()->is__premium_only() ) {
 		public function premium_templates( $paths ) {
 			$paths[90] = SS_PLUGIN_PATH . '/includes/premium/templates';
 			return $paths;
+		}
+
+		/**
+		 * @param $integrations
+		 */
+		public function register_integrations( $integrations ) {
+			$integrations['stripe']         = '\Simple_Sponsorships\Stripe\Plugin';
+			$integrations['package-slots']  = '\Simple_Sponsorships\Package_Slots\Plugin';
+			$integrations['post-paid-form'] = '\Simple_Sponsorships\Post_Paid_Form\Plugin';
+
+			if ( ss_fs()->is_plan( 'platinum' ) ) {
+				$integrations['package-features'] = '\Simple_Sponsorships\Package_Features\Plugin';
+				$integrations['package-timed-availability'] = '\Simple_Sponsorships\Package_Timed_Availability\Plugin';
+			}
+			return $integrations;
 		}
 
 		/**

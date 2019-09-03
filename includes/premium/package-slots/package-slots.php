@@ -10,18 +10,24 @@ namespace Simple_Sponsorships\Package_Slots;
 
 use Simple_Sponsorships\DB\DB_Packages;
 use Simple_Sponsorships\DB\DB_Sponsorship_Items;
+use Simple_Sponsorships\Integrations\Integration;
 use Simple_Sponsorships\Sponsorship;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-class Plugin {
+class Plugin extends Integration {
 
 	/**
 	 * Plugin constructor.
 	 */
 	public function __construct() {
+		$this->title = __( 'Package Slots', 'simple-sponsorships-premium' );
+		$this->id    = 'package-slots';
+		$this->desc  = __( 'Allow packages to have maximum slots and thus provide availability.', 'simple-sponsorships-premium' );
+		$this->image = trailingslashit( SS_PLUGIN_URL ) . 'assets/images/svg/integrations/package.svg';
+
 		add_action( 'ss_get_package_fields', array( $this, 'add_slots_field' ) );
 		add_action( 'ss_package_updated', array( $this, 'save_package_slot' ), 20, 2 );
 		add_filter( 'ss_package_is_available', array( $this, 'is_package_available' ), 20, 2 );
@@ -177,4 +183,4 @@ class Plugin {
 	}
 }
 
-new Plugin();
+//new Plugin();

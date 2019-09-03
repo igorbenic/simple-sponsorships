@@ -8,20 +8,23 @@
 
 namespace Simple_Sponsorships\Stripe;
 
-use Simple_Sponsorships\DB\DB_Packages;
-use Simple_Sponsorships\DB\DB_Sponsorship_Items;
-use Simple_Sponsorships\Sponsorship;
+use Simple_Sponsorships\Integrations\Integration;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-class Plugin {
+class Plugin extends Integration {
 
 	/**
 	 * Plugin constructor.
 	 */
 	public function __construct() {
+		$this->title = __( 'Stripe', 'simple-sponsorships-premium' );
+		$this->id    = 'stripe';
+		$this->desc  = __( 'This will add Stripe as a Payment Gateway.', 'simple-sponsorships-premium' );
+		$this->image = trailingslashit( SS_PLUGIN_URL ) . 'assets/images/svg/integrations/stripe.svg';
+
 		$this->includes();
 		add_filter( 'ss_payment_gateways', array( $this, 'add_gateways' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ), 10 );
@@ -150,4 +153,4 @@ class Plugin {
 
 }
 
-new Plugin();
+//new Plugin();

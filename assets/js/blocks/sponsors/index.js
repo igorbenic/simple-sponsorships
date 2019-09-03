@@ -35,6 +35,10 @@ registerBlockType( 'simple-sponsorships/sponsors', {
         col: {
             type: 'number',
             default: 2
+        },
+        link_sponsor: {
+            type: 'string',
+            default: '1'
         }
     },
     edit: SponsorsEdit,

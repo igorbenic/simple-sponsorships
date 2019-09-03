@@ -68,13 +68,14 @@ class Shortcodes {
 		 * logo: 0 or 1
 		 */
 		$atts = shortcode_atts( array(
-			'content' => 'current',
-			'all'     => '0',
-			'logo'    => '1',
-			'text'    => '1',
-			'package' => '0',
-			'size'    => 'medium',
-			'col'     => 2,
+			'content'      => 'current',
+			'all'          => '0',
+			'logo'         => '1',
+			'text'         => '1',
+			'package'      => '0',
+			'size'         => 'medium',
+			'col'          => 2,
+			'link_sponsor' => '1',
 		), $args, 'ss_sponsors' );
 
 		ob_start();

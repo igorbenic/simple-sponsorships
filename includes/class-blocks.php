@@ -104,7 +104,11 @@ class Blocks {
 				'col' => [
 					'type' => 'number',
 					'default' => 2
-				]
+				],
+				'link_sponsor' => [
+					'type' => 'string',
+					'default' => '1',
+				],
 			]
 		] );
 		

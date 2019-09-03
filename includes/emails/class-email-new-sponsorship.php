@@ -36,7 +36,11 @@ class Email_New_Sponsorship extends Email {
 		$this->data['email_heading'] = __( 'New Sponsorship', 'simple-sponsorships' );
 		$this->data['sponsorship']   = $sponsorship;
 
-		$to      = get_option( 'admin_email' );
+		$to = ss_get_option( 'ss_admin_email', false );
+		if ( false === $to ) {
+			$to = get_option( 'admin_email' );
+		}
+
 		$headers = $this->get_headers();
 		$subject = __( 'New Sponsorship Request', 'simple-sponsorships' );
 		$this->send( $to, $subject, $this->get_content(), $headers );

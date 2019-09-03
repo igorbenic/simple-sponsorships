@@ -4,13 +4,14 @@
  */
 
 
-$all     = isset( $args['all'] ) && '1' === $args['all'] ? true : false;
-$content = isset( $args['content'] ) ? $args['content'] : 'current';
-$logo    = isset( $args['logo'] ) ? absint( $args['logo'] ) : 1;
-$text    = isset( $args['text'] ) ? absint( $args['text'] ) : 1;
-$package = isset( $args['package'] ) ? absint( $args['package'] ) : 0;
-$size    = isset( $args['size'] ) ? sanitize_text_field( $args['size'] ) : 'medium';
-$col     = isset( $args['col'] ) ? absint( $args['col'] ) : '2';
+$all          = isset( $args['all'] ) && '1' === $args['all'] ? true : false;
+$content      = isset( $args['content'] ) ? $args['content'] : 'current';
+$logo         = isset( $args['logo'] ) ? absint( $args['logo'] ) : 1;
+$text         = isset( $args['text'] ) ? absint( $args['text'] ) : 1;
+$package      = isset( $args['package'] ) ? absint( $args['package'] ) : 0;
+$size         = isset( $args['size'] ) ? sanitize_text_field( $args['size'] ) : 'medium';
+$col          = isset( $args['col'] ) ? absint( $args['col'] ) : '2';
+$link_sponsor = isset( $args['link_sponsor'] ) ? absint( $args['link_sponsor'] ) : 1;
 
 $colClass = 'ss-col ss-col-' . $col;
 
@@ -37,7 +38,7 @@ if ( ! $sponsors ) {
 			$sponsor = new \Simple_Sponsorships\Sponsor( 0, false );
 			$sponsor->populate_from_post( $sponsor_object );
 			$has_logo  = $logo && has_post_thumbnail( $sponsor->get_id() );
-			$link      = $sponsor->get_link();
+			$link      = $link_sponsor ? $sponsor->get_link() : false;
 			?>
 			<div class="ss-sponsor" itemprop="sponsor" itemtype="http://schema.org/Organization">
 				<?php

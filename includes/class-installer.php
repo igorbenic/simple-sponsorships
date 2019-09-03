@@ -17,7 +17,12 @@ class Installer {
 	 *
 	 * @var array
 	 */
-	private static $db_updates = array();
+	private static $db_updates = array(
+		'1.3.0' => array(
+			'ss_update_130_integrations',
+			'ss_update_130_integrations_premium',
+		)
+	);
 
 	/**
 	 * Activating the Plugin.
@@ -60,7 +65,9 @@ class Installer {
 		foreach ( self::get_db_update_callbacks() as $version => $update_callbacks ) {
 			if ( version_compare( $from, $version, '<' ) ) {
 				foreach ( $update_callbacks as $update_callback ) {
-					$update_callback();
+					if ( function_exists( $update_callback ) ) {
+						$update_callback();
+					}
 				}
 			}
 		}

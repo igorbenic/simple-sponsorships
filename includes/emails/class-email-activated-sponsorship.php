@@ -38,7 +38,11 @@ class Email_Activated_Sponsorship extends Email {
 		$this->data['email_heading'] = sprintf( __( 'Sponsorship #%d Activated', 'simple-sponsorships' ), $sponsorship->get_id() );
 		$this->data['sponsorship']   = $sponsorship;
 
-		$to      = get_option( 'admin_email' );
+		$to = ss_get_option( 'ss_admin_email', false );
+		if ( false === $to ) {
+			$to = get_option( 'admin_email' );
+		}
+
 		$headers = $this->get_headers();
 		$subject = $this->data['email_heading'];
 		$this->send( $to, $subject, $this->get_content(), $headers );

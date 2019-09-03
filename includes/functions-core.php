@@ -78,3 +78,44 @@ function ss_get_image_sizes() {
 
 	return $sizes;
 }
+
+/**
+ * Get registered integrations
+ *
+ * @since 1.3.0
+ *
+ * @return array Key is the integration slug. Value is the class.
+ */
+function ss_get_registered_integrations() {
+	return apply_filters( 'ss_registered_integrations', array(
+		'gravityforms' => '\Simple_Sponsorships\Integrations\GravityForms',
+		'stripe' => '\Simple_Sponsorships\Integrations\Dummy\Stripe',
+		'package-slots' => '\Simple_Sponsorships\Integrations\Dummy\Package_Slots',
+		'post-paid-form' => '\Simple_Sponsorships\Integrations\Dummy\Post_Paid_Form_Dummy',
+		'package-features' => '\Simple_Sponsorships\Integrations\Dummy\Package_Features',
+		'package-timed-availability' => '\Simple_Sponsorships\Integrations\Dummy\Package_Timed_Availability',
+	));
+}
+
+/**
+ * Get active integrations
+ *
+ * @since 1.3.0
+ *
+ * @return array Array of integration slugs
+ */
+function ss_get_active_integrations() {
+	return get_option( 'ss_active_integrations', array() );
+}
+
+/**
+ * Get active integrations
+ *
+ * @since 1.3.0
+ * @param array $integrations Array of integration slugs.
+ *
+ * @return mixed
+ */
+function ss_update_active_integrations( $integrations = array() ) {
+	return update_option( 'ss_active_integrations', $integrations );
+}

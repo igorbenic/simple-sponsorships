@@ -9,20 +9,24 @@
 namespace Simple_Sponsorships\Package_Features;
 
 use Simple_Sponsorships\DB\DB_Packages;
-use Simple_Sponsorships\DB\DB_Sponsorship_Items;
-use Simple_Sponsorships\Sponsorship;
+use Simple_Sponsorships\Integrations\Integration;
 use Simple_Sponsorships\Templates;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-class Plugin {
+class Plugin extends Integration {
 
 	/**
 	 * Plugin constructor.
 	 */
 	public function __construct() {
+		$this->title = __( 'Package Features', 'simple-sponsorships-premium' );
+		$this->id    = 'package-features';
+		$this->desc  = __( 'You will be able to add features and display them in tables similar to pricing tables.', 'simple-sponsorships-premium' );
+		$this->image = trailingslashit( SS_PLUGIN_URL ) . 'assets/images/svg/integrations/list.svg';
+
 		add_action( 'ss_get_package_fields', array( $this, 'add_features_field' ), 11 );
 		add_action( 'ss_package_updated', array( $this, 'save_package_features' ), 20, 2 );
 		add_action( 'ss_package_added', array( $this, 'save_package_features' ), 20, 2 );
@@ -175,5 +179,3 @@ class Plugin {
 		}
 	}
 }
-
-new Plugin();

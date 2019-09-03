@@ -22,13 +22,15 @@ class AJAX {
 	public function __construct() {
 
 		$actions = array(
-			'get_available_sponsors' => false,
-			'get_packages' => false,
-			'add_quantity_sponsor' => false,
-			'remove_quantity_sponsor' => false,
-			'remove_sponsor_from_content' => false,
+			'get_available_sponsors'       => false,
+			'get_packages'                 => false,
+			'add_quantity_sponsor'         => false,
+			'remove_quantity_sponsor'      => false,
+			'remove_sponsor_from_content'  => false,
 			'sponsorship_calculate_totals' => false,
-			'packages_get_total' => true,
+			'packages_get_total'           => true,
+			'activate_integration'         => false,
+			'deactivate_integration'        => false,
 		);
 
 		foreach ( $actions as $action => $nopriv ) {
@@ -219,6 +221,95 @@ class AJAX {
 			'total' => $total,
 			'total_formatted' => Formatting::price( $total ) ) );
 	}
+
+
+	/**
+	 * Activating the Integration through AJAX
+	 * @return void
+	 */
+	function activate_integration() {
+
+		if( ! isset( $_POST['nonce'] )
+		    || ! wp_verify_nonce( $_POST['nonce'], 'ss-admin-nonce' ) ) {
+
+			wp_send_json_error( array( 'message' => __( 'Something went wrong!', 'simple-sponsorships' ) ) );
+			die();
+		}
+
+		if( ! isset( $_POST['integration'] ) ) {
+			wp_send_json_error( array( 'message' => __( 'No Integration Sent', 'simple-sponsorships' ) ) );
+			die();
+		}
+
+		$integration = $_POST['integration'];
+
+		$active_integrations = ss_get_active_integrations();
+
+		if( ! in_array( $integration, $active_integrations, true ) ) {
+			$integrations = ss_get_registered_integrations();
+
+			if( isset( $integrations[ $integration ] ) ) {
+				$active_integrations[] = $integration;
+
+				do_action( 'giveasap_' . $integration . '_integration_activated' );
+				ss_update_active_integrations( $active_integrations );
+				wp_send_json_success( array( 'message' => __( 'Activated', 'simple-sponsorships' ) ) );
+				die();
+			}
+
+		} else {
+			wp_send_json_success( array( 'message' => __( 'Already Activated', 'simple-sponsorships' ) ) );
+			die();
+		}
+
+
+		wp_send_json_error( array( 'message' => __( 'Nothing Happened', 'simple-sponsorships' ) ) );
+		die();
+	}
+
+	/**
+	 * Deactivating the Integration through AJAX
+	 * @return void
+	 */
+	function deactivate_integration() {
+
+		if( ! isset( $_POST['nonce'] )
+		    || ! wp_verify_nonce( $_POST['nonce'], 'ss-admin-nonce' ) ) {
+
+			wp_send_json_error( array( 'message' => __( 'Something went wrong!', 'simple-sponsorships' ) ) );
+			die();
+		}
+
+		if( ! isset( $_POST['integration'] ) ) {
+			wp_send_json_error( array( 'message' => __( 'No Integration Sent', 'simple-sponsorships' ) ) );
+			die();
+		}
+
+		$integration         = $_POST['integration'];
+		$active_integrations = ss_get_active_integrations();
+
+		if( in_array( $integration, $active_integrations, true ) ) {
+			$index = array_search( $integration, $active_integrations );
+			unset( $active_integrations[ $index ] );
+			if ( $active_integrations ) {
+				$active_integrations = array_values( $active_integrations );
+			} else {
+				$active_integrations = array();
+			}
+
+			do_action( 'giveasap_' . $integration . '_integration_deactivated' );
+			ss_update_active_integrations( $active_integrations );
+			wp_send_json_success( array( 'message' => __( 'Deactivated', 'simple-sponsorships' ) ) );
+			die();
+		} else {
+			wp_send_json_error( array( 'message' => __( 'Not Activated', 'simple-sponsorships' ) ) );
+			die();
+		}
+
+		wp_send_json_error( array( 'message' => __( 'Nothing Happened', 'simple-sponsorships' ) ) );
+		die();
+	}
+
 }
 
 new AJAX();

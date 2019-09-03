@@ -42,11 +42,11 @@ if ( $sponsorship->is_request() ) {
 		</th>
 		<td>
 			<?php
-                $packages = $sponsorship->get_packages();
+                $packages = $sponsorship->get_items( 'package' );
 				if ( $packages ) {
 				    $titles = array();
 				    foreach ( $packages as $package ) {
-					    $titles[] = $package->get_data( 'title' );
+					    $titles[] = $package['item_name'] . ( floatval( $package['item_qty'] ) > 1 ? ' (' . $package['item_qty'] . ')' : '' );
                     }
                     echo implode( '<br/>', $titles );
 				} else {

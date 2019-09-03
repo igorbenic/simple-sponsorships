@@ -8,16 +8,23 @@
 
 namespace Simple_Sponsorships\Post_Paid_Form;
 
+use Simple_Sponsorships\Integrations\Integration;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-class Plugin {
+class Plugin extends Integration {
 
 	/**
 	 * Plugin constructor.
 	 */
 	public function __construct() {
+		$this->title = __( 'Post Paid Form', 'simple-sponsorships-premium' );
+		$this->id    = 'post-paid-form';
+		$this->desc  = __( 'Allow sponsors that have purchased a sponsorship to edit their details on the sponsorhip page.', 'simple-sponsorships-premium' );
+		$this->image = trailingslashit( SS_PLUGIN_URL ) . 'assets/images/svg/integrations/user-edit.svg';
+
 		include 'includes/class-form-post-paid.php';
 
 		add_action( 'ss_sponsorship_form', array( $this, 'show_form' ) );
@@ -106,7 +113,7 @@ class Plugin {
 	 */
 	public function add_settings( $settings ) {
 
-		$general_main = $settings['general']['main'];
+		$general_main = $settings['sponsors']['main'];
 		$new_main     = array();
 		foreach ( $general_main as $settings_id => $setting ) {
 			$new_main[ $settings_id ] = $setting;
@@ -128,9 +135,7 @@ class Plugin {
 				);
 			}
 		}
-		$settings['general']['main'] = $new_main;
+		$settings['sponsors']['main'] = $new_main;
 		return $settings;
 	}
 }
-
-new Plugin();

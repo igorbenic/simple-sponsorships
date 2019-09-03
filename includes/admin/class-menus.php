@@ -39,6 +39,14 @@ class Menus {
 			'manage_options',
 			'ss-settings',
 			array( $this, 'view' ) );
+
+		add_submenu_page(
+			'edit.php?post_type=sponsors',
+			__( 'Simple Sponsorships Integrations', 'simple-sponsorships' ),
+			__( 'Integrations', 'simple-sponsorships' ),
+			'manage_options',
+			'ss-integrations',
+			array( $this, 'view' ) );
 	}
 
 	public function view() {

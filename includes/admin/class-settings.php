@@ -270,6 +270,13 @@ class Settings {
 						'type'    => 'color',
 						'default' => '#000000'
 					),
+					'ss_admin_email' => array(
+						'id'      => 'ss_admin_email',
+						'label'    => __( 'Admin Email', 'simple-sponsorships' ),
+						'type'    => 'email',
+						'default' => get_option( 'admin_email' ),
+						'desc'    => __( 'Where should Sponsorship requests be sent to.', 'simple-sponsorships' ),
+					),
 				)
 			) ),
 		);
