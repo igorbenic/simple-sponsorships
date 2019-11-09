@@ -421,7 +421,7 @@ function ss_after_sponsor_form_fields_content_id() {
                     }
 
                     echo '<p class="ss-content-title"><a href="' . get_permalink( $post ) . '">' . $post->post_title . '</a></p>';
-                    echo get_the_content( '' );
+                    echo get_the_excerpt( $post );
 
                 ?>
             </div>
