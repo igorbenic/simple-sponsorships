@@ -129,6 +129,7 @@ class Form_Sponsors extends Form {
 		}
 		$package_field_type = ss_multiple_packages_enabled() ? 'package_select' : 'select';
 		$package_required_function = ss_multiple_packages_enabled() ? array( $this, 'package_check_required' ) : false;
+
 		$fields = array(
 			'sponsor_name' => array(
 				'title'    => __( 'Your Name', 'simple-sponsorships' ),

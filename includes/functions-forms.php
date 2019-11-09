@@ -293,6 +293,7 @@ function ss_form_render_field( $args, $wrap_field = true ) {
 			echo isset( $args['desc'] ) ? '<h2>' . $args['desc'] . '</h2>' : '';
 			break;
         case 'package_select':
+            $selected = isset( $args['value'] ) && $args['value'] ? absint( $args['value'] ) : '';
 	        $name     = isset( $args['name'] ) && $args['name'] ? $args['name'] : $id;
 	        $total    = isset( $args['total'] ) ? $args['total'] : 0;
 	        $packages = isset( $args['packages'] ) ? $args['packages'] : array();
@@ -303,10 +304,15 @@ function ss_form_render_field( $args, $wrap_field = true ) {
 	        $html    .= '<span class="price-column">' . __( 'Price', 'simple-sponsorships' ) . '</span>';
 	        $html    .= '</div>';
 	        $html    .= '<div class="packages-select-items">';
+
             foreach ( $packages as $package ) {
+                $qty = 0;
+                if ( $selected === $package->get_id() ) {
+                    $qty = 1;
+                }
                 $html .= '<div class="package-item">';
 	            $html .= '<span class="package-column">' . $package->get_title() . '</span>';
-	            $html .= '<span class="qty-column"><input type="number" name="' . esc_attr( $name ) . '[' . $package->get_id() . ']" value="0" /></span>';
+	            $html .= '<span class="qty-column"><input type="number" name="' . esc_attr( $name ) . '[' . $package->get_id() . ']" value="' . esc_attr( $qty ) . '" /></span>';
 	            $html .= '<span class="price-column">' . $package->get_price_formatted( false ) . '</span>';
 	            $html .= '</div>';
             }
@@ -382,6 +388,13 @@ function ss_normalize_postcode( $postcode ) {
 }
 
 add_filter( 'ss_sponsor_form_field_value', 'ss_sponsor_form_field_value', 20, 2 );
+/**
+ * Adding the Sponsor Package as value.
+ * @param $value
+ * @param $field
+ *
+ * @return int
+ */
 function ss_sponsor_form_field_value( $value, $field ) {
 	if ( $field['id'] === 'package' ) {
 		$value = isset( $_GET['package'] ) ? absint( $_GET['package'] ) : $value;
