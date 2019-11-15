@@ -177,8 +177,12 @@ class DB_Sponsors extends DB {
 	 */
 	public function get_sponsored_content( $sponsor_id ) {
 		return get_posts(array(
-			'meta_key' => '_ss_sponsor',
-			'meta_value_num' => $sponsor_id
+			'meta_query' => array(
+				array(
+					'key'   => '_ss_sponsor',
+					'value' => $sponsor_id,
+				),
+			),
 		));
 	}
 }
