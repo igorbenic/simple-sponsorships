@@ -165,11 +165,28 @@ class Form_Sponsors extends Form {
 				'title'    => __( 'Terms and Conditions', 'simple-sponsorships' ),
 				'required' => true,
 				'type'     => 'checkbox',
-				'desc'     => __( 'I have read the terms and conditions', 'simple-sponsorships' ),
+				'desc'     => $this->get_terms_description(),
 			),
 		);
 
 		return apply_filters( 'ss_form_sponsors_fields', $fields );
+	}
+
+	/**
+	 * Get the Terms description.
+	 *
+	 * @return string
+	 */
+	protected function get_terms_description() {
+		$terms         = sprintf( __( 'I have read and agree to %s.', 'simple-sponsorships' ), '[terms]' );
+		$terms_page_id = ss_get_option( 'terms_page', 0 );
+		$term_replace  = __( 'Terms and Conditions', 'simple-sponsorships' );
+
+		if ( $terms_page_id ) {
+			$term_replace = '<a target="_blank" href="' . esc_url( get_permalink( $terms_page_id ) ) . '">' . $term_replace . '</a>';
+		}
+
+		return str_replace( '[terms]', $term_replace, $terms );
 	}
 
 	/**

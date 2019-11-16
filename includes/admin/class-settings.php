@@ -141,6 +141,24 @@ class Settings {
 						'chosen'      => true,
 						'placeholder' => __( 'Select a page', 'simple-sponsorships' ),
 					),
+					'terms_page' => array(
+						'id'          => 'terms_page',
+						'label'        => __( 'Terms & Conditions Page', 'simple-sponsorships' ),
+						'desc'        => __( 'This is the page that will show your terms and conditons.', 'simple-sponsorships' ),
+						'type'        => 'select',
+						'options'     => $this->get_pages(),
+						'chosen'      => true,
+						'placeholder' => __( 'Select a page', 'simple-sponsorships' ),
+					),
+					'privacy_page' => array(
+						'id'          => 'privacy_page',
+						'label'        => __( 'Privacy Policy Page', 'simple-sponsorships' ),
+						'desc'        => __( 'This is the page that will show your privacy policy.', 'simple-sponsorships' ),
+						'type'        => 'select',
+						'options'     => $this->get_pages(),
+						'chosen'      => true,
+						'placeholder' => __( 'Select a page', 'simple-sponsorships' ),
+					),
 				)
 			),
 			'sponsors' => array(
