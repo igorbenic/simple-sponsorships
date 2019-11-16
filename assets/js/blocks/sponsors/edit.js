@@ -192,6 +192,18 @@ export default class Edit extends Component {
                         }
                     } }
                 />
+
+                <CheckboxControl
+                    heading={ __( 'Hide Title?' ) }
+                    checked={ parseInt( attributes.hide_title ) === 1 }
+                    onChange={ ( isChecked ) => {
+                        if ( isChecked ) {
+                            setAttributes( { hide_title: '1' } );
+                        } else {
+                            setAttributes( { hide_title: '0' } );
+                        }
+                    } }
+                />
             </PanelBody>
             <PanelBody
             title={ __( 'Package' ) }

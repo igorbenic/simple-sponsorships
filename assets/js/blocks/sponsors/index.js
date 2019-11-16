@@ -39,6 +39,10 @@ registerBlockType( 'simple-sponsorships/sponsors', {
         link_sponsor: {
             type: 'string',
             default: '1'
+        },
+        hide_title: {
+            type: 'string',
+            default: '0'
         }
     },
     edit: SponsorsEdit,

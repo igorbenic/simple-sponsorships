@@ -12,6 +12,7 @@ $package      = isset( $args['package'] ) ? absint( $args['package'] ) : 0;
 $size         = isset( $args['size'] ) ? sanitize_text_field( $args['size'] ) : 'medium';
 $col          = isset( $args['col'] ) ? absint( $args['col'] ) : '2';
 $link_sponsor = isset( $args['link_sponsor'] ) ? absint( $args['link_sponsor'] ) : 1;
+$hide_title   = isset( $args['hide_title'] ) ? absint( $args['hide_title'] ) : 0;
 
 $colClass = 'ss-col ss-col-' . $col;
 
@@ -43,14 +44,16 @@ if ( ! $sponsors ) {
 			<div class="ss-sponsor" itemprop="sponsor" itemtype="http://schema.org/Organization">
 				<?php
 
-				if ( $link ) {
-					echo '<a itemprop="url" target="_blank" href="' . $link . '">';
-				}
-				echo '<h3 class="sponsor-title" itemprop="name">' . $sponsor->get_data( 'post_title' ) . '</h3>';
+                if ( ! $hide_title ) {
+	                if ( $link ) {
+		                echo '<a itemprop="url" target="_blank" href="' . $link . '">';
+	                }
+	                echo '<h3 class="sponsor-title" itemprop="name">' . $sponsor->get_data( 'post_title' ) . '</h3>';
 
-				if ( $link ) {
-					echo '</a>';
-				}
+	                if ( $link ) {
+		                echo '</a>';
+	                }
+                }
 				if ( $has_logo ) {
 					if ( $link ) {
 						echo '<a href="' . $link . '">';
