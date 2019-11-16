@@ -169,7 +169,13 @@ class Settings {
 						'type'    => 'checkbox',
 						'desc'    => __( 'If checked, it will show sponsor placeholder under the content.', 'simple-sponsorships' ),
 						'default' => '0'
-					)
+					),
+					'content_placeholder_text' => array(
+						'id'      => 'content_placeholder_text',
+						'label'   => __( 'Placeholder Text', 'simple-sponsorships' ),
+						'type'    => 'textarea',
+						'default' => __( 'Become a Sponsor', 'simple-sponsorships' ),
+					),
 				),
 				'under_content' => array(
 					'show_in_content_footer' => array(

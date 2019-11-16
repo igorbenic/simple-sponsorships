@@ -183,7 +183,7 @@ function ss_show_sponsors_under_content( $content ) {
 
 							if ( $has_logo ) {
 								if ( $link ) {
-									echo '<a itemprop="url" href="' . $link . '">';
+									echo '<a target="_blank" itemprop="url" href="' . $link . '">';
 								}
 								echo get_the_post_thumbnail( $sponsor->get_id(), $logo_size );
 
@@ -251,7 +251,7 @@ function ss_show_sponsors_under_content( $content ) {
 					<?php if ( $placeholder_svg ) {
 						echo '<div class="ss-placeholder-image">' . $placeholder_svg . '</div>';
 					} ?>
-					<?php esc_html_e( 'Become a Sponsor', 'simple-sponsorships' ); ?>
+					<?php echo esc_html( ss_get_option( 'content_placeholder_text', __( 'Become a Sponsor', 'simple-sponsorships' ) ) ); ?>
                 </a>
 				<?php
 				$content .= ob_get_clean();
