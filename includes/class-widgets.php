@@ -31,6 +31,7 @@ class Widgets {
 	 */
 	public function include_widgets() {
 		include_once 'widgets/class-widget-sponsors.php';
+		include_once 'widgets/class-widget-placeholder.php';
 	}
 
 	/**
@@ -39,5 +40,6 @@ class Widgets {
 	public function register_widgets() {
 
 		register_widget( '\Simple_Sponsorships\Widgets\Widget_Sponsors' );
+		register_widget( '\Simple_Sponsorships\Widgets\Widget_Placeholder' );
 	}
 }

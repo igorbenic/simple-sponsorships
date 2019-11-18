@@ -80,7 +80,7 @@ class Shortcodes {
 		), $args, 'ss_sponsors' );
 
 		ob_start();
-		Templates::get_template_part( 'shortcode-sponsors', null, $atts );
+		Templates::get_template_part( 'shortcode/sponsors', null, $atts );
 		return ob_get_clean();
 	}
 
@@ -99,8 +99,9 @@ class Shortcodes {
 		$atts = shortcode_atts( array(
 			'id'      => '0',
 			'button'  => '0',
-			'heading' => 'h2'
-		), $args, 'ss_sponsors' );
+			'heading' => 'h2',
+			'col'     => 1,
+		), $args, 'ss_packages' );
 
 		ob_start();
 		Templates::get_template_part( 'shortcode/packages', null, $atts );

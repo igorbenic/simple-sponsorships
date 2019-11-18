@@ -131,6 +131,10 @@ class Blocks {
 					'default' => 'h2',
 					'type'    => 'string',
 				],
+				'col' => [
+					'type' => 'number',
+					'default' => 1
+				],
 			]
 		] );
 

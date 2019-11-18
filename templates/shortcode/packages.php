@@ -9,9 +9,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $id       = isset( $args['id'] ) ? absint( $args['id'] ) : 0;
 $button   = isset( $args['button'] ) ? absint( $args['button'] ) : 0;
-$heading = isset( $args['heading'] ) ? $args['heading'] : 'h2';
-
+$heading  = isset( $args['heading'] ) ? $args['heading'] : 'h2';
+$cols     = isset( $args['col'] ) ? absint( $args['col'] ) : 1;
+$classes  = array();
 $packages = array();
+
+if ( $cols > 1 ) {
+    $classes[] = 'ss-col';
+	$classes[] = 'ss-col-' . $cols;
+}
 
 if ( ! $id ) {
 	$db_packages = ss_get_packages();
@@ -38,7 +44,7 @@ if ( $button ) {
 }
 
 ?>
-<div class="simple-sponsorships ss-packages">
+<div class="simple-sponsorships ss-packages <?php echo implode( ' ', $classes ); ?>">
 	<?php
 	foreach ( $packages as $package ) {
 		?>

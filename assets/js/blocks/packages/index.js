@@ -15,6 +15,10 @@ registerBlockType( 'simple-sponsorships/packages', {
         button: {
             type: 'string',
             default: '0'
+        },
+        col: {
+            type: 'number',
+            default: 1
         }
     },
     transforms: {

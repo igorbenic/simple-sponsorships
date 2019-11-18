@@ -1,4 +1,4 @@
-const { RadioControl, ServerSideRender, Panel, PanelBody, PanelRow, SelectControl, Spinner, Toolbar } = wp.components;
+const { RadioControl, ServerSideRender, PanelBody, RangeControl, SelectControl, Toolbar } = wp.components;
 const { __ } = wp.i18n;
 const { Fragment, Component } = wp.element;
 const { InspectorControls } = wp.editor;
@@ -61,6 +61,7 @@ export default class Edit extends Component {
         let packages = [{ label: __( 'Select a Package' ), value: 0 }]
         const { attributes, setAttributes } = this.props;
         const { button, id } = this.state;
+        let columns = attributes.col || 1;
 
         if ( this.state.packages.length ) {
             packages = packages.concat(this.state.packages.map(( post ) => {
@@ -103,6 +104,18 @@ export default class Edit extends Component {
                         />
                         <p>{ __( 'Package Title' ) }</p>
                         <Toolbar controls={ [ 1, 2, 3, 4, 5, 6 ].map( ( index ) => this.createLevelControl( index, selectedHeading, this.changeHeading ) ) } />
+                    
+                    <RangeControl
+                        label={ __( 'Columns' ) }
+                        value={ columns }
+                        onChange={ ( nextColumns ) => {
+                            setAttributes( {
+                                col: nextColumns
+                            } );
+                        } }
+                        min={ 1 }
+                        max={ 5 }
+                        />
             </PanelBody>
             </InspectorControls>
            

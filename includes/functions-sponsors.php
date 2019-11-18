@@ -244,17 +244,7 @@ function ss_show_sponsors_under_content( $content ) {
                 }
 
 				$sponsorship_page = add_query_arg( 'ss_content_id', $content_id, $sponsorship_page );
-				$placeholder_svg  = \Simple_Sponsorships\Templates::get_file_contents( trailingslashit( SS_PLUGIN_PATH ) . 'assets/images/svg/id-user.svg', 'placeholder-image' );
-				ob_start();
-				?>
-                <a class="ss-content-placeholder" href="<?php echo esc_attr( $sponsorship_page ); ?>">
-					<?php if ( $placeholder_svg ) {
-						echo '<div class="ss-placeholder-image">' . $placeholder_svg . '</div>';
-					} ?>
-					<?php echo esc_html( ss_get_option( 'content_placeholder_text', __( 'Become a Sponsor', 'simple-sponsorships' ) ) ); ?>
-                </a>
-				<?php
-				$content .= ob_get_clean();
+                $content .= ss_get_placeholder( $sponsorship_page );
 			}
 		}
 	}
@@ -279,4 +269,34 @@ function ss_get_sponsor_page(){
 	}
 
 	return apply_filters( 'ss_get_sponsor_page', $link );
+}
+
+/**
+ * Return the placeholder link
+ *
+ * @param string $link
+ * @param string $image
+ * @param string $text
+ *
+ * @return string
+ */
+function ss_get_placeholder( $link, $image = '', $text = '' ) {
+    ob_start();
+
+    if ( ! $image ) {
+	    $image = \Simple_Sponsorships\Templates::get_file_contents( trailingslashit( SS_PLUGIN_PATH ) . 'assets/images/svg/id-user.svg', 'placeholder-image' );
+    }
+
+    if ( ! $text ) {
+        $text = ss_get_option( 'content_placeholder_text', __( 'Become a Sponsor', 'simple-sponsorships' ) );
+    }
+	?>
+    <a class="ss-content-placeholder" href="<?php echo esc_url( $link ); ?>">
+		<?php if ( $image ) {
+			echo '<div class="ss-placeholder-image">' . $image . '</div>';
+		} ?>
+		<?php echo esc_html( $text ); ?>
+    </a>
+    <?php
+    return ob_get_clean();
 }
