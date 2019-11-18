@@ -3,7 +3,7 @@ Contributors: ibenic
 Tags: sponsorships, sponsors, payment
 Requires at least: 4.4
 Tested up to: 5.2.2
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -141,6 +141,17 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 
 
 == Changelog ==
+
+= 1.4.0 - 2019-11-18 =
+* New: Placeholder Widget. Add a Call to Action widget to get sponsors much faster.
+* New: Columns option added to Packages shortcode and block.
+* New: Hide title of sponsors in the shortcode/block (shortcode attribute is hide_title=1).
+* New: Placeholder Text can be changed under Settings.
+* New: Click on the sponsor logo will not open in a new window/tab.
+* New: Terms and Privacy Policy page settings. Terms page used in the Terms and conditions checkbox.
+* Fix: Sponsor metabox for showing sponsored content was showing all content that has any sponsor. Fixed to show only the ones sponspored by that sponsor.
+* Fix: When clicking to sponsor a specific content, the sponsor form showed all text if the More tag was not used. Now it shows the excerpt.
+* Fix: When using Multiple Packages, when clicking on a package purchase button, that package did not have the quantity updated.
 
 = 1.3.0 - 2019-09-03 =
 * New: Option to allow the purchase of multiple packages.

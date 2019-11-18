@@ -77,7 +77,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 		/**
 		 * @var string
 		 */
-		public $version = '1.3.0';
+		public $version = '1.4.0';
 
 		/**
 		 * Settings
