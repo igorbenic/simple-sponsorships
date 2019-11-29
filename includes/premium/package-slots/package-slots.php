@@ -123,7 +123,7 @@ class Plugin extends Integration {
 					$db->update_meta( $item['ID'], '_package_slots', $slots );
 					$package = ss_get_package( $item['item_id'], false );
 					if ( $package ) {
-						$used_slots = $package->get_data('used_slots');
+						$used_slots = $package->get_data('used_slots', 0);
 						$used_slots = $used_slots + $slots;
 						$package->update_data( 'used_slots', $used_slots );
 					}
@@ -144,7 +144,7 @@ class Plugin extends Integration {
 		}
 		$package = ss_get_package( $item['item_id'], false );
 		if ( $package ) {
-			$used_slots = $package->get_data('used_slots');
+			$used_slots = $package->get_data('used_slots', 0 );
 			$used_slots = $used_slots - $slots;
 			if ( $used_slots < 0 ) {
 				$used_slots = 0;
@@ -159,7 +159,7 @@ class Plugin extends Integration {
 	 */
 	public function update_package_status( $used_slots, $package ) {
 		$slots = $package->get_data( 'slots' );
-		if ( absint( $slots ) <= absint( $used_slots ) ) {
+		if ( absint( $slots ) > 0 && absint( $slots ) <= absint( $used_slots ) ) {
 			$package->update_data( 'status', 'unavailable' );
 		} else {
 			$package->update_data( 'status', 'available' );
@@ -174,7 +174,7 @@ class Plugin extends Integration {
 	 */
 	public function package_title( $title, $package ) {
 		$slots = $package->get_data( 'slots' );
-		if ( $slots ) {
+		if ( $slots && absint( $slots ) > 0 ) {
 			$used_slots = $package->get_data( 'used_slots', 0 );
 
 			$title .= ' (' . $used_slots . '/' . $slots . ')';

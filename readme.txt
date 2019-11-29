@@ -2,8 +2,8 @@
 Contributors: ibenic
 Tags: sponsorships, sponsors, payment
 Requires at least: 4.4
-Tested up to: 5.2.2
-Stable tag: 1.4.0
+Tested up to: 5.3.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -141,6 +141,10 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 
 
 == Changelog ==
+
+= 1.4.1 - 2019-11-29 =
+* Fix: Package quantities were not calculated correctly when the sponsorship was paid for.
+* Fix: (Premium) Package Slots were setting packages as unavailable even if the slots were set to be empty/0 which means they were not used.
 
 = 1.4.0 - 2019-11-18 =
 * New: Placeholder Widget. Add a Call to Action widget to get sponsors much faster.
