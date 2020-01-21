@@ -94,6 +94,12 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 		public $session = null;
 
 		/**
+		 * Query object
+		 * @var null|Query
+		 */
+		public $query = null;
+
+		/**
 		 * Integrations
 		 */
 		protected $integrations = array();
@@ -177,6 +183,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			include_once 'includes/functions-gateways.php';
 			include_once 'includes/functions-sponsors.php';
 			include_once 'includes/functions-packages.php';
+			include_once 'includes/functions-account.php';
 
 			// Classes.
 			include_once 'includes/class-formatting.php';
@@ -194,6 +201,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			include_once 'includes/class-widgets.php';
 			include_once 'includes/class-ajax.php';
 			include_once 'includes/class-blocks.php';
+			include_once 'includes/class-query.php';
 
 			// Integrations
 			include_once 'includes/integrations/class-gravityforms.php';
@@ -257,6 +265,8 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			add_action( 'ss_payment_form', 'ss_process_payment_form' );
 			add_action( 'ss_sponsorship_form', 'ss_show_payment_form_for_sponsorship' );
 			add_filter( 'the_content', 'ss_show_sponsors_under_content' );
+			add_action( 'ss_account_content', 'ss_account_content' );
+			add_action( 'ss_account_sponsorships_endpoint', 'ss_account_sponsorships_content' );
 		}
 
 		/**
@@ -332,6 +342,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			new Emails();
 			new Widgets();
 			new Blocks();
+			$this->query = new Query();
 
 			// Registering the Databases to wpdb.
 			$dbs = new Databases();

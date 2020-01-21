@@ -64,6 +64,14 @@ class Sponsorships {
 		if ( isset( $posted_data['_website'] ) ) {
 			$db->add_meta( $sponsor_id, '_website', $posted_data['_website'] );
 		}
+
+		if ( isset( $posted_data['id'] ) && $posted_data['id'] ) {
+		    $db_sponsorships = new DB_Sponsorships();
+		    $user_id = $db_sponsorships->get_meta( $posted_data['id'], '_user_id', true );
+		    if ( $user_id ) {
+		        $db->add_meta( $sponsor_id, '_user_id', $user_id );
+            }
+        }
 	}
 
 	/**

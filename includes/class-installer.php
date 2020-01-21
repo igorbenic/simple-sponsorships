@@ -21,6 +21,9 @@ class Installer {
 		'1.3.0' => array(
 			'ss_update_130_integrations',
 			'ss_update_130_integrations_premium',
+		),
+		'1.5.0' => array(
+			'flush_rewrite_rules'
 		)
 	);
 
@@ -30,6 +33,9 @@ class Installer {
 	public static function activate() {
 		self::install();
 		self::create_pages();
+
+		// for Account query vars.
+		flush_rewrite_rules();
 	}
 
 	/**

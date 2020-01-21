@@ -29,6 +29,7 @@ class Shortcodes {
 		add_shortcode( 'ss_sponsorship_details', array( $this, 'sponsorship_details' ) );
 		add_shortcode( 'ss_sponsors', array( __CLASS__, 'sponsors' ) );
 		add_shortcode( 'ss_packages', array( __CLASS__, 'packages' ) );
+		add_shortcode( 'ss_account', array( __CLASS__, 'account' ) );
 	}
 
 	/**
@@ -105,6 +106,25 @@ class Shortcodes {
 
 		ob_start();
 		Templates::get_template_part( 'shortcode/packages', null, $atts );
+		return ob_get_clean();
+	}
+
+	/**
+	 * Method to show packages.
+	 *
+	 * @param array $args Shortcode array.
+	 * @return string
+	 */
+	public static function account( $args = array() ) {
+		/**
+		 * Possible values:
+		 *
+		 * id: 0 or X. If 0, it will show all.
+		 */
+		$atts = shortcode_atts( array(), $args, 'ss_account' );
+
+		ob_start();
+		Templates::get_template_part( 'shortcode/account', null, $atts );
 		return ob_get_clean();
 	}
 }

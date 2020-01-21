@@ -31,6 +31,11 @@ class DB_Sponsorships extends DB {
 	protected $meta_table = 'ss_sponsorshipmeta';
 
 	/**
+	 * @var string
+	 */
+	protected $meta_type = 'sssponsorship';
+
+	/**
 	 * Get the level meta data.
 	 *
 	 * @param      $id

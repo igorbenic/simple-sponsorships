@@ -27,7 +27,7 @@ class Sponsors {
 		add_action( 'save_post', array( $this, 'save_sponsor' ), 20, 2 );
 		add_action( 'save_post', array( $this, 'save_sponsor_to_content' ), 20, 2 );
 
-		add_filter( 'manage_sponsors_posts_columns', array( $this, 'columns' ) );
+		add_filter( 'manage_sponsors_posts_columns', array( $this, 'columns' ), 90 );
 		add_action( 'manage_sponsors_posts_custom_column' , array( $this, 'custom_column' ), 10, 2 );
 
 		add_filter( 'display_post_states', array( $this, 'show_inactive_status' ), 20, 2 );
@@ -41,9 +41,28 @@ class Sponsors {
 	 * @return mixed
 	 */
 	public function columns( $columns ) {
+
 		unset( $columns['date'] );
-		$columns['qty'] = __( 'Avl. Quantity', 'simple-sponsorships' );
-		return $columns;
+		unset( $columns['title'] );
+
+		if ( isset( $columns['wp_sponsors_logo'] ) ) {
+			unset( $columns['wp_sponsors_logo'] );
+		}
+		$new_columns = array();
+		$new_columns['cb']   = $columns['cb'];
+		$new_columns['ss-logo'] = __( 'Logo', 'simple-sponsorships' );
+		$new_columns['title'] = __( 'Sponsor', 'simple-sponsorships' );
+		$new_columns['qty'] = __( 'Avl. Quantity', 'simple-sponsorships' );
+
+		foreach ( $columns as $column_slug => $column_title ) {
+			if ( isset( $new_columns[ $column_slug ] ) ) {
+				continue;
+			}
+
+			$new_columns[ $column_slug ] = $column_title;
+		}
+
+		return $new_columns;
 	}
 
 	/**
@@ -60,6 +79,9 @@ class Sponsors {
 				echo '<button class="button button-secondary button-small ss-button-action" data-success="updateSponsorQuantityColumnOnAjax" data-sponsor="' . $post_id . '" data-action="ss_add_quantity_sponsor" type="button">+</button>';
 				echo '<span class="ss-badge ss-qty-' . $qty . '">' . $qty . '</span>';
 				echo '<button class="button button-secondary button-small ss-button-action" data-success="updateSponsorQuantityColumnOnAjax" data-sponsor="' . $post_id . '"  data-action="ss_remove_quantity_sponsor" type="button">-</button>';
+				break;
+			case 'ss-logo':
+				echo get_the_post_thumbnail( $post_id, array( 0, 50 ) );
 				break;
 		}
 		do_action( 'ss_sponsors_column_' . $column, $post_id );

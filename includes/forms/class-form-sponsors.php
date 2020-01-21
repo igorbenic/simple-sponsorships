@@ -49,16 +49,45 @@ class Form_Sponsors extends Form {
 			}
 		}
 
+		$user_id = get_current_user_id();
+
+		if ( ! $user_id && ss_is_account_creation_enabled() ) {
+			$create_account   = isset( $posted_data['create_account'] ) ? true : false;
+			$account_username = isset( $posted_data['create_account_username'] ) ? sanitize_text_field( $posted_data['create_account_username'] ) : '';
+			$account_pass     = isset( $posted_data['create_account_password'] ) ? sanitize_text_field( $posted_data['create_account_password'] ) : '';
+
+			if ( $create_account ) {
+				if ( ! $account_username ) {
+					ss_add_notice( __( 'Account Username is required.', 'simple-sponsorships' ), 'error' );
+					return false;
+				}
+
+				if ( ! $account_pass ) {
+					ss_add_notice( __( 'Account Password is required.', 'simple-sponsorships' ), 'error' );
+					return false;
+				}
+
+				$user_id = $this->create_account( $posted_data['email'], $account_username, $account_pass );
+			}
+		}
+
+		if ( is_wp_error( $user_id ) ) {
+			ss_add_notice( $user_id->get_error_message(), 'error' );
+			return false;
+		}
 
 		$sponsorship_id = ss_create_sponsorship( $args );
 		$db             = new DB_Sponsorships();
 
 		if ( $sponsorship_id ) {
-
 			$meta_data = $this->unset_sponsorship_columns( $posted_data );
 
 			foreach ( $meta_data as $key => $value ) {
 				$db->update_meta( $sponsorship_id, '_' . $key, $value );
+			}
+
+			if ( $user_id ) {
+				$db->update_meta( $sponsorship_id, '_user_id', $user_id );
 			}
 
 			do_action( 'ss_sponsor_form_sponsorship_created', $sponsorship_id );
@@ -80,6 +109,68 @@ class Form_Sponsors extends Form {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Create the account for the user
+	 *
+	 * @param $email
+	 * @param $username
+	 * @param $password
+	 */
+	public function create_account( $email, $username, $password ) {
+
+		if ( email_exists( $email ) ) {
+			return new \WP_Error( 'registration-error-email-exists', apply_filters( 'ss_registration_error_email_exists', __( 'An account is already registered with your email address. Please log in.', 'simple-sponsorships' ), $email ) );
+		}
+
+		$username = sanitize_user( $username );
+
+		if ( empty( $username ) || ! validate_username( $username ) ) {
+			return new \WP_Error( 'registration-error-invalid-username', __( 'Please enter a valid account username.', 'woocommerce' ) );
+		}
+
+		if ( username_exists( $username ) ) {
+			return new \WP_Error( 'registration-error-username-exists', apply_filters( 'ss_registration_error_username_exists', sprintf( __( 'The username %s has already been taken. Please try another.', 'simple-sponsorships' ), $username ) ) );
+		}
+
+		if ( empty( $password ) ) {
+			return new \WP_Error( 'registration-error-missing-password', __( 'Please enter an account password.', 'simple-sponsorships' ) );
+		}
+
+		// Use WP_Error to handle registration errors.
+		$errors = new \WP_Error();
+
+		do_action( 'ss_create_account', $username, $email, $errors );
+
+		$errors = apply_filters( 'ss_account_creation_errors', $errors, $username, $email );
+
+		if ( $errors->get_error_code() ) {
+			return $errors;
+		}
+
+		$account_data = apply_filters(
+			'ss_new_account_data',
+			array(
+				'user_login' => $username,
+				'user_pass'  => $password,
+				'user_email' => $email,
+				'role'       => 'subscriber',
+			)
+		);
+
+		$user_id = wp_insert_user( $account_data );
+
+		if ( is_wp_error( $user_id ) ) {
+			return $user_id;
+		}
+
+		do_action( 'ss_account_created', $user_id, $account_data );
+
+		wp_set_current_user( $user_id );
+		wp_set_auth_cookie( $user_id, true );
+
+		return $user_id;
 	}
 
 	/**
@@ -161,12 +252,35 @@ class Form_Sponsors extends Form {
 				'packages'          => $packages,
 				'required_function' => $package_required_function,
 			),
-			'sponsor_terms' => array(
-				'title'    => __( 'Terms and Conditions', 'simple-sponsorships' ),
-				'required' => true,
+		);
+
+		if ( ss_is_account_creation_enabled() && ! is_user_logged_in() ) {
+			$fields['create_account'] = array(
+				'title'    => __( 'Create Account', 'simple-sponsorships' ),
+				'required' => false,
 				'type'     => 'checkbox',
-				'desc'     => $this->get_terms_description(),
-			),
+			);
+
+			$fields['create_account_username'] = array(
+				'title'    => __( 'Account Username', 'simple-sponsorships' ),
+				'required' => false,
+				'type'     => 'text',
+				'class'    => array( 'ss-hidden' )
+			);
+
+			$fields['create_account_password'] = array(
+				'title'    => __( 'Account Password', 'simple-sponsorships' ),
+				'required' => false,
+				'type'     => 'password',
+				'class'    => array( 'ss-hidden' )
+			);
+		}
+
+		$fields['sponsor_terms'] = array(
+			'title'    => __( 'Terms and Conditions', 'simple-sponsorships' ),
+			'required' => true,
+			'type'     => 'checkbox',
+			'desc'     => $this->get_terms_description(),
 		);
 
 		return apply_filters( 'ss_form_sponsors_fields', $fields );

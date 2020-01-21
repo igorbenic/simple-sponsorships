@@ -82,4 +82,14 @@
       font-size: 1em;
     }
   }
+
+  .column-ss-logo {
+    width: 100px;
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+  }
 }

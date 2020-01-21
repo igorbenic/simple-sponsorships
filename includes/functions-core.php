@@ -119,3 +119,59 @@ function ss_get_active_integrations() {
 function ss_update_active_integrations( $integrations = array() ) {
 	return update_option( 'ss_active_integrations', $integrations );
 }
+
+/**
+ * Return if we enabled account creation.
+ *
+ * @since 1.5.0
+ *
+ * @return bool
+ */
+function ss_is_account_creation_enabled() {
+	return 1 === absint( ss_get_option( 'allow_account_creation', '0' ) );
+}
+
+/**
+ * Get endpoint URL.
+ *
+ * Gets the URL for an endpoint, which varies depending on permalink settings.
+ *
+ * Copied from WooCommerce.
+ *
+ * @param  string $endpoint  Endpoint slug.
+ * @param  string $value     Query param value.
+ * @param  string $permalink Permalink.
+ *
+ * @return string
+ */
+function ss_get_endpoint_url( $endpoint, $value = '', $permalink = '' ) {
+	if ( ! $permalink ) {
+		$permalink = get_permalink();
+	}
+
+	// Map endpoint to options.
+	$query_vars = SS()->query->get_query_vars();
+	$endpoint   = ! empty( $query_vars[ $endpoint ] ) ? $query_vars[ $endpoint ] : $endpoint;
+
+	if ( get_option( 'permalink_structure' ) ) {
+		if ( strstr( $permalink, '?' ) ) {
+			$query_string = '?' . wp_parse_url( $permalink, PHP_URL_QUERY );
+			$permalink    = current( explode( '?', $permalink ) );
+		} else {
+			$query_string = '';
+		}
+		$url = trailingslashit( $permalink );
+
+		if ( $value ) {
+			$url .= trailingslashit( $endpoint ) . user_trailingslashit( $value );
+		} else {
+			$url .= user_trailingslashit( $endpoint );
+		}
+
+		$url .= $query_string;
+	} else {
+		$url = add_query_arg( $endpoint, $value, $permalink );
+	}
+
+	return apply_filters( 'ss_get_endpoint_url', $url, $endpoint, $value, $permalink );
+}

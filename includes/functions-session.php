@@ -1,6 +1,7 @@
 <?php
 /**
  * Globally available functions for handling sessions.
+ * Most code copied from WooCommerce.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,6 +26,22 @@ function ss_set_session( $key, $value ) {
 	$ss = \Simple_Sponsorships\get_main();
 	return $ss->session->set( $key, $value );
 }
+
+/**
+ * Check if a notice has already been added.
+ *
+ * @since  1.5.0
+ * @param  string $message The text to display in the notice.
+ * @param  string $notice_type Optional. The name of the notice type - either error, success or notice.
+ * @return bool
+ */
+function ss_has_notice( $message, $notice_type = 'success' ) {
+
+	$notices = ss_get_session( 'ss_notices', array() );
+	$notices = isset( $notices[ $notice_type ] ) ? $notices[ $notice_type ] : array();
+	return array_search( $message, $notices, true ) !== false;
+}
+
 
 /**
  * Get Notices.

@@ -141,6 +141,15 @@ class Settings {
 						'chosen'      => true,
 						'placeholder' => __( 'Select a page', 'simple-sponsorships' ),
 					),
+					'account_page' => array(
+						'id'          => 'account_page',
+						'label'       => __( 'Account Page', 'simple-sponsorships' ),
+						'desc'        => __( 'This is the page that will show the sponsorship details. The [ss_account] shortcode should be on this page.', 'simple-sponsorships' ),
+						'type'        => 'select',
+						'options'     => $this->get_pages(),
+						'chosen'      => true,
+						'placeholder' => __( 'Select a page', 'simple-sponsorships' ),
+					),
 					'terms_page' => array(
 						'id'          => 'terms_page',
 						'label'        => __( 'Terms & Conditions Page', 'simple-sponsorships' ),
@@ -228,6 +237,17 @@ class Settings {
 						'label'   => __( 'Multiple Packages', 'simple-sponsorships' ),
 						'type'    => 'checkbox',
 						'desc'    => __( 'If checked, it will allow people to purchase more than 1 package.', 'simple-sponsorships' ),
+						'default' => '0'
+					)
+				),
+			),
+			'forms' => array(
+				'main' => array(
+					'allow_account_creation' => array(
+						'id'      => 'allow_account_creation',
+						'label'   => __( 'Allow Account', 'simple-sponsorships' ),
+						'type'    => 'checkbox',
+						'desc'    => __( 'If checked, it will allow people to create an account.', 'simple-sponsorships' ),
 						'default' => '0'
 					)
 				),
@@ -392,6 +412,9 @@ class Settings {
 			'packages' => array(
 				'main'          => __( 'General', 'simple-sponsorships' ),
 			),
+			'forms' => array(
+				'main'          => __( 'General', 'simple-sponsorships' ),
+			),
 			'gateways' => array(
 				'main' => __( 'General', 'simple-sponsorships' ),
 			),
@@ -416,6 +439,7 @@ class Settings {
 		$tabs['general']  = __( 'General', 'simple-sponsorships' );
 		$tabs['sponsors'] = __( 'Sponsors', 'simple-sponsorships' );
 		$tabs['packages'] = __( 'Packages', 'simple-sponsorships' );
+		$tabs['forms']    = __( 'Forms', 'simple-sponsorships' );
 		$tabs['gateways'] = __( 'Payment Gateways', 'simple-sponsorships' );
 		$tabs['emails']   = __( 'Emails', 'simple-sponsorships' );
 		//$tabs['styles']   = __( 'Styles', 'easy-digital-downloads' );

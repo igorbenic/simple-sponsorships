@@ -32,6 +32,12 @@ abstract class DB {
 	 */
 	protected $meta_table = '';
 
+	/**
+	 * Meta Type
+	 * @var string
+	 */
+	protected $meta_type = '';
+
 	/***** Getters *****/
 
 	/**
@@ -103,6 +109,23 @@ abstract class DB {
 
 		$sql = $wpdb->prepare( "SELECT * FROM " . $this->get_table_name() . " WHERE $column=%s", $value );
 
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+
+		return $results ? $results : array();
+	}
+
+	/**
+	 * Get Results by meta key
+	 * @param string $key
+	 * @param mixed  $value
+	 * @param string $compare
+	 */
+	public function get_by_meta( $key, $value ) {
+		global $wpdb;
+
+		$sql = "SELECT main_table.* FROM " . $this->get_table_name() . " main_table ";
+		$sql .= "LEFT JOIN " . $this->get_meta_table_name() . " meta_table ON meta_table.{$this->meta_type}_id=main_table.ID ";
+		$sql .= $wpdb->prepare( "WHERE meta_table.meta_key=%s AND meta_table.meta_value=%s", $key, $value );
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 
 		return $results ? $results : array();

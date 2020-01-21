@@ -235,3 +235,11 @@ function ss_activate_sponsorship_on_status_change( $status, $old_status, $sponso
 		$sponsorship->activate();
 	}
 }
+
+/**
+ * Get Sponsorships
+ * @param $args
+ */
+function ss_get_sponsorships( $args ) {
+
+}
