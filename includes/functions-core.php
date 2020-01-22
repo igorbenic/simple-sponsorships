@@ -175,3 +175,38 @@ function ss_get_endpoint_url( $endpoint, $value = '', $permalink = '' ) {
 
 	return apply_filters( 'ss_get_endpoint_url', $url, $endpoint, $value, $permalink );
 }
+
+if ( ! function_exists( 'is_ss_endpoint_url' ) ) {
+
+	/**
+	 * is_ss_endpoint_url - Check if an endpoint is showing.
+	 *
+	 * Copied from WooCommerce
+	 *
+	 * @param string|false $endpoint Whether endpoint.
+	 * @return bool
+	 */
+	function is_ss_endpoint_url( $endpoint = false ) {
+		global $wp;
+
+		$wc_endpoints = SS()->query->get_query_vars();
+
+		if ( false !== $endpoint ) {
+			if ( ! isset( $wc_endpoints[ $endpoint ] ) ) {
+				return false;
+			} else {
+				$endpoint_var = $wc_endpoints[ $endpoint ];
+			}
+
+			return isset( $wp->query_vars[ $endpoint_var ] );
+		} else {
+			foreach ( $wc_endpoints as $key => $value ) {
+				if ( isset( $wp->query_vars[ $key ] ) ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+	}
+}

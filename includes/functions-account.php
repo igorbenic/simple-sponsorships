@@ -61,3 +61,18 @@ if ( ! function_exists( 'ss_account_sponsorships_content' ) ) {
 		return;
 	}
 }
+
+if ( ! function_exists( 'ss_account_view_sponsorship_content' ) ) {
+
+	/**
+	 * My Account Sponsorships content output.
+	 */
+	function ss_account_view_sponsorship_content( $sponsorship_id ) {
+
+		\Simple_Sponsorships\Templates::get_template_part( 'account/view-sponsorship', null, array(
+			'current_user' => get_user_by( 'id', get_current_user_id() ),
+			'sponsorship' => ss_get_sponsorship( $sponsorship_id ),
+		) );
+		return;
+	}
+}

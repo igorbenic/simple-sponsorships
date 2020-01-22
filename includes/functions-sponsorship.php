@@ -237,9 +237,57 @@ function ss_activate_sponsorship_on_status_change( $status, $old_status, $sponso
 }
 
 /**
- * Get Sponsorships
- * @param $args
+ * Return Table Columns for Sponsorships
+ *
+ * @since 1.5.0
+ *
+ * @return array
  */
-function ss_get_sponsorships( $args ) {
+function ss_get_sponsorships_table_columns() {
+	return apply_filters( 'ss_sponsorships_table_columns', array(
+		'id'     => __( '#', 'simple-sponsorships' ),
+		'status' => __( 'Status', 'simple-sponsorships' ),
+		'amount' => __( 'Amount', 'simple-sponsorships'),
+		'date'   => __( 'Date', 'simple-sponsorships' ),
+		'actions' => '',
+	));
+}
 
+/**
+ * Get the colummn value for each sponsorship
+ * @param \Simple_Sponsorships\Sponsorship $sponsorship
+ * @param string                           $column Column slug
+ *
+ * @return string
+ */
+function ss_get_sponsorships_table_column_value( $sponsorship, $column ) {
+	$ret = '';
+
+	switch ( $column ) {
+		case 'id':
+			$ret = $sponsorship->get_id();
+			break;
+		case 'amount':
+			$ret = $sponsorship->get_formatted_amount();
+			break;
+		case 'actions':
+			$ret = array(
+				'view' => '<a class="ss-button button" href="' . esc_url( $sponsorship->get_view_account_url() ) . '">' . __( 'View', 'simple-sponsorships' ) . '</a>',
+			);
+			break;
+		case 'status':
+			$status   = $sponsorship->get_data( 'status' );
+			$statuses = ss_get_sponsorship_statuses();
+			$ret = isset( $statuses[ $status ] ) ? $statuses[ $status ] : $status;
+			break;
+		default:
+			$ret = $sponsorship->get_data( $column );
+			break;
+	}
+
+	$ret = apply_filters( 'ss_get_sponsorships_table_column_value_' . $column, $ret, $sponsorship );
+	if ( is_array( $ret ) ) {
+		$ret = implode( ' ', $ret );
+	}
+	return $ret;
 }

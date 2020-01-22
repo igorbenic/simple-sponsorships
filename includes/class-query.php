@@ -45,6 +45,7 @@ class Query {
 			add_action( 'wp_loaded', array( $this, 'get_errors' ), 20 );
 			add_filter( 'query_vars', array( $this, 'add_query_vars' ), 0 );
 			add_action( 'parse_request', array( $this, 'parse_request' ), 0 );
+			add_filter( 'the_title', array( $this, 'page_endpoint_title' ) );
 		}
 		$this->init_query_vars();
 	}
@@ -82,6 +83,26 @@ class Query {
 	}
 
 	/**
+	 * Replace a page title with the endpoint title.
+	 *
+	 * @param  string $title Post title.
+	 * @return string
+	 */
+	function page_endpoint_title( $title ) {
+		global $wp_query;
+
+		if ( ! is_null( $wp_query ) && ! is_admin() && is_main_query() && in_the_loop() && is_page() && is_ss_endpoint_url() ) {
+			$endpoint       = $this->get_current_endpoint();
+			$endpoint_title = $this->get_endpoint_title( $endpoint );
+			$title          = $endpoint_title ? $endpoint_title : $title;
+
+			remove_filter( 'the_title', array( $this, 'page_endpoint_title' ) );
+		}
+
+		return $title;
+	}
+
+	/**
 	 * Get page title for an endpoint.
 	 *
 	 * @param  string $endpoint Endpoint key.
@@ -92,7 +113,7 @@ class Query {
 
 		switch ( $endpoint ) {
 			case 'sponsorships':
-				if ( ! empty( $wp->query_vars['sponosrships'] ) ) {
+				if ( ! empty( $wp->query_vars['sponsorships'] ) ) {
 					/* translators: %s: page */
 					$title = sprintf( __( 'Sponosrships (page %d)', 'simple-sponsorships' ), intval( $wp->query_vars['sponsorships'] ) );
 				} else {
