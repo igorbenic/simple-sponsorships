@@ -7,7 +7,7 @@
  * Author URI:      https://www.ibenic.com
  * Text Domain:     simple-sponsorships
  * Domain Path:     /languages
- * Version:         1.4.1
+ * Version:         1.5.0
  *
  * @fs_premium_only /includes/premium/, /assets/css/premium/, /assets/js/premium/, /assets/dist/css/premium/, /assets/dist/js/premium/
  * @package         Simple_Sponsorships
@@ -77,7 +77,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 		/**
 		 * @var string
 		 */
-		public $version = '1.4.1';
+		public $version = '1.5.0';
 
 		/**
 		 * Settings
@@ -210,6 +210,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			include_once 'includes/integrations/dummy/class-post-paid-form.php';
 			include_once 'includes/integrations/dummy/class-package-features.php';
 			include_once 'includes/integrations/dummy/class-package-timed-availability.php';
+			include_once 'includes/integrations/dummy/class-package-minimum-quantity.php';
 
 			// Gateways.
 			include_once 'includes/gateways/class-paypal.php';
@@ -395,6 +396,7 @@ if ( ss_fs()->is__premium_only() ) {
 			include_once 'includes/premium/package-slots/package-slots.php';
 			include_once 'includes/premium/post-paid-form/post-paid-form.php';
 			include_once 'includes/premium/stripe-gateway/stripe-gateway.php';
+			include_once 'includes/premium/package-minimum-quantity/package-minimum-quantity.php';
 
 			if ( ss_fs()->is_plan( 'platinum' ) ) {
 				include_once 'includes/premium/package-features/package-features.php';
@@ -421,6 +423,7 @@ if ( ss_fs()->is__premium_only() ) {
 			$integrations['stripe']         = '\Simple_Sponsorships\Stripe\Plugin';
 			$integrations['package-slots']  = '\Simple_Sponsorships\Package_Slots\Plugin';
 			$integrations['post-paid-form'] = '\Simple_Sponsorships\Post_Paid_Form\Plugin';
+			$integrations['package-minimum-quantity'] = '\Simple_Sponsorships\Package_Minimum_Quantity\Plugin';
 
 			if ( ss_fs()->is_plan( 'platinum' ) ) {
 				$integrations['package-features'] = '\Simple_Sponsorships\Package_Features\Plugin';

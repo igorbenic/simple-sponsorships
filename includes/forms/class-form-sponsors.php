@@ -340,6 +340,7 @@ class Form_Sponsors extends Form {
 	 */
 	public function package_check_required( $packages ) {
 		$qty = 0;
+		$return = false;
 		if ( is_array( $packages ) && $packages ) {
 			foreach ( $packages as $package_id => $package_qty ) {
 				$qty += $package_qty;
@@ -347,10 +348,10 @@ class Form_Sponsors extends Form {
 		}
 
 		if ( $qty ) {
-			return true;
+			$return = true;
 		}
 
-		return false;
+		return apply_filters( 'ss_package_check_required', $return, $packages );
 	}
 
 }
