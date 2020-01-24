@@ -1,9 +1,9 @@
 === Simple Sponsorships ===
 Contributors: ibenic
-Tags: sponsorships, sponsors, payment
+Tags: sponsorships, sponsors, payment, podcasts, events
 Requires at least: 4.4
-Tested up to: 5.3.0
-Stable tag: 1.4.1
+Tested up to: 5.3.2
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,8 +139,11 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 7. Settings.
 8. Payment Settings.
 
-
 == Changelog ==
+
+= 1.5.0 - 2020-01-24 =
+* New: Account - Potential sponsors can create an account and use it to see their sponsorships and sponsored content.
+* New: (Premium) Package Minimum Quantity - set a minimum quantity that can be purchased for each package.
 
 = 1.4.1 - 2019-11-29 =
 * Fix: Package quantities were not calculated correctly when the sponsorship was paid for.

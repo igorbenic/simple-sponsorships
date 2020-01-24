@@ -126,6 +126,7 @@ abstract class Form {
 				$is_valid = call_user_func( $validate, $data[ $key ] );
 				if ( ! $is_valid ) {
 					$validation_message = isset( $field['not_valid_message'] ) ? $field['not_valid_message'] : __( '%s is not valid.', 'simple-sponsorship' );
+					$validation_message = apply_filters( $this->slug . '_validation_message_' . $key, $validation_message, $field );
 					$this->errors->add( 'validation', sprintf( $validation_message, '<strong>' . esc_html( $field_label ) . '</strong>' ) );
 					continue;
 				}
@@ -147,7 +148,7 @@ abstract class Form {
 
 				if ( $add_error ) {
 					/* translators: %s: field name */
-					$this->errors->add( 'required-field', apply_filters( 'ss_required_field_notice', sprintf( __( '%s is a required field.', 'simple-sponsorships' ), '<strong>' . esc_html( $field_label ) . '</strong>' ), $field_label ) );
+					$this->errors->add( 'required-field', apply_filters( 'ss_required_field_notice', sprintf( __( '%s is a required field.', 'simple-sponsorships' ), '<strong>' . esc_html( $field_label ) . '</strong>' ), $field, $key, $this->slug ) );
 				}
 			}
 		}

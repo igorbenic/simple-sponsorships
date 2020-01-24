@@ -41,5 +41,29 @@ window.ssponsorships = window.ssponsorships || {};
 
             });
         }
+
+        /**
+         * Trigger to show Account Fields.
+         */
+        function ssTriggerAccountFields() {
+            var form   = $( '.ss-sponsor-form'),
+                create = form.find('#create_account').prop('checked');
+
+            if ( create ) {
+                $('#create_account_username').parents('.ss-form-field').removeClass('ss-hidden');
+                $('#create_account_password').parents('.ss-form-field').removeClass('ss-hidden');
+            } else {
+                $('#create_account_username').parents('.ss-form-field').addClass('ss-hidden');
+                $('#create_account_password').parents('.ss-form-field').addClass('ss-hidden');
+            }
+        }
+
+        if ( $('.ss-sponsor-form #create_account').length ) {
+            ssTriggerAccountFields();
+        }
+
+        $( document ).on( 'change', '.ss-sponsor-form #create_account', function(e){
+            ssTriggerAccountFields();
+        });
     });
 })(jQuery);

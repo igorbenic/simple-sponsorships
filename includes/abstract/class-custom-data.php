@@ -79,6 +79,28 @@ abstract class Custom_Data {
 	}
 
 	/**
+	 * Populate the object from data.
+	 * This can be used when we retrieved data from DB already and want to set the data there.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array $data
+	 */
+	public function populate_from_data( $data ) {
+		if ( ! $data ) {
+			return;
+		}
+
+		if ( ! is_array( $data ) ) {
+			return;
+		}
+
+		foreach ( $data as $data_key => $data_value ) {
+			$this->set_data( $data_key, $data_value );
+		}
+	}
+
+	/**
 	 * @return int
 	 */
 	public function get_id() {

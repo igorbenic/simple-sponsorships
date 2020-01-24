@@ -223,7 +223,7 @@ function ss_show_sponsors_under_content( $content ) {
 			}
 		}
 
-		if ( '1' === ss_get_option( 'show_content_placeholder', '0' ) ) {
+		if ( '1' === ss_get_option( 'show_content_placeholder', '0' ) && ! is_page( ss_get_option( 'account_page', 0 ) ) ) {
 
 			$hide_placeholder = get_post_meta( $content_id, '_ss_hide_placeholder', true );
 			$show_placeholder = '1' === $hide_placeholder ? false : true;

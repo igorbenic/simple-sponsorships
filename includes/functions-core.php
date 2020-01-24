@@ -94,6 +94,7 @@ function ss_get_registered_integrations() {
 		'post-paid-form' => '\Simple_Sponsorships\Integrations\Dummy\Post_Paid_Form_Dummy',
 		'package-features' => '\Simple_Sponsorships\Integrations\Dummy\Package_Features',
 		'package-timed-availability' => '\Simple_Sponsorships\Integrations\Dummy\Package_Timed_Availability',
+		'package-minimum-quantity' => '\Simple_Sponsorships\Integrations\Dummy\Package_Minimum_Quantity',
 	));
 }
 
@@ -118,4 +119,95 @@ function ss_get_active_integrations() {
  */
 function ss_update_active_integrations( $integrations = array() ) {
 	return update_option( 'ss_active_integrations', $integrations );
+}
+
+/**
+ * Return if we enabled account creation.
+ *
+ * @since 1.5.0
+ *
+ * @return bool
+ */
+function ss_is_account_creation_enabled() {
+	return 1 === absint( ss_get_option( 'allow_account_creation', '0' ) );
+}
+
+/**
+ * Get endpoint URL.
+ *
+ * Gets the URL for an endpoint, which varies depending on permalink settings.
+ *
+ * Copied from WooCommerce.
+ *
+ * @param  string $endpoint  Endpoint slug.
+ * @param  string $value     Query param value.
+ * @param  string $permalink Permalink.
+ *
+ * @return string
+ */
+function ss_get_endpoint_url( $endpoint, $value = '', $permalink = '' ) {
+	if ( ! $permalink ) {
+		$permalink = get_permalink();
+	}
+
+	// Map endpoint to options.
+	$query_vars = SS()->query->get_query_vars();
+	$endpoint   = ! empty( $query_vars[ $endpoint ] ) ? $query_vars[ $endpoint ] : $endpoint;
+
+	if ( get_option( 'permalink_structure' ) ) {
+		if ( strstr( $permalink, '?' ) ) {
+			$query_string = '?' . wp_parse_url( $permalink, PHP_URL_QUERY );
+			$permalink    = current( explode( '?', $permalink ) );
+		} else {
+			$query_string = '';
+		}
+		$url = trailingslashit( $permalink );
+
+		if ( $value ) {
+			$url .= trailingslashit( $endpoint ) . user_trailingslashit( $value );
+		} else {
+			$url .= user_trailingslashit( $endpoint );
+		}
+
+		$url .= $query_string;
+	} else {
+		$url = add_query_arg( $endpoint, $value, $permalink );
+	}
+
+	return apply_filters( 'ss_get_endpoint_url', $url, $endpoint, $value, $permalink );
+}
+
+if ( ! function_exists( 'is_ss_endpoint_url' ) ) {
+
+	/**
+	 * is_ss_endpoint_url - Check if an endpoint is showing.
+	 *
+	 * Copied from WooCommerce
+	 *
+	 * @param string|false $endpoint Whether endpoint.
+	 * @return bool
+	 */
+	function is_ss_endpoint_url( $endpoint = false ) {
+		global $wp;
+
+		$wc_endpoints = SS()->query->get_query_vars();
+
+		if ( false !== $endpoint ) {
+			if ( ! isset( $wc_endpoints[ $endpoint ] ) ) {
+				return false;
+			} else {
+				$endpoint_var = $wc_endpoints[ $endpoint ];
+			}
+
+			return isset( $wp->query_vars[ $endpoint_var ] );
+		} else {
+			foreach ( $wc_endpoints as $key => $value ) {
+				if ( isset( $wp->query_vars[ $key ] ) ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+	}
 }

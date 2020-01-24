@@ -90,6 +90,7 @@ function ss_form_render_field( $args, $wrap_field = true ) {
 		'tooltip_title' => false,
 		'tooltip_desc'  => false,
 		'field_class'   => '',
+		'class'         => '',
 		'title'         => '',
 		'required'      => false,
 	) );
@@ -105,6 +106,17 @@ function ss_form_render_field( $args, $wrap_field = true ) {
 		}
 	}
 
+	$container_class = '';
+
+	if ( $args['class'] ) {
+		if ( is_array( $args['class'] ) ) {
+			$container_class = array_values( array_map( 'sanitize_html_class', $args['class'] ) );
+			$container_class = implode( ' ', array_unique( $container_class ) );
+		} else {
+			$container_class = sanitize_html_class( $args['class'] );
+		}
+	}
+
 	$id = $args['id'];
 
 	$name = isset( $args['name'] ) && $args['name'] ? 'name="' . $args['name'] . '"' : 'name="' . $id . '"';
@@ -113,7 +125,7 @@ function ss_form_render_field( $args, $wrap_field = true ) {
 
 	$required = '';
 
-	$html_wrap  = '<div class="ss-form-field ss-form-field-' . sanitize_html_class( $args['type' ] ) . '">';
+	$html_wrap  = '<div class="ss-form-field ss-form-field-' . sanitize_html_class( $args['type' ] ) . ' ' . $container_class . '">';
 	$html_wrap .= '<label for="' . esc_attr( $id ) . '">';
 	$html_wrap .= esc_html( $args['title'] );
 	if ( $args['required'] ) {

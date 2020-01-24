@@ -62,7 +62,7 @@ class Package extends Custom_Data {
 	 * Get the Price
 	 */
 	public function get_price() {
-		return $this->get_data( 'price' );
+		return apply_filters( 'ss_package_get_price', $this->get_data( 'price' ) );
 	}
 
 	/**

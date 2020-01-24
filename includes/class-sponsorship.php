@@ -365,6 +365,20 @@ class Sponsorship extends Custom_Data {
 	}
 
 	/**
+	 * Generates a URL to view an order from the my account page.
+	 *
+	 * @return string
+	 */
+	public function get_view_account_url() {
+		$account_page = ss_get_option( 'account_page', 0 );
+		if ( ! $account_page ) {
+			return $this->get_view_link();
+		}
+
+		return apply_filters( 'ss_get_view_account_url', ss_get_endpoint_url( 'view-sponsorship', $this->get_id(), get_permalink( $account_page ) ), $this );
+	}
+
+	/**
 	 * Return if the Sponsorship has a status.
 	 */
 	public function is_status( $status = '' ) {
