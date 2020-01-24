@@ -77,6 +77,30 @@ if ( ! function_exists( 'ss_account_view_sponsorship_content' ) ) {
 	}
 }
 
+if ( ! function_exists( 'ss_account_sponsor_info_content' ) ) {
+
+	/**
+	 * My Account Sponsorships content output.
+	 */
+	function ss_account_sponsor_info_content() {
+		$sponsors = ss_get_sponsors(array(
+			'meta_key' => '_user_id',
+			'meta_value_num' => get_current_user_id()
+		));
+		$sponsor = false;
+
+		if ( $sponsors ) {
+			$sponsor = ss_get_sponsor( $sponsors[0]->ID, false );
+			$sponsor->populate_from_post( $sponsors[0] );
+		}
+		\Simple_Sponsorships\Templates::get_template_part( 'account/sponsor-info', null, array(
+			'current_user' => get_user_by( 'id', get_current_user_id() ),
+			'sponsor'      => $sponsor,
+		) );
+		return;
+	}
+}
+
 if ( ! function_exists( 'ss_account_navigation' ) ) {
 
 	/**
@@ -99,7 +123,7 @@ function ss_get_account_menu_items() {
 	$endpoints = array(
 		'sponsorships'    => get_option( 'ss_myaccount_orders_endpoint', 'sponsorships' ),
 		//'downloads'       => get_option( 'ss_myaccount_downloads_endpoint', 'downloads' ),
-		'edit-sponsor'    => get_option( 'ss_myaccount_edit_address_endpoint', 'edit-sponsor' ),
+		'sponsor-info'    => get_option( 'ss_myaccount_edit_address_endpoint', 'sponsor-info' ),
 		//'payment-methods' => get_option( 'ss_myaccount_payment_methods_endpoint', 'payment-methods' ),
 		//'edit-account'    => get_option( 'ss_myaccount_edit_account_endpoint', 'edit-account' ),
 		//'customer-logout' => get_option( 'ss_logout_endpoint', 'customer-logout' ),
@@ -109,7 +133,7 @@ function ss_get_account_menu_items() {
 		'dashboard'       => __( 'Dashboard', 'simple-sponsorships' ),
 		'sponsorships'    => __( 'Sponsorships', 'simple-sponsorships' ),
 		//'downloads'       => __( 'Downloads', 'woocommerce' ),
-		'edit-sponsor'    => __( 'Sponsor', 'woocommerce' ),
+		'sponsor-info'    => __( 'Sponsor', 'woocommerce' ),
 		//'payment-methods' => __( 'Payment methods', 'woocommerce' ),
 		//'edit-account'    => __( 'Account details', 'woocommerce' ),
 		//'customer-logout' => __( 'Logout', 'woocommerce' ),

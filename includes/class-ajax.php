@@ -142,6 +142,7 @@ class AJAX {
 				}
 			}
 		}
+		$sponsors = array_values( $sponsors );
 
 		wp_send_json_success( $sponsors );
 		wp_die();

@@ -64,8 +64,6 @@ if ( ! $sponsors ) {
 				}
 			}
 
-
-
 			if ( $text ) {
 				$content = $sponsor->get_data( 'post_content' );
 				if ( $content ) {

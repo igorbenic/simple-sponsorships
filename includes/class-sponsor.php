@@ -134,4 +134,18 @@ class Sponsor extends Custom_Data {
 		$db = $this->get_db_object();
 		return $db->get_sponsored_content( $this->get_id() );
 	}
+
+	/**
+	 * Has the sponsor a logo
+	 */
+	public function has_logo() {
+		return has_post_thumbnail( $this->get_id() );
+	}
+
+	/**
+	 * Return the logo of the sponsor
+	 */
+	public function get_logo( $size = 'medium' ) {
+		return get_the_post_thumbnail( $this->get_id(), $size );
+	}
 }

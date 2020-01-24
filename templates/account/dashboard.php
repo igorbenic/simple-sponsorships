@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		printf(
 			__( 'From your account dashboard you can view your <a href="%1$s">recent sponsorships</a>, and <a href="%2$s">edit your sponsor details</a>.', 'simple-sponsorships' ),
 			esc_url( ss_get_endpoint_url( 'sponsorships' ) ),
-			esc_url( ss_get_endpoint_url( 'edit-sponsor' ) )
+			esc_url( ss_get_endpoint_url( 'sponsor-info' ) )
 		);
 		?></p>
 

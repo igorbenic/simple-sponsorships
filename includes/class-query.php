@@ -71,7 +71,7 @@ class Query {
 			'sponsorships'               => get_option( 'ss_myaccount_sponsorships_endpoint', 'sponsorships' ),
 			'view-sponsorship'           => get_option( 'ss_myaccount_view_sponsorship_endpoint', 'view-sponsorship' ),
 			//'downloads'                  => get_option( 'woocommerce_myaccount_downloads_endpoint', 'downloads' ),
-			'edit-sponsor'               => get_option( 'ss_myaccount_edit_sponsor_endpoint', 'edit-sponsor' ),
+			'sponsor-info'               => get_option( 'ss_myaccount_edit_sponsor_endpoint', 'sponsor-info' ),
 			//'edit-address'               => get_option( 'woocommerce_myaccount_edit_address_endpoint', 'edit-address' ),
 			//'payment-methods'            => get_option( 'woocommerce_myaccount_payment_methods_endpoint', 'payment-methods' ),
 			//'lost-password'              => get_option( 'woocommerce_myaccount_lost_password_endpoint', 'lost-password' ),
@@ -123,13 +123,13 @@ class Query {
 			case 'view-sponsorship':
 				$sponsorship = ss_get_sponsorship( $wp->query_vars['view-sponsorship'] );
 				/* translators: %s: order number */
-				$title = ( $sponsorship ) ? sprintf( __( 'Sponsorship #%s', 'woocommerce' ), $sponsorship->get_id() ) : '';
+				$title = ( $sponsorship ) ? sprintf( __( 'Sponsorship #%s', 'simple-sponsorships' ), $sponsorship->get_id() ) : '';
 				break;
 			/*case 'downloads':
 				$title = __( 'Downloads', 'woocommerce' );
 				break;*/
-			case 'edit-account':
-				$title = __( 'Account details', 'woocommerce' );
+			case 'sponsor-info':
+				$title = __( 'Sponsor', 'simple-sponsorships' );
 				break;
 			/*case 'edit-address':
 				$title = __( 'Addresses', 'woocommerce' );
