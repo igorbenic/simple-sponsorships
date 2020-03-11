@@ -21,7 +21,9 @@ do_action( 'ss_before_sponsor_form' );
 
         if ( 'package' === $field['id']
              && isset( $args['packages'] )
-             && $args['packages'] ) {
+             && $args['packages']
+             && 'package_select' === $field['type'] ) {
+
             $package_ids = array_map( 'absint', array_map( 'trim', explode( ',', $args['packages'] ) ) );
             $options     = $field['options'];
             $field['options'] = array();

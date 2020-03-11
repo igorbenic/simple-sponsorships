@@ -40,4 +40,3 @@ $columns = ss_get_sponsorships_table_columns();
 		?>
 	</tbody>
 </table>
-<?php

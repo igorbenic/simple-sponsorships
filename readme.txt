@@ -3,7 +3,7 @@ Contributors: ibenic
 Tags: sponsorships, sponsors, payment, podcasts, events
 Requires at least: 4.4
 Tested up to: 5.3.2
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,6 +140,9 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 8. Payment Settings.
 
 == Changelog ==
+
+= 1.5.1 - 2020-03-11 =
+* Fix: When Multiple Packages was off, the dropdown for packages would not show any package. (Thanks Matt Medeiros from mattreport.com)
 
 = 1.5.0 - 2020-01-24 =
 * New: Account - Potential sponsors can create an account and use it to see their sponsorships and sponsored content.
