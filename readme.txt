@@ -3,7 +3,7 @@ Contributors: ibenic
 Tags: sponsorships, sponsors, payment, podcasts, events
 Requires at least: 4.4
 Tested up to: 5.3.2
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,6 +140,11 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 8. Payment Settings.
 
 == Changelog ==
+
+= 1.5.2 - 2020-03-12 =
+* New: Filter ss_create_sponsorships_package_availability_check where 2 values are passed null and array of packages. This can be used by other extensions to check if package is really available.
+* Fix: (Premium) Package Slots were not taking into account the currently posted quantity of a package to check availability (Thanks Matt Medeiros from mattreport.com).
+
 
 = 1.5.1 - 2020-03-11 =
 * Fix: When Multiple Packages was off, the dropdown for packages would not show any package. (Thanks Matt Medeiros from mattreport.com)

@@ -31,6 +31,7 @@ class Plugin extends Integration {
 		add_action( 'ss_get_package_fields', array( $this, 'add_slots_field' ) );
 		add_action( 'ss_package_updated', array( $this, 'save_package_slot' ), 20, 2 );
 		add_filter( 'ss_package_is_available', array( $this, 'is_package_available' ), 20, 2 );
+		add_filter( 'ss_create_sponsorships_package_availability_check', array( $this, 'are_packages_qty_available' ), 20, 2 );
 		add_filter( 'ss_package_get_title', array( $this, 'package_title' ), 20, 2 );
 		add_action( 'ss_sponsorship_status_approved', array( $this, 'add_slot_on_active_sponsorship' ) );
 		add_action( 'ss_sponsorship_status_paid', array( $this, 'add_slot_on_active_sponsorship' ) );
@@ -106,6 +107,47 @@ class Plugin extends Integration {
 		}
 
 		return $bool;
+	}
+
+	/**
+	 * Check if the quantity of packages available.
+	 *
+	 * @param $null
+	 * @param $packages
+	 */
+	public function are_packages_qty_available( $null, $packages ) {
+		if ( null !== $null ) {
+			return $null;
+		}
+
+		if ( $packages ) {
+			foreach ( $packages as $package_id => $qty ) {
+				$package = ss_get_package( $package_id );
+				$slots   = $package->get_data('slots' );
+
+				// Unlimited slots, go on.
+				if ( ! $slots || 0 === absint( $slots ) ) {
+					continue;
+				}
+
+				$used_slots = $package->get_data( 'used_slots' );
+				if ( ! $used_slots ) {
+					$used_slots = 0;
+				}
+				$available_qty = absint( $slots ) - absint( $used_slots );
+
+				if ( $available_qty < 0 ) {
+					$available_qty = 0;
+				}
+
+				// Set Quantity is higher than the max available.
+				if ( absint( $qty ) > $available_qty ) {
+					return new \WP_Error( 'package-slots', sprintf( __( 'Package %s has only %d available slots', 'simple-sponsorships-premium' ), $package->get_data('title' ), $available_qty ) );
+				}
+			}
+		}
+
+		return $null;
 	}
 
 	/**

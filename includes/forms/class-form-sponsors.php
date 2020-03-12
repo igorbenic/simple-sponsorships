@@ -49,6 +49,20 @@ class Form_Sponsors extends Form {
 			}
 		}
 
+		/**
+		 * This can be used to check availability of all packages even the initial availability is fine.
+		 */
+		$package_availability_check = apply_filters( 'ss_create_sponsorships_package_availability_check', null, $args['packages'] );
+
+		if ( null !== $package_availability_check ) {
+			if ( is_wp_error( $package_availability_check ) ) {
+				ss_add_notice( $package_availability_check->get_error_message(), 'error' );
+			} else {
+				ss_add_notice( $package_availability_check, 'error' );
+			}
+			return false;
+		}
+
 		$user_id = get_current_user_id();
 
 		if ( ! $user_id && ss_is_account_creation_enabled() ) {
