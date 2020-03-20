@@ -258,7 +258,7 @@ function ss_get_sponsorships_table_columns() {
 }
 
 /**
- * Get the colummn value for each sponsorship
+ * Get the column value for each sponsorship
  * @param \Simple_Sponsorships\Sponsorship $sponsorship
  * @param string                           $column Column slug
  *

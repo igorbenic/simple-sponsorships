@@ -28,6 +28,9 @@ $columns = ss_get_sponsorships_table_columns();
 	<tbody>
 		<?php
 			foreach ( $args['sponsorships'] as $sponsorship ) {
+			    ?>
+                <tr>
+                <?php
 				foreach ( $columns as $column_id => $column_title ) {
 					?>
 					<td class="ss-table-column ss-table-column-<?php echo esc_attr( $column_id ); ?>">
@@ -35,7 +38,9 @@ $columns = ss_get_sponsorships_table_columns();
 					</td>
 					<?php
 				}
-
+                ?>
+                </tr>
+            <?php
 			}
 		?>
 	</tbody>

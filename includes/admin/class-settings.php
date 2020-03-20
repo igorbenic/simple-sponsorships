@@ -185,6 +185,13 @@ class Settings {
 						'type'    => 'textarea',
 						'default' => __( 'Become a Sponsor', 'simple-sponsorships' ),
 					),
+					'content_placeholder_icon' => array(
+						'id'      => 'content_placeholder_icon',
+						'label'   => __( 'Placeholder Icon', 'simple-sponsorships' ),
+						'type'    => 'textarea',
+						'default' => \Simple_Sponsorships\Templates::get_file_contents( trailingslashit( SS_PLUGIN_PATH ) . 'assets/images/svg/id-user.svg', 'placeholder-image' ),
+						'desc'    => __( 'You can use regular images with HTML img tag or SVGs', 'simple-sponsorships' ),
+					),
 				),
 				'under_content' => array(
 					'show_in_content_footer' => array(
@@ -667,6 +674,8 @@ class Settings {
 						if ( array_key_exists( $key, $input ) && empty( $input[ $key ] ) ) {
 							unset( $output[ $key ] );
 						}
+						break;
+					case 'textarea':
 						break;
 					default:
 						if ( array_key_exists( $key, $input ) && empty( $input[ $key ] ) || ( array_key_exists( $key, $output ) && ! array_key_exists( $key, $input ) ) ) {

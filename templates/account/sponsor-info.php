@@ -66,25 +66,3 @@ $sponsor_info = apply_filters( 'ss_account_sponsor_info_data', array(
         ?>
     </div>
 </div>
-<?php
-
-$sponsored_content = $sponsor->get_sponsored_content();
-
-if ( $sponsored_content ) {
-    ?>
-    <h3><?php esc_html_e( 'Sponsored Content', 'simple-sponsorships' ); ?></h3>
-    <ul>
-        <?php
-        foreach ( $sponsored_content as $content ) {
-            ?>
-            <li>
-                <a href="<?php echo esc_url( get_permalink( $content ) ); ?>">
-                    <?php echo esc_html( $content->post_title ); ?>
-                </a>
-            </li>
-            <?php
-        }
-        ?>
-    </ul>
-    <?php
-}

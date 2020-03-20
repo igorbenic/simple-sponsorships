@@ -270,6 +270,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			add_action( 'ss_account_sponsorships_endpoint', 'ss_account_sponsorships_content' );
 			add_action( 'ss_account_view-sponsorship_endpoint', 'ss_account_view_sponsorship_content' );
 			add_action( 'ss_account_sponsor-info_endpoint', 'ss_account_sponsor_info_content' );
+			add_action( 'ss_account_sponsored-content_endpoint', 'ss_account_sponsored_content' );
 			add_action( 'ss_account_navigation', 'ss_account_navigation' );
 		}
 

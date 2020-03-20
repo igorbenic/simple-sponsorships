@@ -284,7 +284,8 @@ function ss_get_placeholder( $link, $image = '', $text = '' ) {
     ob_start();
 
     if ( ! $image ) {
-	    $image = \Simple_Sponsorships\Templates::get_file_contents( trailingslashit( SS_PLUGIN_PATH ) . 'assets/images/svg/id-user.svg', 'placeholder-image' );
+        $icon_svg = \Simple_Sponsorships\Templates::get_file_contents( trailingslashit( SS_PLUGIN_PATH ) . 'assets/images/svg/id-user.svg', 'placeholder-image' );
+	    $image    = ss_get_option( 'content_placeholder_icon', $icon_svg );
     }
 
     if ( ! $text ) {
@@ -293,10 +294,41 @@ function ss_get_placeholder( $link, $image = '', $text = '' ) {
 	?>
     <a class="ss-content-placeholder" href="<?php echo esc_url( $link ); ?>">
 		<?php if ( $image ) {
-			echo '<div class="ss-placeholder-image">' . $image . '</div>';
+			echo '<div class="ss-placeholder-image">' .  ss_kses_with_svg( $image ) . '</div>';
 		} ?>
 		<?php echo esc_html( $text ); ?>
     </a>
     <?php
     return ob_get_clean();
+}
+
+/**
+ * Get the column value for each sponsored content
+ *
+ * @param \WP_Post $content Post object.
+ * @param string   $column Column slug
+ *
+ * @return string
+ */
+function ss_get_sponsored_content_table_column_value( $content, $column ) {
+	$ret = '';
+
+	switch ( $column ) {
+		case 'post_title':
+        case 'post_excerpt':
+			$ret = $content->$column;
+			break;
+        case 'link':
+            $link = get_permalink( $content );
+            if ( $link ) {
+                $ret = '<a href="' . esc_url( $link ) . '">' . __( 'View', 'simple-sponsorships' ) . '</a>';
+            }
+            break;
+	}
+
+	$ret = apply_filters( 'ss_get_sponsorships_table_column_value_' . $column, $ret, $content );
+	if ( is_array( $ret ) ) {
+		$ret = implode( ' ', $ret );
+	}
+	return $ret;
 }

@@ -70,6 +70,7 @@ class Query {
 			// My account actions.
 			'sponsorships'               => get_option( 'ss_myaccount_sponsorships_endpoint', 'sponsorships' ),
 			'view-sponsorship'           => get_option( 'ss_myaccount_view_sponsorship_endpoint', 'view-sponsorship' ),
+			'sponsored-content'          => get_option( 'ss_myaccount_sponsored_content_endpoint', 'content' ),
 			//'downloads'                  => get_option( 'woocommerce_myaccount_downloads_endpoint', 'downloads' ),
 			'sponsor-info'               => get_option( 'ss_myaccount_edit_sponsor_endpoint', 'sponsor-info' ),
 			//'edit-address'               => get_option( 'woocommerce_myaccount_edit_address_endpoint', 'edit-address' ),
