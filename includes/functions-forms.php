@@ -309,31 +309,36 @@ function ss_form_render_field( $args, $wrap_field = true ) {
 	        $name     = isset( $args['name'] ) && $args['name'] ? $args['name'] : $id;
 	        $total    = isset( $args['total'] ) ? $args['total'] : 0;
 	        $packages = isset( $args['packages'] ) ? $args['packages'] : array();
-            $html     = '<div class="packages-select">';
-            $html    .= '<div class="packages-select-header">';
-            $html    .= '<span class="package-column">' . __( 'Package', 'simple-sponsorships' ) . '</span>';
-	        $html    .= '<span class="qty-column">' . __( 'Quantity', 'simple-sponsorships' ) . '</span>';
-	        $html    .= '<span class="price-column">' . __( 'Price', 'simple-sponsorships' ) . '</span>';
-	        $html    .= '</div>';
-	        $html    .= '<div class="packages-select-items">';
 
-            foreach ( $packages as $package ) {
-                $qty = 0;
-                if ( $selected === $package->get_id() ) {
-                    $qty = 1;
-                }
-                $html .= '<div class="package-item">';
-	            $html .= '<span class="package-column">' . $package->get_title() . '</span>';
-	            $html .= '<span class="qty-column"><input type="number" name="' . esc_attr( $name ) . '[' . $package->get_id() . ']" value="' . esc_attr( $qty ) . '" /></span>';
-	            $html .= '<span class="price-column">' . $package->get_price_formatted( false ) . '</span>';
-	            $html .= '</div>';
+	        if ( $packages ) {
+		        $html = '<div class="packages-select">';
+		        $html .= '<div class="packages-select-header">';
+		        $html .= '<span class="package-column">' . __( 'Package', 'simple-sponsorships' ) . '</span>';
+		        $html .= '<span class="qty-column">' . __( 'Quantity', 'simple-sponsorships' ) . '</span>';
+		        $html .= '<span class="price-column">' . __( 'Price', 'simple-sponsorships' ) . '</span>';
+		        $html .= '</div>';
+		        $html .= '<div class="packages-select-items">';
+
+		        foreach ( $packages as $package ) {
+			        $qty = 0;
+			        if ( $selected === $package->get_id() ) {
+				        $qty = 1;
+			        }
+			        $html .= '<div class="package-item">';
+			        $html .= '<span class="package-column">' . $package->get_title() . '</span>';
+			        $html .= '<span class="qty-column"><input type="number" name="' . esc_attr( $name ) . '[' . $package->get_id() . ']" value="' . esc_attr( $qty ) . '" /></span>';
+			        $html .= '<span class="price-column">' . $package->get_price_formatted( false ) . '</span>';
+			        $html .= '</div>';
+		        }
+		        $html .= '</div>';
+		        $html .= '<div class="packages-select-footer">';
+		        $html .= '<span>' . __( 'Total', 'simple-sponsorships' ) . '</span>';
+		        $html .= '<span class="packages-total">' . \Simple_Sponsorships\Formatting::price( $total, array( 'exclude_html' => false ) ) . '</span>';
+		        $html .= '</div>';
+		        $html .= '</div>';
+	        } else {
+	            $html = '<div class="ss-notice">' . esc_html__( 'There are no packages available', 'simple-sponsorships' ) . '</div>';
             }
-	        $html .= '</div>';
-	        $html .= '<div class="packages-select-footer">';
-	        $html .= '<span>' . __( 'Total', 'simple-sponsorships' ) . '</span>';
-	        $html .= '<span class="packages-total">' . \Simple_Sponsorships\Formatting::price( $total, array( 'exclude_html' => false )) . '</span>';
-	        $html .= '</div>';
-	        $html .= '</div>';
 
 	        if ( $wrap_field ) {
 		        $html = sprintf( $html_wrap, $html );
