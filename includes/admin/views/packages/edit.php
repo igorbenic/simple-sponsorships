@@ -34,10 +34,15 @@ if ( $errors ) {
 			    $default = isset( $field_args['default'] ) ? $field_args['default'] : '';
 				$field_args['name'] = 'ss_packages[' . Settings::sanitize_key( $field_args['id'] ) . ']';
 				$field_args['value'] = $package->get_data( $field_slug, $default );
+				$row_classes         = isset( $field_args['row_class'] ) ? Settings::sanitize_html_class( $field_args['row_class'] ) : '';
+
 				do_action( 'ss_edit_package_before_field_' . $field_slug, $fields );
+				if ( 'hidden' === $field_args['type'] ) {
+                    $row_classes .= ' hidden';
+                }
 				?>
-				<tr>
-					<?php
+                <tr id="<?php echo $field_args['id'] . '_row' ?>" class="ss-field-row <?php echo esc_attr( $row_classes ); ?>">
+                <?php
 					if ( $field_args['title'] ) {
 						?>
 						<th scope="row" valign="top">

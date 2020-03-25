@@ -46,6 +46,7 @@ class Packages {
 		$description = isset( $posted_data['description'] ) ? $posted_data['description'] : '';
 		$quantity    = isset( $posted_data['quantity'] ) ? absint( $posted_data['quantity'] ) : 1;
 		$price       = isset( $posted_data['price'] ) ? floatval( $posted_data['price'] ) : 0;
+		$type        = isset( $posted_data['type'] ) && $posted_data['type'] ? sanitize_text_field( $posted_data['type'] ) : 'onetime';
 
 		if ( ! $title ) {
 			$this->errors->add( 'no-name', __( 'Package Name is required.', 'simple-sponsorships' ) );
@@ -62,6 +63,7 @@ class Packages {
 			'quantity'    => $quantity,
 			'price'       => $price,
 			'status'      => $status,
+			'onetime'     => $type,
 		);
 
 		$package_id = $db->insert( $db_data, array( '%s', '%s', '%s', '%s', '%s' ) );
@@ -89,6 +91,7 @@ class Packages {
 		$description = isset( $posted_data['description'] ) ?  $posted_data['description'] : '';
 		$quantity    = isset( $posted_data['quantity'] ) ? absint( $posted_data['quantity'] ) : 1;
 		$price       = isset( $posted_data['price'] ) ? floatval( $posted_data['price'] ) : 0;
+		$type        = isset( $posted_data['type'] ) && $posted_data['type'] ? sanitize_text_field( $posted_data['type'] ) : 'onetime';
 		$id          = isset( $posted_data['id'] ) ? absint( $posted_data['id'] ) : 0;
 
 		if ( ! $title ) {
@@ -110,6 +113,7 @@ class Packages {
 			'quantity'    => $quantity,
 			'price'       => $price,
 			'status'      => $status,
+			'type'        => $type,
 		);
 
 		$ret = $db->update( $id, $db_data, array( '%s', '%s', '%s', '%s', '%s' ) );
@@ -156,6 +160,8 @@ class Packages {
 	 */
 	public function get_package_fields() {
 
+		$types = ss_get_package_types();
+
 		$fields = array(
 			'title' => array(
 				'id' => 'title',
@@ -179,6 +185,14 @@ class Packages {
 				'title' => __( 'Description', 'simple-sponsorships' ),
 				'field_class' => 'widefat',
 			),
+			'type' => array(
+				'id' => 'type',
+				'type' => $types && count( $types ) > 1 ? 'select' : 'hidden',
+				'placeholder' => __( 'Payment Type', 'simple-sponsorships' ),
+				'title'   => __( 'Payment Type', 'simple-sponsorships' ),
+				'options' => $types,
+				'default' => 'onetime',
+			),
 			'price' => array(
 				'id' => 'price',
 				'type' => 'number',
@@ -197,17 +211,6 @@ class Packages {
 		);
 
 		return apply_filters( 'ss_get_package_fields', $fields );
-	}
-
-	/**
-	 * Return Level Types.
-	 *
-	 * @return array
-	 */
-	public static function get_types() {
-		return apply_filters( 'ss_package_types', array(
-			'normal' => __( 'Normal', 'simple-sponsorships' ),
-		));
 	}
 }
 

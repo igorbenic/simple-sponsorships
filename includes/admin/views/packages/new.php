@@ -32,9 +32,14 @@ if ( $errors ) {
             if ( $fields ) {
 	            foreach ( $fields as $field_slug => $field_args ) {
 		            $field_args['name'] = 'ss_packages[' . Settings::sanitize_key( $field_args['id'] ) . ']';
-	                do_action( 'ss_add_package_before_field_' . $field_slug, $fields );
+		            $row_classes        = isset( $field_args['row_class'] ) ? Settings::sanitize_html_class( $field_args['row_class'] ) : '';
+
+		            do_action( 'ss_add_package_before_field_' . $field_slug, $fields );
+		            if ( 'hidden' === $field_args['type'] ) {
+			            $row_classes .= ' hidden';
+		            }
                     ?>
-                    <tr>
+                    <tr id="<?php echo $field_args['id'] . '_row' ?>" class="ss-field-row <?php echo esc_attr( $row_classes ); ?>">
                         <?php
                         if ( $field_args['title'] ) {
                         ?>

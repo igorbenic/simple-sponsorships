@@ -330,6 +330,7 @@ function ss_form_render_field( $args, $wrap_field = true ) {
 			        $html .= '<span class="price-column">' . $package->get_price_formatted( false ) . '</span>';
 			        $html .= '</div>';
 		        }
+
 		        $html .= '</div>';
 		        $html .= '<div class="packages-select-footer">';
 		        $html .= '<span>' . __( 'Total', 'simple-sponsorships' ) . '</span>';

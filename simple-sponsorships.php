@@ -211,6 +211,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			include_once 'includes/integrations/dummy/class-package-features.php';
 			include_once 'includes/integrations/dummy/class-package-timed-availability.php';
 			include_once 'includes/integrations/dummy/class-package-minimum-quantity.php';
+			include_once 'includes/integrations/dummy/class-recurring-payments.php';
 
 			// Gateways.
 			include_once 'includes/gateways/class-paypal.php';
@@ -402,6 +403,7 @@ if ( ss_fs()->is__premium_only() ) {
 			if ( ss_fs()->is_plan( 'platinum' ) ) {
 				include_once 'includes/premium/package-features/package-features.php';
 				include_once 'includes/premium/package-timed-availability/package-timed-availability.php';
+				include_once 'includes/premium/recurring-payments/recurring-payments.php';
 			}
 		}
 
@@ -429,6 +431,7 @@ if ( ss_fs()->is__premium_only() ) {
 			if ( ss_fs()->is_plan( 'platinum' ) ) {
 				$integrations['package-features'] = '\Simple_Sponsorships\Package_Features\Plugin';
 				$integrations['package-timed-availability'] = '\Simple_Sponsorships\Package_Timed_Availability\Plugin';
+				$integrations['recurring-payments'] = '\Simple_Sponsorships\Recurring_Payments\Plugin';
 			}
 			return $integrations;
 		}

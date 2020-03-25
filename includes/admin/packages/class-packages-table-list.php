@@ -146,7 +146,26 @@ class Packages_Table_List extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_price( $item ) {
-		return Formatting::price( $item['price'] );
+		$price = Formatting::price( $item['price'] );
+		return apply_filters( 'ss_packages_column_price', $price, $item );
+	}
+
+	/**
+	 * Column type
+	 * @param $item
+	 *
+	 * @return string
+	 */
+	public function column_type( $item ) {
+		$types = ss_get_package_types();
+
+		if ( ! isset( $item['type'] ) || ! $item['type'] ) {
+			$type = 'onetime';
+		} else {
+			$type = isset( $types[ $item['type'] ] ) ? $types[ $item['type'] ] : $item['type'];
+		}
+
+		return $type;
 	}
 
 	/**
@@ -180,6 +199,12 @@ class Packages_Table_List extends \WP_List_Table {
 			'price'    => __( 'Price', 'simple-sponsorships' ),
 			'status'   => __( 'Status', 'simple-sponsorships' ),
 		);
+
+		$types = ss_get_package_types();
+
+		if ( count( $types ) > 1 ) {
+			$columns['type'] = __( 'Type', 'simple-sponsorships' );
+		}
 
 		return $columns;
 	}

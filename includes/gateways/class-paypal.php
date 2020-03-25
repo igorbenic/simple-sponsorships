@@ -138,12 +138,7 @@ class PayPal extends Payment_Gateway {
 	 * @return array
 	 */
 	protected function get_transaction_args( $sponsorship ) {
-		$package   = $sponsorship->get_data( 'package' );
 		$item_name = sprintf( __( 'Sponsorship %s', 'simple-sponsorships' ), $sponsorship->get_id() );
-		if ( $package ) {
-			$package   = ss_get_package( $package );
-			$item_name = $package->get_data( 'title' );
-		}
 
 		return array(
 				'cmd'           => '_xclick',
@@ -249,7 +244,7 @@ class PayPal extends Payment_Gateway {
 		}
 
 		return apply_filters(
-			'woocommerce_paypal_args', array_merge(
+			'ss_paypal_args_with_items', array_merge(
 			$this->get_transaction_args( $order ),
 			$this->get_line_item_args( $order, true )
 		), $order
@@ -271,7 +266,7 @@ class PayPal extends Payment_Gateway {
 			$sponsorship
 		);
 
-		return $this->fix_request_length( $sponsorship, $paypal_args );
+		return $paypal_args; // This is to be used when we maybe add multiple items for each package $this->fix_request_length( $sponsorship, $paypal_args );
 	}
 
 	/**

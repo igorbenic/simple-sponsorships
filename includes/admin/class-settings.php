@@ -948,6 +948,16 @@ class Settings {
 			case 'heading':
 				echo isset( $args['desc'] ) ? '<h2>' . $args['desc'] . '</h2>' : '';
 				break;
+			case 'hidden':
+				if ( $args['value'] ) {
+					$value = $args['value'];
+				} elseif( ! empty( $args['allow_blank'] ) && empty( $args['value'] ) ) {
+					$value = '';
+				} else {
+					$value = isset( $args['std'] ) ? $args['std'] : '';
+				}
+				echo $html = '<input type="hidden" id="' . $id . '" ' . $name . ' value="' . esc_attr( stripslashes( $value ) ) . '"/>';
+				break;
 			default:
 				do_action( 'ss_settings_field_' . $args['type'], $args );
 				break;

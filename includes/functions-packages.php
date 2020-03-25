@@ -20,6 +20,19 @@ function ss_get_package_statuses() {
 	));
 }
 
+/**
+ * Return the package types.
+ *
+ * @since 1.6.0
+ *
+ * @return array
+ */
+function ss_get_package_types() {
+	return apply_filters( 'ss_package_types', array(
+		'onetime' => __( 'One-time', 'simple-sponsorships' ),
+	));
+}
+
 
 /**
  * Get the package.

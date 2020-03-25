@@ -36,9 +36,6 @@ function ss_process_gateways() {
 			if ( $gateway_key === $gateway_id ) {
 				$gateway->process_webhooks();
 			}
-		} else {
-			// Process all since we don't have one selected.
-			$gateway->process_webhooks();
 		}
 	}
 

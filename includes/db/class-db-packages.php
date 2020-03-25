@@ -105,6 +105,7 @@ class DB_Packages extends DB {
 		price tinytext NOT NULL,
 		quantity int(3) NOT NULL,
 		status varchar(20) NOT NULL default 'active',
+		type varchar(20) NOT NULL default 'onetime',
 		PRIMARY KEY ID (ID)
 		) CHARACTER SET utf8 COLLATE utf8_general_ci;";
 

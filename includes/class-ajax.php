@@ -212,15 +212,24 @@ class AJAX {
 
 		$total = 0;
 
+		$package_objects = array();
 		foreach ( $packages['package'] as $package_id => $qty ) {
 			$package = ss_get_package( $package_id );
 			$total  += $package->get_price() * $qty;
+			$package_objects[ $package_id ] = $package;
 		}
 
 
-		wp_send_json_success( array(
-			'total' => $total,
-			'total_formatted' => Formatting::price( $total ) ) );
+		wp_send_json_success(
+			apply_filters( 'ss_ajax_packages_get_total_fragments', array(
+				'total' => $total,
+				'total_formatted' => Formatting::price( $total )
+				),
+				$total,
+				$packages,
+				$package_objects
+			)
+		);
 	}
 
 

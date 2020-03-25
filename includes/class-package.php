@@ -27,6 +27,7 @@ class Package extends Custom_Data {
 		'quantity'    => 'quantity',
 		'price'       => 'price',
 		'status'      => 'status',
+		'type'        => 'type',
 	);
 
 	/**
@@ -70,6 +71,15 @@ class Package extends Custom_Data {
 	 *
 	 * @return string
 	 */
+	public function get_type() {
+		return apply_filters( 'ss_package_get_type', $this->get_data('type' ), $this );
+	}
+
+	/**
+	 * Get the title
+	 *
+	 * @return string
+	 */
 	public function get_title() {
 		return apply_filters( 'ss_package_get_title', $this->get_data('title' ), $this );
 	}
@@ -85,7 +95,7 @@ class Package extends Custom_Data {
 	 * Get the Price HTML.
 	 */
 	public function get_price_formatted( $exclude_html = true ) {
-		return Formatting::price( $this->get_price(), array( 'exclude_html' => $exclude_html ));
+		return apply_filters( 'ss_package_get_price_formatted', Formatting::price( $this->get_price(), array( 'exclude_html' => $exclude_html ) ), $this->get_price(), $exclude_html, $this );
 	}
 
 	/**

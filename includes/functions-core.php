@@ -90,6 +90,7 @@ function ss_get_registered_integrations() {
 	return apply_filters( 'ss_registered_integrations', array(
 		'gravityforms' => '\Simple_Sponsorships\Integrations\GravityForms',
 		'stripe' => '\Simple_Sponsorships\Integrations\Dummy\Stripe',
+		'recurring-payments' => '\Simple_Sponsorships\Integrations\Dummy\Recurring_Payments_Dummy',
 		'package-slots' => '\Simple_Sponsorships\Integrations\Dummy\Package_Slots',
 		'post-paid-form' => '\Simple_Sponsorships\Integrations\Dummy\Post_Paid_Form_Dummy',
 		'package-features' => '\Simple_Sponsorships\Integrations\Dummy\Package_Features',
