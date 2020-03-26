@@ -21,7 +21,8 @@ if ( ! ss_payments_enabled() ) {
     return;
 }
 
-$gateways           = SS()->payment_gateways();
+$gateways = SS()->payment_gateways();
+$gateways->set_sponsorship( $sponsorship );
 $available_gateways = $gateways->get_available_payment_gateways();
 
 // We don't need a payment form if we don't have gateways.

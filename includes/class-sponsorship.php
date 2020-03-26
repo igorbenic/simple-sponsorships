@@ -461,6 +461,6 @@ class Sponsorship extends Custom_Data {
 	 * @return string
 	 */
 	public function get_formatted_amount() {
-		return Formatting::price( $this->get_data( 'amount' ) );
+		return apply_filters( 'ss_sponsorship_formatted_amount', Formatting::price( $this->get_data( 'amount' ) ), $this->get_data( 'amount' ), $this );
 	}
 }

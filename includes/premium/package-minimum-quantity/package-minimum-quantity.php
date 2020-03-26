@@ -96,6 +96,9 @@ class Plugin extends Integration {
 		if ( is_array( $packages ) && $packages ) {
 			$db = new DB_Packages();
 			foreach ( $packages as $package_id => $package_qty ) {
+				if ( $package_qty < 1 ) {
+					continue; // We don't need to check that.
+				}
 				$package  = ss_get_package( $package_id, false );
 				$quantity = $db->get_meta( $package_id, 'minimum_quantity', true );
 				if ( $quantity && $quantity > $package_qty ) {

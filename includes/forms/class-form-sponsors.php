@@ -65,12 +65,14 @@ class Form_Sponsors extends Form {
 
 		$user_id = get_current_user_id();
 
-		if ( ! $user_id && ss_is_account_creation_enabled() ) {
+		$account_required = apply_filters( 'ss_create_sponsorships_account_required', false, $posted_data );
+
+		if ( ! $user_id && ( ss_is_account_creation_enabled() || $account_required ) ) {
 			$create_account   = isset( $posted_data['create_account'] ) ? true : false;
 			$account_username = isset( $posted_data['create_account_username'] ) ? sanitize_text_field( $posted_data['create_account_username'] ) : '';
 			$account_pass     = isset( $posted_data['create_account_password'] ) ? sanitize_text_field( $posted_data['create_account_password'] ) : '';
 
-			if ( $create_account ) {
+			if ( $create_account || $account_required ) {
 				if ( ! $account_username ) {
 					ss_add_notice( __( 'Account Username is required.', 'simple-sponsorships' ), 'error' );
 					return false;

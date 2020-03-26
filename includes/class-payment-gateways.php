@@ -23,6 +23,13 @@ class Payment_Gateways {
 	public $payment_gateways = array();
 
 	/**
+	 * This can be used to check availability of gateways for the current sponsorship
+	 *
+	 * @var null|\Simple_Sponsorships\Sponsorship
+	 */
+	public $sponsorship = null;
+
+	/**
 	 * The single instance of the class.
 	 *
 	 * @var Payment_Gateways
@@ -142,7 +149,7 @@ class Payment_Gateways {
 			}
 		}
 
-		return apply_filters( 'ss_available_payment_gateways', $_available_gateways );
+		return apply_filters( 'ss_available_payment_gateways', $_available_gateways, $this->sponsorship );
 	}
 
 	/**
@@ -170,6 +177,17 @@ class Payment_Gateways {
 		// Ensure we can make a call to set_current() without triggering an error.
 		if ( $current_gateway && is_callable( array( $current_gateway, 'set_current' ) ) ) {
 			$current_gateway->set_current();
+		}
+	}
+
+	/**
+	 * Sponsorship
+	 *
+	 * @param Sponsorship $sponsorship
+	 */
+	public function set_sponsorship( $sponsorship ) {
+		if ( $sponsorship && is_a( $sponsorship, '\Simple_Sponsorships\Sponsorship' ) ) {
+			$this->sponsorship = $sponsorship;
 		}
 	}
 

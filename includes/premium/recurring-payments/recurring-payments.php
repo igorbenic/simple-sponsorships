@@ -11,6 +11,7 @@ namespace Simple_Sponsorships\Recurring_Payments;
 use Simple_Sponsorships\DB\DB_Packages;
 use Simple_Sponsorships\Formatting;
 use Simple_Sponsorships\Integrations\Integration;
+use Simple_Sponsorships\Package;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	return;
@@ -37,11 +38,154 @@ class Plugin extends Integration {
 		add_filter( 'ss_packages_column_price', array( $this, 'show_recurring_on_price_column' ), 20, 2 );
 		add_filter( 'ss_package_get_price_formatted', array( $this, 'ss_package_show_formatted_price' ), 20, 4 );
 		add_filter( 'ss_payment_gateways', array( $this, 'add_gateways' ) );
+		add_filter( 'ss_create_sponsorships_package_availability_check', array( $this, 'restrict_only_one_recurring_package' ), 20, 2 );
+		add_filter( 'ss_ajax_packages_get_total_fragments', array( $this, 'get_total_fragments' ), 20, 4 );
+		add_filter( 'ss_create_sponsorships_account_required', array( $this, 'set_required_account_if_recurring_package' ), 20, 2 );
+		add_filter( 'ss_available_payment_gateways', array( $this, 'filter_available_gateways' ), 20, 2 );
+		add_filter( 'ss_sponsorship_formatted_amount', array( $this, 'format_sponsorship_amount' ), 20, 3 );
+		add_filter( 'ss_package_get_price', array( $this, 'package_get_price' ), 20, 2 );
 
 		add_action( 'ss_package_updated', array( $this, 'save_package_recurring' ), 20, 2 );
 		add_action( 'ss_package_added', array( $this, 'save_package_recurring' ), 20, 2 );
 
 		$this->includes();
+	}
+
+	/**
+	 * Package Price with signup fee.
+	 *
+	 * @param number $price
+	 * @param Package $package
+	 */
+	public function package_get_price( $price, $package ) {
+		if ( 'recurring' !== $package->get_type() ) {
+			return $price;
+		}
+
+		$signup_fee = $package->get_data( 'recurring_signup_fee', 0 );
+
+		if ( ! $signup_fee ) {
+			return $price;
+		}
+
+		$price = $price + $signup_fee;
+
+		return $price;
+	}
+
+	/**
+	 * Check if a Sponsorship contains a recurring package
+	 *
+	 * @param \Simple_Sponsorships\Sponsorship $sponsorship
+	 *
+	 * @return boolean
+	 */
+	public static function sponsorship_contains_recurring_packages( $sponsorship ) {
+		if ( ! $sponsorship ) {
+			return false;
+		}
+
+		$packages = $sponsorship->get_packages();
+
+		if ( ! $packages ) {
+			return false;
+		}
+
+		foreach ( $packages as $package ) {
+			if ( 'recurring' === $package->get_type() ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Filter the Available Gateways
+	 *
+	 * @param array $gateways
+	 * @param null|\Simple_Sponsorships\Sponsorship $sponsorship
+	 */
+	public function filter_available_gateways( $gateways, $sponsorship ) {
+		if ( null === $sponsorship ) {
+			return $gateways;
+		}
+
+		if ( ! self::sponsorship_contains_recurring_packages( $sponsorship ) ) {
+			return $gateways;
+		}
+
+		$supported_gateways = array();
+		foreach ( $gateways as $gateway_id => $gateway_object ) {
+			if ( $gateway_object->supports( 'recurring' ) ) {
+				$supported_gateways[ $gateway_id ] = $gateway_object;
+			}
+		}
+
+		return $supported_gateways;
+	}
+
+	/**
+	 * If there is a package set that is recurring, we need the account.
+	 *
+	 * @param boolean $is_required
+	 * @param array   $posted_data
+	 */
+	public function set_required_account_if_recurring_package( $is_required, $posted_data ) {
+		if ( $is_required ) {
+			return $is_required;
+		}
+
+		$packages = array();
+		if ( isset( $posted_data['package'] ) ) {
+			if ( ss_multiple_packages_enabled() ) {
+				$packages = $posted_data['package'];
+			} else {
+				$packages = array( $posted_data['package'] => 1 );
+			}
+		}
+
+		if ( ! $packages ) {
+			return $is_required;
+		}
+
+		foreach ( $packages as $package_id => $qty ) {
+			$package = ss_get_package( $package_id );
+			if ( 'recurring' === $package->get_type() ) {
+				return true;
+			}
+		}
+
+		return $is_required;
+	}
+
+	/**
+	 * Restrict only to one recurring package
+	 *
+	 * @param $null
+	 * @param $packages
+	 *
+	 * @return \WP_Error
+	 */
+	public function restrict_only_one_recurring_package( $null, $packages ) {
+		if ( null !== $null ) {
+			return $null;
+		}
+
+		if ( $packages ) {
+			$qty_total = array_sum( $packages );
+			if ( $qty_total > 1 ) {
+				foreach ( $packages as $package_id => $qty ) {
+					$package = ss_get_package( $package_id );
+
+					if ( 'recurring' === $package->get_type() ) {
+						return new \WP_Error( 'recurring-one', __( 'When selecting recurring packages, only 1 package can be selected.', 'simple-sponsorships-premium' ) );
+					}
+				}
+			}
+		}
+
+		return $null;
 	}
 
 	/**
@@ -80,22 +224,81 @@ class Plugin extends Integration {
 
 		$duration      = $package->get_data( 'recurring_duration', 1 );
 		$duration_unit = $package->get_data( 'recurring_duration_unit', 'day' );
-		$signup_fee    = $package->get_data( 'recurring_signup_fee', 0 );
 		$units         = self::get_duration_units();
-
-
-		$html = '';
-
-		if ( $signup_fee ) {
-			$html = Formatting::price( $price + $signup_fee, array( 'exclude_html' => $exclude_html ) ) . ' ' . __( 'then ', 'simple-sponsorships' ) . ' ';
-		}
-
-		$price_html    = Formatting::price( $price, array( 'exclude_html' => $exclude_html ) );
+		$price_html    = Formatting::price( $package->get_data('price' ), array( 'exclude_html' => $exclude_html ) );
 		$duration_html = isset( $units[ $duration_unit ] ) ? $units[ $duration_unit ] : $duration_unit;
-		$html .= $price_html . ' each ' . $duration . ' ' . $duration_html;
+		$html .= ' ' . __( 'then', 'simple-sponsorships' ) . ' ' .  $price_html . ' ' . __( 'each', 'simple-sponsorships' ) . ' ' . $duration . ' ' . $duration_html;
 
 
 		return $html;
+	}
+
+	/**
+	 * Sponsorship Amount
+	 *
+	 * @param $formatted
+	 * @param $amount
+	 * @param $sponsorship
+	 */
+	public function format_sponsorship_amount( $formatted, $amount, $sponsorship ) {
+		if ( ! self::sponsorship_contains_recurring_packages( $sponsorship ) ) {
+			return $formatted;
+		}
+
+		$packages       = $sponsorship->get_packages();
+		$recurring_html = array();
+		$units          = self::get_duration_units();
+
+		foreach ( $packages as $package_id => $object ) {
+			if ( 'recurring' === $object->get_type() ) {
+				$duration      = $object->get_data( 'recurring_duration', 1 );
+				$duration_unit = $object->get_data( 'recurring_duration_unit', 'day' );
+				$price         = $object->get_price( true );
+				$duration_html = isset( $units[ $duration_unit ] ) ? $units[ $duration_unit ] : $duration_unit;
+				$recurring_html[]   = Formatting::price( $price ). ' ' . __( 'each', 'simple-sponsorships' ) . ' ' . $duration . ' ' . $duration_html;
+			}
+		}
+
+		if ( $recurring_html ) {
+			return $formatted . ' ' . __( 'then', 'simple-sponsorships' ) . ' ' . implode( ' and ', $recurring_html );
+		}
+
+		return $formatted;
+	}
+
+	/**
+	 * @param $fragments
+	 * @param $total
+	 * @param $packages
+	 * @param $package_objects
+	 */
+	public function get_total_fragments( $fragments, $total, $packages, $package_objects ) {
+
+		$packages_qty = $packages['package'];
+		$formatted    = array();
+		$units        = self::get_duration_units();
+		foreach ( $package_objects as $package_id => $object ) {
+			if ( $packages_qty[ $package_id ] < 1 ) {
+				continue;
+			}
+			if ( 'recurring' === $object->get_type() ) {
+				$duration      = $object->get_data( 'recurring_duration', 1 );
+				$duration_unit = $object->get_data( 'recurring_duration_unit', 'day' );
+				$price         = $object->get_price( true ) * $packages_qty[ $package_id ];
+				$duration_html = isset( $units[ $duration_unit ] ) ? $units[ $duration_unit ] : $duration_unit;
+				$formatted[]   = Formatting::price( $price ). ' ' . __( 'each', 'simple-sponsorships' ) . ' ' . $duration . ' ' . $duration_html;
+			}
+		}
+
+		if ( $formatted ) {
+			$total_formatted = Formatting::price( $total ) . ' ' . __( 'then', 'simple-sponsorships' ) . ' ' . implode( ' and ', $formatted );
+			$fragments = array(
+				'total' => $total,
+				'total_formatted' => $total_formatted,
+			);
+		}
+
+		return $fragments;
 	}
 
 	/**

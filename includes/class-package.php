@@ -62,8 +62,8 @@ class Package extends Custom_Data {
 	/**
 	 * Get the Price
 	 */
-	public function get_price() {
-		return apply_filters( 'ss_package_get_price', $this->get_data( 'price' ) );
+	public function get_price( $unfiltered = false ) {
+		return $unfiltered ? $this->get_data( 'price' ) : apply_filters( 'ss_package_get_price', $this->get_data( 'price' ), $this );
 	}
 
 	/**

@@ -223,7 +223,7 @@ class AJAX {
 		wp_send_json_success(
 			apply_filters( 'ss_ajax_packages_get_total_fragments', array(
 				'total' => $total,
-				'total_formatted' => Formatting::price( $total )
+				'total_formatted' => Formatting::price( $total ),
 				),
 				$total,
 				$packages,
