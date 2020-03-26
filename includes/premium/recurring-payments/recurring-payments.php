@@ -69,7 +69,6 @@ class Plugin extends Integration {
 		}
 
 		$price = $price + $signup_fee;
-
 		return $price;
 	}
 
@@ -224,11 +223,14 @@ class Plugin extends Integration {
 
 		$duration      = $package->get_data( 'recurring_duration', 1 );
 		$duration_unit = $package->get_data( 'recurring_duration_unit', 'day' );
+		$signup_fee    = $package->get_data( 'recurring_signup_fee', 0 );
 		$units         = self::get_duration_units();
-		$price_html    = Formatting::price( $package->get_data('price' ), array( 'exclude_html' => $exclude_html ) );
-		$duration_html = isset( $units[ $duration_unit ] ) ? $units[ $duration_unit ] : $duration_unit;
-		$html .= ' ' . __( 'then', 'simple-sponsorships' ) . ' ' .  $price_html . ' ' . __( 'each', 'simple-sponsorships' ) . ' ' . $duration . ' ' . $duration_html;
 
+
+		$price_html    = Formatting::price( $package->get_price( true ), array( 'exclude_html' => $exclude_html ) );
+		$duration_html = isset( $units[ $duration_unit ] ) ? $units[ $duration_unit ] : $duration_unit;
+		$html          = $price_html . ' ' . __( 'each', 'simple-sponsorships' ) . ' ' . $duration . ' ' . $duration_html;
+		$html         .= '<div><small>+' . Formatting::price( $signup_fee,  array( 'exclude_html' => $exclude_html ) )  . ' ' . __( 'Signup Fee', 'simple-sponsorships' ) .  '</small></div>';
 
 		return $html;
 	}
@@ -281,6 +283,7 @@ class Plugin extends Integration {
 			if ( $packages_qty[ $package_id ] < 1 ) {
 				continue;
 			}
+
 			if ( 'recurring' === $object->get_type() ) {
 				$duration      = $object->get_data( 'recurring_duration', 1 );
 				$duration_unit = $object->get_data( 'recurring_duration_unit', 'day' );

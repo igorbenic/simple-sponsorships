@@ -177,11 +177,11 @@ function ss_create_sponsorship( $args = array() ) {
 			}
 		}
 
-		do_action( 'ss_sponsorship_before_calculate_totals', $ret, $args );
+		do_action( 'ss_sponsorship_before_calculate_totals', $ret, $args, $sponsorship );
 
 		$sponsorship->calculate_totals();
 
-		do_action( 'ss_sponsorship_created', $ret, $args );
+		do_action( 'ss_sponsorship_created', $ret, $args, $sponsorship );
 	}
 
 	return $ret;

@@ -105,6 +105,7 @@ class DB_Sponsorships extends DB {
 		transaction_id varchar(64) NOT NULL,
 		package bigint(20) NOT NULL,
 		sponsor bigint(20) NOT NULL,
+		parent_id  bigint(20) NOT NULL DEFAULT 0,
 		date datetime NOT NULL,
 		ss_key  varchar(36) NOT NULL,
 		PRIMARY KEY ID (ID)
