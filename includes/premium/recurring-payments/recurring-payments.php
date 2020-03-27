@@ -192,6 +192,7 @@ class Plugin extends Integration {
 	 */
 	public function includes() {
 		require_once 'includes/gateways/class-paypal.php';
+		require_once 'includes/functions-recurring.php';
 	}
 
 	/**

@@ -163,6 +163,7 @@ class PayPal extends Payment_Gateway {
 					)
 				),
 				'notify_url'    => $this->limit_length( $this->get_notify_url(), 255 ),
+				'ipn_notification_url' => $this->limit_length( $this->get_notify_url(), 255 ),
 				'first_name'    => $this->limit_length( $sponsorship->get_data( 'billing_first_name' ), 32 ),
 				'last_name'     => $this->limit_length( $sponsorship->get_data( 'billing_last_name' ), 64 ),
 				'address1'      => $this->limit_length( $sponsorship->get_data( 'billing_address_1' ), 100 ),
@@ -446,6 +447,7 @@ class PayPal extends Payment_Gateway {
 		}
 		if ( ! empty( $posted['txn_id'] ) ) {
 			$sponsorship->update_data( '_transaction_id', ss_clean( $posted['txn_id'] ) );
+			$sponsorship->update_data( 'transaction_id', ss_clean( $posted['txn_id'] ) );
 		}
 		if ( ! empty( $posted['payment_status'] ) ) {
 			$sponsorship->update_data( '_paypal_status', ss_clean( $posted['payment_status'] ) );
@@ -473,7 +475,6 @@ class PayPal extends Payment_Gateway {
 		if ( 'completed' === $posted['payment_status'] ) {
 
 			$sponsorship->set_status( 'paid' );
-
 
 			if ( ! empty( $posted['mc_fee'] ) ) {
 				// Log paypal transaction fee.

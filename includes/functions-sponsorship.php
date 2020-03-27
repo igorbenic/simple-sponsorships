@@ -156,6 +156,7 @@ function ss_create_sponsorship( $args = array() ) {
 		'sponsor'        => 0,
 		'currency'       => ss_get_currency(),
 		'transaction_id' => '',
+		'parent_id'      => 0,
 		'date'           => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
 		'ss_key'         => uniqid( '_ss', true ),
 	);
