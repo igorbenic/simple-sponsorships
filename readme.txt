@@ -3,7 +3,7 @@ Contributors: ibenic
 Tags: sponsorships, sponsors, payment, podcasts, events
 Requires at least: 4.4
 Tested up to: 5.3.2
-Stable tag: 1.5.2
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,6 +140,12 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 8. Payment Settings.
 
 == Changelog ==
+
+= 1.6.0 - TBD =
+* New: Account - Sponsored Content. Sponsors can see what content they have sponsored. This way they can see all episodes/articles that they have sponsored.
+* New: Placeholder Icon - You can now change the placeholder icon (add image HTML or SVG HTML).
+* New: (Platinum) - Recurring Payments. Create Recurring Plans/Packages and receive payments for them by daily, monthly or yearly frequency.
+* Fix: If there are no available packages when using multiple packages option, there will be a message to tell the users there are no packages available for now.
 
 = 1.5.2 - 2020-03-12 =
 * New: Filter ss_create_sponsorships_package_availability_check where 2 values are passed null and array of packages. This can be used by other extensions to check if package is really available.

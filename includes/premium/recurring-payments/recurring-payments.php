@@ -9,9 +9,11 @@
 namespace Simple_Sponsorships\Recurring_Payments;
 
 use Simple_Sponsorships\DB\DB_Packages;
+use Simple_Sponsorships\DB\DB_Sponsorships;
 use Simple_Sponsorships\Formatting;
 use Simple_Sponsorships\Integrations\Integration;
 use Simple_Sponsorships\Package;
+use Simple_Sponsorships\Sponsorship;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	return;
@@ -47,8 +49,113 @@ class Plugin extends Integration {
 
 		add_action( 'ss_package_updated', array( $this, 'save_package_recurring' ), 20, 2 );
 		add_action( 'ss_package_added', array( $this, 'save_package_recurring' ), 20, 2 );
+		add_action( 'ss_sponsorship_details', array( $this, 'showing_recurring_sponsorship' ), 20, 2 );
+		add_action( 'ss_sponsorship_details', array( $this, 'showing_recurring_actions' ), 19, 2 );
 
 		$this->includes();
+	}
+
+	/**
+	 * Showing Recurring Sponsorships on a parent one.
+	 * @param Sponsorship $parent_sponsorship
+	 * @param string      $type
+	 */
+	public function showing_recurring_actions( $parent_sponsorship, $type ) {
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+
+		if ( 'account' !== $type && 'sponsorship-view' !== $type ) {
+			return;
+		}
+
+		$recurring = $parent_sponsorship->get_data( '_has_recurring', 0 );
+
+		if ( ! absint( $recurring ) ) {
+			return;
+		}
+
+		$gateway_id = $parent_sponsorship->get_data('gateway' );
+		$gateway    = null;
+		$gateways   = SS()->payment_gateways();
+		foreach ( $gateways->get_available_payment_gateways() as $gateway_key => $gateway_object ) {
+			if ( $gateway_object ) {
+				if ( $gateway_key === $gateway_id ) {
+					$gateway = $gateway_object;
+					break;
+				}
+			}
+		}
+
+		$actions = array();
+
+		if ( $gateway && $gateway->supports('cancel_recurring') ) {
+			$actions[ 'cancel_recurring' ] = '<button type="submit" name="ss-action" value="cancel_recurring">' . __( 'Cancel Recurring', 'simple-sponsorships-premium' ) . '</button>';
+		}
+
+		$actions = apply_filters( 'ss_recurring_payments_sponsorship_actions', $actions, $parent_sponsorship, $gateway );
+
+		if ( ! $actions ) {
+			return;
+		}
+
+		echo '<div class="ss-recurring-payments-actions"><ul>';
+		foreach ( $actions as $action ) {
+			?>
+			<li>
+				<form action="" method="POST">
+				<input type="hidden" name="ss_sponsorship_id" value="<?php echo esc_attr( $parent_sponsorship->get_id() ); ?>" />
+				<?php echo wp_kses_post( $action ); ?>
+				</form>
+			</li>
+			<?php
+		}
+		echo '</ul></div>';
+	}
+
+	/**
+	 * Showing Recurring Sponsorships on a parent one.
+	 * @param Sponsorship $parent_sponsorship
+	 * @param string      $type
+	 */
+	public function showing_recurring_sponsorship( $parent_sponsorship, $type ) {
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+
+		if ( 'account' !== $type && 'sponsorship-view' !== $type ) {
+			return;
+		}
+
+		$recurring = $parent_sponsorship->get_data( '_has_recurring', 0 );
+
+		if ( ! absint( $recurring ) ) {
+			return;
+		}
+
+		$db = new DB_Sponsorships();
+		$recurring_sponsorships = $db->get_by_column( 'parent_id', $parent_sponsorship->get_id() );
+
+		if ( ! $recurring_sponsorships ) {
+			return;
+		}
+
+		$sponsorships = array();
+
+		foreach ( $recurring_sponsorships as $sponsorship ) {
+			$object = new \Simple_Sponsorships\Sponsorship( $sponsorship['ID'], false );
+			$object->populate_from_data( $sponsorship );
+			$sponsorships[] = $object;
+		}
+
+		?>
+		<h3><?php esc_html_e( 'Recurring Sponsorships', 'simple-sponsorships-premium' ); ?></h3>
+		<?php
+
+		\Simple_Sponsorships\Templates::get_template_part( 'account/sponsorships', null, array(
+			'current_user' => get_user_by( 'id', get_current_user_id() ),
+			'sponsorships' => $sponsorships,
+		) );
 	}
 
 	/**
@@ -237,6 +344,25 @@ class Plugin extends Integration {
 	}
 
 	/**
+	 * Is a Renewal Sponsorship?
+	 *
+	 * @param Sponsorship|integer $sponsorship
+	 */
+	public static function is_renewal_sponsorship( $sponsorship ) {
+		if ( is_numeric( $sponsorship ) ) {
+			$sponsorship = ss_get_sponsorship( $sponsorship );
+		}
+
+		$parent_id = $sponsorship->get_data( 'parent_id' );
+
+		if ( absint( $parent_id ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Sponsorship Amount
 	 *
 	 * @param $formatted
@@ -244,6 +370,10 @@ class Plugin extends Integration {
 	 * @param $sponsorship
 	 */
 	public function format_sponsorship_amount( $formatted, $amount, $sponsorship ) {
+		if ( self::is_renewal_sponsorship( $sponsorship ) ) {
+			return $formatted;
+		}
+
 		if ( ! self::sponsorship_contains_recurring_packages( $sponsorship ) ) {
 			return $formatted;
 		}

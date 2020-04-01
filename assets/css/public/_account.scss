@@ -52,3 +52,32 @@
     }
   }
 }
+
+.ss-login-form {
+  label {
+    display: block;
+    width: 100%;
+  }
+
+  input {
+    &:not([type=checkbox]):not([type=radio]) {
+      width: 100%;
+    }
+  }
+}
+
+.ss-table-sponsorships {
+  table-layout: fixed;
+
+  td, th {
+    text-align: center;
+  }
+}
+
+.ss-recurring-payments-actions {
+  ul {
+    margin: 0 10px 10px 0;
+    padding: 0;
+    list-style: none;
+  }
+}

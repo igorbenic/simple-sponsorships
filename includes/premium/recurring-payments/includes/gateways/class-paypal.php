@@ -4,6 +4,7 @@
  */
 
 namespace Simple_Sponsorships\Recurring_Payments\Gateways;
+use Simple_Sponsorships\Integrations\Dummy\Recurring_Payments_Dummy;
 use Simple_Sponsorships\Recurring_Payments\Plugin;
 
 /**
@@ -22,7 +23,7 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 		parent::__construct();
 
 		$this->supports = array(
-			'recurring'
+			'recurring',
 		);
 	}
 
@@ -123,12 +124,16 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 					if ( $user_id ) {
 						// store the recurring payment ID
 						update_user_meta( $user_id, 'ss_paypal_subscriber', $posted['payer_id'] );
-						update_user_meta( $user_id, 'ss_payment_profile_id', $posted['subscr_id'] );
+						if ( isset( $posted['subscr_id'] ) ) {
+							update_user_meta( $user_id, 'ss_payment_profile_id', $posted['subscr_id'] );
+						}
 
 					}
 
 					$sponsorship->update_data( 'ss_paypal_subscriber', $posted['payer_id'] );
-					$sponsorship->update_data( 'ss_payment_profile_id', $posted['subscr_id'] );
+					if ( isset( $posted['subscr_id'] ) ) {
+						$sponsorship->update_data( 'ss_payment_profile_id', $posted['subscr_id'] );
+					}
 
 					$this->validate_amount( $sponsorship, $posted['mc_gross'] );
 					$this->save_paypal_meta_data( $sponsorship, $posted );
@@ -157,16 +162,25 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 
 					$recurring_sponsorship = ss_create_recurring_sponsorship( $sponsorship, $args );
 
+					if ( ! $recurring_sponsorship ) {
+						// Sponsorship could not be created.
+						return;
+					}
+
 					$user_id = $recurring_sponsorship->get_data('_user_id', 0 );
 
 					if ( $user_id ) {
 						// store the recurring payment ID
 						update_user_meta( $user_id, 'ss_paypal_subscriber', $posted['payer_id'] );
-						update_user_meta( $user_id, 'ss_payment_profile_id', $posted['subscr_id'] );
+						if ( isset( $posted['subscr_id'] ) ) {
+							update_user_meta( $user_id, 'ss_payment_profile_id', $posted['subscr_id'] );
+						}
 					}
 
 					$recurring_sponsorship->update_data( 'ss_paypal_subscriber', $posted['payer_id'] );
-					$recurring_sponsorship->update_data( 'ss_payment_profile_id', $posted['subscr_id'] );
+					if ( isset( $posted['subscr_id'] ) ) {
+						$recurring_sponsorship->update_data( 'ss_payment_profile_id', $posted['subscr_id'] );
+					}
 
 					$this->save_paypal_meta_data( $recurring_sponsorship, $posted );
 
@@ -266,4 +280,51 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 		}
 	}
 
+	/**
+	 * Process PDT.
+	 */
+	public function process_pdt() {
+		$token   = $this->settings['paypal_identity_token'];
+
+		if ( ! $token ) {
+			return;
+		}
+
+		$sponsorship = $this->get_paypal_sponsorship( ss_clean( wp_unslash( $_REQUEST['cm'] ) ) );
+
+		if ( ! $sponsorship ) {
+			return;
+		}
+
+		if ( $sponsorship->is_status( 'paid' ) ) {
+			return;
+		}
+
+		$status      = ss_clean( strtolower( wp_unslash( $_REQUEST['st'] ) ) ); // WPCS: input var ok, CSRF ok, sanitization ok.
+		$amount      = ss_clean( wp_unslash( $_REQUEST['amt'] ) ); // WPCS: input var ok, CSRF ok, sanitization ok.
+		$transaction = ss_clean( wp_unslash( $_REQUEST['tx'] ) ); // WPCS: input var ok, CSRF ok, sanitization ok.
+
+		$transaction_result = $this->validate_transaction( $transaction );
+
+		if ( $transaction_result ) {
+			$sponsorship->update_data( '_paypal_status', $status );
+			$sponsorship->update_data( 'transaction_id', $transaction );
+
+			if ( 'completed' === $status ) {
+				if ( number_format( $sponsorship->get_data( 'amount' ), 2, '.', '' ) !== number_format( $amount, 2, '.', '' ) ) {
+					$sponsorship->set_status( 'approved' );
+				} else {
+					$this->complete( $sponsorship );
+
+					// Log paypal transaction fee and payment type.
+					if ( ! empty( $transaction_result['mc_fee'] ) ) {
+						$sponsorship->update_data( '_paypal_transaction_fee', $transaction_result['mc_fee'] );
+					}
+					if ( ! empty( $transaction_result['payment_type'] ) ) {
+						$sponsorship->update_data( '_payment_type', $transaction_result['payment_type'] );
+					}
+				}
+			}
+		}
+	}
 }

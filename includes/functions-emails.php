@@ -36,7 +36,6 @@ function ss_email_on_approved_sponsorship( $status, $old_status, $sponsorship_id
  * @param $sponsorship_id
  */
 function ss_email_on_activated_sponsorship( $sponsorship ) {
-
 	$email = new \Simple_Sponsorships\Emails\Email_Activated_Sponsorship();
 	$email->trigger( $sponsorship );
 

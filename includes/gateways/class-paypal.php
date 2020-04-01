@@ -379,6 +379,10 @@ class PayPal extends Payment_Gateway {
 	 */
 	public function validate_ipn() {
 
+	    if ( $this->testmode && isset( $_POST['test_ipn'] ) ) {
+	        return true;
+        }
+
 		// Get received values from post data.
 		$validate_ipn        = wp_unslash( $_POST ); // WPCS: CSRF ok, input var ok.
 		$validate_ipn['cmd'] = '_notify-validate';

@@ -30,7 +30,7 @@ $sponsorship_object = new Sponsorship( $sponsorship['ID'] );
 
 ss_print_notices();
 
-do_action( 'ss_sponsorship_details', $sponsorship_object );
+do_action( 'ss_sponsorship_details', $sponsorship_object, 'sponsorship-view');
 
 do_action( 'ss_sponsorship_sponsor', $sponsorship_object );
 

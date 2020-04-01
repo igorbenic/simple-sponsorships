@@ -63,4 +63,20 @@ if ( $sponsorship->is_request() ) {
 			<?php echo date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $sponsorship->get_data( 'date' ) ) ); ?>
 		</td>
 	</tr>
+    <?php
+        $parent_id = $sponsorship->get_data('parent_id');
+        if ( $parent_id && absint( $parent_id ) > 0 ) {
+            $parent_sponsorship = ss_get_sponsorship( $parent_id );
+            ?>
+            <tr>
+                <th>
+			        <?php esc_html_e( 'Parent Sponsorship', 'simple-sponsorships' ); ?>
+                </th>
+                <td>
+			        <a href="<?php echo esc_url( $parent_sponsorship->get_view_link() ) ?>"><?php echo sprintf( __( 'Sponsorship #%d', 'simple-sponsorship' ), $parent_sponsorship->get_id() ); ?></a>
+                </td>
+            </tr>
+            <?php
+        }
+    ?>
 </table>

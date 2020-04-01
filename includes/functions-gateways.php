@@ -30,7 +30,6 @@ function ss_process_gateways() {
 	$gateway_id = $_REQUEST['ss-listener'];
 
 	$gateways = SS()->payment_gateways();
-
 	foreach ( $gateways->get_available_payment_gateways() as $gateway_key => $gateway ) {
 		if ( $gateway ) {
 			if ( $gateway_key === $gateway_id ) {

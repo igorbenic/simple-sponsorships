@@ -254,7 +254,6 @@ function ss_get_sponsorships_table_columns() {
 		'status' => __( 'Status', 'simple-sponsorships' ),
 		'amount' => __( 'Amount', 'simple-sponsorships'),
 		'date'   => __( 'Date', 'simple-sponsorships' ),
-		'actions' => '',
 	));
 }
 
@@ -270,10 +269,20 @@ function ss_get_sponsorships_table_column_value( $sponsorship, $column ) {
 
 	switch ( $column ) {
 		case 'id':
-			$ret = $sponsorship->get_id();
+			$ret = '<a href="' . esc_url( $sponsorship->get_view_account_url() ) . '">' . $sponsorship->get_id() . '</a>';
 			break;
 		case 'amount':
 			$ret = $sponsorship->get_formatted_amount();
+			break;
+		case 'date':
+			$date_format = get_option( 'date_format' );
+			$time_format = get_option( 'time_format' );
+
+			$ret = '<small class="ss-sponsorship-date" style="display:block;">' . date_i18n( $date_format, strtotime( $sponsorship->get_data('date') ) ) . '</small>';
+
+			if ( $time_format ) {
+				$ret .= '<small class="ss-sponsorship-time" style="display:block;">'. date_i18n( $time_format, strtotime( $sponsorship->get_data('date') ) ) . '</small>';
+			}
 			break;
 		case 'actions':
 			$ret = array(

@@ -20,6 +20,10 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
+
+if ( ! $args['current_user'] ) {
+    return;
+}
 ?>
 
 	<p><?php

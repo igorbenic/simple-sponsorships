@@ -15,6 +15,11 @@ if ( ! function_exists( 'ss_account_content' ) ) {
 	function ss_account_content() {
 		global $wp;
 
+		if ( ! is_user_logged_in() ) {
+			\Simple_Sponsorships\Templates::get_template_part( 'account/login-form', null );
+			return;
+		}
+
 		if ( ! empty( $wp->query_vars ) ) {
 			foreach ( $wp->query_vars as $key => $value ) {
 				// Ignore pagename param.
@@ -43,6 +48,11 @@ if ( ! function_exists( 'ss_account_sponsorships_content' ) ) {
 	 * My Account Sponsorships content output.
 	 */
 	function ss_account_sponsorships_content() {
+		if ( ! is_user_logged_in() ) {
+			\Simple_Sponsorships\Templates::get_template_part( 'account/login-form', null );
+			return;
+		}
+
 		$db              = new \Simple_Sponsorships\DB\DB_Sponsorships();
 		$db_sponsorships = $db->get_by_meta( '_user_id', get_current_user_id() );
 		$sponsorships    = array();
@@ -68,10 +78,21 @@ if ( ! function_exists( 'ss_account_view_sponsorship_content' ) ) {
 	 * My Account Sponsorships content output.
 	 */
 	function ss_account_view_sponsorship_content( $sponsorship_id ) {
+		if ( ! is_user_logged_in() ) {
+			\Simple_Sponsorships\Templates::get_template_part( 'account/login-form', null );
+			return;
+		}
+
+		$user_id     = get_current_user_id();
+		$sponsorship = ss_get_sponsorship( $sponsorship_id );
+
+		if ( absint( $user_id ) !== absint( $sponsorship->get_data( '_user_id', 0 ) ) ) {
+			return;
+		}
 
 		\Simple_Sponsorships\Templates::get_template_part( 'account/view-sponsorship', null, array(
 			'current_user' => get_user_by( 'id', get_current_user_id() ),
-			'sponsorship' => ss_get_sponsorship( $sponsorship_id ),
+			'sponsorship' => $sponsorship,
 		) );
 		return;
 	}
@@ -83,6 +104,11 @@ if ( ! function_exists( 'ss_account_sponsor_info_content' ) ) {
 	 * My Account Sponsorships content output.
 	 */
 	function ss_account_sponsor_info_content() {
+		if ( ! is_user_logged_in() ) {
+			\Simple_Sponsorships\Templates::get_template_part( 'account/login-form', null );
+			return;
+		}
+
 		$sponsors = ss_get_sponsors(array(
 			'meta_key' => '_user_id',
 			'meta_value_num' => get_current_user_id()
@@ -107,6 +133,11 @@ if ( ! function_exists( 'ss_account_sponsored_content' ) ) {
 	 * My Account Sponsorships content output.
 	 */
 	function ss_account_sponsored_content() {
+		if ( ! is_user_logged_in() ) {
+			\Simple_Sponsorships\Templates::get_template_part( 'account/login-form', null );
+			return;
+		}
+
 		$sponsors = ss_get_sponsors(array(
 			'meta_key' => '_user_id',
 			'meta_value_num' => get_current_user_id()
@@ -159,7 +190,7 @@ function ss_get_account_menu_items() {
 		'dashboard'         => __( 'Dashboard', 'simple-sponsorships' ),
 		'sponsorships'      => __( 'Sponsorships', 'simple-sponsorships' ),
 		//'downloads'       => __( 'Downloads', 'woocommerce' ),
-		'content' => __( 'Sponsored Content', 'simple-sponsorships' ),
+		'content'           => __( 'Sponsored Content', 'simple-sponsorships' ),
 		'sponsor-info'      => __( 'Sponsor', 'simple-sponsorships' ),
 		//'payment-methods' => __( 'Payment methods', 'woocommerce' ),
 		//'edit-account'    => __( 'Account details', 'woocommerce' ),
@@ -171,6 +202,12 @@ function ss_get_account_menu_items() {
 		if ( empty( $endpoint ) ) {
 			unset( $items[ $endpoint_id ] );
 		}
+	}
+
+	if ( ! is_user_logged_in() ) {
+		$items = array(
+			'dashboard'  => __( 'Dashboard', 'simple-sponsorships' ),
+		);
 	}
 
 	// Check if payment gateways support add new payment methods.

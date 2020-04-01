@@ -19,7 +19,7 @@ $sponsorship_object = $args['sponsorship'];
 
 ss_print_notices();
 
-do_action( 'ss_sponsorship_details', $sponsorship_object );
+do_action( 'ss_sponsorship_details', $sponsorship_object, 'account' );
 
 do_action( 'ss_sponsorship_sponsor', $sponsorship_object );
 

@@ -250,7 +250,12 @@ class Sponsorships_Table_List extends \WP_List_Table {
 	 * @return mixed
 	 */
 	public function column_title( $item ) {
+
 		$html = sprintf( __( 'Sponsorship #%d', 'simple-sponsorships' ), $item['ID'] );
+
+		if ( isset( $item['parent_id'] ) && absint( $item['parent_id'] ) > 0 ) {
+            $html .= '<div class="post-state"><strong><small>' . sprintf( __( 'Renewal for %s', 'simple-sponsorships' ), '<a href="' . admin_url( 'edit.php?post_type=sponsors&page=ss-sponsorships&ss-action=edit-sponsorship&id=' . $item['parent_id'] ) . '">#' .  $item['parent_id'] . '</a>' ) . '</small></strong></div>';
+        }
 
 		$actions = apply_filters( 'ss_sponsorships_column_title_actions', array(
 			'edit' => '<a href="' . admin_url( 'edit.php?post_type=sponsors&page=ss-sponsorships&ss-action=edit-sponsorship&id=' . $item['ID'] ) . '">' . __( 'Edit', 'simple-sponsorships' ) . '</a>',
@@ -260,7 +265,6 @@ class Sponsorships_Table_List extends \WP_List_Table {
 
 		if ( $sponsorship_page ) {
 			$actions['view'] = '<a href="' . add_query_arg( 'sponsorship-key', $item['ss_key'], $sponsorship_page ) . '">' . __( 'View', 'simple-sponsorships' ) . '</a>';
-
 		}
 
 		if ( $actions ) {
