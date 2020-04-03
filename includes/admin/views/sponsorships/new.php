@@ -25,7 +25,7 @@ if ( $errors ) {
 }
 ?>
 <form id="ss-add-sponsorship" class="ss-view-sponsorship" action="" method="POST">
-	<?php do_action( 'ss_add_sponsorship_form_top' ); ?>
+	<?php do_action( 'ss_add_sponsorship_form_top', false ); ?>
 	<table class="form-table">
 		<tbody>
 		<?php
@@ -76,7 +76,7 @@ if ( $errors ) {
 		?>
 		</tbody>
 	</table>
-	<?php do_action( 'ss_add_sponsorship_form_bottom' ); ?>
+	<?php do_action( 'ss_add_sponsorship_form_bottom', false ); ?>
 	<p class="submit">
 		<input type="hidden" name="ss-action" value="add_sponsorship"/>
 		<input type="hidden" name="ss-redirect" value="<?php echo esc_url( admin_url( 'edit.php?post_type=sponsors&page=ss-sponsorships' ) ); ?>"/>

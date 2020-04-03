@@ -28,7 +28,7 @@ if ( $errors ) {
 }
 ?>
 <form id="ss-edit-sponsorship" class="ss-view-sponsorship" action="" method="POST">
-	<?php do_action( 'ss_edit_sponsorship_form_top' ); ?>
+	<?php do_action( 'ss_edit_sponsorship_form_top', $sponsorship ); ?>
 	<table class="form-table">
 		<tbody>
 		<?php
@@ -80,10 +80,12 @@ if ( $errors ) {
 		?>
 		</tbody>
 	</table>
-	<?php do_action( 'ss_edit_sponsorship_form_bottom' ); ?>
+	<?php do_action( 'ss_edit_sponsorship_form_bottom', $sponsorship ); ?>
 	<p class="submit">
 		<input type="hidden" name="ss-action" value="edit_sponsorship"/>
 		<input type="hidden" name="ss_sponsorships[id]" value="<?php echo esc_attr( $sponsorship->get_id() ); ?>"/>
 		<input type="submit" value="<?php esc_attr_e( 'Edit Sponsorship', 'simple-sponsorships' ); ?>" class="button-primary"/>
 	</p>
+
+	<?php do_action( 'ss_edit_sponsorship_form_bottom_after_buttons', $sponsorship ); ?>
 </form>

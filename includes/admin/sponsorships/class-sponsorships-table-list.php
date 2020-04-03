@@ -158,8 +158,10 @@ class Sponsorships_Table_List extends \WP_List_Table {
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
-			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
-		}
+			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' DESC';
+		} else {
+			$sql .= ' ORDER BY ID DESC';
+        }
 
 		$sql .= ' LIMIT ' . $per_page;
 

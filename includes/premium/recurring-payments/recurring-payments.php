@@ -51,9 +51,103 @@ class Plugin extends Integration {
 		add_action( 'ss_package_added', array( $this, 'save_package_recurring' ), 20, 2 );
 		add_action( 'ss_sponsorship_details', array( $this, 'showing_recurring_sponsorship' ), 20, 2 );
 		add_action( 'ss_sponsorship_details', array( $this, 'showing_recurring_actions' ), 19, 2 );
+		add_action( 'ss_edit_sponsorship_form_bottom_after_buttons', array( $this, 'showing_recurring_sponsorships_in_admin' ) );
 
 		$this->includes();
 	}
+
+	/**
+     * Showing Recurring (Child) Sponsorships
+     *
+	 * @param boolean|Sponsorship $sponsorship FALSE or Sponsorship object. False is on new screens.
+	 */
+	public function showing_recurring_sponsorships_in_admin( $sponsorship ) {
+	    if ( ! $sponsorship ) {
+	        return;
+        }
+
+		if ( ! ss_is_recurring_sponsorship( $sponsorship ) ) {
+			return;
+		}
+
+		$db = new DB_Sponsorships();
+		$recurring_sponsorships = $db->get_by_column( 'parent_id', $sponsorship->get_id() );
+
+		if ( ! $recurring_sponsorships ) {
+			return;
+		}
+
+		$child_sponsorships = array();
+
+		foreach ( $recurring_sponsorships as $child_sponsorship ) {
+			$object = new \Simple_Sponsorships\Sponsorship( $child_sponsorship['ID'], false );
+			$object->populate_from_data( $child_sponsorship );
+			$child_sponsorships[] = $object;
+		}
+
+		?>
+        <h3><?php esc_html_e( 'Recurring Sponsorships', 'simple-sponsorships-premium' ); ?></h3>
+        <table class="wp-list-table widefat fixed striped sponsorships">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        <?php esc_html_e( 'Status', 'simple-sponsorships-premium' );?>
+                    </th>
+                    <th>
+		                <?php esc_html_e( 'Amount', 'simple-sponsorships-premium' );?>
+                    </th>
+                    <th>
+		                <?php esc_html_e( 'Date', 'simple-sponsorships-premium' );?>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+                $date_format = get_option( 'date_format' );
+                $time_format = get_option( 'time_format' );
+
+                foreach ( $child_sponsorships as $child_sponsorship ) {
+                    ?>
+                    <tr>
+                        <td>
+                            <a href="<?php echo admin_url( 'edit.php?post_type=sponsors&page=ss-sponsorships&ss-action=edit-sponsorship&id=' . $child_sponsorship->get_id() );?>">
+                                #<?php echo esc_html( $child_sponsorship->get_id() ); ?>
+                            </a>
+                        </td>
+                        <td>
+                            <?php
+                            $status   = $child_sponsorship->get_data( 'status', 'approved' );
+                            $statuses = ss_get_sponsorship_statuses();
+                            echo esc_html( isset( $statuses[ $status ] ) ? $statuses[ $status ] : $status );
+                            ?>
+                        </td>
+                        <td>
+	                        <?php
+	                        echo wp_kses_post( $child_sponsorship->get_formatted_amount() );
+	                        ?>
+                        </td>
+                        <td>
+		                    <?php
+		                    $ret = '<small class="ss-sponsorship-date" style="display:block;">' . date_i18n( $date_format, strtotime( $sponsorship->get_data('date') ) ) . '</small>';
+
+		                    if ( $time_format ) {
+			                    $ret .= '<small class="ss-sponsorship-time" style="display:block;">'. date_i18n( $time_format, strtotime( $sponsorship->get_data('date') ) ) . '</small>';
+		                    }
+
+		                    echo $ret;
+		                    ?>
+                        </td>
+                    </tr>
+                    <?php
+                }
+            ?>
+            </tbody>
+        </table>
+		<?php
+    }
 
 	/**
 	 * Showing Recurring Sponsorships on a parent one.
@@ -69,11 +163,9 @@ class Plugin extends Integration {
 			return;
 		}
 
-		$recurring = $parent_sponsorship->get_data( '_has_recurring', 0 );
-
-		if ( ! absint( $recurring ) ) {
-			return;
-		}
+		if ( ! ss_is_recurring_sponsorship( $parent_sponsorship ) ) {
+		    return;
+        }
 
 		$gateway_id = $parent_sponsorship->get_data('gateway' );
 		$gateway    = null;
@@ -127,9 +219,7 @@ class Plugin extends Integration {
 			return;
 		}
 
-		$recurring = $parent_sponsorship->get_data( '_has_recurring', 0 );
-
-		if ( ! absint( $recurring ) ) {
+		if ( ! ss_is_recurring_sponsorship( $parent_sponsorship ) ) {
 			return;
 		}
 

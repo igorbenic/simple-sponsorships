@@ -4,6 +4,25 @@
  */
 
 /**
+ * Return if the sponsorship can have recurring once. Default checks the status of the main sponsorhsip.
+ *
+ * @param \Simple_Sponsorships\Sponsorship $parent_sponsorship
+ *
+ * @return boolean
+ */
+function ss_sponsorship_can_have_recurring( $parent_sponsorship ) {
+	$status                   = $parent_sponsorship->get_data( 'status' );
+	$allowed_recurring_status = apply_filters( 'ss_recurring_sponsorship_allowed_status', array( 'paid' ), $parent_sponsorship );
+	$can_have                 = false;
+
+	if ( $allowed_recurring_status && in_array( $status, $allowed_recurring_status ) ) {
+		$can_have = true;
+	}
+
+	return apply_filters( 'ss_sponsorship_can_have_recurring', $can_have, $parent_sponsorship );
+}
+
+/**
  * Create a Recurring Sponsorship
  *
  * @param \Simple_Sponsorships\Sponsorship $parent_sponsorship
@@ -86,4 +105,19 @@ function ss_copy_recurring_sponsorship_data( $from_sponsorship, $to_sponsorship 
 			$to_sponsorship->update_data( $meta_data['meta_key'], $meta_data['meta_value'] );
 		}
 	}
+}
+
+/**
+ * Check if the Sponsorship is a recurring one.
+ *
+ * @param integer|\Simple_Sponsorships\Sponsorship $sponsorship
+ *
+ * @return boolean
+ */
+function ss_is_recurring_sponsorship( $sponsorship ) {
+	if ( is_numeric( $sponsorship ) ) {
+		$sponsorship = ss_get_sponsorship( $sponsorship );
+	}
+
+	return 1 === absint( $sponsorship->get_data( '_has_recurring', 0 ) );
 }

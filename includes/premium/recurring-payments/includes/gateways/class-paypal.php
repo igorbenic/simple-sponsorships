@@ -167,6 +167,10 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 						return;
 					}
 
+					if ( ! ss_sponsorship_can_have_recurring( $recurring_sponsorship ) ) {
+						return;
+					}
+
 					$user_id = $recurring_sponsorship->get_data('_user_id', 0 );
 
 					if ( $user_id ) {
