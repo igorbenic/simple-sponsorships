@@ -64,13 +64,13 @@ class Admin {
 	public function enqueue( $hook ) {
 		global $post;
 
-		$admin_pages = array(
+		$admin_pages = apply_filters( 'ss_admin_enqueue_pages', array(
 			'sponsors_page_ss-sponsorships',
 			'sponsors_page_ss-packages',
 			'sponsors_page_ss-settings',
 			'sponsors_page_ss-integrations',
 			'widgets.php',
-		);
+		) );
 
 		$enqueue = false;
 

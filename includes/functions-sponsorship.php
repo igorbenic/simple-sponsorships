@@ -152,6 +152,7 @@ function ss_create_sponsorship( $args = array() ) {
 		'amount'         => 0,
 		'package'        => 0,
 		'packages'       => array(),
+		'type'           => 'onetime',
 		'gateway'        => 'manual',
 		'sponsor'        => 0,
 		'currency'       => ss_get_currency(),

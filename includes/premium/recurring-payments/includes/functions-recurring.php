@@ -4,6 +4,20 @@
  */
 
 /**
+ * Get all the Recurring Statuses
+ *
+ * @return mixed|void
+ */
+function ss_get_recurring_statuses() {
+	return apply_filters( 'ss_recurring_statuses', array(
+		'pending'   => __( 'Pending', 'simple-sponsorships-premium' ),
+		'active'    => __( 'Active', 'simple-sponsorships-premium' ),
+		'cancelled' => __( 'Cancelled', 'simple-sponsorships-premium' ),
+		'expired'   => __( 'Expired', 'simple-sponsorship-premium' ),
+	));
+}
+
+/**
  * Return if the sponsorship can have recurring once. Default checks the status of the main sponsorhsip.
  *
  * @param \Simple_Sponsorships\Sponsorship $parent_sponsorship
@@ -56,7 +70,9 @@ function ss_create_recurring_sponsorship( $parent_sponsorship, $args = array() )
 
 		ss_copy_recurring_sponsorship_data( $parent_sponsorship, $sponsorship );
 
-		$parent_sponsorship->update_data( '_has_recurring', '1' ); // To see if it has recurring sponsorships
+		$parent_sponsorship->update_data( 'type', 'recurring' );
+		$parent_sponsorship = ss_get_recurring_sponsorship( $parent_sponsorship );
+		$parent_sponsorship->update_recurring_status( 'pending' ); // When we create a new recurring approved sponsorship, the parent is pending payment.
 
 		do_action( 'ss_recurring_sponsorship_created', $sponsorship, $args, $parent_sponsorship );
 	}
@@ -119,5 +135,22 @@ function ss_is_recurring_sponsorship( $sponsorship ) {
 		$sponsorship = ss_get_sponsorship( $sponsorship );
 	}
 
-	return 1 === absint( $sponsorship->get_data( '_has_recurring', 0 ) );
+	return 'recurring' === $sponsorship->get_data( 'type', 'onetime' );
+}
+
+/**
+ * Get Recurring Sponsorship
+ *
+ * @param integer|\Simple_Sponsorships\Sponsorship $sponsorship
+ *
+ * @return \Simple_Sponsorships\Recurring_Payments\Recurring_Sponsorship
+ */
+function ss_get_recurring_sponsorship( $sponsorship ) {
+	if ( is_numeric( $sponsorship ) ) {
+		$sponsorship = ss_get_sponsorship( $sponsorship, false );
+	}
+
+	$recurring_sponsorship = new \Simple_Sponsorships\Recurring_Payments\Recurring_Sponsorship( $sponsorship->get_id(), false );
+	$recurring_sponsorship->set_sponsorship( $sponsorship );
+	return $recurring_sponsorship;
 }

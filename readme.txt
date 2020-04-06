@@ -2,7 +2,7 @@
 Contributors: ibenic
 Tags: sponsorships, sponsors, payment, podcasts, events
 Requires at least: 4.4
-Tested up to: 5.3.2
+Tested up to: 5.4.0
 Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html

@@ -103,6 +103,7 @@ class DB_Sponsorships extends DB {
 		currency tinytext NOT NULL,
 		gateway tinytext NOT NULL,
 		transaction_id varchar(64) NOT NULL,
+		type varchar(20) NOT NULL default 'onetime',
 		package bigint(20) NOT NULL,
 		sponsor bigint(20) NOT NULL,
 		parent_id  bigint(20) NOT NULL DEFAULT 0,

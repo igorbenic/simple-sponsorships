@@ -22,7 +22,8 @@ class Menus {
 			__( 'Packages', 'simple-sponsorships' ),
 			'manage_options',
 			'ss-packages',
-			array( $this, 'view' ) );
+			array( $this, 'view' ),
+            10 );
 
 		add_submenu_page(
 			'edit.php?post_type=sponsors',
@@ -30,7 +31,11 @@ class Menus {
 			__( 'Sponsorships', 'simple-sponsorships' ),
 			'manage_options',
 			'ss-sponsorships',
-			array( $this, 'view' ) );
+			array( $this, 'view' ),
+            20 );
+
+
+		do_action( 'ss_admin_menus_after_sponsorships', $this );
 
 		add_submenu_page(
 			'edit.php?post_type=sponsors',
@@ -38,7 +43,8 @@ class Menus {
 			__( 'Settings', 'simple-sponsorships' ),
 			'manage_options',
 			'ss-settings',
-			array( $this, 'view' ) );
+			array( $this, 'view' ),
+            30 );
 
 		add_submenu_page(
 			'edit.php?post_type=sponsors',
@@ -46,9 +52,15 @@ class Menus {
 			__( 'Integrations', 'simple-sponsorships' ),
 			'manage_options',
 			'ss-integrations',
-			array( $this, 'view' ) );
+			array( $this, 'view' ),
+            40 );
+
+		do_action( 'ss_admin_menus', $this );
 	}
 
+	/**
+	 * View for the admin page
+	 */
 	public function view() {
 		?>
 		<div class="wrap">

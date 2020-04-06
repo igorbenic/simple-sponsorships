@@ -6,6 +6,7 @@
 namespace Simple_Sponsorships\Recurring_Payments\Gateways;
 use Simple_Sponsorships\Integrations\Dummy\Recurring_Payments_Dummy;
 use Simple_Sponsorships\Recurring_Payments\Plugin;
+use Simple_Sponsorships\Sponsorship;
 
 /**
  * Class PayPal to support Recurring Payments
@@ -24,7 +25,20 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 
 		$this->supports = array(
 			'recurring',
+			'cancel_recurring',
 		);
+
+	}
+
+	/**
+	 * Cancel Sponsorship
+	 *
+	 * @param Sponsorship $sponsorship Sponsorship object.
+	 */
+	public function cancel_recurring( $sponsorship ) {
+		$redirect = 'https://www.paypal.com/cgi-bin/customerprofileweb?cmd=_manage-paylist';
+		wp_redirect( $redirect );
+		exit();
 	}
 
 	/**
@@ -118,6 +132,8 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 			switch ( $posted['txn_type'] ) :
 
 				case "subscr_signup" :
+
+					$sponsorship = ss_get_recurring_sponsorship( $sponsorship );
 					// when a new user signs up.
 					$user_id = $sponsorship->get_data('_user_id', 0 );
 
@@ -127,7 +143,6 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 						if ( isset( $posted['subscr_id'] ) ) {
 							update_user_meta( $user_id, 'ss_payment_profile_id', $posted['subscr_id'] );
 						}
-
 					}
 
 					$sponsorship->update_data( 'ss_paypal_subscriber', $posted['payer_id'] );
@@ -142,6 +157,9 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 						// Log paypal transaction fee.
 						$sponsorship->update_data( '_paypal_transaction_fee', ss_clean( $posted['mc_fee'] ) );
 					}
+
+					$sponsorship->update_data( 'type', 'recurring' );
+					$sponsorship->calculate_expiry_date();
 
 					$this->complete( $sponsorship );
 
@@ -160,14 +178,14 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 					$args = array();
 					$args['amount'] = $posted['mc_gross'];
 
+					if ( ! ss_sponsorship_can_have_recurring( $sponsorship ) ) {
+						return;
+					}
+
 					$recurring_sponsorship = ss_create_recurring_sponsorship( $sponsorship, $args );
 
 					if ( ! $recurring_sponsorship ) {
 						// Sponsorship could not be created.
-						return;
-					}
-
-					if ( ! ss_sponsorship_can_have_recurring( $recurring_sponsorship ) ) {
 						return;
 					}
 

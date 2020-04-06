@@ -6,11 +6,11 @@
  * Time: 01:55
  */
 
-namespace Simple_Sponsorships\Admin;
+namespace Simple_Sponsorships\Recurring_Payments\Admin;
 
 use Simple_Sponsorships\DB\DB_Sponsorships;
 use Simple_Sponsorships\Formatting;
-use Simple_Sponsorships\Package;
+use Simple_Sponsorships\Recurring_Payments\Plugin;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
@@ -92,18 +92,18 @@ class Sponsorships_Table_List extends \WP_List_Table {
 	 * @return mixed
 	 */
 	public static function get_join() {
-	    global $wpdb;
+		global $wpdb;
 		$join = array();
 
 		if ( isset( $_REQUEST['ss_filter_packages'] ) && $_REQUEST['ss_filter_packages'] ) {
-		    $join['packages'] = ' INNER JOIN ' . $wpdb->sssponsorship_items . ' as ss_items on ss_items.sponsorship_id = sponsorships.ID';
+			$join['packages'] = ' INNER JOIN ' . $wpdb->sssponsorship_items . ' as ss_items on ss_items.sponsorship_id = sponsorships.ID';
 		}
 
 		return apply_filters( 'ss_sponsorships_table_list_sql_where', $join );
 	}
 
 	/**
-     * Get Where Array for creating SQL
+	 * Get Where Array for creating SQL
 	 * @return mixed
 	 */
 	public static function get_where() {
@@ -117,13 +117,14 @@ class Sponsorships_Table_List extends \WP_List_Table {
 			$sql_where['status'] = sanitize_text_field( $_REQUEST['ss_filter_statuses'] );
 		}
 
-        if ( isset( $_REQUEST['ss_filter_packages'] ) && $_REQUEST['ss_filter_packages'] ) {
-	        $sql_where['ss_items.item_id']   = sanitize_text_field( $_REQUEST['ss_filter_packages'] );
-	        $sql_where['ss_items.item_type'] = 'package';
-        }
+		if ( isset( $_REQUEST['ss_filter_packages'] ) && $_REQUEST['ss_filter_packages'] ) {
+			$sql_where['ss_items.item_id']   = sanitize_text_field( $_REQUEST['ss_filter_packages'] );
+			$sql_where['ss_items.item_type'] = 'package';
+		}
 
+		$sql_where['sponsorships.type'] = 'recurring';
 		return apply_filters( 'ss_sponsorships_table_list_sql_where', $sql_where );
-    }
+	}
 
 	/**
 	 * Retrieve level's data from the database
@@ -142,26 +143,26 @@ class Sponsorships_Table_List extends \WP_List_Table {
 		$join  = self::get_join();
 
 		if ( $join ) {
-            foreach ( $join as $join_string ) {
-                $sql .= $join_string;
-            }
-        }
+			foreach ( $join as $join_string ) {
+				$sql .= $join_string;
+			}
+		}
 
-        $where = self::get_where();
+		$where = self::get_where();
 
-        if ( $where ) {
-            $sql .= ' WHERE 1=1 ';
-            foreach ( $where as $column => $column_value ) {
-                $sql .= $wpdb->prepare( 'AND ' . $column . '=%s ', $column_value );
-            }
-        }
+		if ( $where ) {
+			$sql .= ' WHERE 1=1 ';
+			foreach ( $where as $column => $column_value ) {
+				$sql .= $wpdb->prepare( 'AND ' . $column . '=%s ', $column_value );
+			}
+		}
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
 			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' DESC';
 		} else {
 			$sql .= ' ORDER BY ID DESC';
-        }
+		}
 
 		$sql .= ' LIMIT ' . $per_page;
 
@@ -240,7 +241,28 @@ class Sponsorships_Table_List extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_amount( $item ) {
-		return Formatting::price( $item['amount'] );
+		$formatted = Formatting::price( $item['amount'] );
+
+		$sponsorship    = ss_get_sponsorship( $item['ID'], false );
+		$packages       = $sponsorship->get_packages();
+		$recurring_html = array();
+		$units          = Plugin::get_duration_units();
+
+		foreach ( $packages as $package_id => $object ) {
+			if ( 'recurring' === $object->get_type() ) {
+				$duration      = $object->get_data( 'recurring_duration', 1 );
+				$duration_unit = $object->get_data( 'recurring_duration_unit', 'day' );
+				$price         = $object->get_price( true );
+				$duration_html = isset( $units[ $duration_unit ] ) ? $units[ $duration_unit ] : $duration_unit;
+				$recurring_html[]   = Formatting::price( $price ). ' ' . __( 'each', 'simple-sponsorships' ) . ' ' . $duration . ' ' . $duration_html;
+			}
+		}
+
+		if ( $recurring_html ) {
+			return $formatted . ' ' . __( 'then', 'simple-sponsorships' ) . ' ' . implode( ' and ', $recurring_html );
+		}
+
+		return $formatted;
 	}
 
 	/**
@@ -256,8 +278,8 @@ class Sponsorships_Table_List extends \WP_List_Table {
 		$html = sprintf( __( 'Sponsorship #%d', 'simple-sponsorships' ), $item['ID'] );
 
 		if ( isset( $item['parent_id'] ) && absint( $item['parent_id'] ) > 0 ) {
-            $html .= '<div class="post-state"><strong><small>' . sprintf( __( 'Renewal for %s', 'simple-sponsorships' ), '<a href="' . admin_url( 'edit.php?post_type=sponsors&page=ss-sponsorships&ss-action=edit-sponsorship&id=' . $item['parent_id'] ) . '">#' .  $item['parent_id'] . '</a>' ) . '</small></strong></div>';
-        }
+			$html .= '<div class="post-state"><strong><small>' . sprintf( __( 'Renewal for %s', 'simple-sponsorships' ), '<a href="' . admin_url( 'edit.php?post_type=sponsors&page=ss-sponsorships&ss-action=edit-sponsorship&id=' . $item['parent_id'] ) . '">#' .  $item['parent_id'] . '</a>' ) . '</small></strong></div>';
+		}
 
 		$actions = apply_filters( 'ss_sponsorships_column_title_actions', array(
 			'edit' => '<a href="' . admin_url( 'edit.php?post_type=sponsors&page=ss-sponsorships&ss-action=edit-sponsorship&id=' . $item['ID'] ) . '">' . __( 'Edit', 'simple-sponsorships' ) . '</a>',
@@ -282,20 +304,34 @@ class Sponsorships_Table_List extends \WP_List_Table {
 	 * @return mixed|string
 	 */
 	public function column_package( $item ) {
-	    $sponsorship = ss_get_sponsorship( $item['ID'], false );
-	    $packages    = $sponsorship->get_packages();
+		$sponsorship = ss_get_sponsorship( $item['ID'], false );
+		$packages    = $sponsorship->get_packages();
 
-	    if ( ! $packages ) {
-	        $html = __( 'N/A', 'simple-sponsorships' );
-        } elseif ( count( $packages ) > 4 ) {
-	        $html = sprintf( _n( '%s Package', '%s Packages', count( $packages ), 'simple-sponsorships' ), count( $packages ) );
-        } else {
-	        $titles = array();
-	        foreach ( $packages as $package ) {
-	            $titles[] = $package->get_data( 'title' );
-            }
-            $html = implode( ', ', $titles );
-        }
+		if ( ! $packages ) {
+			$html = __( 'N/A', 'simple-sponsorships' );
+		} elseif ( count( $packages ) > 4 ) {
+			$html = sprintf( _n( '%s Package', '%s Packages', count( $packages ), 'simple-sponsorships' ), count( $packages ) );
+		} else {
+			$titles = array();
+			foreach ( $packages as $package ) {
+				$titles[] = $package->get_data( 'title' );
+			}
+			$html = implode( ', ', $titles );
+		}
+
+
+		/*$package = new Package( absint( $item['package' ] ) );
+		$actions = apply_filters( 'ss_sponsorships_column_package_actions', array(
+			'view' => '<a href="' . admin_url( 'edit.php?post_type=sponsors&page=ss-packages&ss-action=edit-package&id=' . $item['package'] ) . '">' . __( 'View', 'simple-sponsorships' ) . '</a>',
+		));
+
+		if ( ! $item['package'] ) {
+			$actions = array();
+		}
+
+		if ( $actions ) {
+			//$html .= '<div class="ss-table-actions">' . implode( ' | ', $actions ) . '</div>';
+		}*/
 
 		return $html;
 	}
@@ -345,7 +381,14 @@ class Sponsorships_Table_List extends \WP_List_Table {
 		$statuses = ss_get_sponsorship_statuses();
 		$html     = isset( $statuses[ $item['status'] ] ) ? $statuses[ $item['status'] ] : __( 'Unknown Status', 'simple-sponsorships' );
 		$class    = isset( $statuses[ $item['status'] ] ) ? $item['status'] : 'unknown';
-		return sprintf( '<div class="ss-sponsorship-status status-%1$s">%2$s</div>', $class, $html );
+
+		$recurring_statuses = ss_get_recurring_statuses();
+		$sponsorship        = ss_get_recurring_sponsorship( $item['ID'] );
+		$rec_status         = $sponsorship->get_recurring_status();
+		$rec_html           = isset( $recurring_statuses[ $rec_status ] ) ? $recurring_statuses[ $rec_status ] : __( 'Unknown Status', 'simple-sponsorships' );
+		$rec_class          = isset( $recurring_statuses[ $rec_status ] ) ? $rec_status : 'unknown';
+
+		return sprintf( '<div class="ss-sponsorship-status status-%1$s">%2$s</div>', $class, $html ) . ' - ' . sprintf( '<div class="ss-sponsorship-status status-%1$s">%2$s</div>', $rec_class, $rec_html );
 	}
 
 	/**
@@ -486,14 +529,14 @@ class Sponsorships_Table_List extends \WP_List_Table {
 			<div class="alignleft actions">
 				<?php
 				if ( $sponsors ) {
-				    $selected_sponsor = isset( $_REQUEST['ss_filter_sponsors'] ) ? absint( $_REQUEST['ss_filter_sponsors'] ) : '';
+					$selected_sponsor = isset( $_REQUEST['ss_filter_sponsors'] ) ? absint( $_REQUEST['ss_filter_sponsors'] ) : '';
 					echo '<select name="ss_filter_sponsors" class="ss-filter">';
 					echo '<option value="">' . __( 'Filter by Sponsor', 'simple-sponsorships' ) . '</option>';
 					foreach ( $sponsors as $sponsor ) {
-					    echo '<option ' . selected( $selected_sponsor, $sponsor->ID, false ) . ' value="' . esc_attr( $sponsor->ID ) . '">' . esc_html( $sponsor->post_title ) . '</option>';
-                    }
+						echo '<option ' . selected( $selected_sponsor, $sponsor->ID, false ) . ' value="' . esc_attr( $sponsor->ID ) . '">' . esc_html( $sponsor->post_title ) . '</option>';
+					}
 					echo '</select>';
-                }
+				}
 
 				if ( $statuses ) {
 					$selected_status = isset( $_REQUEST['ss_filter_statuses'] ) ? sanitize_text_field( $_REQUEST['ss_filter_statuses'] ) : '';
@@ -516,7 +559,7 @@ class Sponsorships_Table_List extends \WP_List_Table {
 				}
 				?>
 
-                <?php do_action( 'ss_sponsorships_table_list_filters' ); ?>
+				<?php do_action( 'ss_sponsorships_table_list_filters' ); ?>
 				<button class="button ss-button-table-list-filter"><?php _e( 'Filter', 'simple-sponsorships' ); ?></button>
 			</div>
 			<?php

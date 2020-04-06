@@ -46,14 +46,92 @@ class Plugin extends Integration {
 		add_filter( 'ss_available_payment_gateways', array( $this, 'filter_available_gateways' ), 20, 2 );
 		add_filter( 'ss_sponsorship_formatted_amount', array( $this, 'format_sponsorship_amount' ), 20, 3 );
 		add_filter( 'ss_package_get_price', array( $this, 'package_get_price' ), 20, 2 );
+		add_filter( 'ss_admin_enqueue_pages', array( $this, 'enqueue_on_subscriptions' ) );
 
 		add_action( 'ss_package_updated', array( $this, 'save_package_recurring' ), 20, 2 );
 		add_action( 'ss_package_added', array( $this, 'save_package_recurring' ), 20, 2 );
 		add_action( 'ss_sponsorship_details', array( $this, 'showing_recurring_sponsorship' ), 20, 2 );
 		add_action( 'ss_sponsorship_details', array( $this, 'showing_recurring_actions' ), 19, 2 );
 		add_action( 'ss_edit_sponsorship_form_bottom_after_buttons', array( $this, 'showing_recurring_sponsorships_in_admin' ) );
+		add_action( 'ss_cancel_recurring', array( $this, 'cancel_recurring' ) );
+		add_action( 'ss_sponsorship_status_paid', array( $this, 'reactivate_recurring_sponsorship' ), 20, 3 );
 
 		$this->includes();
+	}
+
+	/**
+     * Reactivate the Recurring Sponsorship maybe
+     *
+	 * @param $sponsorship_id
+	 */
+	public function reactivate_recurring_sponsorship( $sponsorship_id ) {
+		$sponsorship = ss_get_sponsorship( $sponsorship_id, false );
+
+        if ( ss_is_recurring_sponsorship( $sponsorship ) ) {
+            $sponsorship = ss_get_recurring_sponsorship( $sponsorship );
+            $sponsorship->update_recurring_status( 'active' );
+        } elseif ( self::is_renewal_sponsorship( $sponsorship ) ) {
+            // This was a renewal sponsorship.
+	        $sponsorship = ss_get_recurring_sponsorship( $sponsorship->get_data( 'parent_id' ) );
+	        $sponsorship->update_recurring_status( 'active' );
+        }
+    }
+
+	/**
+	 * @param array $hooks Page hooks.
+	 */
+	public function enqueue_on_subscriptions( $hooks ) {
+
+	    $hooks[] = 'sponsors_page_ss-subscriptions';
+	    return $hooks;
+    }
+
+	/**
+	 * Cancel Recurring
+	 */
+	public function cancel_recurring() {
+	    if ( ! is_user_logged_in() ) {
+	        return;
+        }
+
+		if ( ! isset( $_POST['ss_sponsorship_gateway'] ) ) {
+			return;
+		}
+
+		if ( ! isset( $_POST['ss_security_recurring'] ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_POST['ss_security_recurring'], 'recurring_action' ) ) {
+			wp_die( 'No Hacking Please');
+			exit;
+		}
+
+		if ( ! isset( $_POST['ss_sponsorship_id'] ) ) {
+		    return;
+        }
+
+		$sponsorship = ss_get_sponsorship( $_POST['ss_sponsorship_id'] );
+		$user_id     = $sponsorship->get_data( '_user_id', true );
+
+		// We allow administrators to cancel
+		if ( ! $user_id || ! current_user_can( 'manage_options' ) ) {
+			ss_add_notice( __( 'No user found associated with it', 'simple-sponsorships' ), 'error' );
+		    return;
+        }
+
+		if ( ! $sponsorship ) {
+		    ss_add_notice( __( 'No Sponsorship found', 'simple-sponsorships' ), 'error' );
+		    return;
+        }
+
+		foreach( SS()->payment_gateways()->get_available_payment_gateways() as $gateway_id => $gateway ) {
+		    if ( $gateway_id === sanitize_text_field( $_POST['ss_sponsorship_gateway'] ) ) {
+                $gateway->cancel_recurring( $sponsorship );
+		        break;
+            }
+        }
+
 	}
 
 	/**
@@ -191,13 +269,23 @@ class Plugin extends Integration {
 			return;
 		}
 
+		$nonce_field = wp_create_nonce( 'recurring_action' );
+
 		echo '<div class="ss-recurring-payments-actions"><ul>';
-		foreach ( $actions as $action ) {
+		foreach ( $actions as $action_key =>  $action ) {
 			?>
 			<li>
 				<form action="" method="POST">
-				<input type="hidden" name="ss_sponsorship_id" value="<?php echo esc_attr( $parent_sponsorship->get_id() ); ?>" />
-				<?php echo wp_kses_post( $action ); ?>
+                    <?php
+                        if ( $gateway ) {
+                            ?>
+                            <input type="hidden" name="ss_sponsorship_gateway" value="<?php echo esc_attr( $gateway_id ); ?>">
+                            <?php
+                        }
+                    ?>
+                    <input type="hidden" name="ss_security_recurring" value="<?php echo esc_attr( $nonce_field ); ?>" />
+				    <input type="hidden" name="ss_sponsorship_id" value="<?php echo esc_attr( $parent_sponsorship->get_id() ); ?>" />
+				    <?php echo wp_kses_post( $action ); ?>
 				</form>
 			</li>
 			<?php
@@ -390,6 +478,11 @@ class Plugin extends Integration {
 	public function includes() {
 		require_once 'includes/gateways/class-paypal.php';
 		require_once 'includes/functions-recurring.php';
+		require_once 'includes/class-recurring-sponsorship.php';
+
+		if ( is_admin() ) {
+		    require_once 'includes/admin/class-admin.php';
+        }
 	}
 
 	/**

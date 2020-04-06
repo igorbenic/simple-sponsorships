@@ -33,6 +33,7 @@ class Sponsorship extends Custom_Data {
 		'date'           => 'date',
 		'key'            => 'ss_key',
 		'ss_key'         => 'ss_key',
+		'type'           => 'type',
 	);
 
 	/**
@@ -51,6 +52,19 @@ class Sponsorship extends Custom_Data {
 		}
 
 		return $this->db;
+	}
+
+	/**
+	 * Get the Type of this Sponsorship
+	 */
+	public function get_type() {
+		$type =  $this->get_data( 'type', 'onetime' );
+
+		if ( ! $type ) {
+			return 'onetime';
+		}
+
+		return $type;
 	}
 
 	/**
