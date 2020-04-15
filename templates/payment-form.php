@@ -39,7 +39,7 @@ do_action( 'ss_before_payment_form' );
 ?>
     <form class="ss-payment-form" method="POST" action="">
 		<?php
-		do_action( 'ss_before_payment_form_fields' );
+		do_action( 'ss_before_payment_form_fields', $sponsorship );
 
 		wp_nonce_field( 'ss_sponsor_form', 'ss_nonce' );
 		foreach ( $form->get_fields() as $slug => $field ) {
@@ -48,17 +48,23 @@ do_action( 'ss_before_payment_form' );
 			ss_form_render_field( $field );
 		}
 
-		do_action( 'ss_after_payment_form_fields' );
+		do_action( 'ss_after_payment_form_fields', $sponsorship );
 
 		if ( $available_gateways ) {
-			if ( count( $available_gateways ) ) {
+		    $chosen_gateway = $sponsorship->get_data('gateway');
+
+			if ( ! $chosen_gateway && count( $available_gateways ) ) {
 				current( $available_gateways )->set_current();
 			}
+
 		    ?>
             <h3><?php esc_html_e( 'Payment Methods', 'simple-sponsorships' ); ?></h3>
             <ul class="ss-payment-gateways">
             <?php
-		    foreach ( $available_gateways as $gateway ) {
+		    foreach ( $available_gateways as $gateway_id => $gateway ) {
+		        if ( $chosen_gateway === $gateway_id ) {
+		            $gateway->set_current();
+                }
 		        Templates::get_template_part(
 		                'payment-method',
                         null,

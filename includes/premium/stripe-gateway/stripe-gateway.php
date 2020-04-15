@@ -8,7 +8,9 @@
 
 namespace Simple_Sponsorships\Stripe;
 
+use Simple_Sponsorships\Gateways\Stripe;
 use Simple_Sponsorships\Integrations\Integration;
+use Simple_Sponsorships\Sponsorship;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	return;
@@ -28,8 +30,57 @@ class Plugin extends Integration {
 		$this->includes();
 		add_filter( 'ss_payment_gateways', array( $this, 'add_gateways' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ), 10 );
-		add_action( 'wp_ajax_ss_stripe_confirm_payment', array( $this, 'confirm_payment' ) );
-		add_action( 'wp_ajax_nopriv_ss_stripe_confirm_payment', array( $this, 'confirm_payment' ) );
+		//add_action( 'wp_ajax_ss_stripe_confirm_payment', array( $this, 'confirm_payment' ) );
+		//add_action( 'wp_ajax_nopriv_ss_stripe_confirm_payment', array( $this, 'confirm_payment' ) );
+
+		add_action( 'ss_after_payment_form_fields', array( $this, 'add_intent_fields' ) );
+		add_action( 'ss_stripe_confirm_pi', array( $this, 'confirm_intent' ) );
+	}
+
+	/**
+	 * Confirm Intent
+	 */
+	public function confirm_intent() {
+	    try {
+		    if ( ! isset( $_GET['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['nonce'] ), 'ss_stripe_confirm_pi' ) ) {
+			    throw new \Exception( 'missing-nonce', __( 'CSRF verification failed.', 'simple-sponsorships-premium' ) );
+		    }
+
+		    if ( ! isset( $_GET['sponsorship_id'] ) ) {
+			    throw new \Exception( 'missing-sponsorship', __( 'No Sponsorship.', 'simple-sponsorships-premium' ) );
+            }
+
+		    $sponsorship = ss_get_sponsorship( $_GET['sponsorship_id'] );
+
+		    $stripe = new Stripe();
+		    $stripe->verify_intent( $sponsorship );
+
+	    } catch( \Exception $e ) {
+	        ss_add_notice( $e->getMessage(), 'error' );
+        }
+    }
+
+	/**
+	 * Add Intent Fields
+	 *
+	 * @param Sponsorship $sponsorship
+	 */
+	public function add_intent_fields( $sponsorship ) {
+		$payment_intent_id = $sponsorship->get_data( '_stripe_payment_intent_id', false );
+		$payment_intent_secret = $sponsorship->get_data( '_stripe_payment_intent_secret', false );
+
+		if ( $payment_intent_id && $payment_intent_secret ) {
+		    $verification_url = add_query_arg( array(
+                'sponsorship_id' => $sponsorship->get_id(),
+                'nonce'          => wp_create_nonce( 'ss_stripe_confirm_pi' ),
+                'ss-action'      => 'stripe_confirm_pi'
+            ), $sponsorship->get_view_link() );
+			?>
+			<input type="hidden" id="ss_stripe_payment_intent_id" name="ss_stripe_payment_intent_id" value="<?php echo esc_attr( $payment_intent_id ); ?>" />
+			<input type="hidden" id="ss_stripe_payment_intent_secret" name="ss_stripe_payment_intent_secret" value="<?php echo esc_attr( $payment_intent_secret ); ?>" />
+            <input type="hidden" id="ss_stripe_payment_confirm_url" name="ss_stripe_payment_confirm_url" value="<?php echo esc_url( $verification_url ); ?>" />
+            <?php
+		}
 	}
 
 	/**
@@ -152,5 +203,3 @@ class Plugin extends Integration {
 	}
 
 }
-
-//new Plugin();

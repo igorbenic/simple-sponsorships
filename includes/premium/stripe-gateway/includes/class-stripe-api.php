@@ -111,6 +111,13 @@ class Stripe_API {
 			return $response;
 		}
 
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			$body =  json_decode( $response['body'], true );
+			if ( isset( $body['message'] ) ) {
+				return new \WP_Error( 'stripe-error', $body['message'] );
+			}
+		}
+
 		if( empty( $response['body'] ) ) {
 			return new \WP_Error( 'no-body', __( 'There was an error. Stripe did not return any information.', 'simple-sponsorships-premium' ) );
 		}

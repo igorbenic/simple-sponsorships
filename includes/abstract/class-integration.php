@@ -55,6 +55,17 @@ abstract class Integration {
 	}
 
 	/**
+	 * Method that will be called when the integration is being deactivated.
+	 */
+	public function deactivate() {}
+
+	/**
+	 * Method that will be called when the integration is activated.
+	 */
+	public function activate() {}
+
+
+	/**
 	 * Buttons
 	 */
 	public function buttons() {

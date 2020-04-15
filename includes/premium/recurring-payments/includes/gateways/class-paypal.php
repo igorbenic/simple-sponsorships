@@ -36,7 +36,8 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 	 * @param Sponsorship $sponsorship Sponsorship object.
 	 */
 	public function cancel_recurring( $sponsorship ) {
-		$redirect = 'https://www.paypal.com/cgi-bin/customerprofileweb?cmd=_manage-paylist';
+
+		$redirect = $this->testmode ? 'https://www.sandbox.paypal.com/cgi-bin/customerprofileweb?cmd=_manage-paylist' : 'https://www.paypal.com/cgi-bin/customerprofileweb?cmd=_manage-paylist';
 		wp_redirect( $redirect );
 		exit();
 	}
@@ -231,16 +232,19 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 					if ( $user_id ) {
 						$subscr_id = get_user_meta( $user_id,'ss_payment_profile_id', true );
 					}
+
 					if( isset( $posted['subscr_id'] ) && $posted['subscr_id'] == $subscr_id ) {
 
 						// set the use to no longer be recurring
 						delete_user_meta( $user_id, 'ss_paypal_subscriber' );
 
+						$recurring_sponsorship = ss_get_recurring_sponsorship( $sponsorship );
+						$recurring_sponsorship->cancel();
+
 						do_action( 'ss_ipn_subscr_cancel', $user_id );
 						do_action( 'ss_webhook_cancel', $user_id, $posted, $this );
 
 						die( 'successful subscr_cancel' );
-
 					}
 
 					break;
@@ -269,6 +273,9 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 
 					// user's subscription has reached the end of its term
 					$user_id = $sponsorship->get_data( '_user_id', 0 );
+
+					$recurring_sponsorship = ss_get_recurring_sponsorship( $sponsorship );
+					$recurring_sponsorship->expire();
 
 					do_action('rcp_ipn_subscr_eot', $user_id, $sponsorship );
 

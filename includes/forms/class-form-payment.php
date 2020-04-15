@@ -47,6 +47,11 @@ class Form_Payment extends Form {
 				ss_add_notice( $response->get_error_message(), 'error' );
 				return;
 			}
+
+			if ( false === $response ) {
+				return;
+			}
+
 			if ( 'success' === $response['result'] ) {
 				if ( $response['redirect'] ) {
 					wp_redirect( $response['redirect'] );

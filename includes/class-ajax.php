@@ -263,6 +263,14 @@ class AJAX {
 
 				do_action( 'giveasap_' . $integration . '_integration_activated' );
 				ss_update_active_integrations( $active_integrations );
+
+				$all_integrations = ss_get_registered_integrations();
+				if ( isset( $all_integrations[ $integration ] ) ) {
+					$class  = $all_integrations[ $integration ];
+					$object = new $class();
+					$object->activate();
+				}
+
 				wp_send_json_success( array( 'message' => __( 'Activated', 'simple-sponsorships' ) ) );
 				die();
 			}
@@ -300,17 +308,28 @@ class AJAX {
 
 		if( in_array( $integration, $active_integrations, true ) ) {
 			$index = array_search( $integration, $active_integrations );
-			unset( $active_integrations[ $index ] );
-			if ( $active_integrations ) {
-				$active_integrations = array_values( $active_integrations );
-			} else {
-				$active_integrations = array();
-			}
+			if ( $index >= 0 ) {
+				unset( $active_integrations[ $index ] );
+				if ( $active_integrations ) {
+					$active_integrations = array_values( $active_integrations );
+				} else {
+					$active_integrations = array();
+				}
 
-			do_action( 'giveasap_' . $integration . '_integration_deactivated' );
-			ss_update_active_integrations( $active_integrations );
-			wp_send_json_success( array( 'message' => __( 'Deactivated', 'simple-sponsorships' ) ) );
-			die();
+
+				do_action( 'giveasap_' . $integration . '_integration_deactivated' );
+				ss_update_active_integrations( $active_integrations );
+
+				$all_integrations = ss_get_registered_integrations();
+				if ( isset( $all_integrations[ $integration ] ) ) {
+					$class  = $all_integrations[ $integration ];
+					$object = new $class();
+					$object->deactivate();
+				}
+
+				wp_send_json_success( array( 'message' => __( 'Deactivated', 'simple-sponsorships' ) ) );
+				die();
+			}
 		} else {
 			wp_send_json_error( array( 'message' => __( 'Not Activated', 'simple-sponsorships' ) ) );
 			die();

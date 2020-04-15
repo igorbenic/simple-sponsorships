@@ -124,6 +124,7 @@ function ss_get_sponsorship_statuses() {
 		'on-hold'  => __( 'On Hold', 'simple-sponsorships' ),
 		'paid'     => __( 'Paid', 'simple-sponsorships' ),
 		'rejected' => __( 'Rejected', 'simple-sponsorships' ),
+		'failed'   => __( 'Failed', 'simples-sponsorships' ),
 	));
 }
 

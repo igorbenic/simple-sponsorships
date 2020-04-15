@@ -46,6 +46,7 @@ class Plugin extends Integration {
 		add_filter( 'ss_available_payment_gateways', array( $this, 'filter_available_gateways' ), 20, 2 );
 		add_filter( 'ss_sponsorship_formatted_amount', array( $this, 'format_sponsorship_amount' ), 20, 3 );
 		add_filter( 'ss_package_get_price', array( $this, 'package_get_price' ), 20, 2 );
+		add_filter( 'ss_is_account_creation_enabled', '__return_true' ); // @todo Make this conditionally load on frontend.
 		add_filter( 'ss_admin_enqueue_pages', array( $this, 'enqueue_on_subscriptions' ) );
 
 		add_action( 'ss_package_updated', array( $this, 'save_package_recurring' ), 20, 2 );
@@ -55,9 +56,74 @@ class Plugin extends Integration {
 		add_action( 'ss_edit_sponsorship_form_bottom_after_buttons', array( $this, 'showing_recurring_sponsorships_in_admin' ) );
 		add_action( 'ss_cancel_recurring', array( $this, 'cancel_recurring' ) );
 		add_action( 'ss_sponsorship_status_paid', array( $this, 'reactivate_recurring_sponsorship' ), 20, 3 );
+		add_action('wp', array( $this, 'setup_cron_jobs' ) );
+		add_action( 'ss_expired_sponsorship_check', array( $this, 'ss_expired_sponsorship_check' ) );
 
 		$this->includes();
 	}
+
+	/**
+	 * On deactivation
+	 */
+	public function deactivate() {
+		wp_clear_scheduled_hook( 'ss_expired_sponsorship_check' );
+	}
+
+	/**
+	 * Set up the following cron job events:
+	 *
+	 * @return void
+	 */
+	public function setup_cron_jobs() {
+		if ( ! wp_next_scheduled( 'ss_expired_sponsorship_check' ) ) {
+			wp_schedule_event( current_time( 'timestamp' ), 'daily', 'ss_expired_sponsorship_check' );
+		}
+	}
+
+	/**
+	 * Check for expired sponsorship
+	 *
+	 * Runs each day and checks for expired sponsorships. If it has expired, their status
+	 * is updated to "expired" and, based on settings, they may receive an email.
+	 *
+	 *
+	 * @return void
+	 */
+	public function ss_expired_sponsorship_check() {
+		global $wpdb;
+
+		$current_time = date( 'Y-m-d H:i:s', strtotime( '-1 day', current_time( 'timestamp' ) ) );
+
+		$query = "SELECT ID FROM $wpdb->sssponsorships
+		INNER JOIN $wpdb->sssponsorshipmeta ON ($wpdb->sssponsorships.ID = $wpdb->sssponsorshipmeta.sssponsorship_id)
+		INNER JOIN $wpdb->sssponsorshipmeta AS mt1 ON ($wpdb->sssponsorships.ID = mt1.sssponsorship_id)
+		INNER JOIN $wpdb->sssponsorshipmeta AS mt2 ON ($wpdb->sssponsorships.ID = mt2.sssponsorship_id)
+		WHERE 1=1 AND $wpdb->sssponsorships.type = 'recurring' AND ( ($wpdb->sssponsorshipmeta.meta_key = '_expiry_date'
+			AND CAST($wpdb->sssponsorshipmeta.meta_value AS DATETIME) < '$current_time')
+			AND  (mt1.meta_key = '_expiry_date'
+				AND CAST(mt1.meta_value AS CHAR) != 'none')
+			AND  (mt2.meta_key = '_recurring_status'
+				AND CAST(mt2.meta_value AS CHAR) IN( 'active', 'cancelled' ) ) )
+		LIMIT 9999";
+
+		$query = apply_filters( 'ss_check_for_expired_sponsorships_query_filter', $query );
+
+		$expired_sponsorships = $wpdb->get_results( $query );
+		$expired_sponsorships = wp_list_pluck( $expired_sponsorships, 'ID' );
+		$expired_sponsorships = apply_filters( 'ss_check_for_expired_sponsorships_filter', $expired_sponsorships );
+
+		if( $expired_sponsorships ) {
+			foreach( $expired_sponsorships as $key => $sponsorship_id ) {
+
+                $sponsorship     = ss_get_recurring_sponsorship( $sponsorship_id );
+				$expiration_time = $sponsorship->get_expiry_timestamp();
+				if( $expiration_time && strtotime( '-2 days', current_time( 'timestamp' ) ) > $expiration_time ) {
+                    $sponsorship->expire();
+				}
+			}
+		}
+	}
+
 
 	/**
      * Reactivate the Recurring Sponsorship maybe
@@ -66,14 +132,18 @@ class Plugin extends Integration {
 	 */
 	public function reactivate_recurring_sponsorship( $sponsorship_id ) {
 		$sponsorship = ss_get_sponsorship( $sponsorship_id, false );
+        $recurring   = false;
 
         if ( ss_is_recurring_sponsorship( $sponsorship ) ) {
-            $sponsorship = ss_get_recurring_sponsorship( $sponsorship );
-            $sponsorship->update_recurring_status( 'active' );
+	        $recurring = ss_get_recurring_sponsorship( $sponsorship );
         } elseif ( self::is_renewal_sponsorship( $sponsorship ) ) {
             // This was a renewal sponsorship.
-	        $sponsorship = ss_get_recurring_sponsorship( $sponsorship->get_data( 'parent_id' ) );
-	        $sponsorship->update_recurring_status( 'active' );
+	        $recurring = ss_get_recurring_sponsorship( $sponsorship->get_data( 'parent_id' ) );
+        }
+
+        if ( $recurring ) {
+	        $recurring->update_recurring_status( 'active' );
+	        $recurring->calculate_expiry_date( date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ) );
         }
     }
 

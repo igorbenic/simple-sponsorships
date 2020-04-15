@@ -29,7 +29,7 @@ function ss_process_payment_form() {
  * @param \Simple_Sponsorships\Sponsorship $sponsorship Sponsorship Object.
  */
 function ss_show_payment_form_for_sponsorship( $sponsorship ) {
-	if ( ! $sponsorship->is_approved() ) {
+	if ( ! $sponsorship->is_approved() && ! $sponsorship->is_on_hold() ) {
 		return;
 	}
 

@@ -130,7 +130,7 @@ function ss_update_active_integrations( $integrations = array() ) {
  * @return bool
  */
 function ss_is_account_creation_enabled() {
-	return 1 === absint( ss_get_option( 'allow_account_creation', '0' ) );
+	return apply_filters( 'ss_is_account_creation_enabled', 1 === absint( ss_get_option( 'allow_account_creation', '0' ) ) );
 }
 
 /**

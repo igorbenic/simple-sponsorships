@@ -60,6 +60,34 @@ class Recurring_Sponsorship extends Sponsorship {
 	}
 
 	/**
+	 * Get the expiry Date
+	 *
+	 * @return mixed|string
+	 */
+	public function get_expiry_date() {
+		$expiry_date = $this->get_data( '_expiry_date', false );
+		if ( ! $expiry_date ) {
+			$this->calculate_expiry_date();
+			$expiry_date = $this->get_data( '_expiry_date', false );
+		}
+
+		return $expiry_date;
+	}
+
+	/**
+	 * Get the expiry Date
+	 *
+	 * @return mixed|string
+	 */
+	public function get_expiry_timestamp() {
+
+		$expiration = $this->get_expiry_date();
+		$timestamp  = ( $expiration && 'none' != $expiration ) ? strtotime( $expiration, current_time( 'timestamp' ) ) : false;
+
+		return apply_filters( 'ss_sponsorship_get_expiry_timestamp', $timestamp, $this->get_id(), $this );
+	}
+
+	/**
 	 * Expiry Date is the date for the next payment to be done
 	 *
 	 * @param string $date Date from which we calculate the date
@@ -121,6 +149,22 @@ class Recurring_Sponsorship extends Sponsorship {
 			$timestamp += $extended_timestamp;
 		}
 
-		$this->update_data( '_expiry_time', date( 'Y-m-d h:i:s', $timestamp ) );
+		$this->update_data( '_expiry_date', date( 'Y-m-d h:i:s', $timestamp ) );
+	}
+
+	/**
+	 * Expire the Subscriptions
+	 */
+	public function expire() {
+		$this->update_recurring_status( 'expired' );
+		do_action( 'ss_recurring_sponsorship_expired' );
+	}
+
+	/**
+	 * Expire the Subscriptions
+	 */
+	public function cancel() {
+		$this->update_recurring_status( 'cancelled' );
+		do_action( 'ss_recurring_sponsorship_cancelled' );
 	}
 }
