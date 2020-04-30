@@ -197,7 +197,10 @@ class Plugin extends Integration {
 
 		foreach( SS()->payment_gateways()->get_available_payment_gateways() as $gateway_id => $gateway ) {
 		    if ( $gateway_id === sanitize_text_field( $_POST['ss_sponsorship_gateway'] ) ) {
-                $gateway->cancel_recurring( $sponsorship );
+                $cancelled = $gateway->cancel_recurring( $sponsorship );
+                if ( is_wp_error( $cancelled ) ) {
+                    ss_add_notice( $cancelled->get_error_message(), 'error' );
+                }
 		        break;
             }
         }

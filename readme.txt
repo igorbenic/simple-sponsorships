@@ -141,10 +141,11 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 
 == Changelog ==
 
-= 1.6.0 - TBD =
+= 1.6.0 - 2020-04-30 =
 * New: Account - Sponsored Content. Sponsors can see what content they have sponsored. This way they can see all episodes/articles that they have sponsored.
 * New: Placeholder Icon - You can now change the placeholder icon (add image HTML or SVG HTML).
-* New: (Platinum) - Recurring Payments. Create Recurring Plans/Packages and receive payments for them by daily, monthly or yearly frequency.
+* New: Sponsors Widget - Column option added so you can use the widget in page builders as well and provide a column layout.
+* New: (Platinum) - Recurring Payments (Subscriptions). Create Recurring Plans/Packages and receive payments for them by daily, monthly or yearly frequency.
 * Fix: If there are no available packages when using multiple packages option, there will be a message to tell the users there are no packages available for now.
 
 = 1.5.2 - 2020-03-12 =

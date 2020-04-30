@@ -71,20 +71,29 @@ class Stripe_API {
 	/**
 	 * Generates the headers to pass to API request.
 	 *
+	 * @param array $args
+	 *
 	 * @since 1.2.0
 	 * @version 1.2.0
 	 */
-	public static function get_headers() {
+	public static function get_headers( $args = array() ) {
 		$user_agent = self::get_user_agent();
 		$app_info   = $user_agent['application'];
 
+		if ( ! is_array( $args ) ) {
+			$args = array( $args );
+		}
+
 		return apply_filters(
 			'ss_stripe_request_headers',
-			array(
+			array_merge(
+				array(
 				'Authorization'              => 'Basic ' . base64_encode( self::get_secret_key() . ':' ),
 				'Stripe-Version'             => self::STRIPE_API_VERSION,
 				'User-Agent'                 => $app_info['name'] . '/' . $app_info['version'],
 				'X-Stripe-Client-User-Agent' => json_encode( $user_agent ),
+				),
+				$args
 			)
 		);
 	}
@@ -95,7 +104,13 @@ class Stripe_API {
 	 * @param string $method
 	 */
 	public static function request( $data, $api, $method = 'POST' ) {
-		$headers = self::get_headers();
+		$header_args = array();
+
+		if ( 'POST' === $method ) {
+			$header_args['Idempotency-Key'] = md5( json_encode( $data ) );
+		}
+
+		$headers = self::get_headers( $header_args );
 
 		$response = wp_safe_remote_post(
 			self::$url . $api,
@@ -115,6 +130,10 @@ class Stripe_API {
 			$body =  json_decode( $response['body'], true );
 			if ( isset( $body['message'] ) ) {
 				return new \WP_Error( 'stripe-error', $body['message'] );
+			}
+
+			if ( isset( $body['error'] ) ) {
+				return new \WP_Error( 'stripe-error', $body['error']['message'] );
 			}
 		}
 

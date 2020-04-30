@@ -4,6 +4,7 @@
  */
 namespace Simple_Sponsorships\Gateways;
 use Braintree\Exception;
+use Simple_Sponsorships\DB\DB_Sponsorships;
 use Simple_Sponsorships\Package;
 use Simple_Sponsorships\Sponsorship;
 use Simple_Sponsorships\Stripe\Stripe_API;
@@ -33,6 +34,37 @@ class Stripe extends Payment_Gateway {
 			'recurring',
 			'cancel_recurring',
 		);
+	}
+
+	/**
+	 * Cancel Sponsorship
+	 *
+	 * @param Sponsorship $sponsorship Sponsorship object.
+	 */
+	public function cancel_recurring( $sponsorship ) {
+
+	    $stripe_sub_id = $sponsorship->get_data( 'ss_stripe_subscription_id', '' );
+
+        if ( ! $stripe_sub_id ) {
+            return new \WP_Error( 'no-stripe-sub', __( 'No Subscription found. Please contact the administrator', 'simple-sponsorships-premium' ));
+        }
+
+		$subscription = Stripe_API::request(
+			[],
+			'subscriptions/' . $stripe_sub_id,
+            'DELETE'
+		);
+
+		if ( is_wp_error( $subscription ) ) {
+			return $subscription;
+		}
+
+		if ( isset( $subscription->status ) && ( 'canceled' !== $subscription->status && 'cancelled' !== $subscription->status ) ) {
+			return new \WP_Error( 'no-stripe-status', __( 'Subscription could not be cancelled. Please contact the administrator.', 'simple-sponsorships-premium' ));
+		}
+
+		$sponsorship = ss_get_recurring_sponsorship( $sponsorship );
+		$sponsorship->update_recurring_status('cancelled' );
 	}
 
 	/**
@@ -78,7 +110,14 @@ class Stripe extends Payment_Gateway {
 					'sandbox' => __( 'Sandbox', 'simple-sponsorships-premium' ),
 					'live'    => __( 'Live', 'simple-sponsorships-premium' ),
 				),
-			)
+			),
+			'stripe_webhook_secret' => array(
+				'id'          => 'stripe_webhook_secret',
+				'type'        => 'text',
+				'label'        => __( 'Webhook/Event Signing Secret', 'simple-sponsorships-premium' ),
+				'default'     => '',
+				'desc'        => sprintf( __( 'When a webhook is created, you will also get a signing secret. If using webhooks, use the url %s for your webhook', 'simple-sponsorship-premium' ), '<code>' . add_query_arg( 'ss-listener', 'stripe', get_site_url() ) . '</code>' )
+			),
 		);
 	}
 
@@ -126,6 +165,11 @@ class Stripe extends Payment_Gateway {
 	    }
 
 	    if ( $intent->status == 'succeeded' ) {
+		    if ( ! empty( $intent->charges->data[0]['id'] ) && 'succeeded' === $intent->charges->data[0]['status'] ) {
+			    // Set the transaction ID from the charge.
+			    $sponsorship->update_data( 'transaction_id', sanitize_text_field( $intent->charges->data[0]['id'] ) );
+		    }
+
 		    $sponsorship->delete_data( '_stripe_payment_intent_secret' );
 		    $this->complete( $sponsorship );
 	    }
@@ -214,6 +258,11 @@ class Stripe extends Payment_Gateway {
 
 			    return new \WP_Error( 'requires-action', __( 'Payment requires additional information', 'simple-sponsorships-premium' ) );
 		    } else if ( $intent->status == 'succeeded' ) {
+
+			    if ( ! empty( $intent->charges->data[0]['id'] ) && 'succeeded' === $intent->charges->data[0]['status'] ) {
+				    // Set the transaction ID from the charge.
+				    $sponsorship->update_data( 'transaction_id', sanitize_text_field( $intent->charges->data[0]['id'] ) );
+			    }
 
 			    $sponsorship->delete_data( '_stripe_payment_intent_secret' );
 			    $this->create_subscriptions( $sponsorship, $customer_id, $intent );
@@ -592,5 +641,275 @@ class Stripe extends Payment_Gateway {
         }
 
         return $customer_id;
+    }
+	/**
+	 * Process webhooks
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function process_webhooks() {
+
+		if( ! isset( $_GET['ss-listener'] ) || strtolower( $_GET['ss-listener'] ) != 'stripe' ) {
+			return;
+		}
+
+		// Ensure listener URL is not cached by W3TC
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+			define( 'DONOTCACHEPAGE', true );
+		}
+
+		try {
+			// retrieve the request's body and parse it as JSON
+			$body          = @file_get_contents( 'php://input' );
+			$event_json_id = json_decode( $body );
+			$sig_header    = isset( $_SERVER['HTTP_STRIPE_SIGNATURE'] ) ? $_SERVER['HTTP_STRIPE_SIGNATURE'] : false;
+			$expiration    = '';
+
+			// for extra security, retrieve from the Stripe API
+			if ( ! isset( $event_json_id->id ) ) {
+				die( 'no event ID found' );
+			}
+
+			if ( false !== $sig_header ) {
+                $this->verify_signature( $sig_header, $body );
+			}
+
+			$event_id = $event_json_id->id;
+
+			try {
+
+			    if ( defined( 'SS_TEST_STRIPE_WEBHOOK' ) && SS_TEST_STRIPE_WEBHOOK ) {
+                    $event = $event_json_id;
+                } else {
+				    $event = Stripe_API::request( [], 'events/' . $event_id, 'GET' );
+			    }
+
+				if ( is_wp_error( $event ) ) {
+				    throw new \Exception( $event->get_error_message() );
+                }
+
+				$payment_event = $event->data->object;
+				$sponsorship   = false;
+
+				if ( empty( $payment_event->customer ) ) {
+					die( 'no customer attached' );
+				}
+
+				$invoice = $customer = $subscription = false;
+
+				// Try to get an invoice object from the payment event.
+				if ( ! empty( $payment_event->object ) && 'invoice' === $payment_event->object ) {
+					$invoice = $payment_event;
+				} elseif ( ! empty( $payment_event->invoice ) ) {
+					$invoice = Stripe_API::request([], 'invoices/' .  $payment_event->invoice );
+				}
+
+				// Now try to get a subscription from the invoice.
+				if ( ! empty( $invoice->subscription ) ) {
+					$subscription = Stripe_API::request([], 'subscriptions/' .  $invoice->subscription );
+				}
+
+				// We can also get the subscription by the object ID in some circumstances.
+				if ( empty( $subscription ) && false !== strpos( $payment_event->id, 'sub_' ) ) {
+					$subscription = Stripe_API::request([], 'subscriptions/' .  $payment_event->id );
+				}
+
+				// Retrieve the membership by subscription ID.
+				if ( ! empty( $subscription ) && ! is_wp_error( $subscription ) ) {
+				    $db = new DB_Sponsorships();
+				    $sponsorships = $db->get_by_meta( 'ss_stripe_subscription_id', $subscription->id );
+				    $sponsorship  = $sponsorships ? ss_get_sponsorship( $sponsorships[0]['ID'] ) : false;
+				}
+
+				// Retrieve the membership by payment meta (one-time charges only).
+				if ( ! empty( $payment_event->metadata->sponsorship ) ) {
+					$sponsorship = ss_get_sponsorship( $payment_event->metadata->sponsorship );
+				}
+
+				if ( ! $sponsorship instanceof Sponsorship ) {
+
+					die( 'no sponsorship ID found' );
+				}
+
+				if ( $event->type == 'charge.succeeded' || $event->type == 'invoice.payment_succeeded' ) {
+
+				    $transaction_id = '';
+				    $amount         = '';
+
+					if ( $event->type == 'charge.succeeded' ) {
+
+						// Successful one-time payment
+						if ( empty( $payment_event->invoice ) ) {
+
+							$amount         = $payment_event->amount / 100;
+							$transaction_id = $payment_event->id;
+
+							// Successful subscription payment
+						} else {
+
+							$amount         = $invoice->amount_due / 100;
+							$transaction_id = $payment_event->id;
+						}
+
+					}
+
+					if ( $transaction_id ) {
+						$db           = new DB_Sponsorships();
+						$sponsorships = $db->get_by_column( 'transaction_id', $transaction_id );
+                        if ( $sponsorships ) {
+                            $the_sponsorship = ss_get_sponsorship( $sponsorships[0]['ID'] );
+                            if ( ! $the_sponsorship->is_paid() ) {
+                                $this->complete( $the_sponsorship );
+                            }
+                            die( 'duplicate payment' );
+                        }
+
+                        // this is a subscription
+                        if ( ! empty( $subscription ) && function_exists( 'ss_get_recurring_sponsorship' ) ) {
+
+	                        if ( ! ss_sponsorship_can_have_recurring( $sponsorship ) ) {
+		                        return;
+	                        }
+
+	                        $sponsorship->update_data( 'type', 'recurring' );
+                            $parent_sponsorship = ss_get_recurring_sponsorship( $sponsorship );
+	                        $parent_sponsorship->calculate_expiry_date( current_time( 'mysql' ) );
+
+                            $args = array(
+                                'amount'         => $amount,
+                                'transaction_id' => $transaction_id
+                            );
+
+	                        $recurring_sponsorship = ss_create_recurring_sponsorship( $sponsorship, $args );
+
+	                        if ( ! $recurring_sponsorship ) {
+		                        // Sponsorship could not be created.
+		                        return;
+	                        }
+
+	                        $this->complete( $recurring_sponsorship );
+	                        $parent_sponsorship->update_recurring_status( 'active' );
+                        }
+
+                        do_action( 'ss_gateway_payment_processed', $recurring_sponsorship, $this );
+                        do_action( 'ss_stripe_charge_succeeded', $customer->get_user_id(), $recurring_sponsorship, $event );
+
+                        die( 'ss_stripe_charge_succeeded action fired successfully' );
+
+					}
+				}
+
+				// failed payment
+				if ( $event->type == 'invoice.payment_failed' ) {
+					$db = new DB_Sponsorships();
+					// Make sure this invoice is tied to a subscription and is the user's current subscription.
+					if ( ! empty( $event->data->object->subscription ) && function_exists( 'ss_get_recurring_sponsorship' ) ) {
+
+						$sponsorships = $db->get_by_meta( 'ss_stripe_subscription_id', $event->data->object->subscription );
+						$sponsorship  = $sponsorships ? ss_get_sponsorship( $sponsorships[0]['ID'] ) : false;
+
+						if ( $sponsorship ) {
+							$recurring_sponsorship = ss_get_recurring_sponsorship( $sponsorship );
+							$recurring_sponsorship->update_recurring_status( 'pending' );
+						}
+
+						do_action( 'ss_recurring_payment_failed', $sponsorship, $this );
+					} elseif ( ! empty( $event->data->object->charge ) ) {
+						$sponsorships = $db->get_by_column( 'transaction_id', $event->data->object->charge );
+						$sponsorship  = $sponsorships ? ss_get_sponsorship( $sponsorships[0]['ID'] ) : false;
+						if ( $sponsorship ) {
+							$sponsorship->set_status( 'on-hold' ); // Not a subscription
+						}
+                    }
+
+					do_action( 'ss_stripe_charge_failed', $payment_event, $event, $sponsorship );
+
+					die( 'ss_stripe_charge_failed action fired successfully' );
+
+				}
+
+				// Cancelled / failed subscription
+				if ( $event->type == 'customer.subscription.deleted' && function_exists( 'ss_get_recurring_sponsorship' ) ) {
+					$db           = new DB_Sponsorships();
+
+					if ( $payment_event->id ) {
+						$sponsorships = $db->get_by_meta( 'ss_stripe_subscription_id', $payment_event->id );
+						$sponsorship  = $sponsorships ? ss_get_sponsorship( $sponsorships[0]['ID'] ) : false;
+
+						if ( $sponsorship ) {
+						    $recurring_sponsorship = ss_get_recurring_sponsorship( $sponsorship );
+						    $recurring_sponsorship->cancel();
+                        }
+
+
+						do_action( 'ss_webhook_cancel', $sponsorship, $this );
+
+						die( 'recurring payment cancelled successfully' );
+
+					}
+
+				}
+
+				do_action( 'ss_stripe_' . $event->type, $payment_event, $event );
+
+
+			} catch ( \Exception $e ) {
+				die( 'PHP exception: ' . $e->getMessage() );
+			}
+		} catch ( \Exception $e ) {
+			die( 'PHP exception: ' . $e->getMessage() );
+        }
+
+		die( '1' );
+
+	}
+
+	/**
+     * Verify signagure from Stripe
+	 * @param string $signature
+     * @param string $payload Received body of the webhook
+	 */
+	protected function verify_signature( $signature, $payload ) {
+
+	    $signing_secret = isset( $this->settings['stripe_webhook_secret'] ) ? $this->settings['stripe_webhook_secret'] : '';
+
+	    // Use did not create a webhook or forgot to enter the secret.
+	    if ( ! $signing_secret ) {
+	        return;
+        }
+
+        $signature_array = explode( ',', $signature );
+
+        if ( count( $signature_array ) < 2 ) {
+            throw new \Exception( 'incorrect-signature', __( 'Signature is not correct', 'simple-sponsorships' ) );
+        }
+
+        $timestamp = '';
+        $scheme    = '';
+
+        foreach ( $signature_array as $sig_value ) {
+            $sig_value_arr = explode( '=', $sig_value );
+            foreach ( $sig_value_arr as $sig_key => $sig_val ) {
+                if ( 't' === $sig_key ) {
+                    $timestamp = $sig_val;
+                }
+
+                if ( 'v1' === $sig_key ) {
+                    $scheme = $sig_val;
+                }
+            }
+        }
+
+        if ( ! $timestamp || ! $scheme ) {
+	        throw new \Exception( 'incorrect-signature', __( 'Signature is not correct', 'simple-sponsorships' ) );
+        }
+
+        $signed_payload = $timestamp . '.' . $payload;
+        $new_signature  = hash_hmac( 'sha256', $signed_payload, $signing_secret );
+
+        if ( $signature !== $new_signature ) {
+	        throw new \Exception( 'incorrect-signature', __( 'Signature is not correct', 'simple-sponsorships' ) );
+        }
     }
 }

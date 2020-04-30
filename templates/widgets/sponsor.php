@@ -13,13 +13,14 @@ if ( ! $sponsor ) {
 	return;
 }
 
+$columns   = absint( $args['columns'] ) > 1 ? true : false;
 $show_logo = $args['show_logo'] === '1' ? true : false;
 $only_logo = $args['only_logo'] === '1' ? true : false;
 $text      = isset( $args['text'] ) && $args['text'] === '1' ? true : false;
 $has_logo  = $show_logo && has_post_thumbnail( $sponsor->get_id() );
 $link      = $sponsor->get_link();
 ?>
-<div class="ss-widget-sponsor">
+<div class="ss-widget-sponsor <?php echo $columns ? 'ss-col-item' : ''; ?>">
 	<?php
 
 		if ( $has_logo ) {

@@ -38,7 +38,12 @@ class Widget_Sponsors extends \WP_Widget {
 		$logo          = ! isset( $instance['logo'] ) ? '1' : $instance['logo'];
 		$only_logo     = ! isset( $instance['only_logo'] ) ? '0' : $instance['only_logo'];
 		$text          = ! isset( $instance['text'] ) ? '0' : $instance['text'];
+		$columns       = ! isset( $instance['columns'] ) ? 1 : absint( $instance['columns'] );
 		$sponsors      = array();
+
+		if ( ! $columns ) {
+		    $columns = 1;
+        }
 
 		if ( 'active' === $show_sponsors ) {
 			$sponsors = ss_get_active_sponsors();
@@ -58,10 +63,18 @@ class Widget_Sponsors extends \WP_Widget {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
 
+		if ( $columns > 1 ) {
+		    echo '<div class="ss-col ss-col-' . $columns . '">';
+        }
+
 		foreach ( $sponsors as $sponsor ) {
 			$_sponsor = new Sponsor( 0 );
 			$_sponsor->populate_from_post( $sponsor );
-			Templates::get_template_part( 'widgets/sponsor', null, array( 'sponsor' => $_sponsor, 'show_logo' => $logo, 'only_logo' => $only_logo, 'text' => $text ) );
+			Templates::get_template_part( 'widgets/sponsor', null, array( 'sponsor' => $_sponsor, 'show_logo' => $logo, 'only_logo' => $only_logo, 'text' => $text, 'columns' => $columns ) );
+		}
+
+		if ( $columns > 1 ) {
+			echo '</div>';
 		}
 		echo $args['after_widget'];
 	}
@@ -77,6 +90,7 @@ class Widget_Sponsors extends \WP_Widget {
 		$logo      = ! isset( $instance['logo'] ) ? '1' : $instance['logo'];
 		$only_logo = ! isset( $instance['only_logo'] ) ? '0' : $instance['only_logo'];
 		$text      = ! isset( $instance['text'] ) ? '0' : $instance['text'];
+		$columns   = ! isset( $instance['columns'] ) ? 1 : absint( $instance['columns'] );
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:', 'simple-sponsorships' ); ?></label>
@@ -102,6 +116,14 @@ class Widget_Sponsors extends \WP_Widget {
             <input <?php checked( $text, '1', true ); ?> id="<?php echo esc_attr( $this->get_field_id( 'text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'text' ) ); ?>" type="checkbox" value="1">
             <label for="<?php echo esc_attr( $this->get_field_id( 'text' ) ); ?>"><?php esc_attr_e( 'Include Description', 'simple-sponsorships' ); ?></label>
         </p>
+        <p>
+            <label for="<?php echo esc_attr( $this->get_field_id( 'columns' ) ); ?>"><?php esc_attr_e( 'Columns', 'simple-sponsorships' ); ?></label>
+            <select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'columns' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'columns' ) ); ?>">
+                <?php for( $i = 1; $i <= 5; $i++ ) { ?>
+                <option <?php selected( $columns, $i, true );  ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                <?php } ?>
+            </select>
+        </p>
 		<?php
 	}
 
@@ -120,6 +142,7 @@ class Widget_Sponsors extends \WP_Widget {
 		$instance['logo']     = ( ! empty( $new_instance['logo'] ) ) ? '1' : '0';
 		$instance['only_logo']     = ( ! empty( $new_instance['only_logo'] ) ) ? '1' : '0';
 		$instance['text']     = ( ! empty( $new_instance['text'] ) ) ? '1' : '0';
+		$instance['columns']     = ( ! empty( $new_instance['columns'] ) ) ? sanitize_text_field( $new_instance['columns'] ) : 1;
 
 		return $instance;
 	}

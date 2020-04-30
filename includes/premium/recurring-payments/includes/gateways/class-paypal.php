@@ -213,6 +213,7 @@ class PayPal extends \Simple_Sponsorships\Gateways\PayPal {
 					}
 
 					$this->complete( $recurring_sponsorship );
+					$sponsorship->calculate_expiry_date();
 
 					do_action( 'ss_ipn_subscr_payment', $user_id );
 					do_action( 'ss_webhook_recurring_payment_processed', $recurring_sponsorship, $posted, $this );
