@@ -3,7 +3,7 @@ Contributors: ibenic
 Tags: sponsorships, sponsors, payment, podcasts, events
 Requires at least: 4.4
 Tested up to: 5.4.0
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,6 +140,9 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 8. Payment Settings.
 
 == Changelog ==
+
+= 1.6.1 - 2020-05-06 =
+* Fix: Adding new package shown an error due to an incorrect name in column.
 
 = 1.6.0 - 2020-04-30 =
 * New: Account - Sponsored Content. Sponsors can see what content they have sponsored. This way they can see all episodes/articles that they have sponsored.

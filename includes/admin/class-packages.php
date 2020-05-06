@@ -63,7 +63,7 @@ class Packages {
 			'quantity'    => $quantity,
 			'price'       => $price,
 			'status'      => $status,
-			'onetime'     => $type,
+			'type'        => $type,
 		);
 
 		$package_id = $db->insert( $db_data, array( '%s', '%s', '%s', '%s', '%s' ) );
