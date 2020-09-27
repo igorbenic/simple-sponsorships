@@ -212,6 +212,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			include_once 'includes/integrations/dummy/class-package-timed-availability.php';
 			include_once 'includes/integrations/dummy/class-package-minimum-quantity.php';
 			include_once 'includes/integrations/dummy/class-recurring-payments.php';
+			include_once 'includes/integrations/dummy/class-restrict-content.php';
 
 			// Gateways.
 			include_once 'includes/gateways/class-paypal.php';
@@ -399,6 +400,7 @@ if ( ss_fs()->is__premium_only() ) {
 			include_once 'includes/premium/post-paid-form/post-paid-form.php';
 			include_once 'includes/premium/stripe-gateway/stripe-gateway.php';
 			include_once 'includes/premium/package-minimum-quantity/package-minimum-quantity.php';
+			include_once 'includes/premium/restrict-content/restrict-content.php';
 
 			if ( ss_fs()->is_plan( 'platinum' ) ) {
 				include_once 'includes/premium/package-features/package-features.php';
@@ -427,6 +429,7 @@ if ( ss_fs()->is__premium_only() ) {
 			$integrations['package-slots']  = '\Simple_Sponsorships\Package_Slots\Plugin';
 			$integrations['post-paid-form'] = '\Simple_Sponsorships\Post_Paid_Form\Plugin';
 			$integrations['package-minimum-quantity'] = '\Simple_Sponsorships\Package_Minimum_Quantity\Plugin';
+			$integrations['restrict-content'] = '\Simple_Sponsorships\Restrict_Content\Plugin';
 
 			if ( ss_fs()->is_plan( 'platinum' ) ) {
 				$integrations['package-features'] = '\Simple_Sponsorships\Package_Features\Plugin';

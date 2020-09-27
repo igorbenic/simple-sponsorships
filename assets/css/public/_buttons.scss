@@ -1,25 +1,24 @@
-.simple-sponsorships {
-  .ss-button {
-    display: inline-block;
-    padding: 0.25em 1em;
-    line-height: 40px;
-    background: $purple;
-    color: $white;
-    border-radius: 5px;
-    height: auto;
-    text-decoration: none !important;
 
-    &:hover,
-    &:active,
-    &:focus {
-      color: $purple;
-      background: $yellow;
-    }
+.ss-button {
+	display: inline-block;
+	padding: 0.25em 1em;
+	line-height: 40px;
+	background: $purple;
+	color: $white;
+	border-radius: 5px;
+	height: auto;
+	text-decoration: none !important;
 
-    &.disabled,
-    &[disabled] {
-      pointer-events:none;
-      background: lighten($purple, 10);
-    }
-  }
+	&:hover,
+	&:active,
+	&:focus {
+	  color: $purple;
+	  background: $yellow;
+	}
+
+	&.disabled,
+	&[disabled] {
+	  pointer-events:none;
+	  background: lighten($purple, 10);
+	}
 }

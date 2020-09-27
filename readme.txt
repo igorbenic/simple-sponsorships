@@ -3,7 +3,7 @@ Contributors: ibenic
 Tags: sponsorships, sponsors, payment, podcasts, events
 Requires at least: 4.4
 Tested up to: 5.4.0
-Stable tag: 1.6.1
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,6 +140,10 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 8. Payment Settings.
 
 == Changelog ==
+
+= 1.7.0 - 2020-09-xx =
+* New: (Platinum) Package Pricing Tables - using order of entered package Ids to show them.
+* New: (Premium) Restrict Content - Using ss_restrict_content to restrict part of content.
 
 = 1.6.1 - 2020-05-06 =
 * Fix: Adding new package shown an error due to an incorrect name in column.

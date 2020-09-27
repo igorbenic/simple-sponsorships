@@ -5,9 +5,9 @@
 
 namespace Simple_Sponsorships\Integrations\Dummy;
 
-use Simple_Sponsorships\Integrations\Premium_Integration_Dummy;
+use Simple_Sponsorships\Integrations\Platinum_Integration_Dummy;
 
-class Recurring_Payments_Dummy extends Premium_Integration_Dummy {
+class Recurring_Payments_Dummy extends Platinum_Integration_Dummy {
 
 	/**
 	 * Stripe constructor.
