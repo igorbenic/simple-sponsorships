@@ -7,7 +7,7 @@
  * Author URI:      https://www.ibenic.com
  * Text Domain:     simple-sponsorships
  * Domain Path:     /languages
- * Version:         1.6.1
+ * Version:         1.7.0
  *
  * @fs_premium_only /includes/premium/, /assets/css/premium/, /assets/js/premium/, /assets/dist/css/premium/, /assets/dist/js/premium/
  * @package         Simple_Sponsorships
@@ -77,7 +77,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 		/**
 		 * @var string
 		 */
-		public $version = '1.6.1';
+		public $version = '1.7.0';
 
 		/**
 		 * Settings
@@ -235,6 +235,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			include_once 'includes/db/class-db-sponsorships.php';
 			include_once 'includes/db/class-db-sponsors.php';
 			include_once 'includes/db/class-db-sponsorship-items.php';
+			include_once 'includes/db/class-db-reports.php';
 
 			if ( is_admin() ) {
 				include_once 'includes/admin/class-admin.php';
