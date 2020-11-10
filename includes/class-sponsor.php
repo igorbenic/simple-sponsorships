@@ -71,7 +71,6 @@ class Sponsor extends Custom_Data {
 		return $link;
 	}
 
-
 	/**
 	 * Get the DB Object.
 	 */

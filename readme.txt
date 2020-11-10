@@ -141,7 +141,9 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 
 == Changelog ==
 
-= 1.7.0 - 2020-09-xx =
+= 1.7.0 - 2020-11-10 =
+* New: Sponsor Reports - Sponsors can now check how much their link has been clicked.
+* Update: Freemius service updated.
 * New: (Platinum) Package Pricing Tables - using order of entered package Ids to show them.
 * New: (Premium) Restrict Content - Using ss_restrict_content to restrict part of content.
 

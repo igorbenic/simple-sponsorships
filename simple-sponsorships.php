@@ -184,6 +184,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			include_once 'includes/functions-sponsors.php';
 			include_once 'includes/functions-packages.php';
 			include_once 'includes/functions-account.php';
+			include_once 'includes/functions-reports.php';
 
 			// Classes.
 			include_once 'includes/class-formatting.php';
@@ -274,7 +275,11 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			add_action( 'ss_account_view-sponsorship_endpoint', 'ss_account_view_sponsorship_content' );
 			add_action( 'ss_account_sponsor-info_endpoint', 'ss_account_sponsor_info_content' );
 			add_action( 'ss_account_sponsored-content_endpoint', 'ss_account_sponsored_content' );
+			add_action( 'ss_account_reports_endpoint', 'ss_account_sponsor_reports_content' );
 			add_action( 'ss_account_navigation', 'ss_account_navigation' );
+
+
+			add_action( 'ss_insert_report', 'ss_insert_report_from_request' );
 		}
 
 		/**
@@ -312,6 +317,10 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 				'ajax'  => admin_url( 'admin-ajax.php' ),
 				'nonce' => wp_create_nonce( 'ss-ajax' )
 			) );
+
+			if ( ss_is_account_page() && is_ss_endpoint_url('reports') ) {
+				wp_enqueue_script( 'ss-chart', SS_PLUGIN_URL . '/assets/js/vendors/chart.js', array( 'jquery', 'ss-script' ), $this->version, true );
+			}
 		}
 
 		/**

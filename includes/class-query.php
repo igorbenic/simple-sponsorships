@@ -73,6 +73,7 @@ class Query {
 			'sponsored-content'          => get_option( 'ss_myaccount_sponsored_content_endpoint', 'content' ),
 			//'downloads'                  => get_option( 'woocommerce_myaccount_downloads_endpoint', 'downloads' ),
 			'sponsor-info'               => get_option( 'ss_myaccount_edit_sponsor_endpoint', 'sponsor-info' ),
+			'reports'                    => get_option( 'ss_myaccount_reports_endpoint', 'reports' ),
 			//'edit-address'               => get_option( 'woocommerce_myaccount_edit_address_endpoint', 'edit-address' ),
 			//'payment-methods'            => get_option( 'woocommerce_myaccount_payment_methods_endpoint', 'payment-methods' ),
 			//'lost-password'              => get_option( 'woocommerce_myaccount_lost_password_endpoint', 'lost-password' ),
@@ -131,6 +132,9 @@ class Query {
 				break;*/
 			case 'sponsor-info':
 				$title = __( 'Sponsor', 'simple-sponsorships' );
+				break;
+			case 'sponsor-reports':
+				$title = __( 'Reports', 'simple-sponsorships' );
 				break;
 			/*case 'edit-address':
 				$title = __( 'Addresses', 'woocommerce' );

@@ -177,6 +177,7 @@ function ss_show_sponsors_under_content( $content ) {
 						$sponsor  = new \Simple_Sponsorships\Sponsor( $sponsor_id, false );
 						$has_logo = has_post_thumbnail( $sponsor->get_id() );
 						$link     = $sponsor->get_link();
+						$link     = ss_get_report_link( $link, $sponsor_id, $content_id, get_permalink( $content_id ), get_post_type() );
 						?>
                         <div class="ss-sponsor" itemprop="sponsor" itemtype="http://schema.org/Organization">
 							<?php
