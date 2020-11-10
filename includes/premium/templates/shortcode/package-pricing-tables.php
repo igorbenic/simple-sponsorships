@@ -31,6 +31,18 @@ if ( ! $id ) {
             }
 			$packages[] = ss_get_package( $package['ID'] );
 		}
+		if ( $packages && $ids ) {
+			$sorted = array();
+			foreach ( $ids as $sort_key => $p_id ) {
+				foreach ( $packages as $package ) {
+					if ( absint( $package->get_id() ) === absint( $p_id ) ) {
+						$sorted[ $sort_key ] = $package;
+						break;
+					}
+				}
+			}
+			$packages = $sorted;
+		}
 	}
 } else {
 	$packages[] = ss_get_package( $id );

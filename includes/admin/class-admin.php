@@ -31,6 +31,7 @@ class Admin {
 		include_once 'class-sponsors.php';
 		include_once 'functions-settings.php';
 		include_once 'class-integrations.php';
+		include_once 'class-reports.php';
 	}
 
 	/**

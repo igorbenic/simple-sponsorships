@@ -7,7 +7,7 @@
  * Author URI:      https://www.ibenic.com
  * Text Domain:     simple-sponsorships
  * Domain Path:     /languages
- * Version:         1.6.1
+ * Version:         1.7.0
  *
  * @fs_premium_only /includes/premium/, /assets/css/premium/, /assets/js/premium/, /assets/dist/css/premium/, /assets/dist/js/premium/
  * @package         Simple_Sponsorships
@@ -77,7 +77,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 		/**
 		 * @var string
 		 */
-		public $version = '1.6.1';
+		public $version = '1.7.0';
 
 		/**
 		 * Settings
@@ -184,6 +184,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			include_once 'includes/functions-sponsors.php';
 			include_once 'includes/functions-packages.php';
 			include_once 'includes/functions-account.php';
+			include_once 'includes/functions-reports.php';
 
 			// Classes.
 			include_once 'includes/class-formatting.php';
@@ -212,6 +213,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			include_once 'includes/integrations/dummy/class-package-timed-availability.php';
 			include_once 'includes/integrations/dummy/class-package-minimum-quantity.php';
 			include_once 'includes/integrations/dummy/class-recurring-payments.php';
+			include_once 'includes/integrations/dummy/class-restrict-content.php';
 
 			// Gateways.
 			include_once 'includes/gateways/class-paypal.php';
@@ -234,6 +236,7 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			include_once 'includes/db/class-db-sponsorships.php';
 			include_once 'includes/db/class-db-sponsors.php';
 			include_once 'includes/db/class-db-sponsorship-items.php';
+			include_once 'includes/db/class-db-reports.php';
 
 			if ( is_admin() ) {
 				include_once 'includes/admin/class-admin.php';
@@ -272,7 +275,11 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 			add_action( 'ss_account_view-sponsorship_endpoint', 'ss_account_view_sponsorship_content' );
 			add_action( 'ss_account_sponsor-info_endpoint', 'ss_account_sponsor_info_content' );
 			add_action( 'ss_account_sponsored-content_endpoint', 'ss_account_sponsored_content' );
+			add_action( 'ss_account_reports_endpoint', 'ss_account_sponsor_reports_content' );
 			add_action( 'ss_account_navigation', 'ss_account_navigation' );
+
+
+			add_action( 'ss_insert_report', 'ss_insert_report_from_request' );
 		}
 
 		/**
@@ -310,6 +317,10 @@ if ( ! class_exists( '\Simple_Sponsorships\Plugin' ) ) {
 				'ajax'  => admin_url( 'admin-ajax.php' ),
 				'nonce' => wp_create_nonce( 'ss-ajax' )
 			) );
+
+			if ( ss_is_account_page() && is_ss_endpoint_url('reports') ) {
+				wp_enqueue_script( 'ss-chart', SS_PLUGIN_URL . '/assets/js/vendors/chart.js', array( 'jquery', 'ss-script' ), $this->version, true );
+			}
 		}
 
 		/**
@@ -399,6 +410,7 @@ if ( ss_fs()->is__premium_only() ) {
 			include_once 'includes/premium/post-paid-form/post-paid-form.php';
 			include_once 'includes/premium/stripe-gateway/stripe-gateway.php';
 			include_once 'includes/premium/package-minimum-quantity/package-minimum-quantity.php';
+			include_once 'includes/premium/restrict-content/restrict-content.php';
 
 			if ( ss_fs()->is_plan( 'platinum' ) ) {
 				include_once 'includes/premium/package-features/package-features.php';
@@ -427,6 +439,7 @@ if ( ss_fs()->is__premium_only() ) {
 			$integrations['package-slots']  = '\Simple_Sponsorships\Package_Slots\Plugin';
 			$integrations['post-paid-form'] = '\Simple_Sponsorships\Post_Paid_Form\Plugin';
 			$integrations['package-minimum-quantity'] = '\Simple_Sponsorships\Package_Minimum_Quantity\Plugin';
+			$integrations['restrict-content'] = '\Simple_Sponsorships\Restrict_Content\Plugin';
 
 			if ( ss_fs()->is_plan( 'platinum' ) ) {
 				$integrations['package-features'] = '\Simple_Sponsorships\Package_Features\Plugin';

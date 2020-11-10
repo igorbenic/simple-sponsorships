@@ -78,10 +78,12 @@ class Package extends Custom_Data {
 	/**
 	 * Get the title
 	 *
+	 * @param boolean $unfiltered
+	 *
 	 * @return string
 	 */
-	public function get_title() {
-		return apply_filters( 'ss_package_get_title', $this->get_data('title' ), $this );
+	public function get_title( $unfiltered = false ) {
+		return $unfiltered ? $this->get_data('title' ) : apply_filters( 'ss_package_get_title', $this->get_data('title' ), $this );
 	}
 
 	/**

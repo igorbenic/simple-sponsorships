@@ -96,6 +96,7 @@ function ss_get_registered_integrations() {
 		'package-features' => '\Simple_Sponsorships\Integrations\Dummy\Package_Features',
 		'package-timed-availability' => '\Simple_Sponsorships\Integrations\Dummy\Package_Timed_Availability',
 		'package-minimum-quantity' => '\Simple_Sponsorships\Integrations\Dummy\Package_Minimum_Quantity',
+		'restrict-content' => '\Simple_Sponsorships\Integrations\Dummy\Restrict_Content_Dummy',
 	));
 }
 

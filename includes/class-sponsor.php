@@ -71,7 +71,6 @@ class Sponsor extends Custom_Data {
 		return $link;
 	}
 
-
 	/**
 	 * Get the DB Object.
 	 */
@@ -128,6 +127,8 @@ class Sponsor extends Custom_Data {
 	}
 
 	/**
+	 * Get Sponsored Content
+	 *
 	 * @return \int[]|\WP_Post[]
 	 */
 	public function get_sponsored_content() {

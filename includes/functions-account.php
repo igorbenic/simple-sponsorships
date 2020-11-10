@@ -157,6 +157,32 @@ if ( ! function_exists( 'ss_account_sponsored_content' ) ) {
 	}
 }
 
+if ( ! function_exists('ss_account_sponsor_reports_content' ) ) {
+	function ss_account_sponsor_reports_content() {
+		if ( ! is_user_logged_in() ) {
+			\Simple_Sponsorships\Templates::get_template_part( 'account/login-form', null );
+			return;
+		}
+
+		$sponsors = ss_get_sponsors(array(
+			'meta_key' => '_user_id',
+			'meta_value_num' => get_current_user_id()
+		));
+		$sponsor = false;
+
+		if ( $sponsors ) {
+			$sponsor = ss_get_sponsor( $sponsors[0]->ID, false );
+			$sponsor->populate_from_post( $sponsors[0] );
+		}
+
+		\Simple_Sponsorships\Templates::get_template_part( 'account/reports-content', null, array(
+			'current_user' => get_user_by( 'id', get_current_user_id() ),
+			'sponsor'      => $sponsor,
+		) );
+		return;
+	}
+}
+
 if ( ! function_exists( 'ss_account_navigation' ) ) {
 
 	/**
@@ -181,6 +207,7 @@ function ss_get_account_menu_items() {
 		//'downloads'       => get_option( 'ss_myaccount_downloads_endpoint', 'downloads' ),
 		'sponsored-content' => get_option( 'ss_myaccount_sponsored_content_endpoint', 'content' ),
 		'sponsor-info'      => get_option( 'ss_myaccount_sponsor_info_endpoint', 'sponsor-info' ),
+		'reports'           => get_option( 'ss_myaccount_reports_endpoint', 'reports' ),
 		//'payment-methods' => get_option( 'ss_myaccount_payment_methods_endpoint', 'payment-methods' ),
 		//'edit-account'    => get_option( 'ss_myaccount_edit_account_endpoint', 'edit-account' ),
 		//'customer-logout' => get_option( 'ss_logout_endpoint', 'customer-logout' ),
@@ -192,6 +219,7 @@ function ss_get_account_menu_items() {
 		//'downloads'       => __( 'Downloads', 'woocommerce' ),
 		'content'           => __( 'Sponsored Content', 'simple-sponsorships' ),
 		'sponsor-info'      => __( 'Sponsor', 'simple-sponsorships' ),
+		'reports'           => __( 'Reports', 'simple-sponsorships' ),
 		//'payment-methods' => __( 'Payment methods', 'woocommerce' ),
 		//'edit-account'    => __( 'Account details', 'woocommerce' ),
 		//'customer-logout' => __( 'Logout', 'woocommerce' ),
@@ -281,4 +309,11 @@ function ss_get_account_endpoint_url( $endpoint ) {
 	}
 
 	return ss_get_endpoint_url( $endpoint, '', get_permalink( ss_get_option( 'account_page', 0 ) ) );
+}
+
+/**
+ * @return bool
+ */
+function ss_is_account_page() {
+	return is_page( ss_get_option( 'account_page', 0 ) );
 }

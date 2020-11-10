@@ -65,5 +65,7 @@ window.ssponsorships = window.ssponsorships || {};
         $( document ).on( 'change', '.ss-sponsor-form #create_account', function(e){
             ssTriggerAccountFields();
         });
+
+
     });
 })(jQuery);
