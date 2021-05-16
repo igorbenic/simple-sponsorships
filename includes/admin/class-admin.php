@@ -68,6 +68,7 @@ class Admin {
 		$admin_pages = apply_filters( 'ss_admin_enqueue_pages', array(
 			'sponsors_page_ss-sponsorships',
 			'sponsors_page_ss-packages',
+			'sponsors_page_ss-reports',
 			'sponsors_page_ss-settings',
 			'sponsors_page_ss-integrations',
 			'widgets.php',
@@ -121,6 +122,10 @@ class Admin {
 			)));
 
 			wp_enqueue_style( 'ss-admin-css', SS_PLUGIN_URL . '/assets/dist/css/admin.css', array(), SS_VERSION );
+
+			if ( 'sponsors_page_ss-reports' === $hook ) {
+				wp_enqueue_script( 'ss-chart', SS_PLUGIN_URL . '/assets/js/vendors/chart.js', array( 'jquery' ), SS_VERSION, true );
+			}
 		}
 	}
 }

@@ -154,3 +154,42 @@ function ss_get_recurring_sponsorship( $sponsorship ) {
 	$recurring_sponsorship->set_sponsorship( $sponsorship );
 	return $recurring_sponsorship;
 }
+
+if ( ! function_exists( 'ss_account_subscriptions_content' ) ) {
+
+	/**
+	 * My Account Sponsorships content output.
+	 */
+	function ss_account_subscriptions_content() {
+		if ( ! is_user_logged_in() ) {
+			\Simple_Sponsorships\Templates::get_template_part( 'account/login-form', null );
+			return;
+		}
+
+		$db              = new \Simple_Sponsorships\DB\DB_Sponsorships();
+		$db_sponsorships = $db->get_by_meta( '_user_id', get_current_user_id() );
+		$sponsorships    = array();
+
+		if ( $db_sponsorships ) {
+			foreach ( $db_sponsorships as $single_sponsorship ) {
+				$sponsorship = new \Simple_Sponsorships\Sponsorship( absint( $single_sponsorship['ID'] ), false );
+				$sponsorship->populate_from_data( $single_sponsorship );
+
+				if ( 'recurring' !== $sponsorship->get_type() ) {
+					continue;
+				}
+
+				$sponsorships[ $sponsorship->get_id() ] = $sponsorship;
+			}
+
+			// Order from newer ID to oldest.
+			krsort($sponsorships);
+		}
+
+		\Simple_Sponsorships\Templates::get_template_part( 'account/sponsorships', null, array(
+			'current_user' => get_user_by( 'id', get_current_user_id() ),
+			'sponsorships' => $sponsorships,
+		) );
+		return;
+	}
+}

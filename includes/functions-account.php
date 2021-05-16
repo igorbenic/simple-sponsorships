@@ -61,9 +61,14 @@ if ( ! function_exists( 'ss_account_sponsorships_content' ) ) {
 			foreach ( $db_sponsorships as $single_sponsorship ) {
 				$sponsorship = new \Simple_Sponsorships\Sponsorship( absint( $single_sponsorship['ID'] ), false );
 				$sponsorship->populate_from_data( $single_sponsorship );
-				$sponsorships[] = $sponsorship;
+				$sponsorships[ $sponsorship->get_id() ] = $sponsorship;
 			}
+
+			// Order from newer ID to oldest.
+			krsort($sponsorships);
+
 		}
+
 		\Simple_Sponsorships\Templates::get_template_part( 'account/sponsorships', null, array(
 			'current_user' => get_user_by( 'id', get_current_user_id() ),
 			'sponsorships' => $sponsorships,

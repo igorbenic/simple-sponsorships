@@ -1,4 +1,4 @@
-# Copyright (C) 2019 simple-sponsorships
+# Copyright (C) 2021 simple-sponsorships
 # This file is distributed under the same license as the simple-sponsorships package.
 msgid ""
 msgstr ""
@@ -13,99 +13,227 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: includes/premium/package-features/package-features.php:113
+#: includes/gateways/class-bank-transfer.php:27, includes/gateways/class-bank-transfer.php:28, includes/gateways/class-bank-transfer.php:49
+msgid "Direct bank transfer"
+msgstr ""
+
+#: includes/gateways/class-bank-transfer.php:56
+msgid "Once you complete the billing form here, make the payment to the following bank account. Once we get the payment information, we will mark it as paid."
+msgstr ""
+
+#: includes/integrations/dummy/class-restrict-content.php:16, includes/premium/restrict-content/restrict-content.php:26
+msgid "Restrict Content"
+msgstr ""
+
+#: includes/integrations/dummy/class-restrict-content.php:18
+msgid "This will restrict content to only sponsors that sponsored it or a package"
+msgstr ""
+
+#: includes/premium/package-features/package-features.php:25
+msgid "Package Features"
+msgstr ""
+
+#: includes/premium/package-features/package-features.php:27
+msgid "You will be able to add features and display them in tables similar to pricing tables."
+msgstr ""
+
+#: includes/premium/package-features/package-features.php:117
 msgid "Includes Features from: "
 msgstr ""
 
-#: includes/premium/package-features/package-features.php:115
+#: includes/premium/package-features/package-features.php:119
 msgid "No Package"
 msgstr ""
 
-#: includes/premium/package-features/package-features.php:131
+#: includes/premium/package-features/package-features.php:135
 msgid "Move Feature Up or Down"
 msgstr ""
 
-#: includes/premium/package-features/package-features.php:140
+#: includes/premium/package-features/package-features.php:144
 msgid "Add Feature"
 msgstr ""
 
-#: includes/premium/package-features/package-features.php:156
+#: includes/premium/package-features/package-features.php:160
 msgid "Features"
 msgstr ""
 
-#: includes/premium/package-features/package-features.php:159
+#: includes/premium/package-features/package-features.php:163
 msgid "List package features."
 msgstr ""
 
-#: includes/premium/package-slots/package-slots.php:44
+#: includes/premium/package-minimum-quantity/package-minimum-quantity.php:29
+msgid "Package Minimum Quantity"
+msgstr ""
+
+#: includes/premium/package-minimum-quantity/package-minimum-quantity.php:31
+msgid "Allow packages to have minimum quantity for purchase."
+msgstr ""
+
+#: includes/premium/package-minimum-quantity/package-minimum-quantity.php:64
+msgid "Minimum Quantity"
+msgstr ""
+
+#: includes/premium/package-minimum-quantity/package-minimum-quantity.php:67
+msgid "If 0 or empty, disabled. Works if multiple packages are enabled."
+msgstr ""
+
+#: includes/premium/package-minimum-quantity/package-minimum-quantity.php:105
+msgid "Package %s requires at least %d quantities"
+msgstr ""
+
+#: includes/premium/package-slots/package-slots.php:26
+msgid "Package Slots"
+msgstr ""
+
+#: includes/premium/package-slots/package-slots.php:28
+msgid "Allow packages to have maximum slots and thus provide availability."
+msgstr ""
+
+#: includes/premium/package-slots/package-slots.php:51
 msgid "Slots"
 msgstr ""
 
-#: includes/premium/package-slots/package-slots.php:47
+#: includes/premium/package-slots/package-slots.php:54
 msgid "How many slots does this package have? If 0 or empty, unlimited."
 msgstr ""
 
-#: includes/premium/package-slots/package-slots.php:53
+#: includes/premium/package-slots/package-slots.php:60
 msgid "Used Slots"
 msgstr ""
 
-#: includes/premium/package-slots/package-slots.php:56
+#: includes/premium/package-slots/package-slots.php:63
 msgid "How many slots have already been used? This will be also updated automatically."
 msgstr ""
 
-#: includes/premium/package-timed-availability/package-timed-availability.php:60
-msgid "From"
+#: includes/premium/package-slots/package-slots.php:145
+msgid "Package %s has only %d available slots"
 msgstr ""
 
-#: includes/premium/package-timed-availability/package-timed-availability.php:61
-msgid "Leave empty to make it available from any date."
+#: includes/premium/package-timed-availability/package-timed-availability.php:24
+msgid "Package Timed Availability"
+msgstr ""
+
+#: includes/premium/package-timed-availability/package-timed-availability.php:26
+msgid "Define the availability of each package through date and time."
 msgstr ""
 
 #: includes/premium/package-timed-availability/package-timed-availability.php:66
-msgid "To"
+msgid "From"
 msgstr ""
 
 #: includes/premium/package-timed-availability/package-timed-availability.php:67
+msgid "Leave empty to make it available from any date."
+msgstr ""
+
+#: includes/premium/package-timed-availability/package-timed-availability.php:72
+msgid "To"
+msgstr ""
+
+#: includes/premium/package-timed-availability/package-timed-availability.php:73
 msgid "Leave empty to make it available until any date."
 msgstr ""
 
-#: includes/premium/package-timed-availability/package-timed-availability.php:83
+#: includes/premium/package-timed-availability/package-timed-availability.php:89
 msgid "Availability"
 msgstr ""
 
-#: includes/premium/package-timed-availability/package-timed-availability.php:86
+#: includes/premium/package-timed-availability/package-timed-availability.php:92
 msgid "From when is this package available"
 msgstr ""
 
-#: includes/premium/post-paid-form/post-paid-form.php:70
+#: includes/premium/post-paid-form/post-paid-form.php:23
+msgid "Post Paid Form"
+msgstr ""
+
+#: includes/premium/post-paid-form/post-paid-form.php:25
+msgid "Allow sponsors that have purchased a sponsorship to edit their details on the sponsorhip page."
+msgstr ""
+
+#: includes/premium/post-paid-form/post-paid-form.php:77
 msgid "Delete Logo"
 msgstr ""
 
-#: includes/premium/post-paid-form/post-paid-form.php:116
+#: includes/premium/post-paid-form/post-paid-form.php:123
 msgid "Sponsors Logo Replace"
 msgstr ""
 
-#: includes/premium/post-paid-form/post-paid-form.php:118
+#: includes/premium/post-paid-form/post-paid-form.php:125
 msgid "If checked, it will allow sponsors to replace their logo."
 msgstr ""
 
-#: includes/premium/post-paid-form/post-paid-form.php:124
+#: includes/premium/post-paid-form/post-paid-form.php:131
 msgid "Sponsors Logo Delete"
 msgstr ""
 
-#: includes/premium/post-paid-form/post-paid-form.php:126
+#: includes/premium/post-paid-form/post-paid-form.php:133
 msgid "If checked, it will allow sponsors to delete their logo and it will delete the logo from your site."
 msgstr ""
 
-#: includes/premium/stripe-gateway/stripe-gateway.php:40
+#: includes/premium/recurring-payments/recurring-payments.php:265, includes/premium/recurring-payments/recurring-payments.php:428
+msgid "Recurring Sponsorships"
+msgstr ""
+
+#: includes/premium/recurring-payments/recurring-payments.php:273
+msgid "Status"
+msgstr ""
+
+#: includes/premium/recurring-payments/recurring-payments.php:276
+msgid "Amount"
+msgstr ""
+
+#: includes/premium/recurring-payments/recurring-payments.php:279
+msgid "Date"
+msgstr ""
+
+#: includes/premium/recurring-payments/recurring-payments.php:361
+msgid "Cancel Recurring"
+msgstr ""
+
+#: includes/premium/recurring-payments/recurring-payments.php:564
+msgid "When selecting recurring packages, only 1 package can be selected."
+msgstr ""
+
+#: includes/premium/restrict-content/restrict-content.php:28
+msgid "This will restrict content to only sponsors that sponsored it or a package."
+msgstr ""
+
+#: includes/premium/restrict-content/restrict-content.php:31
+msgid "Use [ss_restrict_content]CONTENT[/ss_restrict_content] to restrict CONTENT."
+msgstr ""
+
+#: includes/premium/restrict-content/restrict-content.php:32
+msgid "Use type=package to restrict package or type=post to restrict content."
+msgstr ""
+
+#: includes/premium/restrict-content/restrict-content.php:33
+msgid "Use id=ID to be specific which package or content. Example: id=3 for Package ID 3"
+msgstr ""
+
+#: includes/premium/stripe-gateway/stripe-gateway.php:25, includes/premium/stripe-gateway/includes/class-stripe.php:23, includes/premium/stripe-gateway/includes/class-stripe.php:24
+msgid "Stripe"
+msgstr ""
+
+#: includes/premium/stripe-gateway/stripe-gateway.php:27
+msgid "This will add Stripe as a Payment Gateway."
+msgstr ""
+
+#: includes/premium/stripe-gateway/stripe-gateway.php:46
+msgid "CSRF verification failed."
+msgstr ""
+
+#: includes/premium/stripe-gateway/stripe-gateway.php:50, includes/premium/post-paid-form/includes/class-form-post-paid.php:52
+msgid "No Sponsorship."
+msgstr ""
+
+#: includes/premium/stripe-gateway/stripe-gateway.php:94
 msgid "No Sponsorship Provided for payment"
 msgstr ""
 
-#: includes/premium/stripe-gateway/stripe-gateway.php:47
+#: includes/premium/stripe-gateway/stripe-gateway.php:101
 msgid "Sponsorship does not exist."
 msgstr ""
 
-#: includes/premium/stripe-gateway/stripe-gateway.php:52
+#: includes/premium/stripe-gateway/stripe-gateway.php:106
 msgid "Sponsorship was already paid."
 msgstr ""
 
@@ -113,94 +241,126 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: includes/premium/post-paid-form/includes/class-form-post-paid.php:42
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:45
 msgid "Something went wrong. Try again later."
 msgstr ""
 
-#: includes/premium/post-paid-form/includes/class-form-post-paid.php:49
-msgid "No Sponsorship."
-msgstr ""
-
-#: includes/premium/post-paid-form/includes/class-form-post-paid.php:55
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:58
 msgid "No Sponsor."
 msgstr ""
 
-#: includes/premium/post-paid-form/includes/class-form-post-paid.php:65
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:68
 msgid "Logo Deleted."
 msgstr ""
 
-#: includes/premium/post-paid-form/includes/class-form-post-paid.php:105
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:108
 msgid "Name"
 msgstr ""
 
-#: includes/premium/post-paid-form/includes/class-form-post-paid.php:110
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:113
 msgid "Email"
 msgstr ""
 
-#: includes/premium/post-paid-form/includes/class-form-post-paid.php:115
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:118
 msgid "Website"
 msgstr ""
 
-#: includes/premium/post-paid-form/includes/class-form-post-paid.php:120
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:123
 msgid "Post Content"
 msgstr ""
 
-#: includes/premium/post-paid-form/includes/class-form-post-paid.php:125
+#: includes/premium/post-paid-form/includes/class-form-post-paid.php:128
 msgid "Logo"
 msgstr ""
 
-#: includes/premium/stripe-gateway/includes/class-stripe-api.php:114
+#: includes/premium/recurring-payments/includes/functions-recurring.php:13
+msgid "Pending"
+msgstr ""
+
+#: includes/premium/recurring-payments/includes/functions-recurring.php:14
+msgid "Active"
+msgstr ""
+
+#: includes/premium/recurring-payments/includes/functions-recurring.php:15
+msgid "Cancelled"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe-api.php:141
 msgid "There was an error. Stripe did not return any information."
 msgstr ""
 
-#: includes/premium/stripe-gateway/includes/class-stripe.php:19, includes/premium/stripe-gateway/includes/class-stripe.php:20
-msgid "Stripe"
+#: includes/premium/stripe-gateway/includes/class-stripe.php:49
+msgid "No Subscription found. Please contact the administrator"
 msgstr ""
 
-#: includes/premium/stripe-gateway/includes/class-stripe.php:40
+#: includes/premium/stripe-gateway/includes/class-stripe.php:63
+msgid "Subscription could not be cancelled. Please contact the administrator."
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:93
 msgid "Public Key"
 msgstr ""
 
-#: includes/premium/stripe-gateway/includes/class-stripe.php:42
+#: includes/premium/stripe-gateway/includes/class-stripe.php:95
 msgid "Your Stripe Public Key"
 msgstr ""
 
-#: includes/premium/stripe-gateway/includes/class-stripe.php:47
+#: includes/premium/stripe-gateway/includes/class-stripe.php:100
 msgid "Secret Key"
 msgstr ""
 
-#: includes/premium/stripe-gateway/includes/class-stripe.php:49
+#: includes/premium/stripe-gateway/includes/class-stripe.php:102
 msgid "Your Stripe Secret Key"
 msgstr ""
 
-#: includes/premium/stripe-gateway/includes/class-stripe.php:54
+#: includes/premium/stripe-gateway/includes/class-stripe.php:107
 msgid "Mode"
 msgstr ""
 
-#: includes/premium/stripe-gateway/includes/class-stripe.php:57
+#: includes/premium/stripe-gateway/includes/class-stripe.php:110
 msgid "Sandbox"
 msgstr ""
 
-#: includes/premium/stripe-gateway/includes/class-stripe.php:58
+#: includes/premium/stripe-gateway/includes/class-stripe.php:111
 msgid "Live"
 msgstr ""
 
-#: includes/premium/stripe-gateway/includes/class-stripe.php:68, includes/premium/stripe-gateway/includes/class-stripe.php:69
+#: includes/premium/stripe-gateway/includes/class-stripe.php:117
+msgid "Webhook/Event Signing Secret"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:129
+msgid "Testing mode enabled. Use Card <code>4242 4242 4242 4242</code> to test the payment"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:134, includes/premium/stripe-gateway/includes/class-stripe.php:135
 msgid "Cardholder Name"
 msgstr ""
 
-#: includes/premium/stripe-gateway/includes/class-stripe.php:95, includes/premium/stripe-gateway/includes/class-stripe.php:101
-msgid "No Payment Intent information from Stripe"
+#: includes/premium/stripe-gateway/includes/class-stripe.php:195
+msgid "No Payment Method information"
 msgstr ""
 
-#: includes/premium/stripe-gateway/includes/class-stripe.php:109
-msgid "Waiting on Payment to succeed"
+#: includes/premium/stripe-gateway/includes/class-stripe.php:259
+msgid "Payment requires additional information"
 msgstr ""
 
-#: includes/premium/templates/shortcode/package-pricing-tables.php:65
+#: includes/premium/stripe-gateway/includes/class-stripe.php:276
+msgid "Invalid Payment"
+msgstr ""
+
+#: includes/premium/stripe-gateway/includes/class-stripe.php:416
+msgid "Missing plan name or price."
+msgstr ""
+
+#: includes/premium/templates/shortcode/package-pricing-tables.php:77
 msgid "All in %s"
 msgstr ""
 
-#: includes/premium/templates/shortcode/package-pricing-tables.php:92
+#: includes/premium/templates/shortcode/package-pricing-tables.php:104, includes/premium/templates/shortcode/restrict-content.php:21
 msgid "Sponsor"
+msgstr ""
+
+#: includes/premium/templates/shortcode/restrict-content.php:16
+msgid "This content is restricted for sponsors who sponsor \"%s\""
 msgstr ""

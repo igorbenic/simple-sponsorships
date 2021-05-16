@@ -2,8 +2,8 @@
 Contributors: ibenic
 Tags: sponsorships, sponsors, payment, podcasts, events
 Requires at least: 4.4
-Tested up to: 5.4.0
-Stable tag: 1.7.0
+Tested up to: 5.7.2
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,6 +140,12 @@ If your site is also using the new WordPress editor (Gutenberg), then you can al
 8. Payment Settings.
 
 == Changelog ==
+
+= 1.8.0 - 2021-05-17 =
+* New: Account tabs moved to right side.
+* New: Ordering Sponsorships on Account Page from newest to oldest.
+* New: Totals Report in Admin
+* New: (Platinum) Showing Subscriptions in separate navigation
 
 = 1.7.0 - 2020-11-10 =
 * New: Sponsor Reports - Sponsors can now check how much their link has been clicked.

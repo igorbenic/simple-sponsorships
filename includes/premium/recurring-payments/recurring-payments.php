@@ -56,10 +56,35 @@ class Plugin extends Integration {
 		add_action( 'ss_edit_sponsorship_form_bottom_after_buttons', array( $this, 'showing_recurring_sponsorships_in_admin' ) );
 		add_action( 'ss_cancel_recurring', array( $this, 'cancel_recurring' ) );
 		add_action( 'ss_sponsorship_status_paid', array( $this, 'reactivate_recurring_sponsorship' ), 20, 3 );
-		add_action('wp', array( $this, 'setup_cron_jobs' ) );
+		add_action( 'wp', array( $this, 'setup_cron_jobs' ) );
 		add_action( 'ss_expired_sponsorship_check', array( $this, 'ss_expired_sponsorship_check' ) );
 
+		add_filter( 'ss_account_menu_items', array( $this, 'add_recurring_account_nav_item' ) );
+		add_filter( 'ss_get_query_vars', array( $this, 'add_recurring_endpoint' ) );
+		add_action( 'ss_account_subscriptions_endpoint', 'ss_account_subscriptions_content' );
+
 		$this->includes();
+	}
+
+	/**
+	 * Adding Subscriptions endpoint
+	 *
+	 * @param $query_vars
+	 */
+	public function add_recurring_endpoint( $query_vars ) {
+		$query_vars['subscriptions'] = get_option( 'ss_myaccount_subscriptions_endpoint', 'subscriptions' );
+
+		return $query_vars;
+	}
+
+	/**
+	 * Adding Subscription item to Account Menus
+	 * @param $nav_items
+	 */
+	public function add_recurring_account_nav_item( $nav_items ) {
+		$nav_items['subscriptions'] = __( 'Subscriptions', 'simple-sponsorships' );
+
+		return $nav_items;
 	}
 
 	/**

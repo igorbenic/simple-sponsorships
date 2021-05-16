@@ -46,14 +46,14 @@ class Menus {
 			array( $this, 'view' ),
             30 );
 
-		/*add_submenu_page(
+		add_submenu_page(
 			'edit.php?post_type=sponsors',
 			__( 'Simple Sponsorships Reports', 'simple-sponsorships' ),
 			__( 'Reports', 'simple-sponsorships' ),
 			'manage_options',
 			'ss-reports',
 			array( $this, 'view' ),
-			31 );*/
+			31 );
 
 		add_submenu_page(
 			'edit.php?post_type=sponsors',

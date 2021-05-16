@@ -5,6 +5,8 @@
 
 namespace Simple_Sponsorships\Admin;
 
+use Simple_Sponsorships\DB\DB_Sponsorships;
+
 /**
  * Class Integrations
  *
@@ -23,6 +25,9 @@ class Reports {
 	 * Integrations Page.
 	 */
 	public function page() {
+		$sponsorships_db   = new DB_Sponsorships();
+		$sponsorships = $sponsorships_db->get_all();
+
 		include_once 'views/reports.php';
 	}
 }
